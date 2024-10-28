@@ -4,6 +4,7 @@
 #include "TPSCharacter.h"
 
 #include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
 
 // Sets default values
 ATPSCharacter::ATPSCharacter()
@@ -32,6 +33,14 @@ void ATPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+	{
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			Subsystem->AddMappingContext(InputMappingContext, 0);
+		}
+	}
+	
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EnhancedInputComponent->BindAction(MoveAction,ETriggerEvent::Triggered,this,&ATPSCharacter::Move);
@@ -46,14 +55,17 @@ void ATPSCharacter::Move(const FInputActionValue& InputActionValue)
 {
 	FVector2D MovementVector = InputActionValue.Get<FVector2D>();
 
-	UE_LOG(LogTemp, Log, TEXT("Move : vector %f %f: "), MovementVector.X, MovementVector.Y);
+	UE_LOG(LogTemp, Log, TEXT("Move :  %f %f: "), MovementVector.X, MovementVector.Y);
 }
 
 void ATPSCharacter::Look(const FInputActionValue& InputActionValue)
 {
+	FVector2D LookAxisVector = InputActionValue.Get<FVector2D>();
+	UE_LOG(LogTemp, Log, TEXT("Look :  %f %f: "), LookAxisVector.X, LookAxisVector.Y);
 }
 
 void ATPSCharacter::Shot(const FInputActionValue& InputActionValue)
 {
+	UE_LOG(LogTemp, Log, TEXT("Shot!!"));
 }
 

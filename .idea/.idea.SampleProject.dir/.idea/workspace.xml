@@ -8,11 +8,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="915bcbc2-331f-4a45-8568-f2901e22edb5" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" afterPath="$PROJECT_DIR$/.gitattributes" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultEditor.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEditor.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Input/IMC_CharacterDefault.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Input/IMC_CharacterDefault.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Input/InputActions/IA_Jump.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Input/InputActions/IA_Jump.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SampleProject.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/SampleProject.uproject" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.SampleProject.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SampleProject.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SampleProject/Private/TPSCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/Private/TPSCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SampleProject/Public/TPSCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/Public/TPSCharacter.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,7 +125,7 @@
       <updated>1730090306698</updated>
       <workItem from="1730090308771" duration="1551000" />
       <workItem from="1730092937193" duration="893000" />
-      <workItem from="1730095397767" duration="2632000" />
+      <workItem from="1730095397767" duration="3477000" />
     </task>
     <servers />
   </component>

@@ -6,6 +6,7 @@
 #include "InputActionValue.h"
 #include "GameFramework/Character.h"
 #include "TPSCharacter.generated.h"
+class UInputMappingContext;
 class UInputAction;
 UCLASS()
 class SAMPLEPROJECT_API ATPSCharacter : public ACharacter
@@ -14,6 +15,8 @@ class SAMPLEPROJECT_API ATPSCharacter : public ACharacter
 
 private:
 	UPROPERTY(EditAnywhere, Category="Input", meta=(AllowPrivateAccess=true))
+	TObjectPtr<UInputMappingContext> InputMappingContext;
+	UPROPERTY(EditAnywhere, Category="Input", meta=(AllowPrivateAccess=true))
 	TObjectPtr<UInputAction> MoveAction;
 	UPROPERTY(EditAnywhere, Category="Input", meta=(AllowPrivateAccess=true))
 	TObjectPtr<UInputAction> LookAction;
@@ -21,8 +24,7 @@ private:
 	TObjectPtr<UInputAction> JumpAction;
 	UPROPERTY(EditAnywhere, Category="Input", meta=(AllowPrivateAccess=true))
 	TObjectPtr<UInputAction> ShotAction;
-	
-	
+
 public:
 	// Sets default values for this character's properties
 	ATPSCharacter();
