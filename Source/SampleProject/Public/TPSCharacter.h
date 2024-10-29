@@ -25,6 +25,10 @@ private:
 	UPROPERTY(EditAnywhere, Category="Input", meta=(AllowPrivateAccess=true))
 	TObjectPtr<UInputAction> ShotAction;
 
+	UPROPERTY(EditAnywhere, Category="Ability", meta=(AllowPrivateAccess=true))
+	int MaxHealth = 100.f;
+	UPROPERTY(VisibleAnywhere, Category="Ability", meta=(AllowPrivateAccess=true))
+	int Health;
 public:
 	// Sets default values for this character's properties
 	AYTPSCharacter();

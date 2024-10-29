@@ -17,6 +17,7 @@ AYTPSCharacter::AYTPSCharacter()
 void AYTPSCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	Health = MaxHealth;
 }
 
 // Called every frame

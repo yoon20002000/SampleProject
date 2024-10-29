@@ -8,9 +8,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="915bcbc2-331f-4a45-8568-f2901e22edb5" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.SampleProject.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SampleProject.dir/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/BP_TPSCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/BP_TPSCharacter.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/MainMap/D/FL/CXOG1XU7WIKUZ3J6MD983Y.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Maps/MainMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/MainMap.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SampleProject/Private/TPSCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/Private/TPSCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SampleProject/Public/TPSCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/Public/TPSCharacter.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +24,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.4/Engine/Source/Runtime/Engine/Classes/Animation/AnimInstance.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SampleProject/Private/TPSPlayerController.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SampleProject/Public/TPSCharacter.h" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -133,7 +137,7 @@
       <workItem from="1730173923217" duration="693000" />
       <workItem from="1730176352370" duration="96000" />
       <workItem from="1730176586615" duration="126000" />
-      <workItem from="1730176751980" duration="498000" />
+      <workItem from="1730176751980" duration="3964000" />
     </task>
     <servers />
   </component>
