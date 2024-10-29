@@ -7,26 +7,26 @@
 #include "EnhancedInputSubsystems.h"
 
 // Sets default values
-ATPSCharacter::ATPSCharacter()
+AYTPSCharacter::AYTPSCharacter()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 }
 
 // Called when the game starts or when spawned
-void ATPSCharacter::BeginPlay()
+void AYTPSCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
 // Called every frame
-void ATPSCharacter::Tick(float DeltaTime)
+void AYTPSCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
 // Called to bind functionality to input
-void ATPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void AYTPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
@@ -41,15 +41,15 @@ void ATPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATPSCharacter::Move);
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATPSCharacter::Look);
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AYTPSCharacter::Move);
+		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AYTPSCharacter::Look);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
-		EnhancedInputComponent->BindAction(ShotAction, ETriggerEvent::Started, this, &ATPSCharacter::Shot);
+		EnhancedInputComponent->BindAction(ShotAction, ETriggerEvent::Started, this, &AYTPSCharacter::Shot);
 	}
 }
 
-void ATPSCharacter::Move(const FInputActionValue& InputActionValue)
+void AYTPSCharacter::Move(const FInputActionValue& InputActionValue)
 {
 	const FVector2D MovementVector = InputActionValue.Get<FVector2D>();
 
@@ -66,7 +66,7 @@ void ATPSCharacter::Move(const FInputActionValue& InputActionValue)
 	}
 }
 
-void ATPSCharacter::Look(const FInputActionValue& InputActionValue)
+void AYTPSCharacter::Look(const FInputActionValue& InputActionValue)
 {
 	const FVector2D LookAxisVector = InputActionValue.Get<FVector2D>();
 
@@ -77,7 +77,7 @@ void ATPSCharacter::Look(const FInputActionValue& InputActionValue)
 	}
 }
 
-void ATPSCharacter::Shot(const FInputActionValue& InputActionValue)
+void AYTPSCharacter::Shot(const FInputActionValue& InputActionValue)
 {
 	UE_LOG(LogTemp, Log, TEXT("Shot!!"));
 }

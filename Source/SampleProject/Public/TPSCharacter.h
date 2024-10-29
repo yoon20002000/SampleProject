@@ -9,7 +9,7 @@
 class UInputMappingContext;
 class UInputAction;
 UCLASS()
-class SAMPLEPROJECT_API ATPSCharacter : public ACharacter
+class SAMPLEPROJECT_API AYTPSCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
@@ -27,7 +27,7 @@ private:
 
 public:
 	// Sets default values for this character's properties
-	ATPSCharacter();
+	AYTPSCharacter();
 
 protected:
 	// Called when the game starts or when spawned
