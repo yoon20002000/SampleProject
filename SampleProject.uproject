@@ -12,7 +12,15 @@
 				"Engine",
 				"AIModule"
 			]
-		}
+		},
+    {
+      "Name": "SampleProjectEditor",
+      "Type": "Editor",
+      "LoadingPhase": "Default",
+      "AdditionalDependencies": [
+        "SampleProject"
+      ]
+    }
 	],
 	"Plugins": [
 		{

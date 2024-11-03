@@ -10,6 +10,11 @@ public class SampleProjectEditorTarget : TargetRules
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V5;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_4;
-		ExtraModuleNames.Add("SampleProject");
+		ExtraModuleNames.AddRange(
+			new string[]
+			{
+				"SampleProject",
+				"SampleProjectEditor"
+			});
 	}
 }
