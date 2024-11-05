@@ -2,10 +2,9 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
-#include "Modules/ModuleManager.h"
+#include "Modules/ModuleInterface.h"
 
-class FCommonGameModule : public IModuleInterface
+class FCommonUserModule : public IModuleInterface
 {
 public:
 
