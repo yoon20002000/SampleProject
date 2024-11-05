@@ -13,14 +13,14 @@
 				"AIModule"
 			]
 		},
-    {
-      "Name": "SampleProjectEditor",
-      "Type": "Editor",
-      "LoadingPhase": "Default",
-      "AdditionalDependencies": [
-        "SampleProject"
-      ]
-    }
+		{
+			"Name": "SampleProjectEditor",
+			"Type": "Editor",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"SampleProject"
+			]
+		}
 	],
 	"Plugins": [
 		{
@@ -29,6 +29,10 @@
 			"TargetAllowList": [
 				"Editor"
 			]
+		},
+		{
+			"Name": "CommonUI",
+			"Enabled": true
 		}
 	]
 }
