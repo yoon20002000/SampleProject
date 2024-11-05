@@ -14,9 +14,18 @@ public class SampleProject : ModuleRules
 			}
 		);
 		
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "GameplayTasks", "UMG" });
+		PublicDependencyModuleNames.AddRange(new string[] { 
+		"Core", 
+		"CoreUObject", 
+		"Engine", 
+		"InputCore", 
+		"EnhancedInput", 
+		"GameplayTasks", 
+		"UMG" ,
 
-		PrivateDependencyModuleNames.AddRange(new string[] {  });
+		});
+
+		PrivateDependencyModuleNames.AddRange(new string[] { "CommonGame", });
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
