@@ -9,10 +9,7 @@
   <component name="ChangeListManager">
     <list default="true" id="915bcbc2-331f-4a45-8568-f2901e22edb5" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SampleProject.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SampleProject.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/CommonGame/Source/CommonGame/Private/CommonLocalPlayer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/CommonGame/Source/CommonGame/Private/CommonLocalPlayer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/CommonGame/Source/CommonGame/Private/GameUIPolicy.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/CommonGame/Source/CommonGame/Private/GameUIPolicy.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/CommonGame/Source/CommonGame/Public/CommonLocalPlayer.h" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/CommonGame/Source/CommonGame/Public/CommonLocalPlayer.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/CommonGame/Source/CommonGame/Public/GameUIPolicy.h" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/CommonGame/Source/CommonGame/Public/GameUIPolicy.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SampleProject.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/SampleProject.uproject" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,8 +23,6 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.4/Engine/Source/Runtime/Core/Public/Delegates/DelegateInstancesImpl.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.4/Engine/Source/Runtime/CoreUObject/Public/Templates/Casts.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.4/Engine/Source/Runtime/CoreUObject/Public/UObject/ObjectHandle.h" root0="FORCE_HIGHLIGHTING" />
@@ -47,9 +42,13 @@
     <setting file="file://$PROJECT_DIR$/Plugins/CommonGame/Source/CommonGame/Private/GameUIPolicy.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Plugins/CommonGame/Source/CommonGame/Private/PrimaryGameLayout.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Plugins/CommonGame/Source/CommonGame/Public/CommonLocalPlayer.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Plugins/CommonGame/Source/CommonGame/Public/CommonUIExtensions.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Plugins/CommonGame/Source/CommonGame/Public/GameUIManagerSubsystem.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Plugins/CommonGame/Source/CommonGame/Public/GameUIPolicy.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Plugins/CommonGame/Source/CommonGame/Public/PrimaryGameLayout.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/Components/CustomCameraComponent.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPSUIManagerSubsystem.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPSUIManagerSubsystem.h" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
@@ -177,6 +176,10 @@
       <workItem from="1730814126473" duration="89000" />
       <workItem from="1730814230271" duration="1534000" />
       <workItem from="1730882391547" duration="3946000" />
+      <workItem from="1730886373486" duration="3135000" />
+      <workItem from="1730895012471" duration="311000" />
+      <workItem from="1730895334727" duration="39000" />
+      <workItem from="1730895395304" duration="1242000" />
     </task>
     <servers />
   </component>
