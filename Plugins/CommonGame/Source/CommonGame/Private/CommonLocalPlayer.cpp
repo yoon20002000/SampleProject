@@ -3,3 +3,6 @@
 
 #include "CommonLocalPlayer.h"
 
+UYCommonLocalPlayer::UYCommonLocalPlayer()
+{
+}

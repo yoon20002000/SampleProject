@@ -18,5 +18,9 @@ UCLASS()
 class COMMONGAME_API UYCommonLocalPlayer : public ULocalPlayer
 {
 	GENERATED_BODY()
+public:
+	UYCommonLocalPlayer();
 	
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FPlayerControllerSetDelegate, UYCommonLocalPlayer* UYCommonLocalPlayer, APlayerController* PlayerController);
+	FPlayerControllerSetDelegate OnPlayerControllerSet;
 };
