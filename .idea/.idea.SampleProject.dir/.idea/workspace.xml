@@ -9,11 +9,10 @@
   <component name="ChangeListManager">
     <list default="true" id="915bcbc2-331f-4a45-8568-f2901e22edb5" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SampleProject.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SampleProject.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/CommonGame/Config/DefaultCommonGame.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/CommonGame/Config/DefaultCommonGame.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/CommonGame/Source/CommonGame/Private/GameUIPolicy.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/CommonGame/Source/CommonGame/Private/GameUIPolicy.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/CommonGame/Source/CommonGame/Private/PrimaryGameLayout.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/CommonGame/Source/CommonGame/Private/PrimaryGameLayout.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/CommonGame/Source/CommonGame/Public/GameUIPolicy.h" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/CommonGame/Source/CommonGame/Public/GameUIPolicy.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/CommonGame/Source/CommonGame/Public/PrimaryGameLayout.h" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/CommonGame/Source/CommonGame/Public/PrimaryGameLayout.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/BP_TPSCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/BP_TPSCharacter.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/UI/WBP_UILayout.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/UI/WBP_UILayout.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/MainMap/5/SO/BHKYRBGNNM15IDYNOHIBGD.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/MainMap/5/SO/BHKYRBGNNM15IDYNOHIBGD.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/MainMap/A/LJ/BIY8MXI2HFSNMC4JJ0DU26.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/MainMap/A/LJ/BIY8MXI2HFSNMC4JJ0DU26.uasset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +26,8 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.4/Engine/Source/Runtime/Core/Public/Delegates/DelegateInstancesImpl.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.4/Engine/Source/Runtime/CoreUObject/Public/Templates/Casts.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.4/Engine/Source/Runtime/CoreUObject/Public/UObject/ObjectHandle.h" root0="FORCE_HIGHLIGHTING" />

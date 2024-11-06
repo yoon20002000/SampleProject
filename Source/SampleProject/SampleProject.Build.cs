@@ -10,7 +10,7 @@ public class SampleProject : ModuleRules
 	
 		PublicIncludePaths.AddRange(
 			new string[] {
-				"TPS",
+				"SampleProject/TPS",
 			}
 		);
 		
