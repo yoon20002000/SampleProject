@@ -50,7 +50,7 @@ public:
 		return LocalPlayer == OtherLocalPlayer;
 	}
 };
-UCLASS()
+UCLASS(Abstract, Blueprintable)
 class COMMONGAME_API UYGameUIPolicy : public UObject
 {
 	GENERATED_BODY()
@@ -87,7 +87,7 @@ protected:
 private:
 	ELocalMultiplayerInteractionMode LocalMultiplayerInteractionMode = ELocalMultiplayerInteractionMode::PrimaryOnly;
 	
-	UPROPERTY(Transient)
+	UPROPERTY(EditAnywhere)
 	TSoftClassPtr<UYPrimaryGameLayout> LayoutClass;
 	
 	UPROPERTY(Transient)
