@@ -5,6 +5,7 @@
 #include "Engine/LocalPlayer.h"
 #include "CommonLocalPlayer.generated.h"
 
+class UYPrimaryGameLayout;
 class APawn;
 class APlayerController;
 class APlayerState;
@@ -23,4 +24,29 @@ public:
 	
 	DECLARE_MULTICAST_DELEGATE_TwoParams(FPlayerControllerSetDelegate, UYCommonLocalPlayer* UYCommonLocalPlayer, APlayerController* PlayerController);
 	FPlayerControllerSetDelegate OnPlayerControllerSet;
+
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FPlayerStateSetDelegate, UYCommonLocalPlayer* UYCommonLocalPlayer, APlayerState* PlayerState);
+	FPlayerStateSetDelegate OnPlayerStateSet;
+
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FPlayerPawnSetDelegate, UYCommonLocalPlayer* UYCommonLocalPlayer, APawn* Pawn);
+	FPlayerPawnSetDelegate OnPlayerPawnSet;
+
+	FDelegateHandle CallAndRegister_OnPlayerControllerSet(FPlayerControllerSetDelegate::FDelegate Delegate);
+	FDelegateHandle CallAndRegister_OnPlayerStateSet(FPlayerStateSetDelegate::FDelegate Delegate);
+	FDelegateHandle CallAndRegister_OnPlayerPawnSet(FPlayerPawnSetDelegate::FDelegate Delegate);
+public:
+	virtual bool GetProjectionData(FViewport* Viewport, FSceneViewProjectionData& ProjectionData, int32 StereoViewIndex) const override;
+
+	bool IsPlayerViewEnabled() const
+	{
+		return bIsPlayerViewEnabled;
+	}
+	void SetIsPlayerViewEnabled(bool bInIsPlayerViewEnabled)
+	{
+		bIsPlayerViewEnabled = bInIsPlayerViewEnabled;
+	}
+	UYPrimaryGameLayout* GetRootUILayout()const;
+	
+private:
+	bool bIsPlayerViewEnabled = true;	
 };
