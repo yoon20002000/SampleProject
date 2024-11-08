@@ -13,5 +13,9 @@ UCLASS()
 class SAMPLEPROJECT_API UYTPSGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
+public:
+	virtual int32 AddLocalPlayer(ULocalPlayer* NewPlayer, FPlatformUserId UserId) override;
+private:
+	TWeakObjectPtr<ULocalPlayer> PrimaryPlayer;
 	
 };
