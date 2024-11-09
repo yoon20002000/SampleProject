@@ -20,7 +20,7 @@ class UObject;
  * subsystem in your own game.
  */
 UCLASS(Abstract, config = Game)
-class COMMONGAME_API UGameUIManagerSubsystem : public UGameInstanceSubsystem
+class SAMPLEPROJECT_API UGameUIManagerSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
 	

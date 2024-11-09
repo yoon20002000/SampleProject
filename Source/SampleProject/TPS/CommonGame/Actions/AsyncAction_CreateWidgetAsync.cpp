@@ -1,10 +1,12 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "Actions/AsyncAction_CreateWidgetAsync.h"
+
+#include "AsyncAction_CreateWidgetAsync.h"
 
 #include "Blueprint/UserWidget.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
-#include "CommonUIExtensions.h"
+#include "CommonGame/CommonUIExtensions.h"
+
 #include "Engine/AssetManager.h"
 #include "Engine/Engine.h"
 #include "Engine/GameInstance.h"

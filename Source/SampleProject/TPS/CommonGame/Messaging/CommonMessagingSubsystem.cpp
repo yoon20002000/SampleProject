@@ -1,6 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "Messaging/CommonMessagingSubsystem.h"
+#include "CommonMessagingSubsystem.h"
 
 #include "Engine/GameInstance.h"
 #include "Engine/LocalPlayer.h"

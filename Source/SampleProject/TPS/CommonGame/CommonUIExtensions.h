@@ -19,7 +19,7 @@ struct FFrame;
 struct FGameplayTag;
 
 UCLASS()
-class COMMONGAME_API UCommonUIExtensions : public UBlueprintFunctionLibrary
+class SAMPLEPROJECT_API UCommonUIExtensions : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 	

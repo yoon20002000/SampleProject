@@ -6,6 +6,8 @@ public class SampleProject : ModuleRules
 {
 	public SampleProject(ReadOnlyTargetRules Target) : base(Target)
 	{
+		bool bUseOnlineSubsystemV1 = true;
+		PrivateDependencyModuleNames.AddRange(new string[] { });
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
 		PublicIncludePaths.AddRange(
@@ -13,6 +15,8 @@ public class SampleProject : ModuleRules
 				"SampleProject/TPS",
 			}
 		);
+		PublicDefinitions.Add("COMMONUSER_OSSV1=" + (bUseOnlineSubsystemV1 ? "1" : "0"));
+		
 		
 		PublicDependencyModuleNames.AddRange(new string[] { 
 		"Core", 
@@ -21,8 +25,18 @@ public class SampleProject : ModuleRules
 		"InputCore", 
 		"EnhancedInput", 
 		"GameplayTasks", 
-		"UMG"
+		"UMG",
+		"Slate", 
+		"SlateCore",
+		"CommonUI",
+		"GameplayTags",
+		"CommonInput",
 		});
+
+		if (bUseOnlineSubsystemV1)
+		{
+			PublicDependencyModuleNames.Add("OnlineSubsystem");
+		}
 
 		//PrivateDependencyModuleNames.AddRange(new string[] {  });
 

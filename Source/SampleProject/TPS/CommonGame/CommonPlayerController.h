@@ -1,14 +1,13 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #pragma once
-
 #include "CommonPlayerController.generated.h"
 
 class APawn;
 class UObject;
 
 UCLASS(config=Game)
-class COMMONGAME_API ACommonPlayerController : public AModularPlayerController
+class SAMPLEPROJECT_API ACommonPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 

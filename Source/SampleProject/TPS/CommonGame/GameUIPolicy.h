@@ -52,7 +52,7 @@ public:
 };
 
 UCLASS(Abstract, Blueprintable, Within = GameUIManagerSubsystem)
-class COMMONGAME_API UGameUIPolicy : public UObject
+class SAMPLEPROJECT_API UGameUIPolicy : public UObject
 {
 	GENERATED_BODY()
 
