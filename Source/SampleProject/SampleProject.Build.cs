@@ -22,6 +22,8 @@ public class SampleProject : ModuleRules
 		"EnhancedInput", 
 		"GameplayTasks", 
 		"UMG" ,
+		"ModularGameplay",
+		"ModularGameplayActor",
 
 		});
 

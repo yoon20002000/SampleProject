@@ -22,7 +22,7 @@ public class CommonGame : ModuleRules
 				"CommonUI",
 				//"CommonUser",
 				"GameplayTags",
-				//"ModularGameplayActors",
+				"ModularGameplayActor",
 			}
 		);
 			
