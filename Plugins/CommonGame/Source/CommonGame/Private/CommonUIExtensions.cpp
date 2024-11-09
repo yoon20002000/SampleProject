@@ -3,9 +3,55 @@
 
 #include "CommonUIExtensions.h"
 
+#include "CommonActivatableWidget.h"
 #include "CommonInputSubsystem.h"
+#include "GameplayTagContainer.h"
+#include "GameUIManagerSubsystem.h"
+#include "GameUIPolicy.h"
 
 int32 UYCommonUIExtensions::InputSuspensions = 0;
+
+UCommonActivatableWidget* UYCommonUIExtensions::PushContentToLayer_ForPlayer(const ULocalPlayer* LocalPlayer,
+	FGameplayTag LayerName, TSubclassOf<UCommonActivatableWidget> WidgetClass)
+{
+	if(ensure(LocalPlayer) == false || ensure(WidgetClass) == false)
+	{
+		return nullptr;
+	}
+
+	if(UYGameUIManagerSubsystem* UIManager = LocalPlayer -> GetGameInstance()->GetSubsystem<UYGameUIManagerSubsystem>())
+	{
+		if(UYGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
+		{
+			if(UYPrimaryGameLayout* RootLayout = Policy->GetRootLayout(CastChecked<UYCommonLocalPlayer>(LocalPlayer)))
+			{
+				return RootLayout->PushWidgetToLayerStack(LayerName, WidgetClass);
+			}
+		}
+	}
+	return nullptr;
+}
+
+void UYCommonUIExtensions::PopContentFromLayer(UCommonActivatableWidget* ActivatableWidget)
+{
+	if(ActivatableWidget == nullptr)
+	{
+		return;
+	}
+	if(const ULocalPlayer* LocalPlayer = ActivatableWidget->GetOwningLocalPlayer())
+	{
+		if(const UYGameUIManagerSubsystem* UIManager =LocalPlayer->GetGameInstance()->GetSubsystem<UYGameUIManagerSubsystem>())
+		{
+			if(const UYGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
+			{
+				if(UYPrimaryGameLayout* RootLayout = Policy->GetRootLayout(CastChecked<UYCommonLocalPlayer>(LocalPlayer)))
+				{
+					RootLayout->FindAndRemoveWidgetFromLayer(ActivatableWidget);
+				}
+			}
+		}
+	}
+}
 
 FName UYCommonUIExtensions::SuspendInputForPlayer(APlayerController* PlayerController, FName SuspendReason)
 {

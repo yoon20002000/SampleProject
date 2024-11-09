@@ -17,7 +17,16 @@ void UYGameUIManagerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	if(CurrentPolicy == nullptr && DefaultUIPolicyClass.IsNull() == false)
 	{
 		TSubclassOf<UYGameUIPolicy> PolicyClass = DefaultUIPolicyClass.LoadSynchronous();
-		SwitchToPolicy(NewObject<UYGameUIPolicy>(this,PolicyClass));
+		if(PolicyClass == nullptr)
+		{
+			UE_LOG(LogTemp, Error, TEXT("PolicyClass is nullptr"));
+		}
+		UYGameUIPolicy* GameUIPolicy = NewObject<UYGameUIPolicy>(this,PolicyClass);
+		if(GameUIPolicy == nullptr)
+		{
+			UE_LOG(LogTemp, Error, TEXT("GameUIPolicy is nullptr"));
+		}
+		SwitchToPolicy(GameUIPolicy);
 	}
 }
 

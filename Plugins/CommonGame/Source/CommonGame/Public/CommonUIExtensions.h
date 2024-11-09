@@ -6,6 +6,8 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "CommonUIExtensions.generated.h"
 
+class UCommonActivatableWidget;
+struct FGameplayTag;
 /**
  * 
  */
@@ -16,6 +18,13 @@ class COMMONGAME_API UYCommonUIExtensions : public UBlueprintFunctionLibrary
 private:
 	static int32 InputSuspensions;
 public:
+
+	UFUNCTION(BlueprintCallable, BlueprintCosmetic, Category = "Global UI Extensions")
+	static UCommonActivatableWidget* PushContentToLayer_ForPlayer(const ULocalPlayer* LocalPlayer, UPARAM(meta = (Categories = "UI.Layer")) FGameplayTag LayerName, UPARAM(meta = (AllowAbstract = false))TSubclassOf<UCommonActivatableWidget> WidgetClass);
+	
+	UFUNCTION(BlueprintCallable, BlueprintCosmetic, Category = "Global UI Extensions")
+	static void PopContentFromLayer(UCommonActivatableWidget* ActivatableWidget);
+	
 	UFUNCTION(BlueprintCallable, BlueprintCosmetic, Category = "Global UI Extensions")
 	static FName SuspendInputForPlayer(APlayerController* PlayerController, FName SuspendReason);
 	static FName SuspendInputForPlayer(ULocalPlayer* LocalPlayer, FName SuspendReason);

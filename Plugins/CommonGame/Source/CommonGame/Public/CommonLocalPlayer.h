@@ -48,5 +48,8 @@ public:
 	UYPrimaryGameLayout* GetRootUILayout()const;
 	
 private:
-	bool bIsPlayerViewEnabled = true;	
+	bool bIsPlayerViewEnabled = true;
+
+
+	
 };
