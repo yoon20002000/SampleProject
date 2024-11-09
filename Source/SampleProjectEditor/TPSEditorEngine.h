@@ -2,12 +2,12 @@
 
 #include "CoreMinimal.h"
 #include "Editor/UnrealEdEngine.h"
-#include "YEditorEngine.generated.h"
+#include "TPSEditorEngine.generated.h"
 
-class UYSystemManager;
+class UTPSSystemManager;
 
 UCLASS()
-class UYEditorEngine : public UUnrealEdEngine
+class UTPSEditorEngine : public UUnrealEdEngine
 {
 	GENERATED_BODY()
 
@@ -20,5 +20,5 @@ public:
 private:
 
 	UPROPERTY()
-	UYSystemManager* SystemManager = nullptr;
+	UTPSSystemManager* SystemManager = nullptr;
 };

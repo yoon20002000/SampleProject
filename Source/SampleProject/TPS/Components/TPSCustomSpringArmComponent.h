@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Camera/CameraComponent.h"
-#include "CustomCameraComponent.generated.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "TPSCustomSpringArmComponent.generated.h"
 
 /**
  * 
  */
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class SAMPLEPROJECT_API UCustomCameraComponent : public UCameraComponent
+class SAMPLEPROJECT_API UTPSCustomSpringArmComponent : public USpringArmComponent
 {
 	GENERATED_BODY()
 	

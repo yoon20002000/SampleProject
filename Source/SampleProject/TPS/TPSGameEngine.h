@@ -3,12 +3,12 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameEngine.h"
-#include "YGameEngine.generated.h"
+#include "TPSGameEngine.generated.h"
 
-class UYSystemManager;
+class UTPSSystemManager;
 
 UCLASS()
-class UYGameEngine : public UGameEngine
+class UTPSGameEngine : public UGameEngine
 {
 	GENERATED_BODY()
 
@@ -38,6 +38,6 @@ protected:
 	bool bClientInitialized;
 
 	UPROPERTY()
-	UYSystemManager* SystemManager;
+	UTPSSystemManager* SystemManager;
 
 };
