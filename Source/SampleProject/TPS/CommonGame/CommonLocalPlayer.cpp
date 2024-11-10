@@ -4,8 +4,8 @@
 
 #include "Engine/GameInstance.h"
 #include "GameFramework/PlayerController.h"
-#include "GameUIManagerSubsystem.h"
-#include "GameUIPolicy.h"
+#include "TPSGameUIManagerSubsystem.h"
+#include "TPSGameUIPolicy.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(CommonLocalPlayer)
 
@@ -67,11 +67,11 @@ bool UCommonLocalPlayer::GetProjectionData(FViewport* Viewport, FSceneViewProjec
 	return Super::GetProjectionData(Viewport, ProjectionData, StereoViewIndex);
 }
 
-UPrimaryGameLayout* UCommonLocalPlayer::GetRootUILayout() const
+UTPSPrimaryGameLayout* UCommonLocalPlayer::GetRootUILayout() const
 {
-	if (UGameUIManagerSubsystem* UIManager = GetGameInstance()->GetSubsystem<UGameUIManagerSubsystem>())
+	if (UTPSGameUIManagerSubsystem* UIManager = GetGameInstance()->GetSubsystem<UTPSGameUIManagerSubsystem>())
 	{
-		if (UGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
+		if (UTPSGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
 		{
 			return Policy->GetRootLayout(this);
 		}

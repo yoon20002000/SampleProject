@@ -4,7 +4,6 @@
 #include "TPSGameInstance.h"
 
 #include "CommonGame/CommonLocalPlayer.h"
-#include "CommonGame/GameUIManagerSubsystem.h"
 
 int32 UYTPSGameInstance::AddLocalPlayer(ULocalPlayer* NewPlayer, FPlatformUserId UserId)
 {

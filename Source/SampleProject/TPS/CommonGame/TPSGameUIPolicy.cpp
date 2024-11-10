@@ -1,24 +1,24 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "GameUIPolicy.h"
+#include "TPSGameUIPolicy.h"
 #include "Engine/GameInstance.h"
 #include "Framework/Application/SlateApplication.h"
-#include "GameUIManagerSubsystem.h"
+#include "TPSGameUIManagerSubsystem.h"
 #include "CommonLocalPlayer.h"
-#include "PrimaryGameLayout.h"
+#include "TPSPrimaryGameLayout.h"
 #include "Engine/Engine.h"
 #include "LogCommonGame.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(GameUIPolicy)
 
 // Static
-UGameUIPolicy* UGameUIPolicy::GetGameUIPolicy(const UObject* WorldContextObject)
+UTPSGameUIPolicy* UTPSGameUIPolicy::GetGameUIPolicy(const UObject* WorldContextObject)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
 	{
 		if (UGameInstance* GameInstance = World->GetGameInstance())
 		{
-			if (UGameUIManagerSubsystem* UIManager = UGameInstance::GetSubsystem<UGameUIManagerSubsystem>(GameInstance))
+			if (UTPSGameUIManagerSubsystem* UIManager = UGameInstance::GetSubsystem<UTPSGameUIManagerSubsystem>(GameInstance))
 			{
 				return UIManager->GetCurrentUIPolicy();
 			}
@@ -28,23 +28,23 @@ UGameUIPolicy* UGameUIPolicy::GetGameUIPolicy(const UObject* WorldContextObject)
 	return nullptr;
 }
 
-UGameUIManagerSubsystem* UGameUIPolicy::GetOwningUIManager() const
+UTPSGameUIManagerSubsystem* UTPSGameUIPolicy::GetOwningUIManager() const
 {
-	return CastChecked<UGameUIManagerSubsystem>(GetOuter());
+	return CastChecked<UTPSGameUIManagerSubsystem>(GetOuter());
 }
 
-UWorld* UGameUIPolicy::GetWorld() const
+UWorld* UTPSGameUIPolicy::GetWorld() const
 {
 	return GetOwningUIManager()->GetGameInstance()->GetWorld();
 }
 
-UPrimaryGameLayout* UGameUIPolicy::GetRootLayout(const UCommonLocalPlayer* LocalPlayer) const
+UTPSPrimaryGameLayout* UTPSGameUIPolicy::GetRootLayout(const UCommonLocalPlayer* LocalPlayer) const
 {
 	const FRootViewportLayoutInfo* LayoutInfo = RootViewportLayouts.FindByKey(LocalPlayer);
 	return LayoutInfo ? LayoutInfo->RootLayout : nullptr;
 }
 
-void UGameUIPolicy::NotifyPlayerAdded(UCommonLocalPlayer* LocalPlayer)
+void UTPSGameUIPolicy::NotifyPlayerAdded(UCommonLocalPlayer* LocalPlayer)
 {
 	LocalPlayer->OnPlayerControllerSet.AddWeakLambda(this, [this](UCommonLocalPlayer* LocalPlayer, APlayerController* PlayerController)
 	{
@@ -72,7 +72,7 @@ void UGameUIPolicy::NotifyPlayerAdded(UCommonLocalPlayer* LocalPlayer)
 	}
 }
 
-void UGameUIPolicy::NotifyPlayerRemoved(UCommonLocalPlayer* LocalPlayer)
+void UTPSGameUIPolicy::NotifyPlayerRemoved(UCommonLocalPlayer* LocalPlayer)
 {
 	if (FRootViewportLayoutInfo* LayoutInfo = RootViewportLayouts.FindByKey(LocalPlayer))
 	{
@@ -81,7 +81,7 @@ void UGameUIPolicy::NotifyPlayerRemoved(UCommonLocalPlayer* LocalPlayer)
 
 		if (LocalMultiplayerInteractionMode == ELocalMultiplayerInteractionMode::SingleToggle && !LocalPlayer->IsPrimaryPlayer())
 		{
-			UPrimaryGameLayout* RootLayout = LayoutInfo->RootLayout;
+			UTPSPrimaryGameLayout* RootLayout = LayoutInfo->RootLayout;
 			if (RootLayout && !RootLayout->IsDormant())
 			{
 				// We're removing a secondary player's root while it's in control - transfer control back to the primary player's root
@@ -90,7 +90,7 @@ void UGameUIPolicy::NotifyPlayerRemoved(UCommonLocalPlayer* LocalPlayer)
 				{
 					if (RootLayoutInfo.LocalPlayer->IsPrimaryPlayer())
 					{
-						if (UPrimaryGameLayout* PrimaryRootLayout = RootLayoutInfo.RootLayout)
+						if (UTPSPrimaryGameLayout* PrimaryRootLayout = RootLayoutInfo.RootLayout)
 						{
 							PrimaryRootLayout->SetIsDormant(false);
 						}
@@ -101,14 +101,14 @@ void UGameUIPolicy::NotifyPlayerRemoved(UCommonLocalPlayer* LocalPlayer)
 	}
 }
 
-void UGameUIPolicy::NotifyPlayerDestroyed(UCommonLocalPlayer* LocalPlayer)
+void UTPSGameUIPolicy::NotifyPlayerDestroyed(UCommonLocalPlayer* LocalPlayer)
 {
 	NotifyPlayerRemoved(LocalPlayer);
 	LocalPlayer->OnPlayerControllerSet.RemoveAll(this);
 	const int32 LayoutInfoIdx = RootViewportLayouts.IndexOfByKey(LocalPlayer);
 	if (LayoutInfoIdx != INDEX_NONE)
 	{
-		UPrimaryGameLayout* Layout = RootViewportLayouts[LayoutInfoIdx].RootLayout;
+		UTPSPrimaryGameLayout* Layout = RootViewportLayouts[LayoutInfoIdx].RootLayout;
 		RootViewportLayouts.RemoveAt(LayoutInfoIdx);
 
 		RemoveLayoutFromViewport(LocalPlayer, Layout);
@@ -117,7 +117,7 @@ void UGameUIPolicy::NotifyPlayerDestroyed(UCommonLocalPlayer* LocalPlayer)
 	}
 }
 
-void UGameUIPolicy::AddLayoutToViewport(UCommonLocalPlayer* LocalPlayer, UPrimaryGameLayout* Layout)
+void UTPSGameUIPolicy::AddLayoutToViewport(UCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout)
 {
 	UE_LOG(LogCommonGame, Log, TEXT("[%s] is adding player [%s]'s root layout [%s] to the viewport"), *GetName(), *GetNameSafe(LocalPlayer), *GetNameSafe(Layout));
 
@@ -127,7 +127,7 @@ void UGameUIPolicy::AddLayoutToViewport(UCommonLocalPlayer* LocalPlayer, UPrimar
 	OnRootLayoutAddedToViewport(LocalPlayer, Layout);
 }
 
-void UGameUIPolicy::RemoveLayoutFromViewport(UCommonLocalPlayer* LocalPlayer, UPrimaryGameLayout* Layout)
+void UTPSGameUIPolicy::RemoveLayoutFromViewport(UCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout)
 {
 	TWeakPtr<SWidget> LayoutSlateWidget = Layout->GetCachedWidget();
 	if (LayoutSlateWidget.IsValid())
@@ -144,7 +144,7 @@ void UGameUIPolicy::RemoveLayoutFromViewport(UCommonLocalPlayer* LocalPlayer, UP
 	}
 }
 
-void UGameUIPolicy::OnRootLayoutAddedToViewport(UCommonLocalPlayer* LocalPlayer, UPrimaryGameLayout* Layout)
+void UTPSGameUIPolicy::OnRootLayoutAddedToViewport(UCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout)
 {
 #if WITH_EDITOR
 	if (GIsEditor && LocalPlayer->IsPrimaryPlayer())
@@ -155,23 +155,23 @@ void UGameUIPolicy::OnRootLayoutAddedToViewport(UCommonLocalPlayer* LocalPlayer,
 #endif
 }
 
-void UGameUIPolicy::OnRootLayoutRemovedFromViewport(UCommonLocalPlayer* LocalPlayer, UPrimaryGameLayout* Layout)
+void UTPSGameUIPolicy::OnRootLayoutRemovedFromViewport(UCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout)
 {
 	
 }
 
-void UGameUIPolicy::OnRootLayoutReleased(UCommonLocalPlayer* LocalPlayer, UPrimaryGameLayout* Layout)
+void UTPSGameUIPolicy::OnRootLayoutReleased(UCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout)
 {
 	
 }
 
-void UGameUIPolicy::RequestPrimaryControl(UPrimaryGameLayout* Layout)
+void UTPSGameUIPolicy::RequestPrimaryControl(UTPSPrimaryGameLayout* Layout)
 {
 	if (LocalMultiplayerInteractionMode == ELocalMultiplayerInteractionMode::SingleToggle && Layout->IsDormant())
 	{
 		for (const FRootViewportLayoutInfo& LayoutInfo : RootViewportLayouts)
 		{
-			UPrimaryGameLayout* RootLayout = LayoutInfo.RootLayout;
+			UTPSPrimaryGameLayout* RootLayout = LayoutInfo.RootLayout;
 			if (RootLayout && !RootLayout->IsDormant())
 			{
 				RootLayout->SetIsDormant(true);
@@ -182,14 +182,14 @@ void UGameUIPolicy::RequestPrimaryControl(UPrimaryGameLayout* Layout)
 	}
 }
 
-void UGameUIPolicy::CreateLayoutWidget(UCommonLocalPlayer* LocalPlayer)
+void UTPSGameUIPolicy::CreateLayoutWidget(UCommonLocalPlayer* LocalPlayer)
 {
 	if (APlayerController* PlayerController = LocalPlayer->GetPlayerController(GetWorld()))
 	{
-		TSubclassOf<UPrimaryGameLayout> LayoutWidgetClass = GetLayoutWidgetClass(LocalPlayer);
+		TSubclassOf<UTPSPrimaryGameLayout> LayoutWidgetClass = GetLayoutWidgetClass(LocalPlayer);
 		if (ensure(LayoutWidgetClass && !LayoutWidgetClass->HasAnyClassFlags(CLASS_Abstract)))
 		{
-			UPrimaryGameLayout* NewLayoutObject = CreateWidget<UPrimaryGameLayout>(PlayerController, LayoutWidgetClass);
+			UTPSPrimaryGameLayout* NewLayoutObject = CreateWidget<UTPSPrimaryGameLayout>(PlayerController, LayoutWidgetClass);
 			RootViewportLayouts.Emplace(LocalPlayer, NewLayoutObject, true);
 			
 			AddLayoutToViewport(LocalPlayer, NewLayoutObject);
@@ -197,7 +197,7 @@ void UGameUIPolicy::CreateLayoutWidget(UCommonLocalPlayer* LocalPlayer)
 	}
 }
 
-TSubclassOf<UPrimaryGameLayout> UGameUIPolicy::GetLayoutWidgetClass(UCommonLocalPlayer* LocalPlayer)
+TSubclassOf<UTPSPrimaryGameLayout> UTPSGameUIPolicy::GetLayoutWidgetClass(UCommonLocalPlayer* LocalPlayer)
 {
 	return LayoutClass.LoadSynchronous();
 }

@@ -9,7 +9,7 @@
 #include "GameplayTagContainer.h"
 #include "Widgets/CommonActivatableWidgetContainer.h" // IWYU pragma: keep
 
-#include "PrimaryGameLayout.generated.h"
+#include "TPSPrimaryGameLayout.generated.h"
 
 class APlayerController;
 class UClass;
@@ -33,17 +33,17 @@ enum class EAsyncWidgetLayerState : uint8
  * of the UI for a single player.  Each player in a split-screen game will receive their own primary game layout.
  */
 UCLASS(Abstract, meta = (DisableNativeTick))
-class SAMPLEPROJECT_API UPrimaryGameLayout : public UCommonUserWidget
+class SAMPLEPROJECT_API UTPSPrimaryGameLayout : public UCommonUserWidget
 {
 	GENERATED_BODY()
 
 public:
-	static UPrimaryGameLayout* GetPrimaryGameLayoutForPrimaryPlayer(const UObject* WorldContextObject);
-	static UPrimaryGameLayout* GetPrimaryGameLayout(APlayerController* PlayerController);
-	static UPrimaryGameLayout* GetPrimaryGameLayout(ULocalPlayer* LocalPlayer);
+	static UTPSPrimaryGameLayout* GetPrimaryGameLayoutForPrimaryPlayer(const UObject* WorldContextObject);
+	static UTPSPrimaryGameLayout* GetPrimaryGameLayout(APlayerController* PlayerController);
+	static UTPSPrimaryGameLayout* GetPrimaryGameLayout(ULocalPlayer* LocalPlayer);
 
 public:
-	UPrimaryGameLayout(const FObjectInitializer& ObjectInitializer);
+	UTPSPrimaryGameLayout(const FObjectInitializer& ObjectInitializer);
 
 	/** A dormant root layout is collapsed and responds only to persistent actions registered by the owning player */
 	void SetIsDormant(bool Dormant);

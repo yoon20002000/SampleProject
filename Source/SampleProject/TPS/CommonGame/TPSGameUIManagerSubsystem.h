@@ -5,11 +5,11 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "UObject/SoftObjectPtr.h"
 
-#include "GameUIManagerSubsystem.generated.h"
+#include "TPSGameUIManagerSubsystem.generated.h"
 
 class FSubsystemCollectionBase;
 class UCommonLocalPlayer;
-class UGameUIPolicy;
+class UTPSGameUIPolicy;
 class UObject;
 
 /**
@@ -20,31 +20,31 @@ class UObject;
  * subsystem in your own game.
  */
 UCLASS(Abstract, config = Game)
-class SAMPLEPROJECT_API UGameUIManagerSubsystem : public UGameInstanceSubsystem
+class SAMPLEPROJECT_API UTPSGameUIManagerSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
 	
 public:
-	UGameUIManagerSubsystem() { }
+	UTPSGameUIManagerSubsystem() { }
 	
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	
-	const UGameUIPolicy* GetCurrentUIPolicy() const { return CurrentPolicy; }
-	UGameUIPolicy* GetCurrentUIPolicy() { return CurrentPolicy; }
+	const UTPSGameUIPolicy* GetCurrentUIPolicy() const { return CurrentPolicy; }
+	UTPSGameUIPolicy* GetCurrentUIPolicy() { return CurrentPolicy; }
 
 	virtual void NotifyPlayerAdded(UCommonLocalPlayer* LocalPlayer);
 	virtual void NotifyPlayerRemoved(UCommonLocalPlayer* LocalPlayer);
 	virtual void NotifyPlayerDestroyed(UCommonLocalPlayer* LocalPlayer);
 
 protected:
-	void SwitchToPolicy(UGameUIPolicy* InPolicy);
+	void SwitchToPolicy(UTPSGameUIPolicy* InPolicy);
 
 private:
 	UPROPERTY(Transient)
-	TObjectPtr<UGameUIPolicy> CurrentPolicy = nullptr;
+	TObjectPtr<UTPSGameUIPolicy> CurrentPolicy = nullptr;
 
 	UPROPERTY(config, EditAnywhere)
-	TSoftClassPtr<UGameUIPolicy> DefaultUIPolicyClass;
+	TSoftClassPtr<UTPSGameUIPolicy> DefaultUIPolicyClass;
 };

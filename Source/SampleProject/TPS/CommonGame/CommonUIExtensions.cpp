@@ -6,9 +6,9 @@
 #include "CommonInputTypeEnum.h"
 #include "CommonLocalPlayer.h"
 #include "Engine/GameInstance.h"
-#include "GameUIManagerSubsystem.h"
-#include "GameUIPolicy.h"
-#include "PrimaryGameLayout.h"
+#include "TPSGameUIManagerSubsystem.h"
+#include "TPSGameUIPolicy.h"
+#include "TPSPrimaryGameLayout.h"
 #include "Widgets/CommonActivatableWidgetContainer.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(CommonUIExtensions)
@@ -59,11 +59,11 @@ UCommonActivatableWidget* UCommonUIExtensions::PushContentToLayer_ForPlayer(cons
 		return nullptr;
 	}
 
-	if (UGameUIManagerSubsystem* UIManager = LocalPlayer->GetGameInstance()->GetSubsystem<UGameUIManagerSubsystem>())
+	if (UTPSGameUIManagerSubsystem* UIManager = LocalPlayer->GetGameInstance()->GetSubsystem<UTPSGameUIManagerSubsystem>())
 	{
-		if (UGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
+		if (UTPSGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
 		{
-			if (UPrimaryGameLayout* RootLayout = Policy->GetRootLayout(CastChecked<UCommonLocalPlayer>(LocalPlayer)))
+			if (UTPSPrimaryGameLayout* RootLayout = Policy->GetRootLayout(CastChecked<UCommonLocalPlayer>(LocalPlayer)))
 			{
 				return RootLayout->PushWidgetToLayerStack(LayerName, WidgetClass);
 			}
@@ -80,11 +80,11 @@ void UCommonUIExtensions::PushStreamedContentToLayer_ForPlayer(const ULocalPlaye
 		return;
 	}
 
-	if (UGameUIManagerSubsystem* UIManager = LocalPlayer->GetGameInstance()->GetSubsystem<UGameUIManagerSubsystem>())
+	if (UTPSGameUIManagerSubsystem* UIManager = LocalPlayer->GetGameInstance()->GetSubsystem<UTPSGameUIManagerSubsystem>())
 	{
-		if (UGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
+		if (UTPSGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
 		{
-			if (UPrimaryGameLayout* RootLayout = Policy->GetRootLayout(CastChecked<UCommonLocalPlayer>(LocalPlayer)))
+			if (UTPSPrimaryGameLayout* RootLayout = Policy->GetRootLayout(CastChecked<UCommonLocalPlayer>(LocalPlayer)))
 			{
 				const bool bSuspendInputUntilComplete = true;
 				RootLayout->PushWidgetToLayerStackAsync(LayerName, bSuspendInputUntilComplete, WidgetClass);
@@ -103,11 +103,11 @@ void UCommonUIExtensions::PopContentFromLayer(UCommonActivatableWidget* Activata
 
 	if (const ULocalPlayer* LocalPlayer = ActivatableWidget->GetOwningLocalPlayer())
 	{
-		if (const UGameUIManagerSubsystem* UIManager = LocalPlayer->GetGameInstance()->GetSubsystem<UGameUIManagerSubsystem>())
+		if (const UTPSGameUIManagerSubsystem* UIManager = LocalPlayer->GetGameInstance()->GetSubsystem<UTPSGameUIManagerSubsystem>())
 		{
-			if (const UGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
+			if (const UTPSGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
 			{
-				if (UPrimaryGameLayout* RootLayout = Policy->GetRootLayout(CastChecked<UCommonLocalPlayer>(LocalPlayer)))
+				if (UTPSPrimaryGameLayout* RootLayout = Policy->GetRootLayout(CastChecked<UCommonLocalPlayer>(LocalPlayer)))
 				{
 					RootLayout->FindAndRemoveWidgetFromLayer(ActivatableWidget);
 				}

@@ -3,7 +3,7 @@
 
 #include "AsyncAction_PushContentToLayerForPlayer.h"
 
-#include "CommonGame/PrimaryGameLayout.h"
+#include "CommonGame/TPSPrimaryGameLayout.h"
 #include "Engine/Engine.h"
 #include "Engine/StreamableManager.h"
 #include "UObject/Stack.h"
@@ -51,7 +51,7 @@ void UAsyncAction_PushContentToLayerForPlayer::Cancel()
 
 void UAsyncAction_PushContentToLayerForPlayer::Activate()
 {
-	if (UPrimaryGameLayout* RootLayout = UPrimaryGameLayout::GetPrimaryGameLayout(OwningPlayerPtr.Get()))
+	if (UTPSPrimaryGameLayout* RootLayout = UTPSPrimaryGameLayout::GetPrimaryGameLayout(OwningPlayerPtr.Get()))
 	{
 		TWeakObjectPtr<UAsyncAction_PushContentToLayerForPlayer> WeakThis = this;
 		StreamingHandle = RootLayout->PushWidgetToLayerStackAsync<UCommonActivatableWidget>(LayerName, bSuspendInputUntilComplete, WidgetClass, [this, WeakThis](EAsyncWidgetLayerState State, UCommonActivatableWidget* Widget) {

@@ -11,7 +11,7 @@ class APlayerController;
 class APlayerState;
 class FViewport;
 class UObject;
-class UPrimaryGameLayout;
+class UTPSPrimaryGameLayout;
 struct FSceneViewProjectionData;
 
 UCLASS(config=Engine, transient)
@@ -44,7 +44,7 @@ public:
 	bool IsPlayerViewEnabled() const { return bIsPlayerViewEnabled; }
 	void SetIsPlayerViewEnabled(bool bInIsPlayerViewEnabled) { bIsPlayerViewEnabled = bInIsPlayerViewEnabled; }
 
-	UPrimaryGameLayout* GetRootUILayout() const;
+	UTPSPrimaryGameLayout* GetRootUILayout() const;
 
 private:
 	bool bIsPlayerViewEnabled = true;

@@ -1,11 +1,11 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "PrimaryGameLayout.h"
+#include "TPSPrimaryGameLayout.h"
 
 #include "CommonLocalPlayer.h"
 #include "Engine/GameInstance.h"
-#include "GameUIManagerSubsystem.h"
-#include "GameUIPolicy.h"
+#include "TPSGameUIManagerSubsystem.h"
+#include "TPSGameUIPolicy.h"
 #include "Kismet/GameplayStatics.h"
 #include "LogCommonGame.h"
 #include "Widgets/CommonActivatableWidgetContainer.h"
@@ -14,30 +14,30 @@
 
 class UObject;
 
-/*static*/ UPrimaryGameLayout* UPrimaryGameLayout::GetPrimaryGameLayoutForPrimaryPlayer(const UObject* WorldContextObject)
+/*static*/ UTPSPrimaryGameLayout* UTPSPrimaryGameLayout::GetPrimaryGameLayoutForPrimaryPlayer(const UObject* WorldContextObject)
 {
 	UGameInstance* GameInstance = UGameplayStatics::GetGameInstance(WorldContextObject);
 	APlayerController* PlayerController = GameInstance->GetPrimaryPlayerController(false);
 	return GetPrimaryGameLayout(PlayerController);
 }
 
-/*static*/ UPrimaryGameLayout* UPrimaryGameLayout::GetPrimaryGameLayout(APlayerController* PlayerController)
+/*static*/ UTPSPrimaryGameLayout* UTPSPrimaryGameLayout::GetPrimaryGameLayout(APlayerController* PlayerController)
 {
 	return PlayerController ? GetPrimaryGameLayout(Cast<UCommonLocalPlayer>(PlayerController->Player)) : nullptr;
 }
 
-/*static*/ UPrimaryGameLayout* UPrimaryGameLayout::GetPrimaryGameLayout(ULocalPlayer* LocalPlayer)
+/*static*/ UTPSPrimaryGameLayout* UTPSPrimaryGameLayout::GetPrimaryGameLayout(ULocalPlayer* LocalPlayer)
 {
 	if (LocalPlayer)
 	{
 		const UCommonLocalPlayer* CommonLocalPlayer = CastChecked<UCommonLocalPlayer>(LocalPlayer);
 		if (const UGameInstance* GameInstance = CommonLocalPlayer->GetGameInstance())
 		{
-			if (UGameUIManagerSubsystem* UIManager = GameInstance->GetSubsystem<UGameUIManagerSubsystem>())
+			if (UTPSGameUIManagerSubsystem* UIManager = GameInstance->GetSubsystem<UTPSGameUIManagerSubsystem>())
 			{
-				if (const UGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
+				if (const UTPSGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
 				{
-					if (UPrimaryGameLayout* RootLayout = Policy->GetRootLayout(CommonLocalPlayer))
+					if (UTPSPrimaryGameLayout* RootLayout = Policy->GetRootLayout(CommonLocalPlayer))
 					{
 						return RootLayout;
 					}
@@ -49,12 +49,12 @@ class UObject;
 	return nullptr;
 }
 
-UPrimaryGameLayout::UPrimaryGameLayout(const FObjectInitializer& ObjectInitializer)
+UTPSPrimaryGameLayout::UTPSPrimaryGameLayout(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 }
 
-void UPrimaryGameLayout::SetIsDormant(bool InDormant)
+void UTPSPrimaryGameLayout::SetIsDormant(bool InDormant)
 {
 	if (bIsDormant != InDormant)
 	{
@@ -70,7 +70,7 @@ void UPrimaryGameLayout::SetIsDormant(bool InDormant)
 	}
 }
 
-void UPrimaryGameLayout::OnIsDormantChanged()
+void UTPSPrimaryGameLayout::OnIsDormantChanged()
 {
 	//@TODO NDarnell Determine what to do with dormancy, in the past we treated dormancy as a way to shutoff rendering
 	//and the view for the other local players when we force multiple players to use the player view of a single player.
@@ -86,11 +86,11 @@ void UPrimaryGameLayout::OnIsDormantChanged()
 	//OnLayoutDormancyChanged().Broadcast(bIsDormant);
 }
 
-void UPrimaryGameLayout::RegisterLayer(FGameplayTag LayerTag, UCommonActivatableWidgetContainerBase* LayerWidget)
+void UTPSPrimaryGameLayout::RegisterLayer(FGameplayTag LayerTag, UCommonActivatableWidgetContainerBase* LayerWidget)
 {
 	if (!IsDesignTime())
 	{
-		LayerWidget->OnTransitioningChanged.AddUObject(this, &UPrimaryGameLayout::OnWidgetStackTransitioning);
+		LayerWidget->OnTransitioningChanged.AddUObject(this, &UTPSPrimaryGameLayout::OnWidgetStackTransitioning);
 		// TODO: Consider allowing a transition duration, we currently set it to 0, because if it's not 0, the
 		//       transition effect will cause focus to not transition properly to the new widgets when using
 		//       gamepad always.
@@ -100,7 +100,7 @@ void UPrimaryGameLayout::RegisterLayer(FGameplayTag LayerTag, UCommonActivatable
 	}
 }
 
-void UPrimaryGameLayout::OnWidgetStackTransitioning(UCommonActivatableWidgetContainerBase* Widget, bool bIsTransitioning)
+void UTPSPrimaryGameLayout::OnWidgetStackTransitioning(UCommonActivatableWidgetContainerBase* Widget, bool bIsTransitioning)
 {
 	if (bIsTransitioning)
 	{
@@ -117,7 +117,7 @@ void UPrimaryGameLayout::OnWidgetStackTransitioning(UCommonActivatableWidgetCont
 	}
 }
 
-void UPrimaryGameLayout::FindAndRemoveWidgetFromLayer(UCommonActivatableWidget* ActivatableWidget)
+void UTPSPrimaryGameLayout::FindAndRemoveWidgetFromLayer(UCommonActivatableWidget* ActivatableWidget)
 {
 	// We're not sure what layer the widget is on so go searching.
 	for (const auto& LayerKVP : Layers)
@@ -126,7 +126,7 @@ void UPrimaryGameLayout::FindAndRemoveWidgetFromLayer(UCommonActivatableWidget* 
 	}
 }
 
-UCommonActivatableWidgetContainerBase* UPrimaryGameLayout::GetLayerWidget(FGameplayTag LayerName)
+UCommonActivatableWidgetContainerBase* UTPSPrimaryGameLayout::GetLayerWidget(FGameplayTag LayerName)
 {
 	return Layers.FindRef(LayerName);
 }

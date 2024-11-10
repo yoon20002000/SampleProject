@@ -13,7 +13,7 @@ struct FUIDataAssetInfo
 	UPROPERTY(EditAnywhere)
 	FString AssetName;
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<class UCommonActivatableWidget> ActivatableWidgetClass;
+	TSoftObjectPtr<class UUserWidget> UserWidgetClass;
 };
 /**
  * 

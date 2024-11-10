@@ -1,27 +1,27 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "GameUIManagerSubsystem.h"
+#include "TPSGameUIManagerSubsystem.h"
 
 #include "Engine/GameInstance.h"
-#include "GameUIPolicy.h"
+#include "TPSGameUIPolicy.h"
 
-#include UE_INLINE_GENERATED_CPP_BY_NAME(GameUIManagerSubsystem)
+#include UE_INLINE_GENERATED_CPP_BY_NAME(TPSGameUIManagerSubsystem)
 
 class FSubsystemCollectionBase;
 class UClass;
 
-void UGameUIManagerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
+void UTPSGameUIManagerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 
 	if (!CurrentPolicy && !DefaultUIPolicyClass.IsNull())
 	{
-		TSubclassOf<UGameUIPolicy> PolicyClass = DefaultUIPolicyClass.LoadSynchronous();
+		TSubclassOf<UTPSGameUIPolicy> PolicyClass = DefaultUIPolicyClass.LoadSynchronous();
 		if(PolicyClass == nullptr)
 		{
 			UE_LOG(LogTemp, Error, TEXT("PolicyClass is nullptr"));
 		}
-		UGameUIPolicy* GameUIPolicy = NewObject<UGameUIPolicy>(this,PolicyClass);
+		UTPSGameUIPolicy* GameUIPolicy = NewObject<UTPSGameUIPolicy>(this,PolicyClass);
 		if(GameUIPolicy == nullptr)
 		{
 			UE_LOG(LogTemp, Error, TEXT("GameUIPolicy is nullptr"));
@@ -30,14 +30,14 @@ void UGameUIManagerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	}
 }
 
-void UGameUIManagerSubsystem::Deinitialize()
+void UTPSGameUIManagerSubsystem::Deinitialize()
 {
 	Super::Deinitialize();
 
 	SwitchToPolicy(nullptr);
 }
 
-bool UGameUIManagerSubsystem::ShouldCreateSubsystem(UObject* Outer) const
+bool UTPSGameUIManagerSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
 	if (!CastChecked<UGameInstance>(Outer)->IsDedicatedServerInstance())
 	{
@@ -51,7 +51,7 @@ bool UGameUIManagerSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 	return false;
 }
 
-void UGameUIManagerSubsystem::NotifyPlayerAdded(UCommonLocalPlayer* LocalPlayer)
+void UTPSGameUIManagerSubsystem::NotifyPlayerAdded(UCommonLocalPlayer* LocalPlayer)
 {
 	if (ensure(LocalPlayer) && CurrentPolicy)
 	{
@@ -59,7 +59,7 @@ void UGameUIManagerSubsystem::NotifyPlayerAdded(UCommonLocalPlayer* LocalPlayer)
 	}
 }
 
-void UGameUIManagerSubsystem::NotifyPlayerRemoved(UCommonLocalPlayer* LocalPlayer)
+void UTPSGameUIManagerSubsystem::NotifyPlayerRemoved(UCommonLocalPlayer* LocalPlayer)
 {
 	if (LocalPlayer && CurrentPolicy)
 	{
@@ -67,7 +67,7 @@ void UGameUIManagerSubsystem::NotifyPlayerRemoved(UCommonLocalPlayer* LocalPlaye
 	}
 }
 
-void UGameUIManagerSubsystem::NotifyPlayerDestroyed(UCommonLocalPlayer* LocalPlayer)
+void UTPSGameUIManagerSubsystem::NotifyPlayerDestroyed(UCommonLocalPlayer* LocalPlayer)
 {
 	if (LocalPlayer && CurrentPolicy)
 	{
@@ -75,7 +75,7 @@ void UGameUIManagerSubsystem::NotifyPlayerDestroyed(UCommonLocalPlayer* LocalPla
 	}
 }
 
-void UGameUIManagerSubsystem::SwitchToPolicy(UGameUIPolicy* InPolicy)
+void UTPSGameUIManagerSubsystem::SwitchToPolicy(UTPSGameUIPolicy* InPolicy)
 {
 	if (CurrentPolicy != InPolicy)
 	{
