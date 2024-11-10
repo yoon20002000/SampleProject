@@ -1,18 +1,18 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #pragma once
-#include "CommonPlayerController.generated.h"
+#include "TPSCommonPlayerController.generated.h"
 
 class APawn;
 class UObject;
 
 UCLASS(config=Game)
-class SAMPLEPROJECT_API ACommonPlayerController : public APlayerController
+class SAMPLEPROJECT_API ATPSCommonPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
 public:
-	ACommonPlayerController(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+	ATPSCommonPlayerController(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	virtual void ReceivedPlayer() override;	
 	virtual void SetPawn(APawn* InPawn) override;

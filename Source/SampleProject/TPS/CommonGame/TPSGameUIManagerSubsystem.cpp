@@ -51,7 +51,7 @@ bool UTPSGameUIManagerSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 	return false;
 }
 
-void UTPSGameUIManagerSubsystem::NotifyPlayerAdded(UCommonLocalPlayer* LocalPlayer)
+void UTPSGameUIManagerSubsystem::NotifyPlayerAdded(UTPSCommonLocalPlayer* LocalPlayer)
 {
 	if (ensure(LocalPlayer) && CurrentPolicy)
 	{
@@ -59,7 +59,7 @@ void UTPSGameUIManagerSubsystem::NotifyPlayerAdded(UCommonLocalPlayer* LocalPlay
 	}
 }
 
-void UTPSGameUIManagerSubsystem::NotifyPlayerRemoved(UCommonLocalPlayer* LocalPlayer)
+void UTPSGameUIManagerSubsystem::NotifyPlayerRemoved(UTPSCommonLocalPlayer* LocalPlayer)
 {
 	if (LocalPlayer && CurrentPolicy)
 	{
@@ -67,7 +67,7 @@ void UTPSGameUIManagerSubsystem::NotifyPlayerRemoved(UCommonLocalPlayer* LocalPl
 	}
 }
 
-void UTPSGameUIManagerSubsystem::NotifyPlayerDestroyed(UCommonLocalPlayer* LocalPlayer)
+void UTPSGameUIManagerSubsystem::NotifyPlayerDestroyed(UTPSCommonLocalPlayer* LocalPlayer)
 {
 	if (LocalPlayer && CurrentPolicy)
 	{

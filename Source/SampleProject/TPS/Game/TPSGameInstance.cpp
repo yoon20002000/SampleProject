@@ -3,8 +3,18 @@
 
 #include "TPSGameInstance.h"
 
-#include "CommonGame/CommonLocalPlayer.h"
+#include "CommonUISettings.h"
+#include "GameplayTagContainer.h"
+#include "ICommonUIModule.h"
+#include "CommonGame/LogTPSGame.h"
+#include "CommonGame/TPSCommonLocalPlayer.h"
 #include "CommonGame/TPSGameUIManagerSubsystem.h"
+
+void UTPSGameInstance::Init()
+{
+	Super::Init();
+	FGameplayTagContainer PlatformTraits = ICommonUIModule::GetSettings().GetPlatformTraits();
+}
 
 int32 UTPSGameInstance::AddLocalPlayer(ULocalPlayer* NewPlayer, FPlatformUserId UserId)
 {
@@ -14,11 +24,29 @@ int32 UTPSGameInstance::AddLocalPlayer(ULocalPlayer* NewPlayer, FPlatformUserId 
 	{
 		if(PrimaryPlayer.IsValid() == false)
 		{
-			//UE_LOG(LogCommonGame, Log, TEXT("AddLocalPlayer: Set %s to Primary Player"),*NewPlayer->GetName());
+			UE_LOG(LogTPSGame, Log, TEXT("AddLocalPlayer: Set %s to Primary Player"),*NewPlayer->GetName());
 			PrimaryPlayer = NewPlayer;
 		}
-		GetSubsystem<UTPSGameUIManagerSubsystem>()->NotifyPlayerAdded(CastChecked<UCommonLocalPlayer>(NewPlayer));
+		GetSubsystem<UTPSGameUIManagerSubsystem>()->NotifyPlayerAdded(CastChecked<UTPSCommonLocalPlayer>(NewPlayer));
 	}
 	
 	return ReturnVal;
+}
+
+bool UTPSGameInstance::RemoveLocalPlayer(ULocalPlayer* ExistingPlayer)
+{
+	if (PrimaryPlayer == ExistingPlayer)
+	{
+		//TODO: do we want to fall back to another player?
+		PrimaryPlayer.Reset();
+		UE_LOG(LogTPSGame, Log, TEXT("RemoveLocalPlayer: Unsetting Primary Player from %s"), *ExistingPlayer->GetName());
+	}
+	GetSubsystem<UTPSGameUIManagerSubsystem>()->NotifyPlayerDestroyed(Cast<UTPSCommonLocalPlayer>(ExistingPlayer));
+
+	return Super::RemoveLocalPlayer(ExistingPlayer);
+}
+
+void UTPSGameInstance::ReturnToMainMenu()
+{
+	Super::ReturnToMainMenu();
 }

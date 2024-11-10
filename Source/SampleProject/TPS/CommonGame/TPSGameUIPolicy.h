@@ -6,7 +6,7 @@
 
 #include "TPSGameUIPolicy.generated.h"
 
-class UCommonLocalPlayer;
+class UTPSCommonLocalPlayer;
 class UTPSGameUIManagerSubsystem;
 class ULocalPlayer;
 class UTPSPrimaryGameLayout;
@@ -68,22 +68,22 @@ public:
 public:
 	virtual UWorld* GetWorld() const override;
 	UTPSGameUIManagerSubsystem* GetOwningUIManager() const;
-	UTPSPrimaryGameLayout* GetRootLayout(const UCommonLocalPlayer* LocalPlayer) const;
+	UTPSPrimaryGameLayout* GetRootLayout(const UTPSCommonLocalPlayer* LocalPlayer) const;
 
 	ELocalMultiplayerInteractionMode GetLocalMultiplayerInteractionMode() const { return LocalMultiplayerInteractionMode; }
 
 	void RequestPrimaryControl(UTPSPrimaryGameLayout* Layout);
 
 protected:
-	void AddLayoutToViewport(UCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout);
-	void RemoveLayoutFromViewport(UCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout);
+	void AddLayoutToViewport(UTPSCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout);
+	void RemoveLayoutFromViewport(UTPSCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout);
 
-	virtual void OnRootLayoutAddedToViewport(UCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout);
-	virtual void OnRootLayoutRemovedFromViewport(UCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout);
-	virtual void OnRootLayoutReleased(UCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout);
+	virtual void OnRootLayoutAddedToViewport(UTPSCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout);
+	virtual void OnRootLayoutRemovedFromViewport(UTPSCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout);
+	virtual void OnRootLayoutReleased(UTPSCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout);
 
-	void CreateLayoutWidget(UCommonLocalPlayer* LocalPlayer);
-	TSubclassOf<UTPSPrimaryGameLayout> GetLayoutWidgetClass(UCommonLocalPlayer* LocalPlayer);
+	void CreateLayoutWidget(UTPSCommonLocalPlayer* LocalPlayer);
+	TSubclassOf<UTPSPrimaryGameLayout> GetLayoutWidgetClass(UTPSCommonLocalPlayer* LocalPlayer);
 
 private:
 	ELocalMultiplayerInteractionMode LocalMultiplayerInteractionMode = ELocalMultiplayerInteractionMode::PrimaryOnly;
@@ -95,9 +95,9 @@ private:
 	TArray<FRootViewportLayoutInfo> RootViewportLayouts;
 
 private:
-	void NotifyPlayerAdded(UCommonLocalPlayer* LocalPlayer);
-	void NotifyPlayerRemoved(UCommonLocalPlayer* LocalPlayer);
-	void NotifyPlayerDestroyed(UCommonLocalPlayer* LocalPlayer);
+	void NotifyPlayerAdded(UTPSCommonLocalPlayer* LocalPlayer);
+	void NotifyPlayerRemoved(UTPSCommonLocalPlayer* LocalPlayer);
+	void NotifyPlayerDestroyed(UTPSCommonLocalPlayer* LocalPlayer);
 
 	friend class UTPSGameUIManagerSubsystem;
 };

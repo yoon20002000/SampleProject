@@ -4,7 +4,7 @@
 
 #include "Engine/LocalPlayer.h"
 
-#include "CommonLocalPlayer.generated.h"
+#include "TPSCommonLocalPlayer.generated.h"
 
 class APawn;
 class APlayerController;
@@ -15,23 +15,23 @@ class UTPSPrimaryGameLayout;
 struct FSceneViewProjectionData;
 
 UCLASS(config=Engine, transient)
-class SAMPLEPROJECT_API UCommonLocalPlayer : public ULocalPlayer
+class SAMPLEPROJECT_API UTPSCommonLocalPlayer : public ULocalPlayer
 {
 	GENERATED_BODY()
 
 public:
-	UCommonLocalPlayer();
+	UTPSCommonLocalPlayer();
 
 	/** Called when the local player is assigned a player controller */
-	DECLARE_MULTICAST_DELEGATE_TwoParams(FPlayerControllerSetDelegate, UCommonLocalPlayer* LocalPlayer, APlayerController* PlayerController);
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FPlayerControllerSetDelegate, UTPSCommonLocalPlayer* LocalPlayer, APlayerController* PlayerController);
 	FPlayerControllerSetDelegate OnPlayerControllerSet;
 
 	/** Called when the local player is assigned a player state */
-	DECLARE_MULTICAST_DELEGATE_TwoParams(FPlayerStateSetDelegate, UCommonLocalPlayer* LocalPlayer, APlayerState* PlayerState);
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FPlayerStateSetDelegate, UTPSCommonLocalPlayer* LocalPlayer, APlayerState* PlayerState);
 	FPlayerStateSetDelegate OnPlayerStateSet;
 
 	/** Called when the local player is assigned a player pawn */
-	DECLARE_MULTICAST_DELEGATE_TwoParams(FPlayerPawnSetDelegate, UCommonLocalPlayer* LocalPlayer, APawn* Pawn);
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FPlayerPawnSetDelegate, UTPSCommonLocalPlayer* LocalPlayer, APawn* Pawn);
 	FPlayerPawnSetDelegate OnPlayerPawnSet;
 
 	FDelegateHandle CallAndRegister_OnPlayerControllerSet(FPlayerControllerSetDelegate::FDelegate Delegate);

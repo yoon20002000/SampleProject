@@ -2,12 +2,12 @@
 
 #include "TPSPrimaryGameLayout.h"
 
-#include "CommonLocalPlayer.h"
+#include "TPSCommonLocalPlayer.h"
 #include "Engine/GameInstance.h"
 #include "TPSGameUIManagerSubsystem.h"
 #include "TPSGameUIPolicy.h"
 #include "Kismet/GameplayStatics.h"
-#include "LogCommonGame.h"
+#include "LogTPSGame.h"
 #include "Widgets/CommonActivatableWidgetContainer.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(TPSPrimaryGameLayout)
@@ -23,14 +23,14 @@ class UObject;
 
 /*static*/ UTPSPrimaryGameLayout* UTPSPrimaryGameLayout::GetPrimaryGameLayout(APlayerController* PlayerController)
 {
-	return PlayerController ? GetPrimaryGameLayout(Cast<UCommonLocalPlayer>(PlayerController->Player)) : nullptr;
+	return PlayerController ? GetPrimaryGameLayout(Cast<UTPSCommonLocalPlayer>(PlayerController->Player)) : nullptr;
 }
 
 /*static*/ UTPSPrimaryGameLayout* UTPSPrimaryGameLayout::GetPrimaryGameLayout(ULocalPlayer* LocalPlayer)
 {
 	if (LocalPlayer)
 	{
-		const UCommonLocalPlayer* CommonLocalPlayer = CastChecked<UCommonLocalPlayer>(LocalPlayer);
+		const UTPSCommonLocalPlayer* CommonLocalPlayer = CastChecked<UTPSCommonLocalPlayer>(LocalPlayer);
 		if (const UGameInstance* GameInstance = CommonLocalPlayer->GetGameInstance())
 		{
 			if (UTPSGameUIManagerSubsystem* UIManager = GameInstance->GetSubsystem<UTPSGameUIManagerSubsystem>())
@@ -63,7 +63,7 @@ void UTPSPrimaryGameLayout::SetIsDormant(bool InDormant)
 		const TCHAR* OldDormancyStr = bIsDormant ? TEXT("Dormant") : TEXT("Not-Dormant");
 		const TCHAR* NewDormancyStr = InDormant ? TEXT("Dormant") : TEXT("Not-Dormant");
 		const TCHAR* PrimaryPlayerStr = LP && LP->IsPrimaryPlayer() ? TEXT("[Primary]") : TEXT("[Non-Primary]");
-		UE_LOG(LogCommonGame, Display, TEXT("%s PrimaryGameLayout Dormancy changed for [%d] from [%s] to [%s]"), PrimaryPlayerStr, PlayerId, OldDormancyStr, NewDormancyStr);
+		UE_LOG(LogTPSGame, Display, TEXT("%s PrimaryGameLayout Dormancy changed for [%d] from [%s] to [%s]"), PrimaryPlayerStr, PlayerId, OldDormancyStr, NewDormancyStr);
 
 		bIsDormant = InDormant;
 		OnIsDormantChanged();

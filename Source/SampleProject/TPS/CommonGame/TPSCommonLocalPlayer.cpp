@@ -1,25 +1,25 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "CommonLocalPlayer.h"
+#include "TPSCommonLocalPlayer.h"
 
 #include "Engine/GameInstance.h"
 #include "GameFramework/PlayerController.h"
 #include "TPSGameUIManagerSubsystem.h"
 #include "TPSGameUIPolicy.h"
 
-#include UE_INLINE_GENERATED_CPP_BY_NAME(CommonLocalPlayer)
+#include UE_INLINE_GENERATED_CPP_BY_NAME(TPSCommonLocalPlayer)
 
 class APawn;
 class APlayerState;
 class FViewport;
 struct FSceneViewProjectionData;
 
-UCommonLocalPlayer::UCommonLocalPlayer()
+UTPSCommonLocalPlayer::UTPSCommonLocalPlayer()
 	: Super(FObjectInitializer::Get())
 {
 }
 
-FDelegateHandle UCommonLocalPlayer::CallAndRegister_OnPlayerControllerSet(FPlayerControllerSetDelegate::FDelegate Delegate)
+FDelegateHandle UTPSCommonLocalPlayer::CallAndRegister_OnPlayerControllerSet(FPlayerControllerSetDelegate::FDelegate Delegate)
 {
 	APlayerController* PC = GetPlayerController(GetWorld());
 
@@ -31,7 +31,7 @@ FDelegateHandle UCommonLocalPlayer::CallAndRegister_OnPlayerControllerSet(FPlaye
 	return OnPlayerControllerSet.Add(Delegate);
 }
 
-FDelegateHandle UCommonLocalPlayer::CallAndRegister_OnPlayerStateSet(FPlayerStateSetDelegate::FDelegate Delegate)
+FDelegateHandle UTPSCommonLocalPlayer::CallAndRegister_OnPlayerStateSet(FPlayerStateSetDelegate::FDelegate Delegate)
 {
 	APlayerController* PC = GetPlayerController(GetWorld());
 	APlayerState* PlayerState = PC ? PC->PlayerState : nullptr;
@@ -44,7 +44,7 @@ FDelegateHandle UCommonLocalPlayer::CallAndRegister_OnPlayerStateSet(FPlayerStat
 	return OnPlayerStateSet.Add(Delegate);
 }
 
-FDelegateHandle UCommonLocalPlayer::CallAndRegister_OnPlayerPawnSet(FPlayerPawnSetDelegate::FDelegate Delegate)
+FDelegateHandle UTPSCommonLocalPlayer::CallAndRegister_OnPlayerPawnSet(FPlayerPawnSetDelegate::FDelegate Delegate)
 {
 	APlayerController* PC = GetPlayerController(GetWorld());
 	APawn* Pawn = PC ? PC->GetPawn() : nullptr;
@@ -57,7 +57,7 @@ FDelegateHandle UCommonLocalPlayer::CallAndRegister_OnPlayerPawnSet(FPlayerPawnS
 	return OnPlayerPawnSet.Add(Delegate);
 }
 
-bool UCommonLocalPlayer::GetProjectionData(FViewport* Viewport, FSceneViewProjectionData& ProjectionData, int32 StereoViewIndex) const
+bool UTPSCommonLocalPlayer::GetProjectionData(FViewport* Viewport, FSceneViewProjectionData& ProjectionData, int32 StereoViewIndex) const
 {
 	if (!bIsPlayerViewEnabled)
 	{
@@ -67,7 +67,7 @@ bool UCommonLocalPlayer::GetProjectionData(FViewport* Viewport, FSceneViewProjec
 	return Super::GetProjectionData(Viewport, ProjectionData, StereoViewIndex);
 }
 
-UTPSPrimaryGameLayout* UCommonLocalPlayer::GetRootUILayout() const
+UTPSPrimaryGameLayout* UTPSCommonLocalPlayer::GetRootUILayout() const
 {
 	if (UTPSGameUIManagerSubsystem* UIManager = GetGameInstance()->GetSubsystem<UTPSGameUIManagerSubsystem>())
 	{

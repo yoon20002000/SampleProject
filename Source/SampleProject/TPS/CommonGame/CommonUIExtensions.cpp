@@ -4,7 +4,7 @@
 
 #include "CommonInputSubsystem.h"
 #include "CommonInputTypeEnum.h"
-#include "CommonLocalPlayer.h"
+#include "TPSCommonLocalPlayer.h"
 #include "Engine/GameInstance.h"
 #include "TPSGameUIManagerSubsystem.h"
 #include "TPSGameUIPolicy.h"
@@ -63,7 +63,7 @@ UCommonActivatableWidget* UCommonUIExtensions::PushContentToLayer_ForPlayer(cons
 	{
 		if (UTPSGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
 		{
-			if (UTPSPrimaryGameLayout* RootLayout = Policy->GetRootLayout(CastChecked<UCommonLocalPlayer>(LocalPlayer)))
+			if (UTPSPrimaryGameLayout* RootLayout = Policy->GetRootLayout(CastChecked<UTPSCommonLocalPlayer>(LocalPlayer)))
 			{
 				return RootLayout->PushWidgetToLayerStack(LayerName, WidgetClass);
 			}
@@ -84,7 +84,7 @@ void UCommonUIExtensions::PushStreamedContentToLayer_ForPlayer(const ULocalPlaye
 	{
 		if (UTPSGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
 		{
-			if (UTPSPrimaryGameLayout* RootLayout = Policy->GetRootLayout(CastChecked<UCommonLocalPlayer>(LocalPlayer)))
+			if (UTPSPrimaryGameLayout* RootLayout = Policy->GetRootLayout(CastChecked<UTPSCommonLocalPlayer>(LocalPlayer)))
 			{
 				const bool bSuspendInputUntilComplete = true;
 				RootLayout->PushWidgetToLayerStackAsync(LayerName, bSuspendInputUntilComplete, WidgetClass);
@@ -107,7 +107,7 @@ void UCommonUIExtensions::PopContentFromLayer(UCommonActivatableWidget* Activata
 		{
 			if (const UTPSGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
 			{
-				if (UTPSPrimaryGameLayout* RootLayout = Policy->GetRootLayout(CastChecked<UCommonLocalPlayer>(LocalPlayer)))
+				if (UTPSPrimaryGameLayout* RootLayout = Policy->GetRootLayout(CastChecked<UTPSCommonLocalPlayer>(LocalPlayer)))
 				{
 					RootLayout->FindAndRemoveWidgetFromLayer(ActivatableWidget);
 				}

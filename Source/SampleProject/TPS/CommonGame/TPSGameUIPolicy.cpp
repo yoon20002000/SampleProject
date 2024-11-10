@@ -1,13 +1,14 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "TPSGameUIPolicy.h"
-#include "Engine/GameInstance.h"
-#include "Framework/Application/SlateApplication.h"
+
+#include "LogTPSGame.h"
+#include "TPSCommonLocalPlayer.h"
 #include "TPSGameUIManagerSubsystem.h"
-#include "CommonLocalPlayer.h"
 #include "TPSPrimaryGameLayout.h"
 #include "Engine/Engine.h"
-#include "LogCommonGame.h"
+#include "Engine/GameInstance.h"
+#include "Framework/Application/SlateApplication.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(TPSGameUIPolicy)
 
@@ -38,15 +39,15 @@ UWorld* UTPSGameUIPolicy::GetWorld() const
 	return GetOwningUIManager()->GetGameInstance()->GetWorld();
 }
 
-UTPSPrimaryGameLayout* UTPSGameUIPolicy::GetRootLayout(const UCommonLocalPlayer* LocalPlayer) const
+UTPSPrimaryGameLayout* UTPSGameUIPolicy::GetRootLayout(const UTPSCommonLocalPlayer* LocalPlayer) const
 {
 	const FRootViewportLayoutInfo* LayoutInfo = RootViewportLayouts.FindByKey(LocalPlayer);
 	return LayoutInfo ? LayoutInfo->RootLayout : nullptr;
 }
 
-void UTPSGameUIPolicy::NotifyPlayerAdded(UCommonLocalPlayer* LocalPlayer)
+void UTPSGameUIPolicy::NotifyPlayerAdded(UTPSCommonLocalPlayer* LocalPlayer)
 {
-	LocalPlayer->OnPlayerControllerSet.AddWeakLambda(this, [this](UCommonLocalPlayer* LocalPlayer, APlayerController* PlayerController)
+	LocalPlayer->OnPlayerControllerSet.AddWeakLambda(this, [this](UTPSCommonLocalPlayer* LocalPlayer, APlayerController* PlayerController)
 	{
 		NotifyPlayerRemoved(LocalPlayer);
 
@@ -72,7 +73,7 @@ void UTPSGameUIPolicy::NotifyPlayerAdded(UCommonLocalPlayer* LocalPlayer)
 	}
 }
 
-void UTPSGameUIPolicy::NotifyPlayerRemoved(UCommonLocalPlayer* LocalPlayer)
+void UTPSGameUIPolicy::NotifyPlayerRemoved(UTPSCommonLocalPlayer* LocalPlayer)
 {
 	if (FRootViewportLayoutInfo* LayoutInfo = RootViewportLayouts.FindByKey(LocalPlayer))
 	{
@@ -101,7 +102,7 @@ void UTPSGameUIPolicy::NotifyPlayerRemoved(UCommonLocalPlayer* LocalPlayer)
 	}
 }
 
-void UTPSGameUIPolicy::NotifyPlayerDestroyed(UCommonLocalPlayer* LocalPlayer)
+void UTPSGameUIPolicy::NotifyPlayerDestroyed(UTPSCommonLocalPlayer* LocalPlayer)
 {
 	NotifyPlayerRemoved(LocalPlayer);
 	LocalPlayer->OnPlayerControllerSet.RemoveAll(this);
@@ -117,9 +118,9 @@ void UTPSGameUIPolicy::NotifyPlayerDestroyed(UCommonLocalPlayer* LocalPlayer)
 	}
 }
 
-void UTPSGameUIPolicy::AddLayoutToViewport(UCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout)
+void UTPSGameUIPolicy::AddLayoutToViewport(UTPSCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout)
 {
-	UE_LOG(LogCommonGame, Log, TEXT("[%s] is adding player [%s]'s root layout [%s] to the viewport"), *GetName(), *GetNameSafe(LocalPlayer), *GetNameSafe(Layout));
+	UE_LOG(LogTPSGame, Log, TEXT("[%s] is adding player [%s]'s root layout [%s] to the viewport"), *GetName(), *GetNameSafe(LocalPlayer), *GetNameSafe(Layout));
 
 	Layout->SetPlayerContext(FLocalPlayerContext(LocalPlayer));
 	Layout->AddToPlayerScreen(1000);
@@ -127,24 +128,24 @@ void UTPSGameUIPolicy::AddLayoutToViewport(UCommonLocalPlayer* LocalPlayer, UTPS
 	OnRootLayoutAddedToViewport(LocalPlayer, Layout);
 }
 
-void UTPSGameUIPolicy::RemoveLayoutFromViewport(UCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout)
+void UTPSGameUIPolicy::RemoveLayoutFromViewport(UTPSCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout)
 {
 	TWeakPtr<SWidget> LayoutSlateWidget = Layout->GetCachedWidget();
 	if (LayoutSlateWidget.IsValid())
 	{
-		UE_LOG(LogCommonGame, Log, TEXT("[%s] is removing player [%s]'s root layout [%s] from the viewport"), *GetName(), *GetNameSafe(LocalPlayer), *GetNameSafe(Layout));
+		UE_LOG(LogTPSGame, Log, TEXT("[%s] is removing player [%s]'s root layout [%s] from the viewport"), *GetName(), *GetNameSafe(LocalPlayer), *GetNameSafe(Layout));
 
 		Layout->RemoveFromParent();
 		if (LayoutSlateWidget.IsValid())
 		{
-			UE_LOG(LogCommonGame, Log, TEXT("Player [%s]'s root layout [%s] has been removed from the viewport, but other references to its underlying Slate widget still exist. Noting in case we leak it."), *GetNameSafe(LocalPlayer), *GetNameSafe(Layout));
+			UE_LOG(LogTPSGame, Log, TEXT("Player [%s]'s root layout [%s] has been removed from the viewport, but other references to its underlying Slate widget still exist. Noting in case we leak it."), *GetNameSafe(LocalPlayer), *GetNameSafe(Layout));
 		}
 
 		OnRootLayoutRemovedFromViewport(LocalPlayer, Layout);
 	}
 }
 
-void UTPSGameUIPolicy::OnRootLayoutAddedToViewport(UCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout)
+void UTPSGameUIPolicy::OnRootLayoutAddedToViewport(UTPSCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout)
 {
 #if WITH_EDITOR
 	if (GIsEditor && LocalPlayer->IsPrimaryPlayer())
@@ -155,12 +156,12 @@ void UTPSGameUIPolicy::OnRootLayoutAddedToViewport(UCommonLocalPlayer* LocalPlay
 #endif
 }
 
-void UTPSGameUIPolicy::OnRootLayoutRemovedFromViewport(UCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout)
+void UTPSGameUIPolicy::OnRootLayoutRemovedFromViewport(UTPSCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout)
 {
 	
 }
 
-void UTPSGameUIPolicy::OnRootLayoutReleased(UCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout)
+void UTPSGameUIPolicy::OnRootLayoutReleased(UTPSCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout)
 {
 	
 }
@@ -182,7 +183,7 @@ void UTPSGameUIPolicy::RequestPrimaryControl(UTPSPrimaryGameLayout* Layout)
 	}
 }
 
-void UTPSGameUIPolicy::CreateLayoutWidget(UCommonLocalPlayer* LocalPlayer)
+void UTPSGameUIPolicy::CreateLayoutWidget(UTPSCommonLocalPlayer* LocalPlayer)
 {
 	if (APlayerController* PlayerController = LocalPlayer->GetPlayerController(GetWorld()))
 	{
@@ -197,7 +198,7 @@ void UTPSGameUIPolicy::CreateLayoutWidget(UCommonLocalPlayer* LocalPlayer)
 	}
 }
 
-TSubclassOf<UTPSPrimaryGameLayout> UTPSGameUIPolicy::GetLayoutWidgetClass(UCommonLocalPlayer* LocalPlayer)
+TSubclassOf<UTPSPrimaryGameLayout> UTPSGameUIPolicy::GetLayoutWidgetClass(UTPSCommonLocalPlayer* LocalPlayer)
 {
 	return LayoutClass.LoadSynchronous();
 }

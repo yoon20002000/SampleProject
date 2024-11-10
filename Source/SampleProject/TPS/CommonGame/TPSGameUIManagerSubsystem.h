@@ -8,7 +8,7 @@
 #include "TPSGameUIManagerSubsystem.generated.h"
 
 class FSubsystemCollectionBase;
-class UCommonLocalPlayer;
+class UTPSCommonLocalPlayer;
 class UTPSGameUIPolicy;
 class UObject;
 
@@ -34,9 +34,9 @@ public:
 	const UTPSGameUIPolicy* GetCurrentUIPolicy() const { return CurrentPolicy; }
 	UTPSGameUIPolicy* GetCurrentUIPolicy() { return CurrentPolicy; }
 
-	virtual void NotifyPlayerAdded(UCommonLocalPlayer* LocalPlayer);
-	virtual void NotifyPlayerRemoved(UCommonLocalPlayer* LocalPlayer);
-	virtual void NotifyPlayerDestroyed(UCommonLocalPlayer* LocalPlayer);
+	virtual void NotifyPlayerAdded(UTPSCommonLocalPlayer* LocalPlayer);
+	virtual void NotifyPlayerRemoved(UTPSCommonLocalPlayer* LocalPlayer);
+	virtual void NotifyPlayerDestroyed(UTPSCommonLocalPlayer* LocalPlayer);
 
 protected:
 	void SwitchToPolicy(UTPSGameUIPolicy* InPolicy);
