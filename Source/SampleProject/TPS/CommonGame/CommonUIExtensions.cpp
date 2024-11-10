@@ -6,9 +6,10 @@
 #include "CommonInputTypeEnum.h"
 #include "TPSCommonLocalPlayer.h"
 #include "Engine/GameInstance.h"
-#include "TPSGameUIManagerSubsystem.h"
 #include "TPSGameUIPolicy.h"
 #include "TPSPrimaryGameLayout.h"
+#include "Game/TPSGameInstance.h"
+#include "UI/TPSUIManager.h"
 #include "Widgets/CommonActivatableWidgetContainer.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(CommonUIExtensions)
@@ -58,8 +59,8 @@ UCommonActivatableWidget* UCommonUIExtensions::PushContentToLayer_ForPlayer(cons
 	{
 		return nullptr;
 	}
-
-	if (UTPSGameUIManagerSubsystem* UIManager = LocalPlayer->GetGameInstance()->GetSubsystem<UTPSGameUIManagerSubsystem>())
+	
+	if (UTPSUIManager* UIManager = GetTPSUIManager(LocalPlayer))
 	{
 		if (UTPSGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
 		{
@@ -80,7 +81,7 @@ void UCommonUIExtensions::PushStreamedContentToLayer_ForPlayer(const ULocalPlaye
 		return;
 	}
 
-	if (UTPSGameUIManagerSubsystem* UIManager = LocalPlayer->GetGameInstance()->GetSubsystem<UTPSGameUIManagerSubsystem>())
+	if (UTPSUIManager* UIManager = GetTPSUIManager(LocalPlayer))
 	{
 		if (UTPSGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
 		{
@@ -103,7 +104,7 @@ void UCommonUIExtensions::PopContentFromLayer(UCommonActivatableWidget* Activata
 
 	if (const ULocalPlayer* LocalPlayer = ActivatableWidget->GetOwningLocalPlayer())
 	{
-		if (const UTPSGameUIManagerSubsystem* UIManager = LocalPlayer->GetGameInstance()->GetSubsystem<UTPSGameUIManagerSubsystem>())
+		if (UTPSUIManager* UIManager = GetTPSUIManager(LocalPlayer))
 		{
 			if (const UTPSGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
 			{
@@ -167,5 +168,14 @@ void UCommonUIExtensions::ResumeInputForPlayer(ULocalPlayer* LocalPlayer, FName 
 		CommonInputSubsystem->SetInputTypeFilter(ECommonInputType::Gamepad, SuspendToken, false);
 		CommonInputSubsystem->SetInputTypeFilter(ECommonInputType::Touch, SuspendToken, false);
 	}
+}
+
+UTPSUIManager* UCommonUIExtensions::GetTPSUIManager(const ULocalPlayer* LocalPlayer)
+{
+	if (UTPSGameInstance* GameInstance = CastChecked<UTPSGameInstance>(LocalPlayer->GetGameInstance()))
+	{
+		return GameInstance->GetUIManager();
+	}
+	return nullptr;
 }
 

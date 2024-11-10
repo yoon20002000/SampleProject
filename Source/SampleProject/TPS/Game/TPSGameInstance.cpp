@@ -8,12 +8,17 @@
 #include "ICommonUIModule.h"
 #include "CommonGame/LogTPSGame.h"
 #include "CommonGame/TPSCommonLocalPlayer.h"
-#include "CommonGame/TPSGameUIManagerSubsystem.h"
+#include "UI/TPSUIManager.h"
 
 void UTPSGameInstance::Init()
 {
 	Super::Init();
 	FGameplayTagContainer PlatformTraits = ICommonUIModule::GetSettings().GetPlatformTraits();
+
+	if (UIManager == nullptr)
+	{
+		UIManager = NewObject<UTPSUIManager>();
+	}
 }
 
 int32 UTPSGameInstance::AddLocalPlayer(ULocalPlayer* NewPlayer, FPlatformUserId UserId)
@@ -27,7 +32,6 @@ int32 UTPSGameInstance::AddLocalPlayer(ULocalPlayer* NewPlayer, FPlatformUserId 
 			UE_LOG(LogTPSGame, Log, TEXT("AddLocalPlayer: Set %s to Primary Player"),*NewPlayer->GetName());
 			PrimaryPlayer = NewPlayer;
 		}
-		GetSubsystem<UTPSGameUIManagerSubsystem>()->NotifyPlayerAdded(CastChecked<UTPSCommonLocalPlayer>(NewPlayer));
 	}
 	
 	return ReturnVal;
@@ -41,7 +45,11 @@ bool UTPSGameInstance::RemoveLocalPlayer(ULocalPlayer* ExistingPlayer)
 		PrimaryPlayer.Reset();
 		UE_LOG(LogTPSGame, Log, TEXT("RemoveLocalPlayer: Unsetting Primary Player from %s"), *ExistingPlayer->GetName());
 	}
-	GetSubsystem<UTPSGameUIManagerSubsystem>()->NotifyPlayerDestroyed(Cast<UTPSCommonLocalPlayer>(ExistingPlayer));
+	
+	if (UIManager != nullptr)
+	{
+		UIManager = nullptr;
+	}
 
 	return Super::RemoveLocalPlayer(ExistingPlayer);
 }

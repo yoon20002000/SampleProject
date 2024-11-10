@@ -6,6 +6,7 @@
 #include "Engine/GameInstance.h"
 #include "TPSGameInstance.generated.h"
 
+class UTPSUIManager;
 /**
  * 
  */
@@ -18,7 +19,14 @@ public:
 	virtual int32 AddLocalPlayer(ULocalPlayer* NewPlayer, FPlatformUserId UserId) override;
 	virtual bool RemoveLocalPlayer(ULocalPlayer* ExistingPlayer) override;
 	virtual void ReturnToMainMenu() override;
+
+	UTPSUIManager* GetUIManager() const
+	{
+		return UIManager;
+	}
 private:
 	TWeakObjectPtr<ULocalPlayer> PrimaryPlayer;
 	
+	UPROPERTY(Transient)
+	TObjectPtr<UTPSUIManager> UIManager;
 };

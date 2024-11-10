@@ -7,6 +7,7 @@
 
 #include "CommonUIExtensions.generated.h"
 
+class UTPSUIManager;
 enum class ECommonInputType : uint8;
 template <typename T> class TSubclassOf;
 
@@ -57,6 +58,7 @@ public:
 
 	static void ResumeInputForPlayer(ULocalPlayer* LocalPlayer, FName SuspendToken);
 
+	static UTPSUIManager* GetTPSUIManager(const ULocalPlayer* LocalPlayer);
 private:
 	static int32 InputSuspensions;
 };

@@ -10,18 +10,14 @@
     <list default="true" id="bb9f1029-5ef5-424e-b123-fb63629eda12" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SampleProject.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SampleProject.dir/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/CommonGameInstance.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/CommonGameInstance.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/CommonLocalPlayer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSCommonLocalPlayer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/CommonLocalPlayer.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSCommonLocalPlayer.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/CommonPlayerController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSCommonPlayerController.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/CommonPlayerController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSCommonPlayerController.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/CommonPlayerInputKey.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/CommonPlayerInputKey.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultGame.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultGame.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/UI/B_TPSGameUIPolicy.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/UI/B_TPSGameUIPolicy.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SampleProject.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/SampleProject.uproject" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/CommonUIExtensions.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/CommonUIExtensions.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/LogCommonGame.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/LogCommonGame.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/LogCommonGame.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/LogCommonGame.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSGameUIManagerSubsystem.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSGameUIManagerSubsystem.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSGameUIManagerSubsystem.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSGameUIManagerSubsystem.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/CommonUIExtensions.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/CommonUIExtensions.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSCommonLocalPlayer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSCommonLocalPlayer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSGameUIManagerSubsystem.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSGameUIManagerSubsystem.h" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSGameUIPolicy.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSGameUIPolicy.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSGameUIPolicy.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSGameUIPolicy.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSPrimaryGameLayout.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSPrimaryGameLayout.cpp" afterDir="false" />
@@ -33,14 +29,20 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DpaMonitoringSettings">
+    <option name="firstShow" value="false" />
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.4/Engine/Plugins/Runtime/CommonUI/Source/CommonUI/Public/ICommonUIModule.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.4/Engine/Source/Editor/Kismet/Private/BPDelegateDragDropAction.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.4/Engine/Source/Runtime/Core/Public/Containers/UnrealString.h.inl" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.4/Engine/Source/Runtime/CoreUObject/Public/Templates/Casts.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.4/Engine/Source/Runtime/Engine/Classes/Engine/GameInstance.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.4/Engine/Source/Runtime/Engine/Private/GameInstance.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.4/Engine/Source/Runtime/Engine/Public/Subsystems/GameInstanceSubsystem.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.4/Engine/Source/Runtime/GameplayTags/Classes/GameplayTagContainer.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.4/Engine/Source/Runtime/Slate/Private/Widgets/Input/SMenuAnchor.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.4/Engine/Source/Runtime/Slate/Public/Widgets/Input/SComboButton.h" root0="FORCE_HIGHLIGHTING" />
@@ -49,7 +51,23 @@
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.4/Engine/Source/Runtime/SlateCore/Public/Widgets/SWidget.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.4/Engine/Source/ThirdParty/Python3/Python3.Build.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SampleProject/SampleProject.Build.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/CommonUIExtensions.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/LogTPSGame.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/LogTPSGame.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSCommonLocalPlayer.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSCommonLocalPlayer.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSCommonPlayerController.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSCommonPlayerController.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSGameUIPolicy.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSGameUIPolicy.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSPrimaryGameLayout.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/Game/TPSGameInstance.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/Game/TPSGameInstance.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSUIManager.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSUIManager.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/UIDataAsset.h" root0="FORCE_HIGHLIGHTING" />
   </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 4
@@ -59,27 +77,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Uproject.SampleProject.executor": "Run",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Uproject.SampleProject.executor&quot;: &quot;Run&quot;,
+    &quot;ezargs.lastUsed&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;CodeInspectionSettingsId&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
+    &quot;프로세스에 연결.5200:Razer Synapse Service Process.executor&quot;: &quot;Debug&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="CidrLocalAttachDebugger.recentlyUsed">
+      <recent name="com.jetbrains.rider.cpp.debugger.RiderCppLLDBDriverConfiguration" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="SampleProject" type="Uproject" factoryName="rider.uproject">
-      <configuration_1>
+      <configuration_1 setup="1">
         <option name="CONFIGURATION" value="Development Editor" />
         <option name="PLATFORM" value="Win64" />
-        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/SampleProject.uproject" />
         <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
         <option name="EXECUTABLE_PATH" value="C:\Program Files\Epic Games\UE_5.4\Engine\Binaries\Win64\UnrealEditor.exe" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;C:\Projects\SampleProject\SampleProject.uproject&quot;" />
@@ -88,11 +113,11 @@
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="1" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
+        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/SampleProject.uproject" />
       </configuration_1>
-      <configuration_2>
+      <configuration_2 setup="1">
         <option name="CONFIGURATION" value="DebugGame Editor" />
         <option name="PLATFORM" value="Win64" />
-        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/SampleProject.uproject" />
         <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
         <option name="EXECUTABLE_PATH" value="C:\Program Files\Epic Games\UE_5.4\Engine\Binaries\Win64\UnrealEditor-Win64-DebugGame.exe" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;C:\Projects\SampleProject\SampleProject.uproject&quot;" />
@@ -101,11 +126,11 @@
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="1" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
+        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/SampleProject.uproject" />
       </configuration_2>
-      <configuration_3>
+      <configuration_3 setup="1">
         <option name="CONFIGURATION" value="DebugGame" />
         <option name="PLATFORM" value="Win64" />
-        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/SampleProject.uproject" />
         <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
         <option name="EXECUTABLE_PATH" value="C:\Projects\SampleProject\Binaries\Win64\SampleProject-Win64-DebugGame.exe" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
@@ -114,11 +139,11 @@
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="1" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
+        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/SampleProject.uproject" />
       </configuration_3>
-      <configuration_4>
+      <configuration_4 setup="1">
         <option name="CONFIGURATION" value="Development" />
         <option name="PLATFORM" value="Win64" />
-        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/SampleProject.uproject" />
         <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
         <option name="EXECUTABLE_PATH" value="C:\Projects\SampleProject\Binaries\Win64\SampleProject.exe" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
@@ -127,11 +152,11 @@
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="1" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
+        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/SampleProject.uproject" />
       </configuration_4>
-      <configuration_5>
+      <configuration_5 setup="1">
         <option name="CONFIGURATION" value="Shipping" />
         <option name="PLATFORM" value="Win64" />
-        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/SampleProject.uproject" />
         <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
         <option name="EXECUTABLE_PATH" value="C:\Projects\SampleProject\Binaries\Win64\SampleProject-Win64-Shipping.exe" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
@@ -140,7 +165,9 @@
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="1" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
+        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/SampleProject.uproject" />
       </configuration_5>
+      <option name="DEFAULT_PROJECT_PATH" value="$PROJECT_DIR$/SampleProject.uproject" />
       <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/SampleProject.uproject" />
       <option name="AUTO_SELECT_PRIORITY" value="10010" />
       <method v="2">
@@ -171,15 +198,26 @@
       <workItem from="1731159670679" duration="316000" />
       <workItem from="1731160051593" duration="5304000" />
       <workItem from="1731205300668" duration="2228000" />
-      <workItem from="1731207560432" duration="5174000" />
+      <workItem from="1731207560432" duration="5752000" />
+      <workItem from="1731215570945" duration="12000" />
+      <workItem from="1731219457405" duration="179000" />
+      <workItem from="1731219648130" duration="2543000" />
+      <workItem from="1731238668143" duration="785000" />
+      <workItem from="1731239475642" duration="1035000" />
+      <workItem from="1731240634331" duration="1950000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

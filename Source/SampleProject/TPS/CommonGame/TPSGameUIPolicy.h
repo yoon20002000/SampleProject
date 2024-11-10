@@ -6,8 +6,8 @@
 
 #include "TPSGameUIPolicy.generated.h"
 
+class UTPSUIManager;
 class UTPSCommonLocalPlayer;
-class UTPSGameUIManagerSubsystem;
 class ULocalPlayer;
 class UTPSPrimaryGameLayout;
 
@@ -51,7 +51,7 @@ public:
 	bool operator==(const ULocalPlayer* OtherLocalPlayer) const { return LocalPlayer == OtherLocalPlayer; }
 };
 
-UCLASS(Abstract, Blueprintable, Within = TPSGameUIManagerSubsystem)
+UCLASS(Abstract, Blueprintable, Within = TPSGameInstance)
 class SAMPLEPROJECT_API UTPSGameUIPolicy : public UObject
 {
 	GENERATED_BODY()
@@ -67,7 +67,7 @@ public:
 
 public:
 	virtual UWorld* GetWorld() const override;
-	UTPSGameUIManagerSubsystem* GetOwningUIManager() const;
+	UTPSUIManager* GetOwningUIManager() const;
 	UTPSPrimaryGameLayout* GetRootLayout(const UTPSCommonLocalPlayer* LocalPlayer) const;
 
 	ELocalMultiplayerInteractionMode GetLocalMultiplayerInteractionMode() const { return LocalMultiplayerInteractionMode; }
@@ -99,5 +99,5 @@ private:
 	void NotifyPlayerRemoved(UTPSCommonLocalPlayer* LocalPlayer);
 	void NotifyPlayerDestroyed(UTPSCommonLocalPlayer* LocalPlayer);
 
-	friend class UTPSGameUIManagerSubsystem;
+	friend class UTPSUIManager;
 };

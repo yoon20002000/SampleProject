@@ -4,11 +4,12 @@
 
 #include "LogTPSGame.h"
 #include "TPSCommonLocalPlayer.h"
-#include "TPSGameUIManagerSubsystem.h"
 #include "TPSPrimaryGameLayout.h"
 #include "Engine/Engine.h"
 #include "Engine/GameInstance.h"
 #include "Framework/Application/SlateApplication.h"
+#include "Game/TPSGameInstance.h"
+#include "UI/TPSUIManager.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(TPSGameUIPolicy)
 
@@ -17,11 +18,11 @@ UTPSGameUIPolicy* UTPSGameUIPolicy::GetGameUIPolicy(const UObject* WorldContextO
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
 	{
-		if (UGameInstance* GameInstance = World->GetGameInstance())
+		if (UTPSGameInstance* GameInstance = CastChecked<UTPSGameInstance>(World->GetGameInstance()))
 		{
-			if (UTPSGameUIManagerSubsystem* UIManager = UGameInstance::GetSubsystem<UTPSGameUIManagerSubsystem>(GameInstance))
+			if (UTPSUIManager* UIManager = GameInstance->GetUIManager())
 			{
-				return UIManager->GetCurrentUIPolicy();
+				return UIManager->GetCurrentUIPolicy();	
 			}
 		}
 	}
@@ -29,14 +30,23 @@ UTPSGameUIPolicy* UTPSGameUIPolicy::GetGameUIPolicy(const UObject* WorldContextO
 	return nullptr;
 }
 
-UTPSGameUIManagerSubsystem* UTPSGameUIPolicy::GetOwningUIManager() const
+UTPSUIManager* UTPSGameUIPolicy::GetOwningUIManager() const
 {
-	return CastChecked<UTPSGameUIManagerSubsystem>(GetOuter());
+	if (UTPSGameInstance* GameInstance = CastChecked<UTPSGameInstance>(GetOuter()))
+	{
+		return GameInstance->GetUIManager();
+	}
+	return nullptr;
 }
 
 UWorld* UTPSGameUIPolicy::GetWorld() const
 {
-	return GetOwningUIManager()->GetGameInstance()->GetWorld();
+	if (UTPSGameInstance* GameInstance = CastChecked<UTPSGameInstance>(GetOwningUIManager()->GetOuter()))
+	{
+		return GameInstance->GetWorld();
+	}
+	
+	return nullptr;
 }
 
 UTPSPrimaryGameLayout* UTPSGameUIPolicy::GetRootLayout(const UTPSCommonLocalPlayer* LocalPlayer) const
