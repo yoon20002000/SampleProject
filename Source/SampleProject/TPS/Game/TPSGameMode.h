@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class SAMPLEPROJECT_API AYTPSGameMode : public AGameModeBase
+class SAMPLEPROJECT_API ATPSGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 	

@@ -9,7 +9,7 @@
 #include "Engine/Engine.h"
 #include "LogCommonGame.h"
 
-#include UE_INLINE_GENERATED_CPP_BY_NAME(GameUIPolicy)
+#include UE_INLINE_GENERATED_CPP_BY_NAME(TPSGameUIPolicy)
 
 // Static
 UTPSGameUIPolicy* UTPSGameUIPolicy::GetGameUIPolicy(const UObject* WorldContextObject)

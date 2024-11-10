@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class SAMPLEPROJECT_API UYTPSCharacterAnimInstance : public UAnimInstance
+class SAMPLEPROJECT_API UTPSCharacterAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 	

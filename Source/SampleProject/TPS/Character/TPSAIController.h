@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class SAMPLEPROJECT_API AYTPSAIController : public AAIController
+class SAMPLEPROJECT_API ATPSAIController : public AAIController
 {
 	GENERATED_BODY()
 	

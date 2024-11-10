@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class SAMPLEPROJECT_API UYTPSGameInstance : public UGameInstance
+class SAMPLEPROJECT_API UTPSGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 public:

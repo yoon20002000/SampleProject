@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class SAMPLEPROJECT_API AYTPSPlayerController : public APlayerController
+class SAMPLEPROJECT_API ATPSPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 	

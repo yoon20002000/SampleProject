@@ -4,8 +4,9 @@
 #include "TPSGameInstance.h"
 
 #include "CommonGame/CommonLocalPlayer.h"
+#include "CommonGame/TPSGameUIManagerSubsystem.h"
 
-int32 UYTPSGameInstance::AddLocalPlayer(ULocalPlayer* NewPlayer, FPlatformUserId UserId)
+int32 UTPSGameInstance::AddLocalPlayer(ULocalPlayer* NewPlayer, FPlatformUserId UserId)
 {
 	int ReturnVal =  Super::AddLocalPlayer(NewPlayer, UserId);
 
@@ -16,7 +17,7 @@ int32 UYTPSGameInstance::AddLocalPlayer(ULocalPlayer* NewPlayer, FPlatformUserId
 			//UE_LOG(LogCommonGame, Log, TEXT("AddLocalPlayer: Set %s to Primary Player"),*NewPlayer->GetName());
 			PrimaryPlayer = NewPlayer;
 		}
-		GetSubsystem<UGameUIManagerSubsystem>()->NotifyPlayerAdded(CastChecked<UCommonLocalPlayer>(NewPlayer));
+		GetSubsystem<UTPSGameUIManagerSubsystem>()->NotifyPlayerAdded(CastChecked<UCommonLocalPlayer>(NewPlayer));
 	}
 	
 	return ReturnVal;

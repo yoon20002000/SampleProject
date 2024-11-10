@@ -10,7 +10,7 @@
 #include "LogCommonGame.h"
 #include "Widgets/CommonActivatableWidgetContainer.h"
 
-#include UE_INLINE_GENERATED_CPP_BY_NAME(PrimaryGameLayout)
+#include UE_INLINE_GENERATED_CPP_BY_NAME(TPSPrimaryGameLayout)
 
 class UObject;
 

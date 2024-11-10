@@ -51,7 +51,7 @@ public:
 	bool operator==(const ULocalPlayer* OtherLocalPlayer) const { return LocalPlayer == OtherLocalPlayer; }
 };
 
-UCLASS(Abstract, Blueprintable, Within = GameUIManagerSubsystem)
+UCLASS(Abstract, Blueprintable, Within = TPSGameUIManagerSubsystem)
 class SAMPLEPROJECT_API UTPSGameUIPolicy : public UObject
 {
 	GENERATED_BODY()
