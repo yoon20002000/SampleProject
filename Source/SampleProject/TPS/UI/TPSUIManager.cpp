@@ -7,13 +7,17 @@
 
 void UTPSUIManager::Initialize()
 {
-	if (CurrentPolicy != nullptr && DefaultUIPolicyClass.IsNull() == false)
+	if (CurrentPolicy == nullptr && DefaultUIPolicyClass.IsNull() == false)
 	{
-		TSubclassOf<UTPSGameUIPolicy> PolicyClass = DefaultUIPolicyClass.LoadSynchronous();
-
-		if(UTPSGameUIPolicy* GameUIPolicy = NewObject<UTPSGameUIPolicy>(this,PolicyClass))
+		if (DefaultUIPolicyClass.IsValid() == true)
 		{
-			SwitchToPolicy(GameUIPolicy);
+			if (TSubclassOf<UTPSGameUIPolicy> PolicyClass = DefaultUIPolicyClass.LoadSynchronous())
+			{
+				if (UTPSGameUIPolicy* GameUIPolicy = NewObject<UTPSGameUIPolicy>(this, PolicyClass))
+				{
+					SwitchToPolicy(GameUIPolicy);
+				}	
+			}
 		}
 	}
 }

@@ -19,6 +19,8 @@ void UTPSGameInstance::Init()
 	{
 		UIManager = NewObject<UTPSUIManager>();
 	}
+
+	UIManager->Initialize();
 }
 
 int32 UTPSGameInstance::AddLocalPlayer(ULocalPlayer* NewPlayer, FPlatformUserId UserId)
@@ -48,6 +50,7 @@ bool UTPSGameInstance::RemoveLocalPlayer(ULocalPlayer* ExistingPlayer)
 	
 	if (UIManager != nullptr)
 	{
+		UIManager->Deinitialize();
 		UIManager = nullptr;
 	}
 
@@ -56,5 +59,10 @@ bool UTPSGameInstance::RemoveLocalPlayer(ULocalPlayer* ExistingPlayer)
 
 void UTPSGameInstance::ReturnToMainMenu()
 {
+	if (UIManager != nullptr)
+	{
+		UIManager->Deinitialize();
+		UIManager = nullptr;
+	}
 	Super::ReturnToMainMenu();
 }
