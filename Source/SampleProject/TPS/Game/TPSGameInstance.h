@@ -20,7 +20,13 @@ public:
 	virtual bool RemoveLocalPlayer(ULocalPlayer* ExistingPlayer) override;
 	virtual void ReturnToMainMenu() override;
 
-	
+	UTPSUIManager* GetUIManager() const
+	{
+		return UIManager;
+	}
 private:
 	TWeakObjectPtr<ULocalPlayer> PrimaryPlayer;
+	
+	UPROPERTY(Transient)
+	TObjectPtr<UTPSUIManager> UIManager;
 };

@@ -5,7 +5,6 @@
 #include "Engine/GameInstance.h"
 #include "GameFramework/PlayerController.h"
 #include "TPSGameUIPolicy.h"
-#include "TPSSystemManager.h"
 #include "Game/TPSGameInstance.h"
 #include "UI/TPSUIManager.h"
 
@@ -71,12 +70,14 @@ bool UTPSCommonLocalPlayer::GetProjectionData(FViewport* Viewport, FSceneViewPro
 
 UTPSPrimaryGameLayout* UTPSCommonLocalPlayer::GetRootUILayout() const
 {
-	UTPSSystemManager* Manager = UTPSSystemManager::Get();
-	if (UTPSUIManager* UIManager = Manager->GetUIManager())
+	if (UTPSGameInstance* GameInstance = CastChecked<UTPSGameInstance>(GetGameInstance()))
 	{
-		if (UTPSGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
+		if (UTPSUIManager* UIManager = GameInstance->GetUIManager())
 		{
-			return Policy->GetRootLayout(this);
+			if (UTPSGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
+			{
+				return Policy->GetRootLayout(this);
+			}	
 		}
 	}
 

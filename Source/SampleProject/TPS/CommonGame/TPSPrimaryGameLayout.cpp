@@ -6,7 +6,6 @@
 #include "TPSGameUIPolicy.h"
 #include "Kismet/GameplayStatics.h"
 #include "LogTPSGame.h"
-#include "TPSSystemManager.h"
 #include "Game/TPSGameInstance.h"
 #include "UI/TPSUIManager.h"
 #include "Widgets/CommonActivatableWidgetContainer.h"
@@ -34,14 +33,18 @@ UTPSPrimaryGameLayout* UTPSPrimaryGameLayout::GetPrimaryGameLayout(ULocalPlayer*
 {
 	if (LocalPlayer)
 	{
-		UTPSSystemManager* Manager = UTPSSystemManager::Get();
-		if (UTPSUIManager* UIManager = Manager->GetUIManager())
+		const UTPSCommonLocalPlayer* CommonLocalPlayer = CastChecked<UTPSCommonLocalPlayer>(LocalPlayer);
+		if (UTPSGameInstance* GameInstance = CastChecked<UTPSGameInstance>(CommonLocalPlayer->GetGameInstance()))
 		{
-			if (UTPSGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
+			if (const UTPSUIManager* UIManager = GameInstance->GetUIManager())
 			{
-				const UTPSCommonLocalPlayer* CommonLocalPlayer = CastChecked<UTPSCommonLocalPlayer>(LocalPlayer);
-				
-				return Policy->GetRootLayout(CommonLocalPlayer);	
+				if (const UTPSGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
+				{
+					if (UTPSPrimaryGameLayout* RootLayout = Policy->GetRootLayout(CommonLocalPlayer))
+					{
+						return RootLayout;
+					}
+				}
 			}
 		}
 	}

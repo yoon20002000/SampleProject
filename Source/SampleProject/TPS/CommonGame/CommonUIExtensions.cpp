@@ -8,7 +8,6 @@
 #include "Engine/GameInstance.h"
 #include "TPSGameUIPolicy.h"
 #include "TPSPrimaryGameLayout.h"
-#include "TPSSystemManager.h"
 #include "Game/TPSGameInstance.h"
 #include "UI/TPSUIManager.h"
 #include "Widgets/CommonActivatableWidgetContainer.h"
@@ -173,8 +172,10 @@ void UCommonUIExtensions::ResumeInputForPlayer(ULocalPlayer* LocalPlayer, FName 
 
 UTPSUIManager* UCommonUIExtensions::GetTPSUIManager(const ULocalPlayer* LocalPlayer)
 {
-	UTPSSystemManager* Manager = UTPSSystemManager::Get();
-	
-	return Manager->GetUIManager();
+	if (UTPSGameInstance* GameInstance = CastChecked<UTPSGameInstance>(LocalPlayer->GetGameInstance()))
+	{
+		return GameInstance->GetUIManager();
+	}
+	return nullptr;
 }
 

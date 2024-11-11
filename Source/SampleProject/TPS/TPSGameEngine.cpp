@@ -13,7 +13,6 @@ void UTPSGameEngine::Init(class IEngineLoop* InEngineLoop)
 
 	SystemManager = UTPSSystemManager::CreateInstance();
 
-	SystemManager->Initialize();
 	Super::Init(InEngineLoop);
 }
 

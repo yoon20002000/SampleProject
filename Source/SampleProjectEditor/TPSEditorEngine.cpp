@@ -6,17 +6,15 @@ void UTPSEditorEngine::Init(class IEngineLoop* InEngineLoop)
 {
 
 	SystemManager = UTPSSystemManager::CreateInstance();
-	
+
 	Super::Init(InEngineLoop);
 
-	SystemManager->Initialize();
 }
 
 void UTPSEditorEngine::PreExit()
 {
 	Super::PreExit();
 	
-	UTPSSystemManager::Get()->Deinitialize();
 	UTPSSystemManager::DestoryInstance();
 	SystemManager = nullptr;
 }
