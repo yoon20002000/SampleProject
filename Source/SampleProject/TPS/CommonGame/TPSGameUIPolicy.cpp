@@ -5,6 +5,7 @@
 #include "LogTPSGame.h"
 #include "TPSCommonLocalPlayer.h"
 #include "TPSPrimaryGameLayout.h"
+#include "TPSSystemManager.h"
 #include "Engine/Engine.h"
 #include "Engine/GameInstance.h"
 #include "Framework/Application/SlateApplication.h"
@@ -16,27 +17,23 @@
 // Static
 UTPSGameUIPolicy* UTPSGameUIPolicy::GetGameUIPolicy(const UObject* WorldContextObject)
 {
-	if (UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
+	UTPSSystemManager* Manager = UTPSSystemManager::Get();
+	if (UTPSUIManager* UIManager = Manager->GetUIManager())
 	{
-		if (UTPSGameInstance* GameInstance = CastChecked<UTPSGameInstance>(World->GetGameInstance()))
+		if (UTPSGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
 		{
-			if (UTPSUIManager* UIManager = GameInstance->GetUIManager())
-			{
-				return UIManager->GetCurrentUIPolicy();	
-			}
+			return UIManager->GetCurrentUIPolicy();	
 		}
 	}
-
+	
 	return nullptr;
 }
 
 UTPSUIManager* UTPSGameUIPolicy::GetOwningUIManager() const
 {
-	if (UTPSGameInstance* GameInstance = CastChecked<UTPSGameInstance>(GetOuter()))
-	{
-		return GameInstance->GetUIManager();
-	}
-	return nullptr;
+	UTPSSystemManager* Manager = UTPSSystemManager::Get();
+
+	return Manager->GetUIManager();
 }
 
 UWorld* UTPSGameUIPolicy::GetWorld() const
