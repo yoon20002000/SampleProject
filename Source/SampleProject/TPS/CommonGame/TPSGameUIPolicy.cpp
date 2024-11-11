@@ -39,8 +39,7 @@ UTPSUIManager* UTPSGameUIPolicy::GetOwningUIManager() const
 
 UWorld* UTPSGameUIPolicy::GetWorld() const
 {
-
-	return UTPSSystemManager::Get()->GetWorld();;
+	return UTPSSystemManager::Get()->GetWorld();
 }
 
 UTPSPrimaryGameLayout* UTPSGameUIPolicy::GetRootLayout(const UTPSCommonLocalPlayer* LocalPlayer) const

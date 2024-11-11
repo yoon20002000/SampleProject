@@ -9,11 +9,11 @@
   <component name="ChangeListManager">
     <list default="true" id="bb9f1029-5ef5-424e-b123-fb63629eda12" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SampleProject.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SampleProject.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SampleProject.uproject.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/SampleProject.uproject.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSCommonPlayerController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSCommonPlayerController.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSCommonPlayerController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSCommonPlayerController.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSGameUIPolicy.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSGameUIPolicy.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/Game/TPSGameInstance.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/Game/TPSGameInstance.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/Game/TPSGameInstance.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/Game/TPSGameInstance.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/TPSSystemManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/TPSSystemManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/TPSSystemManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/TPSSystemManager.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +27,13 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="cidr-memory-view://15" root0="FORCE_HIGHLIGHTING" />
+    <setting file="cidr-memory-view://16" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.4/Engine/Plugins/Runtime/CommonUI/Source/CommonUI/Public/ICommonUIModule.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.4/Engine/Source/Editor/AdvancedPreviewScene/Private/AdvancedPreviewScene.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.4/Engine/Source/Editor/Kismet/Private/BPDelegateDragDropAction.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -84,24 +91,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;Uproject.SampleProject.executor&quot;: &quot;Run&quot;,
-    &quot;ezargs.lastUsed&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;RiderCppLiveTemplatesSettingsId&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
-    &quot;프로세스에 연결.5200:Razer Synapse Service Process.executor&quot;: &quot;Debug&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Uproject.SampleProject.executor": "Debug",
+    "ezargs.lastUsed": "",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "RiderCppLiveTemplatesSettingsId",
+    "vue.rearranger.settings.migration": "true",
+    "프로세스에 연결.5200:Razer Synapse Service Process.executor": "Debug"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CidrLocalAttachDebugger.recentlyUsed">
       <recent name="com.jetbrains.rider.cpp.debugger.RiderCppLLDBDriverConfiguration" />
@@ -223,7 +230,7 @@
       <workItem from="1731294284787" duration="3496000" />
       <workItem from="1731298295442" duration="424000" />
       <workItem from="1731303612468" duration="1947000" />
-      <workItem from="1731324243747" duration="702000" />
+      <workItem from="1731324243747" duration="2748000" />
     </task>
     <servers />
   </component>
@@ -245,28 +252,28 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/Source/SampleProject/TPS/Game/TPSGameInstance.cpp</url>
-          <line>31</line>
+          <line>33</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/Source/SampleProject/TPS/Game/TPSGameInstance.cpp</url>
-          <line>32</line>
+          <line>34</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSGameUIPolicy.cpp</url>
-          <line>193</line>
+          <line>189</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSGameUIPolicy.cpp</url>
-          <line>42</line>
+          <line>41</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSGameUIPolicy.cpp</url>
-          <line>44</line>
-          <option name="timeStamp" value="8" />
+          <url>file://$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSCommonPlayerController.cpp</url>
+          <line>62</line>
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

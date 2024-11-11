@@ -49,7 +49,10 @@ bool UTPSGameInstance::RemoveLocalPlayer(ULocalPlayer* ExistingPlayer)
 		UE_LOG(LogTPSGame, Log, TEXT("RemoveLocalPlayer: Unsetting Primary Player from %s"),
 		       *ExistingPlayer->GetName());
 	}
-
+	if (UTPSSystemManager* Manager = UTPSSystemManager::Get())
+	{
+		Manager->GetUIManager()->NotifyPlayerDestroyed(CastChecked<UTPSCommonLocalPlayer>(ExistingPlayer));
+	}
 
 	return Super::RemoveLocalPlayer(ExistingPlayer);
 }
