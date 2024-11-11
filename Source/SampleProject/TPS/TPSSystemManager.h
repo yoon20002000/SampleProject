@@ -4,6 +4,8 @@
 #include "TPSSystemManager.generated.h"
 
 
+class UTPSUIManager;
+
 UCLASS()
 class SAMPLEPROJECT_API UTPSSystemManager : public UObject
 {
@@ -14,10 +16,21 @@ public:
 	static void DestoryInstance();
 	static UTPSSystemManager* Get();
 
+	void Initialize();
+	void Deinitialize();
 	void Tick(float DeltaTime);
 	void PostTick(float DeltaTime);
+
+	UTPSUIManager* GetUIManager() const;
+	
+	void DeinitializeUIManager();
+	
+private:
+	void InitializeUIManager();
 	
 private:
 	static UTPSSystemManager* Instance;
-
+	
+	UPROPERTY(Transient)
+	TObjectPtr<UTPSUIManager> UIManager;
 };
