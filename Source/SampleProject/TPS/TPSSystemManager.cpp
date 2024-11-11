@@ -59,6 +59,19 @@ void UTPSSystemManager::DeinitializeUIManager()
 	}
 }
 
+UWorld* UTPSSystemManager::GetWorld() const
+{
+	return World;
+}
+
+void UTPSSystemManager::SetWorld(UWorld* InWorld)
+{
+	if (World != InWorld)
+	{
+		World = InWorld;
+	}
+}
+
 void UTPSSystemManager::InitializeUIManager()
 {
 	if (UIManager == nullptr)

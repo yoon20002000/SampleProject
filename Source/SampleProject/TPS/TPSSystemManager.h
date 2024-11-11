@@ -24,7 +24,9 @@ public:
 	UTPSUIManager* GetUIManager() const;
 	
 	void DeinitializeUIManager();
-	
+
+	virtual UWorld* GetWorld() const override;
+	void SetWorld(UWorld* InWorld);
 private:
 	void InitializeUIManager();
 	
@@ -33,4 +35,7 @@ private:
 	
 	UPROPERTY(Transient)
 	TObjectPtr<UTPSUIManager> UIManager;
+
+	UPROPERTY()
+	TObjectPtr<UWorld> World;
 };

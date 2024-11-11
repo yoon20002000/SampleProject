@@ -19,7 +19,7 @@ public:
 	virtual int32 AddLocalPlayer(ULocalPlayer* NewPlayer, FPlatformUserId UserId) override;
 	virtual bool RemoveLocalPlayer(ULocalPlayer* ExistingPlayer) override;
 	virtual void ReturnToMainMenu() override;
-
+	virtual void Shutdown() override;
 	
 private:
 	TWeakObjectPtr<ULocalPlayer> PrimaryPlayer;

@@ -39,13 +39,8 @@ UTPSUIManager* UTPSGameUIPolicy::GetOwningUIManager() const
 
 UWorld* UTPSGameUIPolicy::GetWorld() const
 {
-	/*if (UGameInstance* GameInstance = UGameplayStatics::GetGameInstance(GetOuter()))
-	{
-		return GameInstance->GetWorld();
-	}*/
-	UWorld* World = GetOwningUIManager()->GetOuter()->GetWorld();
 
-	return World;
+	return UTPSSystemManager::Get()->GetWorld();;
 }
 
 UTPSPrimaryGameLayout* UTPSGameUIPolicy::GetRootLayout(const UTPSCommonLocalPlayer* LocalPlayer) const
@@ -194,11 +189,7 @@ void UTPSGameUIPolicy::RequestPrimaryControl(UTPSPrimaryGameLayout* Layout)
 
 void UTPSGameUIPolicy::CreateLayoutWidget(UTPSCommonLocalPlayer* LocalPlayer)
 {
-
-	UWorld* world = GetWorld();
-	APlayerController* PlayerController = LocalPlayer->GetPlayerController(world);
-
-	if (PlayerController != nullptr)
+	if (APlayerController* PlayerController = LocalPlayer->GetPlayerController(GetWorld()))
 	{
 		TSubclassOf<UTPSPrimaryGameLayout> LayoutWidgetClass = GetLayoutWidgetClass(LocalPlayer);
 		if (ensure(LayoutWidgetClass && !LayoutWidgetClass->HasAnyClassFlags(CLASS_Abstract)))
