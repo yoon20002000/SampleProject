@@ -9,14 +9,11 @@ void UTPSUIManager::Initialize()
 {
 	if (CurrentPolicy == nullptr && DefaultUIPolicyClass.IsNull() == false)
 	{
-		if (DefaultUIPolicyClass.IsValid() == true)
+		if (TSoftClassPtr<UTPSGameUIPolicy> PolicyClass = DefaultUIPolicyClass.LoadSynchronous())
 		{
-			if (TSubclassOf<UTPSGameUIPolicy> PolicyClass = DefaultUIPolicyClass.LoadSynchronous())
+			if (UTPSGameUIPolicy* GameUIPolicy = NewObject<UTPSGameUIPolicy>(this, PolicyClass.Get()))
 			{
-				if (UTPSGameUIPolicy* GameUIPolicy = NewObject<UTPSGameUIPolicy>(this, PolicyClass))
-				{
-					SwitchToPolicy(GameUIPolicy);
-				}	
+				SwitchToPolicy(GameUIPolicy);
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "TPSGameUIPolicy.h"
 
@@ -11,6 +11,7 @@
 #include "Framework/Application/SlateApplication.h"
 #include "Game/TPSGameInstance.h"
 #include "UI/TPSUIManager.h"
+#include "Kismet/GameplayStatics.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(TPSGameUIPolicy)
 
@@ -22,10 +23,10 @@ UTPSGameUIPolicy* UTPSGameUIPolicy::GetGameUIPolicy(const UObject* WorldContextO
 	{
 		if (UTPSGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
 		{
-			return UIManager->GetCurrentUIPolicy();	
+			return UIManager->GetCurrentUIPolicy();
 		}
 	}
-	
+
 	return nullptr;
 }
 
@@ -38,12 +39,13 @@ UTPSUIManager* UTPSGameUIPolicy::GetOwningUIManager() const
 
 UWorld* UTPSGameUIPolicy::GetWorld() const
 {
-	if (UTPSGameInstance* GameInstance = CastChecked<UTPSGameInstance>(GetOwningUIManager()->GetOuter()))
+	/*if (UGameInstance* GameInstance = UGameplayStatics::GetGameInstance(GetOuter()))
 	{
 		return GameInstance->GetWorld();
-	}
-	
-	return nullptr;
+	}*/
+	UWorld* World = GetOwningUIManager()->GetOuter()->GetWorld();
+
+	return World;
 }
 
 UTPSPrimaryGameLayout* UTPSGameUIPolicy::GetRootLayout(const UTPSCommonLocalPlayer* LocalPlayer) const
@@ -55,19 +57,19 @@ UTPSPrimaryGameLayout* UTPSGameUIPolicy::GetRootLayout(const UTPSCommonLocalPlay
 void UTPSGameUIPolicy::NotifyPlayerAdded(UTPSCommonLocalPlayer* LocalPlayer)
 {
 	LocalPlayer->OnPlayerControllerSet.AddWeakLambda(this, [this](UTPSCommonLocalPlayer* LocalPlayer, APlayerController* PlayerController)
-	{
-		NotifyPlayerRemoved(LocalPlayer);
+		{
+			NotifyPlayerRemoved(LocalPlayer);
 
-		if (FRootViewportLayoutInfo* LayoutInfo = RootViewportLayouts.FindByKey(LocalPlayer))
-		{
-			AddLayoutToViewport(LocalPlayer, LayoutInfo->RootLayout);
-			LayoutInfo->bAddedToViewport = true;
-		}
-		else
-		{
-			CreateLayoutWidget(LocalPlayer);
-		}
-	});
+			if (FRootViewportLayoutInfo* LayoutInfo = RootViewportLayouts.FindByKey(LocalPlayer))
+			{
+				AddLayoutToViewport(LocalPlayer, LayoutInfo->RootLayout);
+				LayoutInfo->bAddedToViewport = true;
+			}
+			else
+			{
+				CreateLayoutWidget(LocalPlayer);
+			}
+		});
 
 	if (FRootViewportLayoutInfo* LayoutInfo = RootViewportLayouts.FindByKey(LocalPlayer))
 	{
@@ -165,12 +167,12 @@ void UTPSGameUIPolicy::OnRootLayoutAddedToViewport(UTPSCommonLocalPlayer* LocalP
 
 void UTPSGameUIPolicy::OnRootLayoutRemovedFromViewport(UTPSCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout)
 {
-	
+
 }
 
 void UTPSGameUIPolicy::OnRootLayoutReleased(UTPSCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout)
 {
-	
+
 }
 
 void UTPSGameUIPolicy::RequestPrimaryControl(UTPSPrimaryGameLayout* Layout)
@@ -192,14 +194,18 @@ void UTPSGameUIPolicy::RequestPrimaryControl(UTPSPrimaryGameLayout* Layout)
 
 void UTPSGameUIPolicy::CreateLayoutWidget(UTPSCommonLocalPlayer* LocalPlayer)
 {
-	if (APlayerController* PlayerController = LocalPlayer->GetPlayerController(GetWorld()))
+
+	UWorld* world = GetWorld();
+	APlayerController* PlayerController = LocalPlayer->GetPlayerController(world);
+
+	if (PlayerController != nullptr)
 	{
 		TSubclassOf<UTPSPrimaryGameLayout> LayoutWidgetClass = GetLayoutWidgetClass(LocalPlayer);
 		if (ensure(LayoutWidgetClass && !LayoutWidgetClass->HasAnyClassFlags(CLASS_Abstract)))
 		{
 			UTPSPrimaryGameLayout* NewLayoutObject = CreateWidget<UTPSPrimaryGameLayout>(PlayerController, LayoutWidgetClass);
 			RootViewportLayouts.Emplace(LocalPlayer, NewLayoutObject, true);
-			
+
 			AddLayoutToViewport(LocalPlayer, NewLayoutObject);
 		}
 	}
