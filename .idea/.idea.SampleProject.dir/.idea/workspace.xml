@@ -9,21 +9,7 @@
   <component name="ChangeListManager">
     <list default="true" id="bb9f1029-5ef5-424e-b123-fb63629eda12" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SampleProject.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SampleProject.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/UI/WBP_UILayout.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/UI/WBP_UILayout.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/CommonUIExtensions.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/CommonUIExtensions.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/LogTPSGame.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/LogTPSGame.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSCommonLocalPlayer.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSCommonLocalPlayer.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSCommonPlayerController.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSCommonPlayerController.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSGameUIPolicy.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSGameUIPolicy.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSPrimaryGameLayout.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/CommonGame/TPSPrimaryGameLayout.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/UIDataAsset.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/UIDataAsset.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SampleProject.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/SampleProject.uproject" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,8 +54,19 @@
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.4/Engine/Source/ThirdParty/Python3/Python3.Build.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.38.33130/include/atomic" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SampleProject/SampleProject.Build.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/Game/TPSCommonLocalPlayer.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/Game/TPSGameInstance.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/Game/TPSGameInstance.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/TPSGameEngine.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/TPSGameEngine.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/TPSSystemManager.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/TPSSystemManager.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/UI/CommonUIExtensions.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSCommonActivatableWidget.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSCommonActivatableWidget.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSCommonUserWidget.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSGameUIPolicy.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSPrimaryGameLayout.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSUIManager.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSUIManager.h" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -83,24 +80,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;Uproject.SampleProject.executor&quot;: &quot;Debug&quot;,
-    &quot;ezargs.lastUsed&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;RiderCppLiveTemplatesSettingsId&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
-    &quot;프로세스에 연결.5200:Razer Synapse Service Process.executor&quot;: &quot;Debug&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Uproject.SampleProject.executor": "Run",
+    "ezargs.lastUsed": "",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true",
+    "프로세스에 연결.5200:Razer Synapse Service Process.executor": "Debug"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CidrLocalAttachDebugger.recentlyUsed">
       <recent name="com.jetbrains.rider.cpp.debugger.RiderCppLLDBDriverConfiguration" />
@@ -215,7 +212,8 @@
       <workItem from="1731298295442" duration="424000" />
       <workItem from="1731303612468" duration="1947000" />
       <workItem from="1731324243747" duration="3848000" />
-      <workItem from="1731382061426" duration="41000" />
+      <workItem from="1731382061426" duration="375000" />
+      <workItem from="1731382450623" duration="88000" />
     </task>
     <servers />
   </component>
@@ -232,7 +230,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSUIManager.cpp</url>
-          <line>9</line>
+          <line>10</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
