@@ -3,8 +3,10 @@
 #pragma once
 
 #include "Engine/DataAsset.h"
+#include "Blueprint/UserWidget.h"
 #include "UIDataAsset.generated.h"
 
+class UUserWidget;
 
 USTRUCT()
 struct FUIDataAssetInfo
@@ -13,7 +15,7 @@ struct FUIDataAssetInfo
 	UPROPERTY(EditAnywhere)
 	FString AssetName;
 	UPROPERTY(EditAnywhere)
-	TSoftObjectPtr<class UUserWidget> UserWidgetClass;
+	TSoftClassPtr<UUserWidget> UserWidgetClass;
 };
 /**
  * 
