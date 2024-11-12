@@ -3,11 +3,9 @@
 #pragma once
 
 #include "Engine/DataAsset.h"
-#include "Blueprint/UserWidget.h"
 #include "UIDataAsset.generated.h"
 
 class UUserWidget;
-
 USTRUCT()
 struct FUIDataAssetInfo
 {
@@ -24,6 +22,8 @@ UCLASS()
 class SAMPLEPROJECT_API UUIDataAsset : public UDataAsset
 {
 	GENERATED_BODY()
+public:
+	UUserWidget* LoadUserWidget(const FString& UIName) const;
 private:
 	UPROPERTY(EditAnywhere)
 	TArray<FUIDataAssetInfo> DataAssets;

@@ -4,18 +4,30 @@
 #include "TPSUIManager.h"
 
 #include "TPSGameUIPolicy.h"
+#include "UIDataAsset.h"
+#include "Blueprint/UserWidget.h"
 
 
 void UTPSUIManager::Initialize()
 {
 	if (CurrentPolicy == nullptr && DefaultUIPolicyClass.IsNull() == false)
 	{
-		if (TSoftClassPtr<UTPSGameUIPolicy> PolicyClass = DefaultUIPolicyClass.LoadSynchronous())
+		DefaultUIPolicyClass = DefaultUIPolicyClass.LoadSynchronous();
+		if (DefaultUIPolicyClass.IsValid() == true)
 		{
-			if (UTPSGameUIPolicy* GameUIPolicy = NewObject<UTPSGameUIPolicy>(this, PolicyClass.Get()))
+			if (UTPSGameUIPolicy* GameUIPolicy = NewObject<UTPSGameUIPolicy>(this, DefaultUIPolicyClass.Get()))
 			{
 				SwitchToPolicy(GameUIPolicy);
 			}
+		}
+	}
+
+	if (UIDataAssetClass.IsNull() == false)
+	{
+		UIDataAssetClass = UIDataAssetClass.LoadSynchronous();
+		if (UIDataAssetClass.IsValid() == true)
+		{
+			UIDataAsset = NewObject<UUIDataAsset>(this,UIDataAssetClass.Get());
 		}
 	}
 }
@@ -46,6 +58,22 @@ void UTPSUIManager::NotifyPlayerDestroyed(UTPSCommonLocalPlayer* LocalPlayer)
 	if (LocalPlayer && CurrentPolicy)
 	{
 		CurrentPolicy->NotifyPlayerDestroyed(LocalPlayer);
+	}
+}
+
+void UTPSUIManager::LoadUI(const FString& UIName) const
+{
+	if (UIDataAsset == nullptr)
+	{
+		return;
+	}
+
+	UUserWidget* Userwidget = UIDataAsset->LoadUserWidget(UIName);
+
+	if (Userwidget != nullptr)
+	{
+		// stack에 넣어야 됨.
+		// Userwidget->AddToViewport();
 	}
 }
 
