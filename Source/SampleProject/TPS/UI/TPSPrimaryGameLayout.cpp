@@ -1,13 +1,13 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "TPSPrimaryGameLayout.h"
-#include "TPSCommonLocalPlayer.h"
-#include "Engine/GameInstance.h"
-#include "TPSGameUIPolicy.h"
-#include "Kismet/GameplayStatics.h"
+
 #include "LogTPSGame.h"
+#include "TPSGameUIPolicy.h"
 #include "TPSSystemManager.h"
-#include "Game/TPSGameInstance.h"
+#include "Engine/GameInstance.h"
+#include "Game/TPSCommonLocalPlayer.h"
+#include "Kismet/GameplayStatics.h"
 #include "UI/TPSUIManager.h"
 #include "Widgets/CommonActivatableWidgetContainer.h"
 

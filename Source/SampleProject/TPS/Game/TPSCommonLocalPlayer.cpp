@@ -4,9 +4,8 @@
 
 #include "Engine/GameInstance.h"
 #include "GameFramework/PlayerController.h"
-#include "TPSGameUIPolicy.h"
 #include "TPSSystemManager.h"
-#include "Game/TPSGameInstance.h"
+#include "UI/TPSGameUIPolicy.h"
 #include "UI/TPSUIManager.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(TPSCommonLocalPlayer)

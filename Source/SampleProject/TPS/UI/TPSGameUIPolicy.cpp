@@ -3,13 +3,12 @@
 #include "TPSGameUIPolicy.h"
 
 #include "LogTPSGame.h"
-#include "TPSCommonLocalPlayer.h"
 #include "TPSPrimaryGameLayout.h"
 #include "TPSSystemManager.h"
 #include "Engine/Engine.h"
 #include "Engine/GameInstance.h"
 #include "Framework/Application/SlateApplication.h"
-#include "Game/TPSGameInstance.h"
+#include "Game/TPSCommonLocalPlayer.h"
 #include "UI/TPSUIManager.h"
 #include "Kismet/GameplayStatics.h"
 

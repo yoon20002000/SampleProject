@@ -4,12 +4,11 @@
 
 #include "CommonInputSubsystem.h"
 #include "CommonInputTypeEnum.h"
-#include "TPSCommonLocalPlayer.h"
 #include "Engine/GameInstance.h"
 #include "TPSGameUIPolicy.h"
 #include "TPSPrimaryGameLayout.h"
 #include "TPSSystemManager.h"
-#include "Game/TPSGameInstance.h"
+#include "Game/TPSCommonLocalPlayer.h"
 #include "UI/TPSUIManager.h"
 #include "Widgets/CommonActivatableWidgetContainer.h"
 

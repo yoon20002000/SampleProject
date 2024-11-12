@@ -6,9 +6,9 @@
 #include "CommonUISettings.h"
 #include "GameplayTagContainer.h"
 #include "ICommonUIModule.h"
-#include "CommonGame/LogTPSGame.h"
+#include "LogTPSGame.h"
+#include "TPSCommonLocalPlayer.h"
 #include "TPSSystemManager.h"
-#include "CommonGame/TPSCommonLocalPlayer.h"
 #include "UI/TPSUIManager.h"
 
 void UTPSGameInstance::Init()

@@ -3,7 +3,8 @@
 
 #include "TPSUIManager.h"
 
-#include "CommonGame/TPSGameUIPolicy.h"
+#include "TPSGameUIPolicy.h"
+
 
 void UTPSUIManager::Initialize()
 {
