@@ -18,6 +18,9 @@ public:
 
 	virtual void Initialize();
 	virtual void Deinitialize();
+
+	void BeginPlay();
+	void EndPlay(const EEndPlayReason::Type EndPlayReason);
 	
 	const UTPSGameUIPolicy* GetCurrentUIPolicy() const { return CurrentPolicy; }
 	UTPSGameUIPolicy* GetCurrentUIPolicy() { return CurrentPolicy; }

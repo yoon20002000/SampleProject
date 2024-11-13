@@ -38,6 +38,14 @@ void UTPSUIManager::Deinitialize()
 	SwitchToPolicy(nullptr);
 }
 
+void UTPSUIManager::BeginPlay()
+{
+}
+
+void UTPSUIManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+}
+
 void UTPSUIManager::NotifyPlayerAdded(UTPSCommonLocalPlayer* LocalPlayer)
 {
 	if (ensure(LocalPlayer) && CurrentPolicy)

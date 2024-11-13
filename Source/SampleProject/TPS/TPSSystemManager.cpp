@@ -49,13 +49,15 @@ void UTPSSystemManager::PostTick(float DeltaTime)
 }
 
 void UTPSSystemManager::BeginPlay()
-{
+{	
 	GameManager->BeginPlay();
+	UIManager->BeginPlay();
 }
 
 void UTPSSystemManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	GameManager->EndPlay(EndPlayReason);
+	UIManager->EndPlay(EndPlayReason);
+	GameManager->EndPlay(EndPlayReason);	
 }
 
 UTPSUIManager* UTPSSystemManager::GetUIManager() const
