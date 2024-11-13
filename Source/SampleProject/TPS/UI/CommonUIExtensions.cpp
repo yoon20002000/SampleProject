@@ -173,7 +173,14 @@ void UCommonUIExtensions::ResumeInputForPlayer(ULocalPlayer* LocalPlayer, FName 
 UTPSUIManager* UCommonUIExtensions::GetTPSUIManager(const ULocalPlayer* LocalPlayer)
 {
 	UTPSSystemManager* Manager = UTPSSystemManager::Get();
-	
-	return Manager->GetUIManager();
+
+	if (Manager != nullptr)
+	{
+		return Manager->GetUIManager();	
+	}
+	else
+	{
+		return nullptr;
+	}
 }
 
