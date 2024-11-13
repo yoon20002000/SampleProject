@@ -18,6 +18,8 @@ public:
 	static UWorld* GetWorld();
 	static UTPSGameInstance* GetGameInstance();
 	static APlayerController* GetPlayerController(UWorld* InWorld = nullptr);
+	static ULocalPlayer* GetLocalPlayer(UWorld* InWorld = nullptr);
 	static APlayerCameraManager* GetPlayeCameraManager(UWorld* InWorld = nullptr);
 	static APlayerController* GetFirstLocalPlayerController(UWorld* InWorld);
+	
 };

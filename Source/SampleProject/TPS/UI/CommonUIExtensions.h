@@ -58,7 +58,9 @@ public:
 
 	static void ResumeInputForPlayer(ULocalPlayer* LocalPlayer, FName SuspendToken);
 
-	static UTPSUIManager* GetTPSUIManager(const ULocalPlayer* LocalPlayer);
+	//commonui 이거 사용
+	//static UCommonActivatableWidget* PushContentToLayer(UPARAM(meta = (Categories = "UI.Layer")) FGameplayTag LayerName, UPARAM(meta = (AllowAbstract = false)) TSubclassOf<UCommonActivatableWidget> WidgetClass);
+	static UTPSUIManager* GetTPSUIManager();
 private:
 	static int32 InputSuspensions;
 };

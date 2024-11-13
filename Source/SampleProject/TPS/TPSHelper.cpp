@@ -37,6 +37,15 @@ APlayerController* TPSHelper::GetPlayerController(UWorld* InWorld)
 	return UGameplayStatics::GetPlayerController(GetWorld(), 0);
 }
 
+ULocalPlayer* TPSHelper::GetLocalPlayer(UWorld* InWorld)
+{
+	if (APlayerController* PlayerController = GetPlayerController(InWorld))
+	{
+		return PlayerController->GetLocalPlayer();
+	}
+	return nullptr;
+}
+
 APlayerCameraManager* TPSHelper::GetPlayeCameraManager(UWorld* InWorld)
 {
 	APlayerController* PlayerController = GetPlayerController(InWorld);

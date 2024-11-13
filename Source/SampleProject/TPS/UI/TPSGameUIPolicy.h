@@ -32,6 +32,7 @@ struct FRootViewportLayoutInfo
 {
 	GENERATED_BODY()
 public:
+	//commonui 이거 삭제
 	UPROPERTY(Transient)
 	TObjectPtr<ULocalPlayer> LocalPlayer = nullptr;
 
@@ -69,6 +70,8 @@ public:
 	virtual UWorld* GetWorld() const override;
 	UTPSUIManager* GetOwningUIManager() const;
 	UTPSPrimaryGameLayout* GetRootLayout(const UTPSCommonLocalPlayer* LocalPlayer) const;
+	//commonui UTPSCommonLocalPlayer 이거 삭제되면 이런식으로 함수를
+	//UTPSPrimaryGameLayout* GetRootLayout() const;
 
 	ELocalMultiplayerInteractionMode GetLocalMultiplayerInteractionMode() const { return LocalMultiplayerInteractionMode; }
 

@@ -10,6 +10,17 @@ class UTPSCommonLocalPlayer;
 /**
  * 
  */
+
+UENUM(Blueprintable)
+enum class EUILayerType : uint8
+{
+	NONE = 0,
+	GameLayer,
+	GameMenu,
+	Menu,
+	Modal,
+};
+
 UCLASS(config = Game)
 class SAMPLEPROJECT_API UTPSUIManager : public UObject
 {
@@ -29,7 +40,9 @@ public:
 	virtual void NotifyPlayerRemoved(UTPSCommonLocalPlayer* LocalPlayer);
 	virtual void NotifyPlayerDestroyed(UTPSCommonLocalPlayer* LocalPlayer);
 
-	void LoadUI(const FString& UIName) const;
+	void LoadUI(const FString& UIName);
+	FString GetLayerNameByLayerType(const EUILayerType InLayerType);
+	
 protected:
 	void SwitchToPolicy(UTPSGameUIPolicy* InPolicy);
 private:

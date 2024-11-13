@@ -60,7 +60,7 @@ UCommonActivatableWidget* UCommonUIExtensions::PushContentToLayer_ForPlayer(cons
 		return nullptr;
 	}
 	
-	if (UTPSUIManager* UIManager = GetTPSUIManager(LocalPlayer))
+	if (UTPSUIManager* UIManager = GetTPSUIManager())
 	{
 		if (UTPSGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
 		{
@@ -81,7 +81,7 @@ void UCommonUIExtensions::PushStreamedContentToLayer_ForPlayer(const ULocalPlaye
 		return;
 	}
 
-	if (UTPSUIManager* UIManager = GetTPSUIManager(LocalPlayer))
+	if (UTPSUIManager* UIManager = GetTPSUIManager())
 	{
 		if (UTPSGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
 		{
@@ -104,7 +104,7 @@ void UCommonUIExtensions::PopContentFromLayer(UCommonActivatableWidget* Activata
 
 	if (const ULocalPlayer* LocalPlayer = ActivatableWidget->GetOwningLocalPlayer())
 	{
-		if (UTPSUIManager* UIManager = GetTPSUIManager(LocalPlayer))
+		if (UTPSUIManager* UIManager = GetTPSUIManager())
 		{
 			if (const UTPSGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
 			{
@@ -170,7 +170,30 @@ void UCommonUIExtensions::ResumeInputForPlayer(ULocalPlayer* LocalPlayer, FName 
 	}
 }
 
-UTPSUIManager* UCommonUIExtensions::GetTPSUIManager(const ULocalPlayer* LocalPlayer)
+//commonui 이거 사용
+// UCommonActivatableWidget* UCommonUIExtensions::PushContentToLayer(FGameplayTag LayerName, TSubclassOf<UCommonActivatableWidget> WidgetClass)
+// {
+// 	if (!ensure(WidgetClass != nullptr))
+// 	{
+// 		return nullptr;
+// 	}
+// 	
+// 	if (UTPSUIManager* UIManager = GetTPSUIManager())
+// 	{
+// 		if (UTPSGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
+// 		{
+// 			if (UTPSPrimaryGameLayout* RootLayout = Policy->GetRootLayout())
+// 			{
+// 				return RootLayout->PushWidgetToLayerStack(LayerName, WidgetClass);
+// 			}
+// 		}
+// 	}
+//
+// 	return nullptr;
+// }
+
+
+UTPSUIManager* UCommonUIExtensions::GetTPSUIManager()
 {
 	UTPSSystemManager* Manager = UTPSSystemManager::Get();
 
@@ -178,9 +201,6 @@ UTPSUIManager* UCommonUIExtensions::GetTPSUIManager(const ULocalPlayer* LocalPla
 	{
 		return Manager->GetUIManager();	
 	}
-	else
-	{
-		return nullptr;
-	}
+	return nullptr;
 }
 

@@ -3,6 +3,8 @@
 
 #include "TPSUIManager.h"
 
+#include "CommonUIExtensions.h"
+#include "GameplayTagsManager.h"
 #include "TPSGameUIPolicy.h"
 
 #include "Blueprint/UserWidget.h"
@@ -70,20 +72,51 @@ void UTPSUIManager::NotifyPlayerDestroyed(UTPSCommonLocalPlayer* LocalPlayer)
 	}
 }
 
-void UTPSUIManager::LoadUI(const FString& UIName) const
+void UTPSUIManager::LoadUI(const FString& UIName) 
 {
 	if (UIDataAsset == nullptr)
 	{
 		return;
 	}
 
-	UUserWidget* Userwidget = UIDataAsset->LoadUserWidget(UIName);
+	UUserWidget* loadWidget = UIDataAsset->LoadUserWidget(UIName);
 
-	if (Userwidget != nullptr)
+	if (loadWidget != nullptr)
 	{
 		// stack에 넣어야 됨.
 		// Userwidget->AddToViewport();
+
+		FString LayerName = GetLayerNameByLayerType(EUILayerType::GameLayer);
+
+		//commonui 이렇게 만들어서 리스트에
+		//const auto LoadUIPtr = UCommonUIExtensions::PushContentToLayer(UGameplayTagsManager::Get().RequestGameplayTag(*LayerName), loadWidget);
+		//UILists.Add(LoadUIPtr);
 	}
+}
+
+FString UTPSUIManager::GetLayerNameByLayerType(const EUILayerType InLayerType)
+{
+	FString LayerName;
+
+	switch (InLayerType)
+	{
+	case EUILayerType::GameLayer:
+		LayerName = TEXT("UI.Layer.Game");
+		break;
+	case EUILayerType::GameMenu:
+		LayerName = TEXT("UI.Layer.GameMenu");
+		break;
+	case EUILayerType::Menu:
+		LayerName = TEXT("UI.Layer.Menu");
+		break;
+	case EUILayerType::Modal:
+		LayerName = TEXT("UI.Layer.Modal");
+		break;
+	default:
+		break;
+	}
+
+	return LayerName;
 }
 
 void UTPSUIManager::SwitchToPolicy(UTPSGameUIPolicy* InPolicy)
