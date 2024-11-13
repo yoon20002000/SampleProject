@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Camera/CameraComponent.h"
-#include "TPSCustomCameraComponent.generated.h"
+#include "TPSCameraComponent.generated.h"
 
 /**
  * 
  */
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class SAMPLEPROJECT_API UTPSCustomCameraComponent : public UCameraComponent
+class SAMPLEPROJECT_API UTPSCameraComponent : public UCameraComponent
 {
 	GENERATED_BODY()
 	

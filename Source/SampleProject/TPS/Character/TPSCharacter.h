@@ -6,14 +6,18 @@
 #include "InputActionValue.h"
 #include "GameFramework/Character.h"
 #include "TPSCharacter.generated.h"
+class UTPSCameraComponent;
+class UTPSSpringArmComponent;
 class UInputMappingContext;
 class UInputAction;
+class USpringArmComponent;
+class UCameraComponent;
 UCLASS()
 class SAMPLEPROJECT_API ATPSCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
-private:
+protected:
 	UPROPERTY(EditAnywhere, Category="Input", meta=(AllowPrivateAccess=true))
 	TObjectPtr<UInputMappingContext> InputMappingContext;
 	UPROPERTY(EditAnywhere, Category="Input", meta=(AllowPrivateAccess=true))
@@ -25,6 +29,11 @@ private:
 	UPROPERTY(EditAnywhere, Category="Input", meta=(AllowPrivateAccess=true))
 	TObjectPtr<UInputAction> ShotAction;
 
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UTPSSpringArmComponent> SpringArmComp;
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UTPSCameraComponent> CameraComp;
+	
 	UPROPERTY(EditAnywhere, Category="Ability", meta=(AllowPrivateAccess=true))
 	int MaxHealth = 100.f;
 	UPROPERTY(VisibleAnywhere, Category="Ability", meta=(AllowPrivateAccess=true))

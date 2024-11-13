@@ -5,12 +5,21 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Components/TPSCameraComponent.h"
+#include "Components/TPSSpringArmComponent.h"
 
 // Sets default values
 ATPSCharacter::ATPSCharacter()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	SpringArmComp = CreateDefaultSubobject<UTPSSpringArmComponent>(TEXT("SpringArmComp"));
+	SpringArmComp->bUsePawnControlRotation = true;
+	SpringArmComp->SetupAttachment(RootComponent);
+	SpringArmComp->SetUsingAbsoluteRotation(true);
+
+	CameraComp = CreateDefaultSubobject<UTPSCameraComponent>(TEXT("CameraComp"));
+	CameraComp->SetupAttachment(SpringArmComp);
 }
 
 // Called when the game starts or when spawned

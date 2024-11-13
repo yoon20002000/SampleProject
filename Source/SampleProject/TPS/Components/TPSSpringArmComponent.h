@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "TPSCustomSpringArmComponent.generated.h"
+#include "TPSSpringArmComponent.generated.h"
 
 /**
  * 
  */
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class SAMPLEPROJECT_API UTPSCustomSpringArmComponent : public USpringArmComponent
+class SAMPLEPROJECT_API UTPSSpringArmComponent : public USpringArmComponent
 {
 	GENERATED_BODY()
 	
