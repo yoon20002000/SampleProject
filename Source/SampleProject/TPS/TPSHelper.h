@@ -1,0 +1,23 @@
+﻿#pragma once
+
+#include "CoreMinimal.h"
+
+class UTPSGameInstance;
+class ATPSGameMode;
+
+class TPSHelper
+{
+
+private:
+	static TWeakObjectPtr<UTPSGameInstance> GameInstance;
+
+public:
+
+	static void SetGameInstance(UTPSGameInstance* gameInstance);
+
+	static UWorld* GetWorld();
+	static UTPSGameInstance* GetGameInstance();
+	static APlayerController* GetPlayerController(UWorld* InWorld = nullptr);
+	static APlayerCameraManager* GetPlayeCameraManager(UWorld* InWorld = nullptr);
+	static APlayerController* GetFirstLocalPlayerController(UWorld* InWorld);
+};

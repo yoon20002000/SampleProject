@@ -1,4 +1,6 @@
 ﻿#include "TPSSystemManager.h"
+
+#include "TPSGameManager.h"
 #include "UI/TPSUIManager.h"
 UTPSSystemManager* UTPSSystemManager::Instance = nullptr;
 
@@ -30,6 +32,7 @@ UTPSSystemManager* UTPSSystemManager::Get()
 void UTPSSystemManager::Initialize()
 {
 	InitializeUIManager();
+	GameManager = NewObject<UTPSGameManager>();
 }
 
 void UTPSSystemManager::Deinitialize()
@@ -43,6 +46,16 @@ void UTPSSystemManager::Tick(float DeltaTime)
 
 void UTPSSystemManager::PostTick(float DeltaTime)
 {
+}
+
+void UTPSSystemManager::BeginPlay()
+{
+	GameManager->BeginPlay();
+}
+
+void UTPSSystemManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	GameManager->EndPlay(EndPlayReason);
 }
 
 UTPSUIManager* UTPSSystemManager::GetUIManager() const
@@ -70,6 +83,11 @@ void UTPSSystemManager::SetWorld(UWorld* InWorld)
 	{
 		World = InWorld;
 	}
+}
+
+UTPSGameManager* UTPSSystemManager::GetGameManager() const
+{
+	return GameManager;
 }
 
 void UTPSSystemManager::InitializeUIManager()

@@ -6,11 +6,14 @@
 #include "Engine/GameInstance.h"
 #include "TPSGameInstance.generated.h"
 
+class UGameDataAsset;
 class UTPSUIManager;
+class ATPSGameMode;
+
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable)
 class SAMPLEPROJECT_API UTPSGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
@@ -20,7 +23,8 @@ public:
 	virtual bool RemoveLocalPlayer(ULocalPlayer* ExistingPlayer) override;
 	virtual void ReturnToMainMenu() override;
 	virtual void Shutdown() override;
-	
+
 private:
 	TWeakObjectPtr<ULocalPlayer> PrimaryPlayer;
+
 };

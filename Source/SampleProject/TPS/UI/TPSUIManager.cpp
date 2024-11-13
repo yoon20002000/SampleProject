@@ -4,8 +4,9 @@
 #include "TPSUIManager.h"
 
 #include "TPSGameUIPolicy.h"
-#include "UIDataAsset.h"
+
 #include "Blueprint/UserWidget.h"
+#include "Data/UIDataAsset.h"
 
 
 void UTPSUIManager::Initialize()

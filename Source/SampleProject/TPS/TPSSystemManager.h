@@ -5,6 +5,7 @@
 
 
 class UTPSUIManager;
+class UTPSGameManager;
 
 UCLASS()
 class SAMPLEPROJECT_API UTPSSystemManager : public UObject
@@ -21,12 +22,17 @@ public:
 	void Tick(float DeltaTime);
 	void PostTick(float DeltaTime);
 
+	void BeginPlay();
+	void EndPlay(const EEndPlayReason::Type EndPlayReason);
+
 	UTPSUIManager* GetUIManager() const;
 	
 	void DeinitializeUIManager();
 
 	virtual UWorld* GetWorld() const override;
 	void SetWorld(UWorld* InWorld);
+
+	UTPSGameManager* GetGameManager() const;
 private:
 	void InitializeUIManager();
 	
@@ -35,6 +41,9 @@ private:
 	
 	UPROPERTY(Transient)
 	TObjectPtr<UTPSUIManager> UIManager;
+
+	UPROPERTY(Transient)
+	TObjectPtr<UTPSGameManager> GameManager;
 
 	UPROPERTY()
 	TObjectPtr<UWorld> World;

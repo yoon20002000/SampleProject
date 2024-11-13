@@ -16,7 +16,7 @@ void UTPSGameInstance::Init()
 	Super::Init();
 	FGameplayTagContainer PlatformTraits = ICommonUIModule::GetSettings().GetPlatformTraits();
 
-	UTPSSystemManager::Get()->SetWorld(GetWorld());
+	
 }
 
 int32 UTPSGameInstance::AddLocalPlayer(ULocalPlayer* NewPlayer, FPlatformUserId UserId)

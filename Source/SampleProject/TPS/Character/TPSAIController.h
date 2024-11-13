@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable)
 class SAMPLEPROJECT_API ATPSAIController : public AAIController
 {
 	GENERATED_BODY()
