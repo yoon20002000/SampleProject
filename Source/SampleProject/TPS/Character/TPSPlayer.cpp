@@ -12,13 +12,13 @@ ATPSPlayer::ATPSPlayer()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	/*SpringArmComp = CreateDefaultSubobject<UTPSSpringArmComponent>(TEXT("CustomSpringArm"));
+	SpringArmComp = CreateDefaultSubobject<UTPSSpringArmComponent>(TEXT("CustomSpringArm"));
 	SpringArmComp->bUsePawnControlRotation = true;
 	SpringArmComp->SetupAttachment(RootComponent);
 	SpringArmComp->SetUsingAbsoluteRotation(true);
 
 	CameraComp = CreateDefaultSubobject<UTPSCameraComponent>(TEXT("CustomCamera"));
-	CameraComp->SetupAttachment(SpringArmComp);*/
+	CameraComp->SetupAttachment(SpringArmComp);
 }
 
 // Called when the game starts or when spawned

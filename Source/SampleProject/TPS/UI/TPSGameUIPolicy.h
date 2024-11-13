@@ -52,7 +52,7 @@ public:
 	bool operator==(const ULocalPlayer* OtherLocalPlayer) const { return LocalPlayer == OtherLocalPlayer; }
 };
 
-UCLASS(Abstract, Blueprintable, Within = TPSGameInstance)
+UCLASS(Abstract, Blueprintable, Within = TPSUIManager)
 class SAMPLEPROJECT_API UTPSGameUIPolicy : public UObject
 {
 	GENERATED_BODY()
