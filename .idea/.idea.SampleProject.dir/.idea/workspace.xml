@@ -8,16 +8,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bb9f1029-5ef5-424e-b123-fb63629eda12" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.SampleProject.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SampleProject.dir/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/BP_TPSCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/BP_TPSCharacter.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/BP_TPSPlayer.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/BP_TPSPlayer.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SampleProject.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/SampleProject.uproject" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/Character/TPSCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/Character/TPSCharacter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/Character/TPSCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/Character/TPSCharacter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/Components/TPSCustomCameraComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/Components/TPSCameraComponent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/Components/TPSCustomCameraComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/Components/TPSCameraComponent.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/Components/TPSCustomSpringArmComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/Components/TPSSpringArmComponent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/Components/TPSCustomSpringArmComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/Components/TPSSpringArmComponent.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSHUDLayout.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSHUDLayout.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSUIManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSUIManager.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,19 +61,30 @@
     <setting file="file://$PROJECT_DIR$/../../Program Files/Epic Games/UE_5.4/Engine/Source/ThirdParty/Python3/Python3.Build.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.38.33130/include/atomic" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SampleProject/SampleProject.Build.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/Character/TPSCharacter.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/Character/TPSCharacter.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/Components/TPSCameraComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/Game/TPSCommonLocalPlayer.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/Game/TPSGameInstance.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/Game/TPSGameInstance.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/Game/TPSGameMode.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/Game/TPSGameMode.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/TPSGameEngine.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/TPSGameEngine.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/TPSGameManager.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/TPSGameManager.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/TPSSystemManager.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/TPSSystemManager.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/UI/CommonUIExtensions.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSCommonActivatableWidget.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSCommonActivatableWidget.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSCommonUserWidget.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSCommonUserWidget.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSGameUIPolicy.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSHUDLayout.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSHUDLayout.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSPrimaryGameLayout.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSPrimaryGameLayout.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSUIManager.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSUIManager.h" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -121,7 +127,7 @@
         <option name="CONFIGURATION" value="Development Editor" />
         <option name="PLATFORM" value="Win64" />
         <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
-        <option name="EXECUTABLE_PATH" value="C:\Program Files\Epic Games\UE_5.5\Engine\Binaries\Win64\UnrealEditor.exe" />
+        <option name="EXECUTABLE_PATH" value="C:\Program Files\Epic Games\UE_5.4\Engine\Binaries\Win64\UnrealEditor.exe" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;C:\Projects\SampleProject\SampleProject.uproject&quot;" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
         <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.5" />
@@ -230,6 +236,11 @@
       <workItem from="1731475422810" duration="600000" />
       <workItem from="1731486624730" duration="841000" />
       <workItem from="1731498252212" duration="2415000" />
+      <workItem from="1731500874629" duration="2033000" />
+      <workItem from="1731504485463" duration="178000" />
+      <workItem from="1731504717607" duration="808000" />
+      <workItem from="1731505557677" duration="263000" />
+      <workItem from="1731506273577" duration="80000" />
     </task>
     <servers />
   </component>
