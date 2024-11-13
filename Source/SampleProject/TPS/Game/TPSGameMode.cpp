@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "TPSGameMode.h"
@@ -6,6 +6,10 @@
 #include "TPSGameInstance.h"
 #include "TPSGameManager.h"
 #include "TPSSystemManager.h"
+
+ATPSGameMode::ATPSGameMode()
+{
+}
 
 void ATPSGameMode::StartPlay()
 {
@@ -21,13 +25,6 @@ void ATPSGameMode::StartPlay()
 void ATPSGameMode::BeginDestroy()
 {	
 	Super::BeginDestroy();
-}
-
-void ATPSGameMode::Tick(float DeltaSeconds)
-{
-	UTPSSystemManager::Get()->Tick(DeltaSeconds);
-	Super::Tick(DeltaSeconds);
-	UTPSSystemManager::Get()->PostTick(DeltaSeconds);
 }
 
 void ATPSGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)

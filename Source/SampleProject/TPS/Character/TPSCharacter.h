@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -24,11 +24,6 @@ public:
 
 protected:
 
-	UPROPERTY(Transient)
-	TObjectPtr<UTPSSpringArmComponent> SpringArmComp;
-
-	UPROPERTY(Transient)
-	TObjectPtr<UTPSCameraComponent> CameraComp;
 
 	UPROPERTY(EditAnywhere, Category="Ability", meta=(AllowPrivateAccess=true))
 	int MaxHealth = 100.f;

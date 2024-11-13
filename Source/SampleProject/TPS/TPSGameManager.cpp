@@ -43,7 +43,6 @@ void UTPSGameManager::SpawnPlayer()
 
 	FActorSpawnParameters ActorSpawnParameter;
 	ActorSpawnParameter.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	ActorSpawnParameter.bDeferConstruction = true;
 	ActorSpawnParameter.ObjectFlags |= RF_Transient;
 
 	Player = TPSHelper::GetWorld()->SpawnActor<ATPSPlayer>(assetInfo.Character.LoadSynchronous(),FVector::ZeroVector, FRotator::ZeroRotator, ActorSpawnParameter);

@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -18,9 +18,9 @@ class SAMPLEPROJECT_API ATPSGameMode : public AGameModeBase
 	GENERATED_BODY()
 
 public:
+	ATPSGameMode();
 	virtual void StartPlay() override;
 	virtual void BeginDestroy() override;
-	virtual void Tick(float DeltaSeconds) override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 	UPROPERTY(EditAnywhere, Category=TPS)
