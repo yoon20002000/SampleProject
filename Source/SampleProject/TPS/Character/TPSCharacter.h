@@ -24,10 +24,10 @@ public:
 
 protected:
 
-	UPROPERTY(Transient)
+	UPROPERTY(Transient, VisibleAnywhere)
 	TObjectPtr<UTPSSpringArmComponent> SpringArmComp;
 
-	UPROPERTY(Transient)
+	UPROPERTY(Transient, VisibleAnywhere)
 	TObjectPtr<UTPSCameraComponent> CameraComp;
 
 	UPROPERTY(EditAnywhere, Category="Ability", meta=(AllowPrivateAccess=true))

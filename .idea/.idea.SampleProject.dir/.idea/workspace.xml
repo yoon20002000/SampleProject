@@ -9,10 +9,9 @@
   <component name="ChangeListManager">
     <list default="true" id="bb9f1029-5ef5-424e-b123-fb63629eda12" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SampleProject.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SampleProject.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/BP_TPSCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/BP_TPSCharacter.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/BP_TPSPlayer.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/BP_TPSPlayer.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SampleProject.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/SampleProject.uproject" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/Character/TPSCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/Character/TPSCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSGameUIPolicy.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSGameUIPolicy.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSGameUIPolicy.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/UI/TPSGameUIPolicy.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,7 +126,7 @@
         <option name="CONFIGURATION" value="Development Editor" />
         <option name="PLATFORM" value="Win64" />
         <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
-        <option name="EXECUTABLE_PATH" value="C:\Program Files\Epic Games\UE_5.4\Engine\Binaries\Win64\UnrealEditor.exe" />
+        <option name="EXECUTABLE_PATH" value="C:\Program Files\Epic Games\UE_5.5\Engine\Binaries\Win64\UnrealEditor.exe" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;C:\Projects\SampleProject\SampleProject.uproject&quot;" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
         <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.5" />
@@ -241,6 +240,7 @@
       <workItem from="1731504717607" duration="808000" />
       <workItem from="1731505557677" duration="263000" />
       <workItem from="1731506273577" duration="80000" />
+      <workItem from="1731506425480" duration="1183000" />
     </task>
     <servers />
   </component>
