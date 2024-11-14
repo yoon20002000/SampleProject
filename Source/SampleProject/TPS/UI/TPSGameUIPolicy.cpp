@@ -36,27 +36,27 @@ UTPSUIManager* UTPSGameUIPolicy::GetOwningUIManager() const
 	return Manager->GetUIManager();
 }
 
+UTPSPrimaryGameLayout* UTPSGameUIPolicy::GetRootLayout() const
+{
+	return RootViewportLayout.RootLayout;
+}
+
 UWorld* UTPSGameUIPolicy::GetWorld() const
 {
 	return UTPSSystemManager::Get()->GetWorld();
 }
 
-UTPSPrimaryGameLayout* UTPSGameUIPolicy::GetRootLayout(const UTPSCommonLocalPlayer* LocalPlayer) const
-{
-	const FRootViewportLayoutInfo* LayoutInfo = RootViewportLayouts.FindByKey(LocalPlayer);
-	return LayoutInfo ? LayoutInfo->RootLayout : nullptr;
-}
-
 void UTPSGameUIPolicy::NotifyPlayerAdded(UTPSCommonLocalPlayer* LocalPlayer)
 {
-	LocalPlayer->OnPlayerControllerSet.AddWeakLambda(this, [this](UTPSCommonLocalPlayer* LocalPlayer, APlayerController* PlayerController)
+	LocalPlayer->OnPlayerControllerSet.AddWeakLambda(
+		this, [this](UTPSCommonLocalPlayer* LocalPlayer, APlayerController* PlayerController)
 		{
 			NotifyPlayerRemoved(LocalPlayer);
 
-			if (FRootViewportLayoutInfo* LayoutInfo = RootViewportLayouts.FindByKey(LocalPlayer))
+			if (UTPSPrimaryGameLayout* layout = GetRootLayout())
 			{
-				AddLayoutToViewport(LocalPlayer, LayoutInfo->RootLayout);
-				LayoutInfo->bAddedToViewport = true;
+				AddLayoutToViewport(LocalPlayer, layout);
+				RootViewportLayout.bAddedToViewport = true;
 			}
 			else
 			{
@@ -64,10 +64,10 @@ void UTPSGameUIPolicy::NotifyPlayerAdded(UTPSCommonLocalPlayer* LocalPlayer)
 			}
 		});
 
-	if (FRootViewportLayoutInfo* LayoutInfo = RootViewportLayouts.FindByKey(LocalPlayer))
+	if (RootViewportLayout.RootLayout != nullptr)
 	{
-		AddLayoutToViewport(LocalPlayer, LayoutInfo->RootLayout);
-		LayoutInfo->bAddedToViewport = true;
+		AddLayoutToViewport(LocalPlayer, RootViewportLayout.RootLayout);
+		RootViewportLayout.bAddedToViewport = true;
 	}
 	else
 	{
@@ -77,29 +77,16 @@ void UTPSGameUIPolicy::NotifyPlayerAdded(UTPSCommonLocalPlayer* LocalPlayer)
 
 void UTPSGameUIPolicy::NotifyPlayerRemoved(UTPSCommonLocalPlayer* LocalPlayer)
 {
-	if (FRootViewportLayoutInfo* LayoutInfo = RootViewportLayouts.FindByKey(LocalPlayer))
-	{
-		RemoveLayoutFromViewport(LocalPlayer, LayoutInfo->RootLayout);
-		LayoutInfo->bAddedToViewport = false;
+	RemoveLayoutFromViewport(LocalPlayer, RootViewportLayout.RootLayout);
+	RootViewportLayout.bAddedToViewport = false;
 
-		if (LocalMultiplayerInteractionMode == ELocalMultiplayerInteractionMode::SingleToggle && !LocalPlayer->IsPrimaryPlayer())
+	if (LocalMultiplayerInteractionMode == ELocalMultiplayerInteractionMode::SingleToggle && !LocalPlayer->
+		IsPrimaryPlayer())
+	{
+		UTPSPrimaryGameLayout* RootLayout = RootViewportLayout.RootLayout;
+		if (RootLayout && !RootLayout->IsDormant())
 		{
-			UTPSPrimaryGameLayout* RootLayout = LayoutInfo->RootLayout;
-			if (RootLayout && !RootLayout->IsDormant())
-			{
-				// We're removing a secondary player's root while it's in control - transfer control back to the primary player's root
-				RootLayout->SetIsDormant(true);
-				for (const FRootViewportLayoutInfo& RootLayoutInfo : RootViewportLayouts)
-				{
-					if (RootLayoutInfo.LocalPlayer->IsPrimaryPlayer())
-					{
-						if (UTPSPrimaryGameLayout* PrimaryRootLayout = RootLayoutInfo.RootLayout)
-						{
-							PrimaryRootLayout->SetIsDormant(false);
-						}
-					}
-				}
-			}
+			RootLayout->SetIsDormant(true);
 		}
 	}
 }
@@ -108,21 +95,17 @@ void UTPSGameUIPolicy::NotifyPlayerDestroyed(UTPSCommonLocalPlayer* LocalPlayer)
 {
 	NotifyPlayerRemoved(LocalPlayer);
 	LocalPlayer->OnPlayerControllerSet.RemoveAll(this);
-	const int32 LayoutInfoIdx = RootViewportLayouts.IndexOfByKey(LocalPlayer);
-	if (LayoutInfoIdx != INDEX_NONE)
-	{
-		UTPSPrimaryGameLayout* Layout = RootViewportLayouts[LayoutInfoIdx].RootLayout;
-		RootViewportLayouts.RemoveAt(LayoutInfoIdx);
 
-		RemoveLayoutFromViewport(LocalPlayer, Layout);
 
-		OnRootLayoutReleased(LocalPlayer, Layout);
-	}
+	RemoveLayoutFromViewport(LocalPlayer, RootViewportLayout.RootLayout);
+	OnRootLayoutReleased(LocalPlayer, RootViewportLayout.RootLayout);
+	RootViewportLayout.Reset();
 }
 
 void UTPSGameUIPolicy::AddLayoutToViewport(UTPSCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout)
 {
-	UE_LOG(LogTPSGame, Log, TEXT("[%s] is adding player [%s]'s root layout [%s] to the viewport"), *GetName(), *GetNameSafe(LocalPlayer), *GetNameSafe(Layout));
+	UE_LOG(LogTPSGame, Log, TEXT("[%s] is adding player [%s]'s root layout [%s] to the viewport"), *GetName(),
+	       *GetNameSafe(LocalPlayer), *GetNameSafe(Layout));
 
 	Layout->SetPlayerContext(FLocalPlayerContext(LocalPlayer));
 	Layout->AddToPlayerScreen(1000);
@@ -132,15 +115,24 @@ void UTPSGameUIPolicy::AddLayoutToViewport(UTPSCommonLocalPlayer* LocalPlayer, U
 
 void UTPSGameUIPolicy::RemoveLayoutFromViewport(UTPSCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout)
 {
+	if (Layout == nullptr)
+	{
+		return;
+	}
+	
 	TWeakPtr<SWidget> LayoutSlateWidget = Layout->GetCachedWidget();
 	if (LayoutSlateWidget.IsValid())
 	{
-		UE_LOG(LogTPSGame, Log, TEXT("[%s] is removing player [%s]'s root layout [%s] from the viewport"), *GetName(), *GetNameSafe(LocalPlayer), *GetNameSafe(Layout));
+		UE_LOG(LogTPSGame, Log, TEXT("[%s] is removing player [%s]'s root layout [%s] from the viewport"), *GetName(),
+		       *GetNameSafe(LocalPlayer), *GetNameSafe(Layout));
 
 		Layout->RemoveFromParent();
 		if (LayoutSlateWidget.IsValid())
 		{
-			UE_LOG(LogTPSGame, Log, TEXT("Player [%s]'s root layout [%s] has been removed from the viewport, but other references to its underlying Slate widget still exist. Noting in case we leak it."), *GetNameSafe(LocalPlayer), *GetNameSafe(Layout));
+			UE_LOG(LogTPSGame, Log,
+			       TEXT(
+				       "Player [%s]'s root layout [%s] has been removed from the viewport, but other references to its underlying Slate widget still exist. Noting in case we leak it."
+			       ), *GetNameSafe(LocalPlayer), *GetNameSafe(Layout));
 		}
 
 		OnRootLayoutRemovedFromViewport(LocalPlayer, Layout);
@@ -158,28 +150,23 @@ void UTPSGameUIPolicy::OnRootLayoutAddedToViewport(UTPSCommonLocalPlayer* LocalP
 #endif
 }
 
-void UTPSGameUIPolicy::OnRootLayoutRemovedFromViewport(UTPSCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout)
+void UTPSGameUIPolicy::OnRootLayoutRemovedFromViewport(UTPSCommonLocalPlayer* LocalPlayer,
+                                                       UTPSPrimaryGameLayout* Layout)
 {
-
 }
 
 void UTPSGameUIPolicy::OnRootLayoutReleased(UTPSCommonLocalPlayer* LocalPlayer, UTPSPrimaryGameLayout* Layout)
 {
-
 }
 
 void UTPSGameUIPolicy::RequestPrimaryControl(UTPSPrimaryGameLayout* Layout)
 {
 	if (LocalMultiplayerInteractionMode == ELocalMultiplayerInteractionMode::SingleToggle && Layout->IsDormant())
 	{
-		for (const FRootViewportLayoutInfo& LayoutInfo : RootViewportLayouts)
+		UTPSPrimaryGameLayout* RootLayout = RootViewportLayout.RootLayout;
+		if (RootLayout && !RootLayout->IsDormant())
 		{
-			UTPSPrimaryGameLayout* RootLayout = LayoutInfo.RootLayout;
-			if (RootLayout && !RootLayout->IsDormant())
-			{
-				RootLayout->SetIsDormant(true);
-				break;
-			}
+			RootLayout->SetIsDormant(true);
 		}
 		Layout->SetIsDormant(false);
 	}
@@ -192,8 +179,10 @@ void UTPSGameUIPolicy::CreateLayoutWidget(UTPSCommonLocalPlayer* LocalPlayer)
 		TSubclassOf<UTPSPrimaryGameLayout> LayoutWidgetClass = GetLayoutWidgetClass(LocalPlayer);
 		if (ensure(LayoutWidgetClass && !LayoutWidgetClass->HasAnyClassFlags(CLASS_Abstract)))
 		{
-			UTPSPrimaryGameLayout* NewLayoutObject = CreateWidget<UTPSPrimaryGameLayout>(PlayerController, LayoutWidgetClass);
-			RootViewportLayouts.Emplace(LocalPlayer, NewLayoutObject, true);
+			UTPSPrimaryGameLayout* NewLayoutObject = CreateWidget<UTPSPrimaryGameLayout>(
+				PlayerController, LayoutWidgetClass);
+			RootViewportLayout.RootLayout = NewLayoutObject;
+			RootViewportLayout.bAddedToViewport = true;
 
 			AddLayoutToViewport(LocalPlayer, NewLayoutObject);
 		}

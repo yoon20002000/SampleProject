@@ -39,9 +39,7 @@ UTPSPrimaryGameLayout* UTPSPrimaryGameLayout::GetPrimaryGameLayout(ULocalPlayer*
 		{
 			if (UTPSGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
 			{
-				const UTPSCommonLocalPlayer* CommonLocalPlayer = CastChecked<UTPSCommonLocalPlayer>(LocalPlayer);
-				
-				return Policy->GetRootLayout(CommonLocalPlayer);	
+				return Policy->GetRootLayout();	
 			}
 		}
 	}

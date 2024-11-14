@@ -75,7 +75,7 @@ UTPSPrimaryGameLayout* UTPSCommonLocalPlayer::GetRootUILayout() const
 	{
 		if (UTPSGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
 		{
-			return Policy->GetRootLayout(this);
+			return Policy->GetRootLayout();
 		}
 	}
 

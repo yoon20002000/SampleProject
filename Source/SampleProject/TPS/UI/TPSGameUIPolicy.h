@@ -32,10 +32,6 @@ struct FRootViewportLayoutInfo
 {
 	GENERATED_BODY()
 public:
-	//commonui 이거 삭제
-	UPROPERTY(Transient)
-	TObjectPtr<ULocalPlayer> LocalPlayer = nullptr;
-
 	UPROPERTY(Transient)
 	TObjectPtr<UTPSPrimaryGameLayout> RootLayout = nullptr;
 
@@ -43,13 +39,15 @@ public:
 	bool bAddedToViewport = false;
 
 	FRootViewportLayoutInfo() {}
-	FRootViewportLayoutInfo(ULocalPlayer* InLocalPlayer, UTPSPrimaryGameLayout* InRootLayout, bool bIsInViewport)
-		: LocalPlayer(InLocalPlayer)
-		, RootLayout(InRootLayout)
+	FRootViewportLayoutInfo(UTPSPrimaryGameLayout* InRootLayout, bool bIsInViewport)
+		: RootLayout(InRootLayout)
 		, bAddedToViewport(bIsInViewport)
 	{}
-
-	bool operator==(const ULocalPlayer* OtherLocalPlayer) const { return LocalPlayer == OtherLocalPlayer; }
+	void Reset()
+	{
+		RootLayout = nullptr;
+		bAddedToViewport = false;
+	}
 };
 
 UCLASS(Abstract, Blueprintable, Within = TPSUIManager)
@@ -69,9 +67,7 @@ public:
 public:
 	virtual UWorld* GetWorld() const override;
 	UTPSUIManager* GetOwningUIManager() const;
-	UTPSPrimaryGameLayout* GetRootLayout(const UTPSCommonLocalPlayer* LocalPlayer) const;
-	//commonui UTPSCommonLocalPlayer 이거 삭제되면 이런식으로 함수를
-	//UTPSPrimaryGameLayout* GetRootLayout() const;
+	UTPSPrimaryGameLayout* GetRootLayout() const;
 
 	ELocalMultiplayerInteractionMode GetLocalMultiplayerInteractionMode() const { return LocalMultiplayerInteractionMode; }
 
@@ -95,7 +91,7 @@ private:
 	TSoftClassPtr<UTPSPrimaryGameLayout> LayoutClass;
 
 	UPROPERTY(Transient)
-	TArray<FRootViewportLayoutInfo> RootViewportLayouts;
+	FRootViewportLayoutInfo RootViewportLayout;
 
 private:
 	void NotifyPlayerAdded(UTPSCommonLocalPlayer* LocalPlayer);

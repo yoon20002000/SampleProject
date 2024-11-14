@@ -29,7 +29,6 @@ void UTPSHUDLayout::HandleEscapeAction() const
 {
 	if (ensure(EscapeMenuClass.IsNull() == false))
 	{
-		UCommonUIExtensions::PushStreamedContentToLayer_ForPlayer(GetOwningLocalPlayer(), TAG_UI_LAYER_MENU,
-		                                                          EscapeMenuClass);
+		UCommonUIExtensions::PushContentToLayer(TAG_UI_LAYER_MENU, EscapeMenuClass.LoadSynchronous());
 	}
 }
