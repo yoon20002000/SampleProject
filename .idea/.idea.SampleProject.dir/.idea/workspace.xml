@@ -7,11 +7,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bb9f1029-5ef5-424e-b123-fb63629eda12" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.SampleProject.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SampleProject.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/TPSGameManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/TPSGameManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SampleProject/TPS/TPSGameManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SampleProject/TPS/TPSGameManager.h" afterDir="false" />
-    </list>
+    <list default="true" id="bb9f1029-5ef5-424e-b123-fb63629eda12" name="변경" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -252,7 +248,7 @@
       <workItem from="1731506425480" duration="1183000" />
       <workItem from="1731507891621" duration="1936000" />
       <workItem from="1731511195231" duration="555000" />
-      <workItem from="1731560213024" duration="10874000" />
+      <workItem from="1731560213024" duration="10968000" />
     </task>
     <servers />
   </component>
