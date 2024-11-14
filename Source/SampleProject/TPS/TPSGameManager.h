@@ -25,6 +25,7 @@ private:
 	
 	UPROPERTY(Transient)
 	TObjectPtr<ATPSPlayer> Player;
-	
+
+	void GetSpawnPoint(FVector& OutPosition, FRotator& OutRotator, int InIndex = -1) ;
 	
 };
