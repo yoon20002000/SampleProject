@@ -1,6 +1,7 @@
 # Visual Studio 2015 user specific files
 .vs/
 .idea/
+.idea/*
 
 # Compiled Object files
 *.slo
@@ -49,6 +50,7 @@ SourceArt/**/*.tga
 # Binary Files
 Binaries/*
 Plugins/*/Binaries/*
+Plugins/Developer/*
 
 # Builds
 Build/*
@@ -73,11 +75,3 @@ Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
-Content/missiontominerva/Geometries/KB3D_MTM_PropStorageSorting_A_StorageModule.uasset
-Content/missiontominerva/Geometries/KB3D_MTM_BldgLgPowerStation_A_StorageModule.uasset
-.idea/.idea.SampleProject/.idea/workspace.xml
-.vsconfig
-.idea/.idea.SampleProject/.idea/workspace.xml
-.idea/.idea.SampleProject/.idea/workspace.xml
-.vsconfig
-.idea/.idea.SampleProject/.idea/workspace.xml
