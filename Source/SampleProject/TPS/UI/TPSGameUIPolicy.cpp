@@ -119,7 +119,7 @@ void UTPSGameUIPolicy::RemoveLayoutFromViewport(UTPSCommonLocalPlayer* LocalPlay
 	{
 		return;
 	}
-	
+
 	TWeakPtr<SWidget> LayoutSlateWidget = Layout->GetCachedWidget();
 	if (LayoutSlateWidget.IsValid())
 	{

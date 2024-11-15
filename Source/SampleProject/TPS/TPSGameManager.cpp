@@ -13,13 +13,13 @@ UTPSGameManager::UTPSGameManager(const FObjectInitializer& objectInitializer)
 }
 
 
-void UTPSGameManager::InitData(ATPSGameMode* InGameMode)
+void UTPSGameManager::InitData(const ATPSGameMode* InGameMode)
 {
 	if (InGameMode == nullptr)
 	{
 		return;
 	}
-	
+
 	if (InGameMode->GameDataAsset.IsNull() == false)
 	{
 		GameDataAsset = InGameMode->GameDataAsset.LoadSynchronous();
@@ -37,12 +37,16 @@ void UTPSGameManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void UTPSGameManager::SpawnPlayer()
 {
-	if (!GameDataAsset)
+	if (GameDataAsset == nullptr)
+	{
 		return;
+	}
 
 	const FCharacterAssetInfo& assetInfo = GameDataAsset->GetCharacterData(TEXT("Player"));
-	if (assetInfo.AssetName.IsEmpty())
+	if (assetInfo.AssetName.IsEmpty() == true)
+	{
 		return;
+	}
 
 	FActorSpawnParameters ActorSpawnParameter;
 	ActorSpawnParameter.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;

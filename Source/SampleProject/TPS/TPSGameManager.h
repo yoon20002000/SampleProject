@@ -13,7 +13,7 @@ class UTPSGameManager : public UObject
 	GENERATED_UCLASS_BODY()
 
 public:
-	void InitData(ATPSGameMode* InGameMode);
+	void InitData(const ATPSGameMode* InGameMode);
 	void BeginPlay();
 	void EndPlay(const EEndPlayReason::Type EndPlayReason);
 

@@ -1,9 +1,10 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
 #include "TPSUIManager.generated.h"
 
+class UCommonActivatableWidget;
 class UUIDataAsset;
 class UTPSGameUIPolicy;
 class UTPSCommonLocalPlayer;
@@ -45,6 +46,7 @@ public:
 	
 protected:
 	void SwitchToPolicy(UTPSGameUIPolicy* InPolicy);
+	void RemoveUI(UCommonActivatableWidget* InRemoveWidget);
 private:
 	UPROPERTY(Transient)
 	TObjectPtr<UTPSGameUIPolicy> CurrentPolicy = nullptr;
@@ -54,7 +56,8 @@ private:
 
 	UPROPERTY(Transient)
 	TObjectPtr<UUIDataAsset> UIDataAsset = nullptr;
-	UPROPERTY(Transient)
+	UPROPERTY(config, EditAnywhere)
 	TSoftClassPtr<UUIDataAsset> UIDataAssetClass;
-	
+	UPROPERTY(Transient)
+	TArray<TObjectPtr<UCommonActivatableWidget>> LoadedUIs;
 };

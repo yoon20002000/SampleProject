@@ -3,6 +3,7 @@
 
 #include "TPSUIManager.h"
 
+#include "CommonActivatableWidget.h"
 #include "CommonUIExtensions.h"
 #include "GameplayTagsManager.h"
 #include "TPSGameUIPolicy.h"
@@ -25,7 +26,7 @@ void UTPSUIManager::Initialize()
 		}
 	}
 
-	if (UIDataAssetClass.IsNull() == false)
+	if (UIDataAsset == nullptr && UIDataAssetClass.IsNull() == false)
 	{
 		UIDataAssetClass = UIDataAssetClass.LoadSynchronous();
 		if (UIDataAssetClass.IsValid() == true)
@@ -42,6 +43,7 @@ void UTPSUIManager::Deinitialize()
 
 void UTPSUIManager::BeginPlay()
 {
+	LoadUI(TEXT("BattleHUD"));
 }
 
 void UTPSUIManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -83,14 +85,10 @@ void UTPSUIManager::LoadUI(const FString& UIName)
 
 	if (loadWidget != nullptr)
 	{
-		// stack에 넣어야 됨.
-		// Userwidget->AddToViewport();
-
 		FString LayerName = GetLayerNameByLayerType(EUILayerType::GameLayer);
 
-		//commonui 이렇게 만들어서 리스트에
-		//const auto LoadUIPtr = UCommonUIExtensions::PushContentToLayer(UGameplayTagsManager::Get().RequestGameplayTag(*LayerName), loadWidget);
-		//UILists.Add(LoadUIPtr);
+		const TObjectPtr<UCommonActivatableWidget> LoadUIPtr = UCommonUIExtensions::PushContentToLayer(UGameplayTagsManager::Get().RequestGameplayTag(*LayerName), CastChecked<UCommonActivatableWidget>(loadWidget)->GetClass());
+		LoadedUIs.Add(LoadUIPtr);
 	}
 }
 
@@ -126,3 +124,9 @@ void UTPSUIManager::SwitchToPolicy(UTPSGameUIPolicy* InPolicy)
 		CurrentPolicy = InPolicy;
 	}
 }
+
+void UTPSUIManager::RemoveUI(UCommonActivatableWidget* InRemoveWidget)
+{
+	LoadedUIs.Remove(InRemoveWidget);
+}
+

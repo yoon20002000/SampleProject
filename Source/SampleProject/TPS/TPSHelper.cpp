@@ -9,7 +9,7 @@ TWeakObjectPtr<UTPSGameInstance> TPSHelper::GameInstance = nullptr;
 
 UWorld* TPSHelper::GetWorld()
 {
-	UWorld* World = UTPSSystemManager::Get()->GetWorld();
+	UWorld* World = UTPSSystemManager::Get() == nullptr ? nullptr : UTPSSystemManager::Get()->GetWorld();
 	if (World == nullptr && GEngine->GameViewport != nullptr)
 	{
 		World = GEngine->GameViewport->GetWorld();
@@ -50,9 +50,9 @@ APlayerCameraManager* TPSHelper::GetPlayeCameraManager(UWorld* InWorld)
 {
 	APlayerController* PlayerController = GetPlayerController(InWorld);
 	if (PlayerController != nullptr)
-	{		
+	{
 		return PlayerController->PlayerCameraManager;
-	}	
+	}
 	return nullptr;
 }
 
@@ -62,6 +62,7 @@ APlayerController* TPSHelper::GetFirstLocalPlayerController(UWorld* InWorld)
 	{
 		return nullptr;
 	}
-	APlayerController* playerController = Cast<APlayerController>((GetWorld() && GEngine) ? GEngine->GetFirstLocalPlayerController(GetWorld()) : NULL);
+	APlayerController* playerController = Cast<APlayerController>(
+		(GetWorld() && GEngine) ? GEngine->GetFirstLocalPlayerController(GetWorld()) : NULL);
 	return playerController;
 }
