@@ -37,11 +37,16 @@ void UTPSUIManager::Initialize()
 
 	 if (UIDataAsset == nullptr && UIDataAssetClass.IsNull() == false)
 	 {
-	 	UIDataAssetClass.LoadSynchronous();
+	 	
 	 	if (UIDataAssetClass.IsValid() == true)
 	 	{
 	 		UIDataAsset = NewObject<UUIDataAsset>(this, UIDataAssetClass.Get());
 	 	}
+	 }
+
+	 if (UIDataAssetClass.IsNull() == false)
+	 {
+		 UIDataAsset = UIDataAssetClass.LoadSynchronous();
 	 }
 }
 

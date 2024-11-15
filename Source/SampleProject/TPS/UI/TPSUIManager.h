@@ -56,8 +56,10 @@ private:
 
 	UPROPERTY(Transient)
 	TObjectPtr<UUIDataAsset> UIDataAsset = nullptr;
+
 	UPROPERTY(config, EditAnywhere)
-	TSoftClassPtr<UUIDataAsset> UIDataAssetClass;
+	TSoftObjectPtr<UUIDataAsset> UIDataAssetClass;
+
 	UPROPERTY(Transient)
 	TArray<TObjectPtr<UCommonActivatableWidget>> LoadedUIs;
 };
