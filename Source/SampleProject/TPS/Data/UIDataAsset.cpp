@@ -8,9 +8,9 @@
 
 UUserWidget* UUIDataAsset::LoadUserWidget(const FString& UIName) const
 {
-	auto UIDataAssetInfo = DataAssets.FindByPredicate([&UIName](const FUIDataAssetInfo& UIDataAssetInfo)
+	auto UIDataAssetInfo = DataAssets.FindByPredicate([&UIName](const FUIDataAssetInfo& InUIDataAssetInfo)
 	{
-		return UIDataAssetInfo.AssetName == UIName;
+		return InUIDataAssetInfo.AssetName == UIName;
 		
 	});
 	if (UIDataAssetInfo != nullptr)
