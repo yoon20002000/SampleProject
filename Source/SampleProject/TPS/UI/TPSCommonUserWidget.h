@@ -6,6 +6,7 @@
 #include "CommonUserWidget.h"
 #include "TPSCommonUserWidget.generated.h"
 
+class ATPSPlayer;
 /**
  * 
  */
@@ -13,5 +14,6 @@ UCLASS()
 class SAMPLEPROJECT_API UTPSCommonUserWidget : public UCommonUserWidget
 {
 	GENERATED_BODY()
-	
+protected:
+	ATPSPlayer* GetTPSPlayer() const;
 };
