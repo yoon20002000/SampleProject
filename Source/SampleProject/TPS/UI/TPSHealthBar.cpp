@@ -31,6 +31,6 @@ void UTPSHealthBar::BeginDestroy()
 
 void UTPSHealthBar::UpdateHealthBar(const float NewHealth, const float MaxHealth)
 {
-	float Percent = NewHealth / MaxHealth;
+	const float Percent = NewHealth / MaxHealth;
 	HealthBar->SetPercent(Percent);
 }
