@@ -12,11 +12,20 @@
 #include "Data/UIDataAsset.h"
 
 
+UTPSUIManager::UTPSUIManager()
+{
+	/*static ConstructorHelpers::FObjectFinder<UUIDataAsset> PoolDataRef(TEXT("/Script/SampleProject.UIDataAsset'/Game/Data/DA_UI.DA_UI'"));
+	if (PoolDataRef.Object)
+	{
+		UIDataAsset = PoolDataRef.Object;
+	}*/
+}
+
 void UTPSUIManager::Initialize()
 {
 	if (CurrentPolicy == nullptr && DefaultUIPolicyClass.IsNull() == false)
 	{
-		DefaultUIPolicyClass = DefaultUIPolicyClass.LoadSynchronous();
+		DefaultUIPolicyClass.LoadSynchronous();
 		if (DefaultUIPolicyClass.IsValid() == true)
 		{
 			if (UTPSGameUIPolicy* GameUIPolicy = NewObject<UTPSGameUIPolicy>(this, DefaultUIPolicyClass.Get()))
@@ -26,14 +35,14 @@ void UTPSUIManager::Initialize()
 		}
 	}
 
-	if (UIDataAsset == nullptr && UIDataAssetClass.IsNull() == false)
-	{
-		UIDataAssetClass = UIDataAssetClass.LoadSynchronous();
-		if (UIDataAssetClass.IsValid() == true)
-		{
-			UIDataAsset = NewObject<UUIDataAsset>(this,UIDataAssetClass.Get());
-		}
-	}
+	 if (UIDataAsset == nullptr && UIDataAssetClass.IsNull() == false)
+	 {
+	 	UIDataAssetClass.LoadSynchronous();
+	 	if (UIDataAssetClass.IsValid() == true)
+	 	{
+	 		UIDataAsset = NewObject<UUIDataAsset>(this, UIDataAssetClass.Get());
+	 	}
+	 }
 }
 
 void UTPSUIManager::Deinitialize()

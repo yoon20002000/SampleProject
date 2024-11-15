@@ -27,7 +27,7 @@ class SAMPLEPROJECT_API UTPSUIManager : public UObject
 {
 	GENERATED_BODY()
 public:
-
+	UTPSUIManager();
 	virtual void Initialize();
 	virtual void Deinitialize();
 
