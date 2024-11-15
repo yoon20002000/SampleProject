@@ -24,3 +24,18 @@ void ATPSCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
+
+float ATPSCharacter::GetHealth() const
+{
+	return Health;
+}
+
+float ATPSCharacter::GetMaxHealth() const
+{
+	return MaxHealth;
+}
+
+void ATPSCharacter::ChangeHealth(float InNewHealth)
+{
+	Health = FMath::Clamp(InNewHealth, 0,MaxHealth);
+}

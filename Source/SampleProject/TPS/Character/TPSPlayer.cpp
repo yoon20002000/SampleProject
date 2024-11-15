@@ -32,6 +32,12 @@ void ATPSPlayer::BeginPlay()
 	Health = MaxHealth;	
 }
 
+void ATPSPlayer::ChangeHealth(float InNewHealth)
+{
+	Super::ChangeHealth(InNewHealth);
+	OnHealthChanged.Broadcast(Health, MaxHealth);
+}
+
 // Called every frame
 void ATPSPlayer::Tick(float DeltaTime)
 {

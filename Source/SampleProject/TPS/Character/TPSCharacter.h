@@ -22,9 +22,12 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
+	float GetHealth()const;
+	float GetMaxHealth()const;
 protected:
+	virtual void ChangeHealth(float InNewHealth);
 
-
+protected:
 	UPROPERTY(EditAnywhere, Category="Ability", meta=(AllowPrivateAccess=true))
 	int MaxHealth = 100.f;
 	UPROPERTY(VisibleAnywhere, Category="Ability", meta=(AllowPrivateAccess=true))

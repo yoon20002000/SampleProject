@@ -10,6 +10,8 @@
 class UInputMappingContext;
 class UInputAction;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHealthChanged, float, NewHealth, float, MaxHeath);
+
 UCLASS(Blueprintable)
 class SAMPLEPROJECT_API ATPSPlayer : public ATPSCharacter
 {
@@ -36,16 +38,16 @@ public:
 public:
 	// Sets default values for this character's properties
 	ATPSPlayer();
+	FOnHealthChanged OnHealthChanged;
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+	virtual void ChangeHealth(float InNewHealth) override;
 private:
 	void Move(const FInputActionValue& InputActionValue);
 	void Look(const FInputActionValue& InputActionValue);
