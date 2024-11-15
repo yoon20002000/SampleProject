@@ -3,6 +3,7 @@
 
 #include "UIDataAsset.h"
 
+#include "TPSHelper.h"
 #include "Blueprint/UserWidget.h"
 
 UUserWidget* UUIDataAsset::LoadUserWidget(const FString& UIName) const
@@ -14,7 +15,7 @@ UUserWidget* UUIDataAsset::LoadUserWidget(const FString& UIName) const
 	});
 	if (UIDataAssetInfo != nullptr)
 	{
-		UUserWidget* WidgetInstance = CreateWidget<UUserWidget>(GetWorld(), UIDataAssetInfo->UserWidgetClass.LoadSynchronous());
+		UUserWidget* WidgetInstance = CreateWidget<UUserWidget>(TPSHelper::GetWorld(), UIDataAssetInfo->UserWidgetClass.LoadSynchronous());
 		
 		return WidgetInstance;	
 	}

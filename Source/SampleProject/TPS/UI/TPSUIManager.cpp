@@ -12,37 +12,19 @@
 #include "Data/UIDataAsset.h"
 
 
-UTPSUIManager::UTPSUIManager()
-{
-	/*static ConstructorHelpers::FObjectFinder<UUIDataAsset> PoolDataRef(TEXT("/Script/SampleProject.UIDataAsset'/Game/Data/DA_UI.DA_UI'"));
-	if (PoolDataRef.Object)
-	{
-		UIDataAsset = PoolDataRef.Object;
-	}*/
-}
-
 void UTPSUIManager::Initialize()
 {
 	if (CurrentPolicy == nullptr && DefaultUIPolicyClass.IsNull() == false)
 	{
-		DefaultUIPolicyClass.LoadSynchronous();
-		if (DefaultUIPolicyClass.IsValid() == true)
+		const UClass* LoadedClass = DefaultUIPolicyClass.LoadSynchronous();
+		if (LoadedClass != nullptr)
 		{
-			if (UTPSGameUIPolicy* GameUIPolicy = NewObject<UTPSGameUIPolicy>(this, DefaultUIPolicyClass.Get()))
+			if (UTPSGameUIPolicy* GameUIPolicy = NewObject<UTPSGameUIPolicy>(this, LoadedClass))
 			{
 				SwitchToPolicy(GameUIPolicy);
 			}
 		}
 	}
-
-	 if (UIDataAsset == nullptr && UIDataAssetClass.IsNull() == false)
-	 {
-	 	
-	 	if (UIDataAssetClass.IsValid() == true)
-	 	{
-	 		UIDataAsset = NewObject<UUIDataAsset>(this, UIDataAssetClass.Get());
-	 	}
-	 }
 
 	 if (UIDataAssetClass.IsNull() == false)
 	 {
