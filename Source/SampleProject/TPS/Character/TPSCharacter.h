@@ -3,15 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "InputActionValue.h"
 #include "GameFramework/Character.h"
 #include "TPSCharacter.generated.h"
 
+class UWidgetComponent;
 class UInputMappingContext;
 class UInputAction;
 class UTPSCameraComponent;
 class UTPSSpringArmComponent;
-
 
 UCLASS()
 class SAMPLEPROJECT_API ATPSCharacter : public ACharacter
@@ -27,10 +26,17 @@ public:
 protected:
 	virtual void ChangeHealth(float InNewHealth);
 
+public:
+	UPROPERTY(VisibleAnywhere, Category = UI)
+	TObjectPtr<UWidgetComponent> HPBarWidget;
+	
 protected:
 	UPROPERTY(EditAnywhere, Category="Ability", meta=(AllowPrivateAccess=true))
 	int MaxHealth = 100.f;
 	UPROPERTY(VisibleAnywhere, Category="Ability", meta=(AllowPrivateAccess=true))
 	int Health;
-	
+	UPROPERTY(EditDefaultsOnly, Category="UI", meta=(AllowPrivateAccess=true))
+	int HPBarWidgetHeight = 180;
+	UPROPERTY(EditDefaultsOnly, Category="UI", meta=(AllowPrivateAccess=true))
+	FVector2D HPBarWidgetSize = FVector2D(150,50);
 };

@@ -3,13 +3,25 @@
 
 #include "TPSCharacter.h"
 
-
+#include "Components/WidgetComponent.h"
 // Sets default values
 ATPSCharacter::ATPSCharacter()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	
+
+	HPBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HP Bar Widget"));
+	HPBarWidget->SetupAttachment(GetMesh());
+
+	HPBarWidget->SetRelativeLocation(FVector(0,0,HPBarWidgetHeight));
+	HPBarWidget->SetWidgetSpace(EWidgetSpace::Screen);
+
+	static ConstructorHelpers::FClassFinder<UUserWidget> UI_HPBAR(TEXT("/Game/Blueprints/UI/WBP_HPBar.WBP_HPBar_C"));
+	if (UI_HPBAR.Succeeded())
+	{
+		HPBarWidget->SetWidgetClass(UI_HPBAR.Class);
+		HPBarWidget->SetDrawSize(HPBarWidgetSize);
+	}
 }
 
 // Called when the game starts or when spawned
