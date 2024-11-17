@@ -6,11 +6,14 @@
 #include "GameFramework/Character.h"
 #include "TPSCharacter.generated.h"
 
+class UTPSFloatingHPBar;
 class UWidgetComponent;
 class UInputMappingContext;
 class UInputAction;
 class UTPSCameraComponent;
 class UTPSSpringArmComponent;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHealthChanged, float, NewHealth, float, MaxHeath);
 
 UCLASS()
 class SAMPLEPROJECT_API ATPSCharacter : public ACharacter
@@ -19,8 +22,8 @@ class SAMPLEPROJECT_API ATPSCharacter : public ACharacter
 public:
 	ATPSCharacter();
 	virtual void BeginPlay() override;
+	virtual void PostInitializeComponents() override;
 	virtual void Tick(float DeltaTime) override;
-
 	float GetHealth()const;
 	float GetMaxHealth()const;
 protected:
@@ -29,7 +32,8 @@ protected:
 public:
 	UPROPERTY(VisibleAnywhere, Category = UI)
 	TObjectPtr<UWidgetComponent> HPBarWidget;
-	
+
+	FOnHealthChanged OnHealthChanged;
 protected:
 	UPROPERTY(EditAnywhere, Category="Ability", meta=(AllowPrivateAccess=true))
 	int MaxHealth = 100.f;

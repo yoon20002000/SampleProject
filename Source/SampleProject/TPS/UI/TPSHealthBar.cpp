@@ -5,6 +5,8 @@
 
 #include "Character/TPSPlayer.h"
 #include "Components/ProgressBar.h"
+#include "CommonNumericTextBlock.h"
+#include "Components/TextBlock.h"
 
 bool UTPSHealthBar::Initialize()
 {
@@ -33,4 +35,10 @@ void UTPSHealthBar::UpdateHealthBar(const float NewHealth, const float MaxHealth
 {
 	const float Percent = NewHealth / MaxHealth;
 	HealthBar->SetPercent(Percent);
+	UpdateHealthPoint(NewHealth);
+}
+
+void UTPSHealthBar::UpdateHealthPoint(float NewHealth)
+{
+	HealthPointText->SetText(FText::AsNumber(NewHealth));
 }

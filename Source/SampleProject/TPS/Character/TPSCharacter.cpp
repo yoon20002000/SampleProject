@@ -4,6 +4,7 @@
 #include "TPSCharacter.h"
 
 #include "Components/WidgetComponent.h"
+#include "UI/TPSFloatingHPBar.h"
 // Sets default values
 ATPSCharacter::ATPSCharacter()
 {
@@ -28,7 +29,21 @@ ATPSCharacter::ATPSCharacter()
 void ATPSCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	Health = MaxHealth;
+	
+	ChangeHealth(MaxHealth);
+	OnHealthChanged.Broadcast(Health, MaxHealth);
+}
+
+void ATPSCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	
+	HPBarWidget->InitWidget();
+	UTPSFloatingHPBar* CharacterWidget = Cast<UTPSFloatingHPBar>(HPBarWidget->GetUserWidgetObject());
+	if (CharacterWidget != nullptr)
+	{
+		CharacterWidget->BindCharacter(this);
+	}
 }
 
 // Called every frame

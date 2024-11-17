@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "TPSCommonUserWidget.h"
-#include "Blueprint/UserWidget.h"
 #include "TPSHealthBar.generated.h"
 
+class UTextBlock;
 class UProgressBar;
+class UCommonNumericTextBlock;
 /**
  * 
  */
@@ -20,8 +21,10 @@ protected:
 	virtual void BeginDestroy() override;
 	UFUNCTION()
 	virtual void UpdateHealthBar(float NewHealth, float MaxHealth);
-	
+	virtual void UpdateHealthPoint(float NewHealth);
 private:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<UProgressBar> HealthBar;
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = true))
+	TObjectPtr<UTextBlock> HealthPointText;
 };

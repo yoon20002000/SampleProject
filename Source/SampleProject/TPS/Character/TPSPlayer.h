@@ -10,7 +10,7 @@
 class UInputMappingContext;
 class UInputAction;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHealthChanged, float, NewHealth, float, MaxHeath);
+
 
 UCLASS(Blueprintable)
 class SAMPLEPROJECT_API ATPSPlayer : public ATPSCharacter
@@ -38,7 +38,6 @@ public:
 public:
 	// Sets default values for this character's properties
 	ATPSPlayer();
-	FOnHealthChanged OnHealthChanged;
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

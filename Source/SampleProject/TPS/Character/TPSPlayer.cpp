@@ -28,14 +28,11 @@ void ATPSPlayer::BeginPlay()
 
 	SpringArmComp = FindComponentByClass<UTPSSpringArmComponent>();
 	CameraComp = FindComponentByClass<UTPSCameraComponent>();
-
-	Health = MaxHealth;	
 }
 
 void ATPSPlayer::ChangeHealth(float InNewHealth)
 {
 	Super::ChangeHealth(InNewHealth);
-	OnHealthChanged.Broadcast(Health, MaxHealth);
 }
 
 // Called every frame
