@@ -3,6 +3,7 @@
 
 #include "UI/TPSTitleWidget.h"
 
+#include "TPSHelper.h"
 #include "TPSSystemManager.h"
 #include "TPSUIManager.h"
 #include "Components/Button.h"
@@ -26,8 +27,7 @@ void UTPSTitleWidget::NativeConstruct()
 void UTPSTitleWidget::OnClickedPlayButton()
 {
 	UTPSSystemManager::Get()->GetUIManager()->RemoveUI(this);
-	
-	UGameplayStatics::OpenLevel(this, FName("MainMap"));
+	UGameplayStatics::LoadStreamLevel(this, FName("MainGame"), true, false, FLatentActionInfo());
 }
 
 void UTPSTitleWidget::OnClickedQuitButton()
