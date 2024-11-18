@@ -1,10 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "UI/TPSTitlePlayerController.h"
+#include "TPSTitlePlayerController.h"
 
 #include "TPSSystemManager.h"
-#include "TPSUIManager.h"
+#include "UI/TPSUIManager.h"
+
 
 void ATPSTitlePlayerController::BeginPlay()
 {
