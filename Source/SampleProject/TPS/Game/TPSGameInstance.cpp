@@ -33,7 +33,11 @@ int32 UTPSGameInstance::AddLocalPlayer(ULocalPlayer* NewPlayer, FPlatformUserId 
 
 		if (UTPSSystemManager* Manager = UTPSSystemManager::Get())
 		{
-			Manager->GetUIManager()->NotifyPlayerAdded(CastChecked<UTPSCommonLocalPlayer>(PrimaryPlayer));
+			UTPSUIManager* UIManager = Manager->GetUIManager();
+			if (UTPSCommonLocalPlayer* LocalPlayer = CastChecked<UTPSCommonLocalPlayer>(PrimaryPlayer); UIManager != nullptr )
+			{
+				UIManager->NotifyPlayerAdded(LocalPlayer);	
+			}
 		}
 	}
 

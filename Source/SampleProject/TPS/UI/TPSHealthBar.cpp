@@ -5,7 +5,7 @@
 
 #include "Character/TPSPlayer.h"
 #include "Components/ProgressBar.h"
-#include "CommonNumericTextBlock.h"
+//#include "CommonNumericTextBlock.h"
 #include "Components/TextBlock.h"
 
 bool UTPSHealthBar::Initialize()

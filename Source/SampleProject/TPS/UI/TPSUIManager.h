@@ -40,7 +40,7 @@ public:
 	virtual void NotifyPlayerRemoved(UTPSCommonLocalPlayer* LocalPlayer);
 	virtual void NotifyPlayerDestroyed(UTPSCommonLocalPlayer* LocalPlayer);
 
-	void LoadUI(const FString& UIName);
+	void LoadUI(const FString& UIName, EUILayerType LayerType = EUILayerType::GameLayer);
 	FString GetLayerNameByLayerType(const EUILayerType InLayerType);
 	
 protected:
