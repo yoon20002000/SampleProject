@@ -41,11 +41,11 @@ public:
 	virtual void NotifyPlayerDestroyed(UTPSCommonLocalPlayer* LocalPlayer);
 
 	void LoadUI(const FString& UIName, EUILayerType LayerType = EUILayerType::GameLayer);
+	void RemoveUI(UCommonActivatableWidget* InRemoveWidget);
 	FString GetLayerNameByLayerType(const EUILayerType InLayerType);
 	
 protected:
 	void SwitchToPolicy(UTPSGameUIPolicy* InPolicy);
-	void RemoveUI(UCommonActivatableWidget* InRemoveWidget);
 private:
 	UPROPERTY(Transient)
 	TObjectPtr<UTPSGameUIPolicy> CurrentPolicy = nullptr;

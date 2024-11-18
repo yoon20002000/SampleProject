@@ -26,10 +26,10 @@ void UTPSUIManager::Initialize()
 		}
 	}
 
-	 if (UIDataAssetClass.IsNull() == false)
-	 {
-		 UIDataAsset = UIDataAssetClass.LoadSynchronous();
-	 }
+	if (UIDataAssetClass.IsNull() == false)
+	{
+		UIDataAsset = UIDataAssetClass.LoadSynchronous();
+	}
 }
 
 void UTPSUIManager::Deinitialize()
@@ -70,7 +70,7 @@ void UTPSUIManager::NotifyPlayerDestroyed(UTPSCommonLocalPlayer* LocalPlayer)
 	}
 }
 
-void UTPSUIManager::LoadUI(const FString& UIName, EUILayerType LayerType) 
+void UTPSUIManager::LoadUI(const FString& UIName, EUILayerType LayerType)
 {
 	if (UIDataAsset == nullptr)
 	{
@@ -83,9 +83,17 @@ void UTPSUIManager::LoadUI(const FString& UIName, EUILayerType LayerType)
 	{
 		FString LayerName = GetLayerNameByLayerType(LayerType);
 
-		const TObjectPtr<UCommonActivatableWidget> LoadUIPtr = UCommonUIExtensions::PushContentToLayer(UGameplayTagsManager::Get().RequestGameplayTag(*LayerName), CastChecked<UCommonActivatableWidget>(loadWidget)->GetClass());
+		const TObjectPtr<UCommonActivatableWidget> LoadUIPtr = UCommonUIExtensions::PushContentToLayer(
+			UGameplayTagsManager::Get().RequestGameplayTag(*LayerName),
+			CastChecked<UCommonActivatableWidget>(loadWidget)->GetClass());
 		LoadedUIs.Add(LoadUIPtr);
 	}
+}
+
+void UTPSUIManager::RemoveUI(UCommonActivatableWidget* InRemoveWidget)
+{
+	UCommonUIExtensions::PopContentFromLayer(InRemoveWidget);
+	LoadedUIs.Remove(InRemoveWidget);
 }
 
 FString UTPSUIManager::GetLayerNameByLayerType(const EUILayerType InLayerType)
@@ -120,9 +128,3 @@ void UTPSUIManager::SwitchToPolicy(UTPSGameUIPolicy* InPolicy)
 		CurrentPolicy = InPolicy;
 	}
 }
-
-void UTPSUIManager::RemoveUI(UCommonActivatableWidget* InRemoveWidget)
-{
-	LoadedUIs.Remove(InRemoveWidget);
-}
-

@@ -78,13 +78,14 @@ UCommonActivatableWidget* UCommonUIExtensions::PushContentToLayer_ForPlayer(
 	return nullptr;
 }
 
-UCommonActivatableWidget* UCommonUIExtensions::PushContentToLayer(FGameplayTag LayerName, TSubclassOf<UCommonActivatableWidget> WidgetClass)
+UCommonActivatableWidget* UCommonUIExtensions::PushContentToLayer(FGameplayTag LayerName,
+                                                                  TSubclassOf<UCommonActivatableWidget> WidgetClass)
 {
 	if (!ensure(WidgetClass != nullptr))
 	{
 		return nullptr;
 	}
-	
+
 	if (UTPSUIManager* UIManager = GetTPSUIManager())
 	{
 		if (UTPSGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
@@ -107,16 +108,13 @@ void UCommonUIExtensions::PopContentFromLayer(UCommonActivatableWidget* Activata
 		return;
 	}
 
-	if (const ULocalPlayer* LocalPlayer = ActivatableWidget->GetOwningLocalPlayer())
+	if (UTPSUIManager* UIManager = GetTPSUIManager())
 	{
-		if (UTPSUIManager* UIManager = GetTPSUIManager())
+		if (const UTPSGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
 		{
-			if (const UTPSGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
+			if (UTPSPrimaryGameLayout* RootLayout = Policy->GetRootLayout())
 			{
-				if (UTPSPrimaryGameLayout* RootLayout = Policy->GetRootLayout())
-				{
-					RootLayout->FindAndRemoveWidgetFromLayer(ActivatableWidget);
-				}
+				RootLayout->FindAndRemoveWidgetFromLayer(ActivatableWidget);
 			}
 		}
 	}
@@ -174,7 +172,6 @@ void UCommonUIExtensions::ResumeInputForPlayer(ULocalPlayer* LocalPlayer, FName 
 		CommonInputSubsystem->SetInputTypeFilter(ECommonInputType::Touch, SuspendToken, false);
 	}
 }
-
 
 
 UTPSUIManager* UCommonUIExtensions::GetTPSUIManager()
