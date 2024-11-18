@@ -9,12 +9,8 @@
 void ATPSTitlePlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-
-
-	UTPSSystemManager::Get()->GetUIManager()->LoadUI(TEXT("Title"), EUILayerType::GameMenu);
-
-	// FInputModeUIOnly Mode;
-	// Mode.SetWidgetToFocus(Widget->GetCachedWidget());
-	// SetInputMode(Mode);
-	// bShowMouseCursor = true;
+	
+	UTPSSystemManager::Get()->GetUIManager()->LoadUI(TEXT("Title"), EUILayerType::Menu);
+	SetInputMode(FInputModeUIOnly());
+	bShowMouseCursor = true;
 }

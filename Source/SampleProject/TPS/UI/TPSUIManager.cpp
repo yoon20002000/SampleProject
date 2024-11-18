@@ -6,7 +6,9 @@
 #include "CommonActivatableWidget.h"
 #include "CommonUIExtensions.h"
 #include "GameplayTagsManager.h"
+#include "TPSGameManager.h"
 #include "TPSGameUIPolicy.h"
+#include "TPSSystemManager.h"
 
 #include "Blueprint/UserWidget.h"
 #include "Data/UIDataAsset.h"
@@ -39,7 +41,7 @@ void UTPSUIManager::Deinitialize()
 
 void UTPSUIManager::BeginPlay()
 {
-	LoadUI(TEXT("BattleHUD"));
+	
 }
 
 void UTPSUIManager::EndPlay(const EEndPlayReason::Type EndPlayReason)

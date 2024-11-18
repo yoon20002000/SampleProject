@@ -26,6 +26,7 @@ void UTPSTitleWidget::NativeConstruct()
 void UTPSTitleWidget::OnClickedPlayButton()
 {
 	UTPSSystemManager::Get()->GetUIManager()->RemoveUI(this);
+	
 	UGameplayStatics::OpenLevel(this, FName("MainMap"));
 }
 

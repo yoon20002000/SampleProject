@@ -16,10 +16,8 @@ public:
 	void InitData(const ATPSGameMode* InGameMode);
 	void BeginPlay();
 	void EndPlay(const EEndPlayReason::Type EndPlayReason);
-
+	void SpawnPlayer(const FString& CharacterDataName = TEXT("Player"));
 private:
-	void SpawnPlayer();
-
 	UPROPERTY(Transient)
 	TObjectPtr<UGameDataAsset> GameDataAsset;
 	

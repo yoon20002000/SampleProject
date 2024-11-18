@@ -28,21 +28,20 @@ void UTPSGameManager::InitData(const ATPSGameMode* InGameMode)
 
 void UTPSGameManager::BeginPlay()
 {
-	SpawnPlayer();
 }
 
 void UTPSGameManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 }
 
-void UTPSGameManager::SpawnPlayer()
+void UTPSGameManager::SpawnPlayer(const FString& CharacterDataName)
 {
 	if (GameDataAsset == nullptr)
 	{
 		return;
 	}
 
-	const FCharacterAssetInfo& assetInfo = GameDataAsset->GetCharacterData(TEXT("Player"));
+	const FCharacterAssetInfo& assetInfo = GameDataAsset->GetCharacterData(CharacterDataName);
 	if (assetInfo.AssetName.IsEmpty() == true)
 	{
 		return;
