@@ -6,6 +6,7 @@
 #include "CommonUIExtensions.h"
 #include "TPSCommonActivatableWidget.h"
 #include "NativeGameplayTags.h"
+#include "TPSHelper.h"
 #include "UITag.h"
 #include"CommonUI/Public/Input/CommonUIInputTypes.h"
 
@@ -30,5 +31,7 @@ void UTPSHUDLayout::HandleEscapeAction() const
 	if (ensure(EscapeMenuClass.IsNull() == false))
 	{
 		UCommonUIExtensions::PushContentToLayer(TAG_UI_LAYER_MENU, EscapeMenuClass.LoadSynchronous());
+		APlayerController* PC = TPSHelper::GetPlayerController(GetWorld());
+		PC->SetInputMode(FInputModeUIOnly());
 	}
 }
