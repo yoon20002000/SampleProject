@@ -17,7 +17,7 @@ void UTPSEditorEngine::PreExit()
 	Super::PreExit();
 	
 	UTPSSystemManager::Get()->Deinitialize();
-	UTPSSystemManager::DestoryInstance();
+	UTPSSystemManager::DestroyInstance();
 	SystemManager = nullptr;
 }
 

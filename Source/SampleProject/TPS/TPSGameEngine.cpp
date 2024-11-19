@@ -29,7 +29,7 @@ void UTPSGameEngine::PreExit()
 
 	Super::PreExit();
 
-	UTPSSystemManager::DestoryInstance();
+	UTPSSystemManager::DestroyInstance();
 	SystemManager = nullptr;
 }
 

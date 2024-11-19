@@ -7,6 +7,7 @@
 #include "TPSSystemManager.h"
 #include "TPSUIManager.h"
 #include "Components/Button.h"
+#include "Game/TPSGameStateManager.h"
 #include "Kismet/GameplayStatics.h"
 
 void UTPSTitleWidget::NativeConstruct()
@@ -28,6 +29,8 @@ void UTPSTitleWidget::OnClickedPlayButton()
 {
 	UTPSSystemManager::Get()->GetUIManager()->RemoveUI(this);
 	UGameplayStatics::LoadStreamLevel(this, FName("MainGame"), true, false, FLatentActionInfo());
+
+	UTPSSystemManager::Get()->SetGameState(EGameplayState::MainGame);
 }
 
 void UTPSTitleWidget::OnClickedQuitButton()

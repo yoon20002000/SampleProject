@@ -1,6 +1,7 @@
 ﻿#include "TPSSystemManager.h"
 
 #include "TPSGameManager.h"
+#include "Game/TPSGameStateManager.h"
 #include "UI/TPSUIManager.h"
 UTPSSystemManager* UTPSSystemManager::Instance = nullptr;
 
@@ -19,7 +20,7 @@ UTPSSystemManager* UTPSSystemManager::CreateInstance()
 	return Instance;
 }
 
-void UTPSSystemManager::DestoryInstance()
+void UTPSSystemManager::DestroyInstance()
 {
 	Instance = nullptr;
 }
@@ -33,6 +34,7 @@ void UTPSSystemManager::Initialize()
 {
 	InitializeUIManager();
 	GameManager = NewObject<UTPSGameManager>();
+	GameStateManager = NewObject<UTPSGameStateManager>();
 }
 
 void UTPSSystemManager::Deinitialize()
@@ -49,15 +51,18 @@ void UTPSSystemManager::PostTick(float DeltaTime)
 }
 
 void UTPSSystemManager::BeginPlay()
-{	
+{
 	GameManager->BeginPlay();
 	UIManager->BeginPlay();
+	GameStateManager->BeginPlay();
+
+	SetGameState(EGameplayState::Title);
 }
 
 void UTPSSystemManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	UIManager->EndPlay(EndPlayReason);
-	GameManager->EndPlay(EndPlayReason);	
+	GameManager->EndPlay(EndPlayReason);
 }
 
 UTPSUIManager* UTPSSystemManager::GetUIManager() const
@@ -90,6 +95,20 @@ void UTPSSystemManager::SetWorld(UWorld* InWorld)
 UTPSGameManager* UTPSSystemManager::GetGameManager() const
 {
 	return GameManager;
+}
+
+UTPSGameStateManager* UTPSSystemManager::GetGameStateManager() const
+{
+	return GameStateManager;
+}
+
+void UTPSSystemManager::SetGameState(const EGameplayState InGameplayState)
+{
+	if (GameStateManager == nullptr)
+	{
+		return;
+	}
+	GameStateManager->SetGameplayState(InGameplayState);
 }
 
 void UTPSSystemManager::InitializeUIManager()

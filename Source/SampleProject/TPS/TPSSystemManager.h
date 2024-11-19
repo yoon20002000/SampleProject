@@ -1,9 +1,9 @@
 ﻿#pragma once
 
-#include "CoreMinimal.h"
 #include "TPSSystemManager.generated.h"
 
-
+enum class EGameplayState : uint8;
+class UTPSGameStateManager;
 class UTPSUIManager;
 class UTPSGameManager;
 
@@ -14,7 +14,7 @@ class SAMPLEPROJECT_API UTPSSystemManager : public UObject
 
 public:
 	static UTPSSystemManager* CreateInstance();
-	static void DestoryInstance();
+	static void DestroyInstance();
 	static UTPSSystemManager* Get();
 
 	void Initialize();
@@ -26,25 +26,30 @@ public:
 	void EndPlay(const EEndPlayReason::Type EndPlayReason);
 
 	UTPSUIManager* GetUIManager() const;
-	
+
 	void DeinitializeUIManager();
 
 	virtual UWorld* GetWorld() const override;
 	void SetWorld(UWorld* InWorld);
 
 	UTPSGameManager* GetGameManager() const;
+	UTPSGameStateManager* GetGameStateManager() const;
+	void SetGameState(const EGameplayState InGameplayState);
 private:
 	void InitializeUIManager();
-	
+
 private:
 	static UTPSSystemManager* Instance;
-	
+
 	UPROPERTY(Transient)
 	TObjectPtr<UTPSUIManager> UIManager;
 
 	UPROPERTY(Transient)
 	TObjectPtr<UTPSGameManager> GameManager;
 
+	UPROPERTY(Transient)
+	TObjectPtr<UTPSGameStateManager> GameStateManager;
+	
 	UPROPERTY()
 	TObjectPtr<UWorld> World;
 };
