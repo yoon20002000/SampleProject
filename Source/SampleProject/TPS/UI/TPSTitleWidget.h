@@ -17,6 +17,8 @@ protected:
 	virtual void NativeConstruct() override;
 private:
 	UFUNCTION()
+	void OnLevelLoaded();
+	UFUNCTION()
 	void OnClickedPlayButton();
 	UFUNCTION()
 	void OnClickedQuitButton();

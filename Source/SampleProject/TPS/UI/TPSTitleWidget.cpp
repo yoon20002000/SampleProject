@@ -25,12 +25,25 @@ void UTPSTitleWidget::NativeConstruct()
 	}
 }
 
+void UTPSTitleWidget::OnLevelLoaded()
+{
+	UTPSSystemManager::Get()->SetGameState(EGameplayState::MainGame);
+}
+
 void UTPSTitleWidget::OnClickedPlayButton()
 {
 	UTPSSystemManager::Get()->GetUIManager()->RemoveUI(this);
-	UGameplayStatics::LoadStreamLevel(this, FName("MainGame"), true, false, FLatentActionInfo());
 
-	UTPSSystemManager::Get()->SetGameState(EGameplayState::MainGame);
+	FName LevelName = TEXT("MainGame");
+
+	ULevelStreaming* StreamingLevel = UGameplayStatics::GetStreamingLevel(this, LevelName);
+	if (StreamingLevel != nullptr)
+	{
+		StreamingLevel->OnLevelLoaded.AddDynamic(this, &UTPSTitleWidget::OnLevelLoaded);
+
+		StreamingLevel->SetShouldBeLoaded(true);
+		StreamingLevel->SetShouldBeVisible(true);
+	}
 }
 
 void UTPSTitleWidget::OnClickedQuitButton()

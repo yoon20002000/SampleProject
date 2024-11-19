@@ -31,6 +31,7 @@ void UTPSGameStateManager::SetGameplayState(EGameplayState InGameState)
 				UTPSSystemManager::Get()->GetUIManager()->LoadUI("Title");
 				
 				APlayerController* PC = UGameplayStatics::GetPlayerController(TPSHelper::GetWorld(),0);
+				PC->SetInputMode(FInputModeUIOnly());
 				PC->SetShowMouseCursor(true);
 				break;
 			}
