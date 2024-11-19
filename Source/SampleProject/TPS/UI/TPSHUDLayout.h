@@ -17,7 +17,6 @@ public:
 	UTPSHUDLayout(const FObjectInitializer& ObjectInitializer);
 
 	virtual void NativeOnInitialized() override;
-
 protected:
 	void HandleEscapeAction() const;
 	UPROPERTY(EditDefaultsOnly)

@@ -22,6 +22,7 @@ protected:
 	void OnClickedQuit();
 	UFUNCTION()
 	void OnClickedContinue();
+	void SetMouseCursor(const bool bShowMouseCursor);
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<UButton> OptionButton;
