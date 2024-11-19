@@ -21,7 +21,11 @@ class SAMPLEPROJECT_API UTPSGameStateManager : public UObject
 	GENERATED_BODY()
 public:
 	virtual void BeginPlay();
+	
 	void SetGameplayState(EGameplayState InGameState);
+private:
+	UFUNCTION()
+	void OnLevelLoaded();
 private:
 	EGameplayState GameState;
 };

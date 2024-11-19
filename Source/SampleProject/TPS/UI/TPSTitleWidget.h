@@ -15,9 +15,8 @@ class SAMPLEPROJECT_API UTPSTitleWidget : public UTPSCommonActivatableWidget
 	GENERATED_BODY()
 protected:
 	virtual void NativeConstruct() override;
+	
 private:
-	UFUNCTION()
-	void OnLevelLoaded();
 	UFUNCTION()
 	void OnClickedPlayButton();
 	UFUNCTION()

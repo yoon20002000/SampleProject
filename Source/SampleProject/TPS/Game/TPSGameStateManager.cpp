@@ -37,12 +37,17 @@ void UTPSGameStateManager::SetGameplayState(EGameplayState InGameState)
 			}
 		case EGameplayState::MainGame:
 			{
-				UTPSSystemManager::Get()->GetGameManager()->SpawnPlayer("Player");
-				UTPSSystemManager::Get()->GetUIManager()->LoadUI("BattleHUD");
+				FName LevelName = TEXT("MainGame");
+
+				ULevelStreaming* StreamingLevel = UGameplayStatics::GetStreamingLevel(TPSHelper::GetWorld(), LevelName);
+				if (StreamingLevel != nullptr)
+				{
+					StreamingLevel->OnLevelLoaded.AddDynamic(this, &UTPSGameStateManager::OnLevelLoaded);
 				
-				APlayerController* PC = UGameplayStatics::GetPlayerController(TPSHelper::GetWorld(),0);
-				PC->SetInputMode(FInputModeGameOnly());
-				PC->SetShowMouseCursor(false);
+					StreamingLevel->SetShouldBeLoaded(true);
+					StreamingLevel->SetShouldBeVisible(true);
+				}
+				
 				break;
 			}
 		default:
@@ -51,4 +56,14 @@ void UTPSGameStateManager::SetGameplayState(EGameplayState InGameState)
 			}
 		}
 	}
+}
+
+void UTPSGameStateManager::OnLevelLoaded()
+{
+	UTPSSystemManager::Get()->GetGameManager()->SpawnPlayer("Player");
+	UTPSSystemManager::Get()->GetUIManager()->LoadUI("BattleHUD");
+				
+	APlayerController* PC = UGameplayStatics::GetPlayerController(TPSHelper::GetWorld(),0);
+	PC->SetInputMode(FInputModeGameOnly());
+	PC->SetShowMouseCursor(false);
 }
