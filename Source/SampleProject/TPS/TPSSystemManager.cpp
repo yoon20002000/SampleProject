@@ -1,6 +1,7 @@
 ﻿#include "TPSSystemManager.h"
 
 #include "TPSGameManager.h"
+#include "TPSHelper.h"
 #include "Game/TPSGameStateManager.h"
 #include "UI/TPSUIManager.h"
 UTPSSystemManager* UTPSSystemManager::Instance = nullptr;
@@ -109,6 +110,14 @@ void UTPSSystemManager::SetGameState(const EGameplayState InGameplayState)
 		return;
 	}
 	GameStateManager->SetGameplayState(InGameplayState);
+}
+
+void UTPSSystemManager::QuitGame() const
+{
+	if (APlayerController* PlayerController = TPSHelper::GetPlayerController(World))
+	{
+		PlayerController->ConsoleCommand("quit");
+	}
 }
 
 void UTPSSystemManager::InitializeUIManager()

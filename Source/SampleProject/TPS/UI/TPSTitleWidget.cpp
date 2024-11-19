@@ -3,12 +3,10 @@
 
 #include "UI/TPSTitleWidget.h"
 
-#include "TPSHelper.h"
 #include "TPSSystemManager.h"
 #include "TPSUIManager.h"
 #include "Components/Button.h"
 #include "Game/TPSGameStateManager.h"
-#include "Kismet/GameplayStatics.h"
 
 void UTPSTitleWidget::NativeConstruct()
 {
@@ -34,8 +32,5 @@ void UTPSTitleWidget::OnClickedPlayButton()
 
 void UTPSTitleWidget::OnClickedQuitButton()
 {
-	if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
-	{
-		PlayerController->ConsoleCommand("quit");
-	}
+	UTPSSystemManager::Get()->QuitGame();
 }

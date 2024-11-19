@@ -5,6 +5,7 @@
 
 #include "CommonUIExtensions.h"
 #include "TPSHelper.h"
+#include "TPSSystemManager.h"
 #include "Components/Button.h"
 
 bool UTPSPauseMenuWidget::Initialize()
@@ -27,7 +28,6 @@ bool UTPSPauseMenuWidget::Initialize()
 	{
 		ContinueButton->OnClicked.AddDynamic(this, &UTPSPauseMenuWidget::OnClickedContinue);
 	}
-
 	
 	return bResult;
 }
@@ -40,7 +40,7 @@ void UTPSPauseMenuWidget::OnClickedOption()
 void UTPSPauseMenuWidget::OnClickedQuit()
 {
 	UE_LOG(LogTemp, Log, TEXT("OnClickedQuit"));
-	
+	UTPSSystemManager::Get()->QuitGame();
 }
 
 void UTPSPauseMenuWidget::OnClickedContinue()

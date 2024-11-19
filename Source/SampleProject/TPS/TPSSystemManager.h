@@ -35,6 +35,8 @@ public:
 	UTPSGameManager* GetGameManager() const;
 	UTPSGameStateManager* GetGameStateManager() const;
 	void SetGameState(const EGameplayState InGameplayState);
+	void QuitGame() const;
+	
 private:
 	void InitializeUIManager();
 
