@@ -31,7 +31,6 @@ void ATPSCharacter::BeginPlay()
 	Super::BeginPlay();
 	
 	ChangeHealth(MaxHealth);
-	OnHealthChanged.Broadcast(Health, MaxHealth);
 }
 
 void ATPSCharacter::PostInitializeComponents()
@@ -65,4 +64,5 @@ float ATPSCharacter::GetMaxHealth() const
 void ATPSCharacter::ChangeHealth(float InNewHealth)
 {
 	Health = FMath::Clamp(InNewHealth, 0,MaxHealth);
+	OnHealthChanged.Broadcast(Health, MaxHealth);
 }

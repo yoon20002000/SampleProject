@@ -96,4 +96,5 @@ void ATPSPlayer::Look(const FInputActionValue& InputActionValue)
 void ATPSPlayer::Shot(const FInputActionValue& InputActionValue)
 {
 	UE_LOG(LogTemp, Log, TEXT("Shot!!"));
+	ChangeHealth(GetHealth() -1);
 }
