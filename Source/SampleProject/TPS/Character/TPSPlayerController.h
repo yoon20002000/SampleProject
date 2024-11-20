@@ -20,6 +20,7 @@ public:
 	virtual void OnPossess(class APawn* APawn) override;
 	virtual void OnUnPossess() override;
 	virtual void SetGamePause(const bool bIsGamePause);
+	virtual void SetGameEnd();
 protected:
 	virtual void OnRep_PlayerState() override;
 	

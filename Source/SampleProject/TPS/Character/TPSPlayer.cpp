@@ -2,6 +2,7 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "TPSPlayerController.h"
 
 
 #include "Components/TPSCameraComponent.h"
@@ -39,6 +40,15 @@ void ATPSPlayer::ChangeHealth(float InNewHealth)
 void ATPSPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (Health <= 0)
+	{
+		if (ATPSPlayerController* TPSPC = Cast<ATPSPlayerController>(GetController()))
+		{
+			TPSPC->SetGameEnd();
+		}
+		SetActorTickEnabled(false);
+	}
 }
 
 // Called to bind functionality to input
@@ -65,6 +75,11 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	}
 }
 
+bool ATPSPlayer::IsAlive() const
+{
+	return Health > 0;
+}
+
 void ATPSPlayer::Move(const FInputActionValue& InputActionValue)
 {
 	const FVector2D MovementVector = InputActionValue.Get<FVector2D>();
@@ -86,15 +101,15 @@ void ATPSPlayer::Look(const FInputActionValue& InputActionValue)
 {
 	const FVector2D LookAxisVector = InputActionValue.Get<FVector2D>();
 
-	if(Controller != nullptr)
+	if (Controller != nullptr)
 	{
 		AddControllerYawInput(LookAxisVector.X);
-		AddControllerPitchInput(LookAxisVector.Y);	
+		AddControllerPitchInput(LookAxisVector.Y);
 	}
 }
 
 void ATPSPlayer::Shot(const FInputActionValue& InputActionValue)
 {
 	UE_LOG(LogTemp, Log, TEXT("Shot!!"));
-	ChangeHealth(GetHealth() -1);
+	ChangeHealth(GetHealth() - 1);
 }

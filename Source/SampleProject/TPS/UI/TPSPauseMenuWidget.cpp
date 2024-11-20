@@ -56,7 +56,7 @@ void UTPSPauseMenuWidget::SetGamePause(const bool bPauseGame)
 {
 	APlayerController* PC = TPSHelper::GetPlayerController(GetWorld());
 
-	if (ATPSPlayerController* TPSPC = CastChecked<ATPSPlayerController>(PC))
+	if (ATPSPlayerController* TPSPC = Cast<ATPSPlayerController>(PC))
 	{
 		TPSPC->SetGamePause(bPauseGame);
 	}

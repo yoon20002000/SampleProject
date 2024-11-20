@@ -3,7 +3,9 @@
 
 #include "TPSPlayerController.h"
 
+#include "TPSSystemManager.h"
 #include "Game/TPSCommonLocalPlayer.h"
+#include "Game/TPSGameStateManager.h"
 
 
 void ATPSPlayerController::ReceivedPlayer()
@@ -65,6 +67,11 @@ void ATPSPlayerController::SetGamePause(const bool bIsGamePause)
 	}
 	
 	SetPause(bIsGamePause);
+}
+
+void ATPSPlayerController::SetGameEnd()
+{
+	UTPSSystemManager::Get()->SetGameState(EGameplayState::GameResult);
 }
 
 void ATPSPlayerController::OnRep_PlayerState()

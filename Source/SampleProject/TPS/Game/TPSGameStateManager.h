@@ -10,6 +10,7 @@ enum class EGameplayState : uint8
 	None = 0,
 	Title = 1,
 	MainGame = 2,
+	GameResult = 3,
 };
 
 /**

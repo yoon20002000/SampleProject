@@ -19,18 +19,18 @@ void UTPSGameStateManager::SetGameplayState(EGameplayState InGameState)
 	if (GameState != InGameState)
 	{
 		GameState = InGameState;
-		
+
 		switch (GameState)
 		{
 		case EGameplayState::None:
 			{
 				break;
-			}			
+			}
 		case EGameplayState::Title:
 			{
 				UTPSSystemManager::Get()->GetUIManager()->LoadUI("Title");
-				
-				APlayerController* PC = UGameplayStatics::GetPlayerController(TPSHelper::GetWorld(),0);
+
+				APlayerController* PC = UGameplayStatics::GetPlayerController(TPSHelper::GetWorld(), 0);
 				PC->SetInputMode(InputUIOnly);
 				PC->SetShowMouseCursor(true);
 				break;
@@ -43,11 +43,20 @@ void UTPSGameStateManager::SetGameplayState(EGameplayState InGameState)
 				if (StreamingLevel != nullptr)
 				{
 					StreamingLevel->OnLevelLoaded.AddDynamic(this, &UTPSGameStateManager::OnLevelLoaded);
-				
+
 					StreamingLevel->SetShouldBeLoaded(true);
 					StreamingLevel->SetShouldBeVisible(true);
 				}
-				
+
+				break;
+			}
+		case EGameplayState::GameResult:
+			{
+				APlayerController* PC = UGameplayStatics::GetPlayerController(TPSHelper::GetWorld(), 0);
+				PC->SetInputMode(InputUIOnly);
+				PC->SetShowMouseCursor(true);
+
+				UTPSSystemManager::Get()->GetUIManager()->LoadUI("GameResult");
 				break;
 			}
 		default:
@@ -62,8 +71,8 @@ void UTPSGameStateManager::OnLevelLoaded()
 {
 	UTPSSystemManager::Get()->GetGameManager()->SpawnPlayer("Player");
 	UTPSSystemManager::Get()->GetUIManager()->LoadUI("BattleHUD");
-				
-	APlayerController* PC = UGameplayStatics::GetPlayerController(TPSHelper::GetWorld(),0);
+
+	APlayerController* PC = UGameplayStatics::GetPlayerController(TPSHelper::GetWorld(), 0);
 	PC->SetInputMode(InputGameOnly);
 	PC->SetShowMouseCursor(false);
 }
