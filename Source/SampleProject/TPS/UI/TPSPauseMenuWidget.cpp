@@ -6,13 +6,14 @@
 #include "CommonUIExtensions.h"
 #include "TPSHelper.h"
 #include "TPSSystemManager.h"
+#include "Character/TPSPlayerController.h"
 #include "Components/Button.h"
 
 bool UTPSPauseMenuWidget::Initialize()
 {
 	bool bResult = Super::Initialize();
 
-	SetMouseCursor(true);
+	SetGamePause(true);
 	
 	if (OptionButton != nullptr)
 	{
@@ -48,25 +49,15 @@ void UTPSPauseMenuWidget::OnClickedContinue()
 	UE_LOG(LogTemp, Log, TEXT("OnClickedContinue"));
 
 	UCommonUIExtensions::PopContentFromLayer(this);
-	SetMouseCursor(false);
+	SetGamePause(false);
 }
 
-void UTPSPauseMenuWidget::SetMouseCursor(const bool bShowMouseCursor)
+void UTPSPauseMenuWidget::SetGamePause(const bool bPauseGame)
 {
 	APlayerController* PC = TPSHelper::GetPlayerController(GetWorld());
 
-	if (PC == nullptr)
+	if (ATPSPlayerController* TPSPC = CastChecked<ATPSPlayerController>(PC))
 	{
-		return;
-	}
-	PC->SetShowMouseCursor(bShowMouseCursor);
-
-	if (bShowMouseCursor == false)
-	{
-		PC->SetInputMode(FInputModeGameOnly());
-	}
-	else
-	{
-		PC->SetInputMode(FInputModeUIOnly());
+		TPSPC->SetGamePause(bPauseGame);
 	}
 }

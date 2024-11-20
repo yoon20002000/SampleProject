@@ -31,7 +31,7 @@ void UTPSGameStateManager::SetGameplayState(EGameplayState InGameState)
 				UTPSSystemManager::Get()->GetUIManager()->LoadUI("Title");
 				
 				APlayerController* PC = UGameplayStatics::GetPlayerController(TPSHelper::GetWorld(),0);
-				PC->SetInputMode(FInputModeUIOnly());
+				PC->SetInputMode(InputUIOnly);
 				PC->SetShowMouseCursor(true);
 				break;
 			}
@@ -64,6 +64,6 @@ void UTPSGameStateManager::OnLevelLoaded()
 	UTPSSystemManager::Get()->GetUIManager()->LoadUI("BattleHUD");
 				
 	APlayerController* PC = UGameplayStatics::GetPlayerController(TPSHelper::GetWorld(),0);
-	PC->SetInputMode(FInputModeGameOnly());
+	PC->SetInputMode(InputGameOnly);
 	PC->SetShowMouseCursor(false);
 }

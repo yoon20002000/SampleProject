@@ -28,4 +28,7 @@ private:
 	void OnLevelLoaded();
 private:
 	EGameplayState GameState;
+	
+	FInputModeGameOnly InputGameOnly;
+	FInputModeUIOnly InputUIOnly;
 };

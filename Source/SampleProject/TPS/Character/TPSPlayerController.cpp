@@ -51,6 +51,22 @@ void ATPSPlayerController::OnUnPossess()
 	}
 }
 
+void ATPSPlayerController::SetGamePause(const bool bIsGamePause)
+{
+	SetShowMouseCursor(bIsGamePause);
+
+	if (bIsGamePause == false)
+	{
+		SetInputMode(FInputModeGameOnly());
+	}
+	else
+	{
+		SetInputMode(FInputModeUIOnly());
+	}
+	
+	SetPause(bIsGamePause);
+}
+
 void ATPSPlayerController::OnRep_PlayerState()
 {
 	Super::OnRep_PlayerState();

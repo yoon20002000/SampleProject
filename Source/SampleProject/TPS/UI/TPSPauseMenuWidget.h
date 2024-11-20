@@ -22,7 +22,7 @@ protected:
 	void OnClickedQuit();
 	UFUNCTION()
 	void OnClickedContinue();
-	void SetMouseCursor(const bool bShowMouseCursor);
+	void SetGamePause(const bool bPauseGame);
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<UButton> OptionButton;

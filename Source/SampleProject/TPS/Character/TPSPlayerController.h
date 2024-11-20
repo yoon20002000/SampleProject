@@ -19,7 +19,11 @@ public:
 	virtual void SetPawn(APawn* InPawn) override;
 	virtual void OnPossess(class APawn* APawn) override;
 	virtual void OnUnPossess() override;
-	
+	virtual void SetGamePause(const bool bIsGamePause);
 protected:
 	virtual void OnRep_PlayerState() override;
+	
+private:
+	FInputModeGameOnly InputGameOnly;
+	FInputModeUIOnly InputUIOnly;
 };
