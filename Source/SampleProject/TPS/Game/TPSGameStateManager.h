@@ -26,18 +26,11 @@ public:
 	virtual void BeginPlay();
 	
 	void SetGameplayState(EGameplayState InGameState);
-private:
-	UFUNCTION()
-	void OnLevelLoaded();
-	UFUNCTION()
-	void OnLevelUnloaded();
-	ULevelStreaming* GetStreamingLevel(const EGameplayState InGameState);
+	void OpenLevel(const EGameplayState InGameState);
+	
 private:
 	EGameplayState GameState;
 	
 	FInputModeGameOnly InputGameOnly;
 	FInputModeUIOnly InputUIOnly;
-
-	UPROPERTY(Transient)
-	TMap<EGameplayState,TObjectPtr<ULevelStreaming>> TPSGameLevels;
 };

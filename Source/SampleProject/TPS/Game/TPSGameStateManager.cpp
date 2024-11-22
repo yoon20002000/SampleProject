@@ -11,14 +11,6 @@
 
 void UTPSGameStateManager::BeginPlay()
 {
-
-	ULevelStreaming* StreamingLevel = UGameplayStatics::GetStreamingLevel(TPSHelper::GetWorld(), TEXT("MainGame"));
-
-	if (StreamingLevel != nullptr)
-	{
-		StreamingLevel->OnLevelLoaded.AddDynamic(this, &UTPSGameStateManager::OnLevelLoaded);
-	}
-	TPSGameLevels.Add(EGameplayState::MainGame, StreamingLevel);
 	SetGameplayState(EGameplayState::None);
 }
 
@@ -45,11 +37,12 @@ void UTPSGameStateManager::SetGameplayState(EGameplayState InGameState)
 			}
 		case EGameplayState::MainGame:
 			{
-				ULevelStreaming* StreamingLevel = GetStreamingLevel(EGameplayState::MainGame);
-				
-				StreamingLevel->SetShouldBeLoaded(true);
-				StreamingLevel->SetShouldBeVisible(true);
+				UTPSSystemManager::Get()->GetGameManager()->SpawnPlayer("Player");
+				UTPSSystemManager::Get()->GetUIManager()->LoadUI("BattleHUD");
 
+				APlayerController* PC = UGameplayStatics::GetPlayerController(TPSHelper::GetWorld(), 0);
+				PC->SetInputMode(InputGameOnly);
+				PC->SetShowMouseCursor(false);
 				break;
 			}
 		case EGameplayState::GameResult:
@@ -63,16 +56,7 @@ void UTPSGameStateManager::SetGameplayState(EGameplayState InGameState)
 			}
 		case EGameplayState::GameReplay:
 			{
-				FLatentActionInfo LatentInfo;
-				LatentInfo.CallbackTarget = this;                    // 완료 시 호출할 객체
-				LatentInfo.ExecutionFunction = FName(TEXT("OnLevelUnloaded"));    // 호출할 함수 이름
-				LatentInfo.Linkage = 0;                              // 고유 값 (0 사용 가능)
-				LatentInfo.UUID = __LINE__;                          // 고유 ID (보통 __LINE__ 사용)
-				UTPSSystemManager::Get()->GetGameManager()->DeletePlayer();
-				UTPSSystemManager::Get()->GetUIManager()->RemoveAllUIs();
-
-				UGameplayStatics::UnloadStreamLevel(TPSHelper::GetWorld(), TEXT("MainGame"), LatentInfo, false);
-				
+				OpenLevel(EGameplayState::Title);
 				break;
 			}
 		default:
@@ -83,30 +67,39 @@ void UTPSGameStateManager::SetGameplayState(EGameplayState InGameState)
 	}
 }
 
-void UTPSGameStateManager::OnLevelLoaded()
+void UTPSGameStateManager::OpenLevel(const EGameplayState InGameState)
 {
-	UTPSSystemManager::Get()->GetGameManager()->SpawnPlayer("Player");
-	UTPSSystemManager::Get()->GetUIManager()->LoadUI("BattleHUD");
-
-	APlayerController* PC = UGameplayStatics::GetPlayerController(TPSHelper::GetWorld(), 0);
-	PC->SetInputMode(InputGameOnly);
-	PC->SetShowMouseCursor(false);
-}
-
-void UTPSGameStateManager::OnLevelUnloaded()
-{
-	SetGameplayState(EGameplayState::Title);
-}
-
-ULevelStreaming* UTPSGameStateManager::GetStreamingLevel(const EGameplayState InGameState)
-{
-	TObjectPtr<ULevelStreaming>* LevelStreaming = TPSGameLevels.Find(InGameState);
-	if (LevelStreaming != nullptr)
+	FName LevelName; 
+	switch (InGameState)
 	{
-		return *LevelStreaming;
+	case EGameplayState::None:
+		{
+			break;
+		}
+	case EGameplayState::Title:
+		{
+			LevelName = TEXT("Title");
+			break;
+		}
+	case EGameplayState::MainGame:
+		{
+			LevelName = TEXT("MainGame");
+			break;
+		}
+	case EGameplayState::GameResult:
+		{
+			break;
+		}
+	case EGameplayState::GameReplay:
+		break;
+	default:
+		{
+			break;
+		}
 	}
-	else
+
+	if (LevelName.IsNone() == false)
 	{
-		return nullptr;
+		UGameplayStatics::OpenLevel(TPSHelper::GetWorld(), LevelName);	
 	}
 }

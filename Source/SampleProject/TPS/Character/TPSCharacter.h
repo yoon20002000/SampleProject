@@ -24,7 +24,6 @@ public:
 	virtual void BeginPlay() override;
 	virtual void PostInitializeComponents() override;
 	virtual void Tick(float DeltaTime) override;
-	virtual void BeginDestroy() override;
 	
 	float GetHealth()const;
 	float GetMaxHealth()const;

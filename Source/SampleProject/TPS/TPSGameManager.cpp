@@ -63,15 +63,6 @@ void UTPSGameManager::SpawnPlayer(const FString& CharacterDataName)
 	}
 }
 
-void UTPSGameManager::DeletePlayer()
-{
-	if (Player != nullptr /*&& Player->IsGarbageEliminationEnabled() == false*/)
-	{
-		Player->Destroy();
-		Player = nullptr;
-	}
-}
-
 void UTPSGameManager::GetSpawnPoint(FVector& OutPosition, FRotator& OutRotator, int InIndex)
 {
 	OutPosition = FVector::Zero();

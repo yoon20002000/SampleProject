@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "TPSGameMode.generated.h"
 
+enum class EGameplayState : uint8;
 class UGameDataAsset;
 class UTPSGameInstance;
 
@@ -25,4 +26,7 @@ public:
 	
 	UPROPERTY(EditAnywhere, Category=TPS)
 	TSoftObjectPtr<UGameDataAsset> GameDataAsset;
+private:
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, meta=(AllowPrivateAccess = true))
+	EGameplayState GameplayState;
 };

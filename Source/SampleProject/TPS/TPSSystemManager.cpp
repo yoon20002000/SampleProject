@@ -56,8 +56,6 @@ void UTPSSystemManager::BeginPlay()
 	GameManager->BeginPlay();
 	UIManager->BeginPlay();
 	GameStateManager->BeginPlay();
-
-	SetGameState(EGameplayState::Title);
 }
 
 void UTPSSystemManager::EndPlay(const EEndPlayReason::Type EndPlayReason)

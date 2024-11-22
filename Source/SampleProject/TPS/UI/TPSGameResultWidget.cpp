@@ -42,8 +42,5 @@ void UTPSGameResultWidget::NativeConstruct()
 
 void UTPSGameResultWidget::OnClickedRetryButton()
 {
-	// UE_LOG(LogTemp, Log, TEXT("OnClickedRetryButton"));
-	// FName TitleLevel = FName(TEXT("Title"));
-	// UGameplayStatics::OpenLevel(TPSHelper::GetWorld(), TitleLevel);
 	UTPSSystemManager::Get()->GetGameStateManager()->SetGameplayState(EGameplayState::GameReplay);
 }

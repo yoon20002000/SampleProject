@@ -3,7 +3,6 @@
 
 #include "TPSGameMode.h"
 
-#include "TPSGameInstance.h"
 #include "TPSGameManager.h"
 #include "TPSSystemManager.h"
 
@@ -20,6 +19,8 @@ void ATPSGameMode::StartPlay()
 	UTPSSystemManager::Get()->GetGameManager()->InitData(this); 
 	
 	UTPSSystemManager::Get()->BeginPlay();
+
+	UTPSSystemManager::Get()->SetGameState(GameplayState);
 }
 
 void ATPSGameMode::BeginDestroy()
