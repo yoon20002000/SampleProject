@@ -1,8 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-
 #include "TPSGameStateManager.generated.h"
+
+class ULevelStreaming;
 
 UENUM()
 enum class EGameplayState : uint8
@@ -28,11 +29,15 @@ public:
 private:
 	UFUNCTION()
 	void OnLevelLoaded();
+	UFUNCTION()
 	void OnLevelUnloaded();
+	ULevelStreaming* GetStreamingLevel(const EGameplayState InGameState);
 private:
 	EGameplayState GameState;
 	
 	FInputModeGameOnly InputGameOnly;
 	FInputModeUIOnly InputUIOnly;
-	
+
+	UPROPERTY(Transient)
+	TMap<EGameplayState,TObjectPtr<ULevelStreaming>> TPSGameLevels;
 };

@@ -13,14 +13,16 @@ UCLASS()
 class SAMPLEPROJECT_API UTPSTitleWidget : public UTPSCommonActivatableWidget
 {
 	GENERATED_BODY()
+
 protected:
 	virtual void NativeConstruct() override;
-	
+
 private:
 	UFUNCTION()
 	void OnClickedPlayButton();
 	UFUNCTION()
 	void OnClickedQuitButton();
+
 private:
 	UPROPERTY(meta=(AllowPrivateAccess = true, BindWidget))
 	TObjectPtr<UButton> PlayButton;
