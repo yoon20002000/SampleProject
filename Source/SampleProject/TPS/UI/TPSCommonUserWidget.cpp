@@ -10,7 +10,7 @@ ATPSPlayer* UTPSCommonUserWidget::GetTPSPlayer() const
 {
 	if (APlayerController* PlayerController = TPSHelper::GetPlayerController())
 	{
-		return CastChecked<ATPSPlayer>(PlayerController->GetPawn());
+		return Cast<ATPSPlayer>(PlayerController->GetPawn());
 	}
 	return nullptr;
 }

@@ -11,7 +11,6 @@
 void UTPSTitleWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-
 	if (PlayButton != nullptr)
 	{
 		PlayButton->OnClicked.AddDynamic(this, &UTPSTitleWidget::OnClickedPlayButton);

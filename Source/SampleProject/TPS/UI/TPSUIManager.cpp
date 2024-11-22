@@ -96,6 +96,16 @@ void UTPSUIManager::RemoveUI(UCommonActivatableWidget* InRemoveWidget)
 	LoadedUIs.Remove(InRemoveWidget);
 }
 
+void UTPSUIManager::RemoveAllUIs()
+{
+	for (auto ui : LoadedUIs)
+	{
+		UCommonUIExtensions::PopContentFromLayer(ui);
+	}
+
+	LoadedUIs.Empty();
+}
+
 FString UTPSUIManager::GetLayerNameByLayerType(const EUILayerType InLayerType)
 {
 	FString LayerName;

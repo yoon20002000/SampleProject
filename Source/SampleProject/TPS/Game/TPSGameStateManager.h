@@ -11,6 +11,7 @@ enum class EGameplayState : uint8
 	Title = 1,
 	MainGame = 2,
 	GameResult = 3,
+	GameReplay = 4,
 };
 
 /**
@@ -27,9 +28,11 @@ public:
 private:
 	UFUNCTION()
 	void OnLevelLoaded();
+	void OnLevelUnloaded();
 private:
 	EGameplayState GameState;
 	
 	FInputModeGameOnly InputGameOnly;
 	FInputModeUIOnly InputUIOnly;
+	
 };

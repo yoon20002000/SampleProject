@@ -51,6 +51,16 @@ void ATPSCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+void ATPSCharacter::BeginDestroy()
+{
+	Super::BeginDestroy();
+	if (HPBarWidget != nullptr /*&& HPBarWidget->IsGarbageEliminationEnabled() == false*/)
+	{
+		HPBarWidget->DestroyComponent();
+		HPBarWidget = nullptr;
+	}
+}
+
 float ATPSCharacter::GetHealth() const
 {
 	return Health;

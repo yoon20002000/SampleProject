@@ -25,5 +25,5 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<UCommonTextBlock> ExplainText;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(BindWidget, AllowPrivateAccess = true))
-	TObjectPtr<UButton> RetryButton;
+	TObjectPtr<UButton> GoToTitleButton;
 };

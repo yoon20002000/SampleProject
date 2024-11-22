@@ -42,6 +42,7 @@ public:
 
 	void LoadUI(const FString& UIName, EUILayerType LayerType = EUILayerType::GameLayer);
 	void RemoveUI(UCommonActivatableWidget* InRemoveWidget);
+	void RemoveAllUIs();
 	FString GetLayerNameByLayerType(const EUILayerType InLayerType);
 	
 protected:

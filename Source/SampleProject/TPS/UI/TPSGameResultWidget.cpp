@@ -7,14 +7,17 @@
 #include "Character/TPSPlayer.h"
 #include "Components/Button.h"
 #include "CommonTextBlock.h"
+#include "TPSSystemManager.h"
+#include "Game/TPSGameStateManager.h"
+#include "Kismet/GameplayStatics.h"
 
 bool UTPSGameResultWidget::Initialize()
 {
 	bool bResult = Super::Initialize();
 
-	if (RetryButton != nullptr)
+	if (GoToTitleButton != nullptr)
 	{
-		RetryButton->OnClicked.AddDynamic(this, &UTPSGameResultWidget::OnClickedRetryButton);
+		GoToTitleButton->OnClicked.AddDynamic(this, &UTPSGameResultWidget::OnClickedRetryButton);
 	}
 	
 	return bResult;
@@ -39,5 +42,8 @@ void UTPSGameResultWidget::NativeConstruct()
 
 void UTPSGameResultWidget::OnClickedRetryButton()
 {
-	UE_LOG(LogTemp, Log, TEXT("OnClickedRetryButton"));
+	// UE_LOG(LogTemp, Log, TEXT("OnClickedRetryButton"));
+	// FName TitleLevel = FName(TEXT("Title"));
+	// UGameplayStatics::OpenLevel(TPSHelper::GetWorld(), TitleLevel);
+	UTPSSystemManager::Get()->GetGameStateManager()->SetGameplayState(EGameplayState::GameReplay);
 }

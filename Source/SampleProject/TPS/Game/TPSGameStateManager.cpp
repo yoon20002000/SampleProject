@@ -59,6 +59,20 @@ void UTPSGameStateManager::SetGameplayState(EGameplayState InGameState)
 				UTPSSystemManager::Get()->GetUIManager()->LoadUI("GameResult");
 				break;
 			}
+		case EGameplayState::GameReplay:
+			{
+				FLatentActionInfo LatentInfo;
+				LatentInfo.CallbackTarget = this;                    // 완료 시 호출할 객체
+				LatentInfo.ExecutionFunction = "OnLevelUnloaded";    // 호출할 함수 이름
+				LatentInfo.Linkage = 0;                              // 고유 값 (0 사용 가능)
+				LatentInfo.UUID = __LINE__;                          // 고유 ID (보통 __LINE__ 사용)
+				UTPSSystemManager::Get()->GetGameManager()->DeletePlayer();
+				UTPSSystemManager::Get()->GetUIManager()->RemoveAllUIs();
+
+				UGameplayStatics::UnloadStreamLevel(TPSHelper::GetWorld(), TEXT("MainGame"), LatentInfo, true);
+				
+				break;
+			}
 		default:
 			{
 				break;
@@ -75,4 +89,9 @@ void UTPSGameStateManager::OnLevelLoaded()
 	APlayerController* PC = UGameplayStatics::GetPlayerController(TPSHelper::GetWorld(), 0);
 	PC->SetInputMode(InputGameOnly);
 	PC->SetShowMouseCursor(false);
+}
+
+void UTPSGameStateManager::OnLevelUnloaded()
+{
+	SetGameplayState(EGameplayState::Title);
 }

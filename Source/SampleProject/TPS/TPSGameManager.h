@@ -17,6 +17,7 @@ public:
 	void BeginPlay();
 	void EndPlay(const EEndPlayReason::Type EndPlayReason);
 	void SpawnPlayer(const FString& CharacterDataName = TEXT("Player"));
+	void DeletePlayer();
 private:
 	UPROPERTY(Transient)
 	TObjectPtr<UGameDataAsset> GameDataAsset;

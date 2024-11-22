@@ -12,19 +12,24 @@ bool UTPSHealthBar::Initialize()
 {
 	bool bResult = Super::Initialize();
 	
+	return bResult;
+}
+
+void UTPSHealthBar::NativeConstruct()
+{
+	Super::NativeConstruct();
 	if (ATPSPlayer* TPSPlayer = GetTPSPlayer())
 	{
 		UpdateHealthBar(TPSPlayer->GetHealth(), TPSPlayer->GetMaxHealth());
 		TPSPlayer->OnHealthChanged.AddDynamic(this, &UTPSHealthBar::UpdateHealthBar);
 	}
-
-	return bResult;
 }
 
 void UTPSHealthBar::BeginDestroy()
 {
 	Super::BeginDestroy();
 
+	UE_LOG(LogTemp, Log, TEXT("Is going destroy!!!"));
 	if (ATPSPlayer* TPSPlayer = GetTPSPlayer())
 	{
 		TPSPlayer->OnHealthChanged.RemoveDynamic(this, &UTPSHealthBar::UpdateHealthBar);

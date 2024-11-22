@@ -18,6 +18,7 @@ class SAMPLEPROJECT_API UTPSHealthBar : public UTPSCommonUserWidget
 	GENERATED_BODY()
 protected:
 	virtual bool Initialize() override;
+	virtual void NativeConstruct() override;
 	virtual void BeginDestroy() override;
 	UFUNCTION()
 	virtual void UpdateHealthBar(float NewHealth, float MaxHealth);
