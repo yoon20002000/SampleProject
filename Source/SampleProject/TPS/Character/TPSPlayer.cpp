@@ -75,6 +75,7 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 		EnhancedInputComponent->BindAction(ShotAction, ETriggerEvent::Started, this, &ATPSPlayer::Shot);
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ATPSPlayer::Interaction);
 	}
 }
 
@@ -115,4 +116,9 @@ void ATPSPlayer::Shot(const FInputActionValue& InputActionValue)
 {
 	UE_LOG(LogTemp, Log, TEXT("Shot!!"));
 	ChangeHealth(GetHealth() - 1);
+}
+void ATPSPlayer::Interaction(const FInputActionValue& InputActionValue)
+{
+	UE_LOG(LogTemp, Log, TEXT("Interaction"));
+	InteractionComp->Interaction();
 }

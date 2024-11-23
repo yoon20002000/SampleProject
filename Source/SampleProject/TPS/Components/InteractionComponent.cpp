@@ -4,6 +4,7 @@
 #include "Components/InteractionComponent.h"
 
 #include "TPSHelper.h"
+#include "Game/TPSGameplay.h"
 
 // Sets default values for this component's properties
 UInteractionComponent::UInteractionComponent() : FocusedActor(nullptr)
@@ -17,6 +18,14 @@ UInteractionComponent::UInteractionComponent() : FocusedActor(nullptr)
 
 void UInteractionComponent::Interaction()
 {
+	if (FocusedActor == nullptr)
+	{
+		GEngine->AddOnScreenDebugMessage(-1,5,FColor::Red, "Focused Actor is nullptr");
+		return;
+	}
+
+	APawn* Player = CastChecked<APawn>(GetOwner());
+	ITPSGameplay::Execute_Interact(FocusedActor, Player);
 }
 
 
@@ -47,8 +56,9 @@ void UInteractionComponent::FindInteractableActor()
 	FCollisionShape Shape;
 	Shape.SetSphere(TraceRadius);
 
-	bool bBlockingHit = TPSHelper::GetWorld()->SweepMultiByObjectType(Hits, EyeLocation, End, FQuat::Identity, ObjectQueryParams,
-	                                                       Shape);
+	bool bBlockingHit = TPSHelper::GetWorld()->SweepMultiByObjectType(Hits, EyeLocation, End, FQuat::Identity,
+	                                                                  ObjectQueryParams,
+	                                                                  Shape);
 	FColor LineColor = (bBlockingHit == true ? FColor::Green : FColor::Red);
 
 	FocusedActor = nullptr;
@@ -60,23 +70,19 @@ void UInteractionComponent::FindInteractableActor()
 		AActor* HitActor = Hit.GetActor();
 		if (HitActor != nullptr)
 		{
-			// if (HitActor->Implements<UGameplayInterface>())
-			// {
-			// 	FocusedActor = HitActor;
-			// 	break;
-			// }
+			if (HitActor->Implements<UTPSGameplay>())
+			{
+				FocusedActor = HitActor;
+				break;
+			}
 		}
 	}
 
 	// To do : UI 추가
 	if (FocusedActor != nullptr)
 	{
-		
 	}
 }
-
-
-
 
 // Called every frame
 void UInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType,

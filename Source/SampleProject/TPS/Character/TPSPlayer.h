@@ -36,7 +36,7 @@ private:
 	void Move(const FInputActionValue& InputActionValue);
 	void Look(const FInputActionValue& InputActionValue);
 	void Shot(const FInputActionValue& InputActionValue);
-
+	void Interaction(const FInputActionValue& InputActionValue);
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UTPSSpringArmComponent> SpringArmComp;
@@ -54,6 +54,8 @@ public:
 	TObjectPtr<UInputAction> JumpAction;
 	UPROPERTY(EditAnywhere, Category="Input", meta=(AllowPrivateAccess=true))
 	TObjectPtr<UInputAction> ShotAction;
+	UPROPERTY(EditAnywhere, Category="Input", meta=(AllowPrivateAccess=true))
+	TObjectPtr<UInputAction> InteractAction;
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess), Category = "Components")
 	TObjectPtr<UInteractionComponent> InteractionComp;

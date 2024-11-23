@@ -14,7 +14,7 @@ ATPSCharacter::ATPSCharacter()
 	HPBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HP Bar Widget"));
 	HPBarWidget->SetupAttachment(GetMesh());
 
-	HPBarWidget->SetRelativeLocation(FVector(0,0,HPBarWidgetHeight));
+	HPBarWidget->SetRelativeLocation(FVector(0, 0, HPBarWidgetHeight));
 	HPBarWidget->SetWidgetSpace(EWidgetSpace::Screen);
 
 	static ConstructorHelpers::FClassFinder<UUserWidget> UI_HPBAR(TEXT("/Game/Blueprints/UI/WBP_HPBar.WBP_HPBar_C"));
@@ -29,14 +29,14 @@ ATPSCharacter::ATPSCharacter()
 void ATPSCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	ChangeHealth(MaxHealth);
 }
 
 void ATPSCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-	
+
 	HPBarWidget->InitWidget();
 	UTPSFloatingHPBar* CharacterWidget = Cast<UTPSFloatingHPBar>(HPBarWidget->GetUserWidgetObject());
 	if (CharacterWidget != nullptr)
@@ -61,8 +61,13 @@ float ATPSCharacter::GetMaxHealth() const
 	return MaxHealth;
 }
 
+void ATPSCharacter::AddHP(const int InValue)
+{
+	ChangeHealth(Health + InValue);
+}
+
 void ATPSCharacter::ChangeHealth(float InNewHealth)
 {
-	Health = FMath::Clamp(InNewHealth, 0,MaxHealth);
+	Health = FMath::Clamp(InNewHealth, 0, MaxHealth);
 	OnHealthChanged.Broadcast(Health, MaxHealth);
 }

@@ -27,6 +27,7 @@ public:
 	
 	float GetHealth()const;
 	float GetMaxHealth()const;
+	void AddHP(const int InValue); 
 protected:
 	virtual void ChangeHealth(float InNewHealth);
 
