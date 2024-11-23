@@ -7,6 +7,7 @@
 #include "TPSCharacter.h"
 #include "TPSPlayer.generated.h"
 
+class UInteractionComponent;
 class UInputMappingContext;
 class UInputAction;
 
@@ -53,4 +54,7 @@ public:
 	TObjectPtr<UInputAction> JumpAction;
 	UPROPERTY(EditAnywhere, Category="Input", meta=(AllowPrivateAccess=true))
 	TObjectPtr<UInputAction> ShotAction;
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess), Category = "Components")
+	TObjectPtr<UInteractionComponent> InteractionComp;
 };

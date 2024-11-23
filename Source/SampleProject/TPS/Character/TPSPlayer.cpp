@@ -3,6 +3,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "TPSPlayerController.h"
+#include "Components/InteractionComponent.h"
 
 
 #include "Components/TPSCameraComponent.h"
@@ -20,6 +21,8 @@ ATPSPlayer::ATPSPlayer()
 
 	CameraComp = CreateDefaultSubobject<UTPSCameraComponent>(TEXT("CustomCamera"));
 	CameraComp->SetupAttachment(SpringArmComp);
+
+	InteractionComp = CreateDefaultSubobject<UInteractionComponent>(TEXT("Interaction Comp"));
 }
 
 // Called when the game starts or when spawned
