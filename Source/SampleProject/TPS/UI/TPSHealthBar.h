@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "TPSCommonUserWidget.h"
+#include "Components/TPSAttributeComponent.h"
 #include "TPSHealthBar.generated.h"
 
 class UTextBlock;
@@ -18,9 +19,12 @@ class SAMPLEPROJECT_API UTPSHealthBar : public UTPSCommonUserWidget
 	GENERATED_BODY()
 protected:
 	virtual bool Initialize() override;
+	
 	virtual void NativeConstruct() override;
 	virtual void BeginDestroy() override;
 	UFUNCTION()
+	void UpdateUIs(AActor* InstigatorActor, UTPSAttributeComponent* AttributeComp, float NewHealth, float Delta);
+	
 	virtual void UpdateHealthBar(float NewHealth, float MaxHealth);
 	virtual void UpdateHealthPoint(float NewHealth);
 private:
@@ -28,4 +32,5 @@ private:
 	TObjectPtr<UProgressBar> HealthBar;
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<UTextBlock> HealthPointText;
+	
 };

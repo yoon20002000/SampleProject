@@ -26,11 +26,9 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	bool IsAlive() const;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	virtual void ChangeHealth(float InNewHealth) override;
 
 private:
 	void Move(const FInputActionValue& InputActionValue);

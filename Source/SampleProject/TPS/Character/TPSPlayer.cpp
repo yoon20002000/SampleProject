@@ -2,10 +2,7 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "TPSPlayerController.h"
 #include "Components/InteractionComponent.h"
-
-
 #include "Components/TPSCameraComponent.h"
 #include "Components/TPSSpringArmComponent.h"
 
@@ -34,24 +31,11 @@ void ATPSPlayer::BeginPlay()
 	CameraComp = FindComponentByClass<UTPSCameraComponent>();
 }
 
-void ATPSPlayer::ChangeHealth(float InNewHealth)
-{
-	Super::ChangeHealth(InNewHealth);
-}
-
 // Called every frame
 void ATPSPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	if (Health <= 0)
-	{
-		if (ATPSPlayerController* TPSPC = Cast<ATPSPlayerController>(GetController()))
-		{
-			TPSPC->SetGameEnd();
-		}
-		SetActorTickEnabled(false);
-	}
+	
 }
 
 // Called to bind functionality to input
@@ -77,11 +61,6 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 		EnhancedInputComponent->BindAction(ShotAction, ETriggerEvent::Started, this, &ATPSPlayer::Shot);
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ATPSPlayer::Interaction);
 	}
-}
-
-bool ATPSPlayer::IsAlive() const
-{
-	return Health > 0;
 }
 
 void ATPSPlayer::Move(const FInputActionValue& InputActionValue)
@@ -115,7 +94,7 @@ void ATPSPlayer::Look(const FInputActionValue& InputActionValue)
 void ATPSPlayer::Shot(const FInputActionValue& InputActionValue)
 {
 	UE_LOG(LogTemp, Log, TEXT("Shot!!"));
-	ChangeHealth(GetHealth() - 1);
+	AttributeComp->ApplyHealthChange(this,-1);
 }
 void ATPSPlayer::Interaction(const FInputActionValue& InputActionValue)
 {

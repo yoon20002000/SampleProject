@@ -3,6 +3,7 @@
 
 #include "TPSCharacter.h"
 
+#include "Components/TPSAttributeComponent.h"
 #include "Components/WidgetComponent.h"
 #include "UI/TPSFloatingHPBar.h"
 // Sets default values
@@ -11,6 +12,8 @@ ATPSCharacter::ATPSCharacter()
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	AttributeComp = CreateDefaultSubobject<UTPSAttributeComponent>(TEXT("Attribute Component"));
+	
 	HPBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HP Bar Widget"));
 	HPBarWidget->SetupAttachment(GetMesh());
 
@@ -29,14 +32,14 @@ ATPSCharacter::ATPSCharacter()
 void ATPSCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	ChangeHealth(MaxHealth);
 }
 
 void ATPSCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
+	AttributeComp->OnHealthChanged.AddDynamic(this, &ATPSCharacter::OnHealthChanged);
+	
 	HPBarWidget->InitWidget();
 	UTPSFloatingHPBar* CharacterWidget = Cast<UTPSFloatingHPBar>(HPBarWidget->GetUserWidgetObject());
 	if (CharacterWidget != nullptr)
@@ -53,21 +56,36 @@ void ATPSCharacter::Tick(float DeltaTime)
 
 float ATPSCharacter::GetHealth() const
 {
-	return Health;
+	return AttributeComp->GetHealth();
 }
 
 float ATPSCharacter::GetMaxHealth() const
 {
-	return MaxHealth;
+	return AttributeComp->GetMaxHealth();
 }
 
 void ATPSCharacter::AddHP(const int InValue)
 {
-	ChangeHealth(Health + InValue);
+	AttributeComp->ApplyHealthChange(this,InValue);
+}
+UTPSAttributeComponent* ATPSCharacter::GetAttributeComp()
+{
+	return AttributeComp;
 }
 
-void ATPSCharacter::ChangeHealth(float InNewHealth)
+void ATPSCharacter::OnHealthChanged(AActor* InstigatorActor, UTPSAttributeComponent* OwningComp, float NewHealth,
+	float Delta)
 {
-	Health = FMath::Clamp(InNewHealth, 0, MaxHealth);
-	OnHealthChanged.Broadcast(Health, MaxHealth);
+	UE_LOG(LogTemp, Log, TEXT("Instigator Actor : %s, OwningComp : %s, NewHealth : %f, Delta : %f"),
+		*InstigatorActor->GetName(), *OwningComp->GetName(), NewHealth, Delta);
+	
+	// UI 갱신 해줘야됨.
+	
+	// if (Health <= 0)
+	// {
+	// 	if (ATPSPlayerController* TPSPC = Cast<ATPSPlayerController>(GetController()))
+	// 	{
+	// 		TPSPC->SetGameEnd();
+	// 	}
+	// }
 }

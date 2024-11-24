@@ -6,13 +6,20 @@
 #include "Character/TPSCharacter.h"
 #include "Components/ProgressBar.h"
 
-void UTPSFloatingHPBar::HealthChange(float NewHealth, float MaxHeath)
+void UTPSFloatingHPBar::UpdateFloatingHPBar(const float Health, const float MaxHealth)
+{
+	HPBar->SetPercent(Health / MaxHealth);
+}
+
+void UTPSFloatingHPBar::UpdateUIs(AActor* InstigatorActor, UTPSAttributeComponent* AttributeComp, float NewHealth,
+                                        float Delta)
 {
 	if (HPBar == nullptr)
 	{
 		return;
 	}
-	HPBar->SetPercent(NewHealth / MaxHeath);
+	
+	UpdateFloatingHPBar(AttributeComp->GetHealth(), AttributeComp->GetMaxHealth());
 }
 
 void UTPSFloatingHPBar::BindCharacter(ATPSCharacter* InCharacter)
@@ -25,7 +32,9 @@ void UTPSFloatingHPBar::BindCharacter(ATPSCharacter* InCharacter)
 	OwnerCharacter = InCharacter;
 	if (OwnerCharacter.IsValid() == true)
 	{
-		OwnerCharacter.Get()->OnHealthChanged.AddDynamic(this, &UTPSFloatingHPBar::HealthChange);
+		UTPSAttributeComponent* AttributeComp = OwnerCharacter.Get()->GetAttributeComp();
+		UpdateFloatingHPBar(AttributeComp->GetHealth(), AttributeComp->GetMaxHealth());
+		AttributeComp->OnHealthChanged.AddDynamic(this, &UTPSFloatingHPBar::UpdateUIs);
 	}
 }
 
@@ -33,7 +42,7 @@ void UTPSFloatingHPBar::UnbindCharacter()
 {
 	if (OwnerCharacter.IsValid() == true)
 	{
-		OwnerCharacter.Get()->OnHealthChanged.RemoveDynamic(this, &UTPSFloatingHPBar::HealthChange);
+		OwnerCharacter.Get()->GetAttributeComp()->OnHealthChanged.RemoveDynamic(this, &UTPSFloatingHPBar::UpdateUIs);
 	}
 	OwnerCharacter = nullptr;
 }

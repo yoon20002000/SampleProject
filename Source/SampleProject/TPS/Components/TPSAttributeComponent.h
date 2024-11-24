@@ -15,7 +15,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnAttributeChanged,
                                               NewHealth,
                                               float,
                                               Delta
-);
+                                              );
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class SAMPLEPROJECT_API UTPSAttributeComponent : public UActorComponent
@@ -25,7 +25,9 @@ class SAMPLEPROJECT_API UTPSAttributeComponent : public UActorComponent
 public:
 	// Sets default values for this component's properties
 	UTPSAttributeComponent();
-
+	virtual void OnRegister() override;
+	virtual void BeginPlay() override;
+	
 	UFUNCTION(BlueprintCallable, Category="Attributes")
 	static UTPSAttributeComponent* GetAttributes(AActor* InActor);
 
@@ -36,7 +38,7 @@ public:
 	void MulticastHealthChanged(AActor* InstigatorActor, float NewHealth, float ActuableDelta);
 	UFUNCTION(NetMulticast, Unreliable)
 	void MulticastManaChanged(AActor* InstigatorActor, float NewMana, float ActuableDelta);
-
+	
 	bool IsAlive() const;
 	float GetHealth() const;
 	float GetMaxHealth() const;
@@ -47,6 +49,7 @@ public:
 public:
 	bool ApplyHealthChange(AActor* InstigatorActor, const float Delta);
 	bool ApplyManaChange(AActor* InstigatorActor, const float Delta);
+
 public:
 	UPROPERTY(Transient)
 	FOnAttributeChanged OnHealthChanged;
@@ -55,12 +58,12 @@ public:
 
 protected:
 	UPROPERTY(EditAnywhere, Category="Attribute", meta=(AllowPrivateAccess=true))
-	float MaxHealth = 100.f;
-	UPROPERTY(VisibleAnywhere, Category="Attribute", meta=(AllowPrivateAccess=true))
+	float MaxHealth;
+	UPROPERTY(Transient)
 	float Health;
 
 	UPROPERTY(EditAnywhere, Category="Attribute", meta=(AllowPrivateAccess=true))
-	float MaxMana = 100.f;
-	UPROPERTY(VisibleAnywhere, Category="Attribute", meta=(AllowPrivateAccess=true))
+	float MaxMana;
+	UPROPERTY(Transient)
 	float Mana;
 };

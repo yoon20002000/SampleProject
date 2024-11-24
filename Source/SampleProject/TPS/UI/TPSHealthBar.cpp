@@ -5,7 +5,6 @@
 
 #include "Character/TPSPlayer.h"
 #include "Components/ProgressBar.h"
-//#include "CommonNumericTextBlock.h"
 #include "Components/TextBlock.h"
 
 bool UTPSHealthBar::Initialize()
@@ -21,26 +20,37 @@ void UTPSHealthBar::NativeConstruct()
 	if (ATPSPlayer* TPSPlayer = GetTPSPlayer())
 	{
 		UpdateHealthBar(TPSPlayer->GetHealth(), TPSPlayer->GetMaxHealth());
-		TPSPlayer->OnHealthChanged.AddDynamic(this, &UTPSHealthBar::UpdateHealthBar);
+		UpdateHealthPoint(TPSPlayer->GetHealth());
+		TPSPlayer->GetAttributeComp()->OnHealthChanged.AddDynamic(this, &UTPSHealthBar::UpdateUIs);
 	}
 }
 
 void UTPSHealthBar::BeginDestroy()
 {
 	Super::BeginDestroy();
-
-	UE_LOG(LogTemp, Log, TEXT("Is going destroy!!!"));
+	
 	if (ATPSPlayer* TPSPlayer = GetTPSPlayer())
 	{
-		TPSPlayer->OnHealthChanged.RemoveDynamic(this, &UTPSHealthBar::UpdateHealthBar);
+		TPSPlayer->GetAttributeComp()->OnHealthChanged.RemoveDynamic(this, &UTPSHealthBar::UpdateUIs);
 	}
+}
+
+void UTPSHealthBar::UpdateUIs(AActor* InstigatorActor, UTPSAttributeComponent* AttributeComp, float NewHealth,
+	float Delta)
+{
+	if (AttributeComp == nullptr)
+	{
+		return;
+	}
+	
+	UpdateHealthBar(AttributeComp->GetHealth(), AttributeComp->GetMaxHealth());
+	UpdateHealthPoint(AttributeComp->GetHealth());
 }
 
 void UTPSHealthBar::UpdateHealthBar(const float NewHealth, const float MaxHealth)
 {
 	const float Percent = NewHealth / MaxHealth;
 	HealthBar->SetPercent(Percent);
-	UpdateHealthPoint(NewHealth);
 }
 
 void UTPSHealthBar::UpdateHealthPoint(float NewHealth)

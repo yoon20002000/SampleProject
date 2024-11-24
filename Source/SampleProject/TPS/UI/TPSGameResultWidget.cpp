@@ -33,7 +33,10 @@ void UTPSGameResultWidget::NativeConstruct()
 	bool bIsClear = false;
 	if (ATPSPlayer* Player = Cast<ATPSPlayer>(PlayerPawn))
 	{
-		bIsClear = Player->IsAlive();
+		if (UTPSAttributeComponent* AC = Player->GetComponentByClass<UTPSAttributeComponent>())
+		{
+			bIsClear = AC->IsAlive();	
+		}
 	}
 
 	FText TextContent = FText::FromString(bIsClear == true ? TEXT("Clear!!") : TEXT("You Lose!!"));

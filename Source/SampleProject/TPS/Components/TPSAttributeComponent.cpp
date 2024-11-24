@@ -16,6 +16,19 @@ UTPSAttributeComponent::UTPSAttributeComponent()
 	Health = MaxHealth;
 
 	Mana = MaxMana;
+	UE_LOG(LogTemp, Log,TEXT("Construct %f"), MaxHealth);
+}
+
+void UTPSAttributeComponent::OnRegister()
+{
+	Super::OnRegister();
+	Health = MaxHealth;
+}
+
+void UTPSAttributeComponent::BeginPlay()
+{
+	Super::BeginPlay();
+	
 }
 
 UTPSAttributeComponent* UTPSAttributeComponent::GetAttributes(AActor* InActor)
@@ -31,7 +44,7 @@ UTPSAttributeComponent* UTPSAttributeComponent::GetAttributes(AActor* InActor)
 bool UTPSAttributeComponent::IsActorAlive(AActor* InActor)
 {
 	UTPSAttributeComponent* ActorAttributeComp = GetAttributes(InActor);
-	
+
 	if (ActorAttributeComp == nullptr)
 	{
 		return false;
@@ -41,13 +54,13 @@ bool UTPSAttributeComponent::IsActorAlive(AActor* InActor)
 }
 
 void UTPSAttributeComponent::MulticastHealthChanged_Implementation(AActor* InstigatorActor, float NewHealth,
-	float ActuableDelta)
+                                                                   float ActuableDelta)
 {
 	OnHealthChanged.Broadcast(InstigatorActor, this, NewHealth, ActuableDelta);
 }
 
 void UTPSAttributeComponent::MulticastManaChanged_Implementation(AActor* InstigatorActor, float NewMana,
-	float ActuableDelta)
+                                                                 float ActuableDelta)
 {
 	OnManaChanged.Broadcast(InstigatorActor, this, NewMana, ActuableDelta);
 }
@@ -83,7 +96,7 @@ bool UTPSAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, const fl
 	{
 		return false;
 	}
-	
+
 	float OldHealth = Health;
 	float NewHealth = FMath::Clamp(Health + Delta, 0, MaxHealth);
 
@@ -107,7 +120,7 @@ bool UTPSAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, const fl
 			}
 		}
 	}
-	
+
 	return FMath::IsNearlyZero(ActuableDelta) == false;
 }
 
@@ -115,15 +128,14 @@ bool UTPSAttributeComponent::ApplyManaChange(AActor* InstigatorActor, const floa
 {
 	const float OldMana = Mana;
 
-	Mana = FMath::Clamp(Mana + Delta, 0,MaxMana);
+	Mana = FMath::Clamp(Mana + Delta, 0, MaxMana);
 
 	float ActualDelta = Mana - OldMana;
 
 	if (FMath::IsNearlyZero(ActualDelta) == false)
 	{
-		OnManaChanged.Broadcast(InstigatorActor, this, Mana,ActualDelta);
+		OnManaChanged.Broadcast(InstigatorActor, this, Mana, ActualDelta);
 		return true;
 	}
 	return false;
 }
-

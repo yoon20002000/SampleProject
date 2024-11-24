@@ -3,17 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/TPSAttributeComponent.h"
 #include "GameFramework/Character.h"
 #include "TPSCharacter.generated.h"
 
+class UTPSAttributeComponent;
 class UTPSFloatingHPBar;
 class UWidgetComponent;
 class UInputMappingContext;
 class UInputAction;
 class UTPSCameraComponent;
 class UTPSSpringArmComponent;
-
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHealthChanged, float, NewHealth, float, MaxHeath);
 
 UCLASS()
 class SAMPLEPROJECT_API ATPSCharacter : public ACharacter
@@ -27,20 +27,18 @@ public:
 	
 	float GetHealth()const;
 	float GetMaxHealth()const;
-	void AddHP(const int InValue); 
+	void AddHP(const int InValue);
+	UTPSAttributeComponent* GetAttributeComp();
 protected:
-	virtual void ChangeHealth(float InNewHealth);
-
+	UFUNCTION()
+	void OnHealthChanged(AActor* InstigatorActor, UTPSAttributeComponent* OwningComp, float NewHealth, float Delta);
 public:
 	UPROPERTY(VisibleAnywhere, Category = UI)
 	TObjectPtr<UWidgetComponent> HPBarWidget;
-
-	FOnHealthChanged OnHealthChanged;
 protected:
-	UPROPERTY(EditAnywhere, Category="Ability", meta=(AllowPrivateAccess=true))
-	int MaxHealth = 100.f;
-	UPROPERTY(VisibleAnywhere, Category="Ability", meta=(AllowPrivateAccess=true))
-	int Health;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
+	TObjectPtr<UTPSAttributeComponent> AttributeComp;
+	
 	UPROPERTY(EditDefaultsOnly, Category="UI", meta=(AllowPrivateAccess=true))
 	int HPBarWidgetHeight = 180;
 	UPROPERTY(EditDefaultsOnly, Category="UI", meta=(AllowPrivateAccess=true))
