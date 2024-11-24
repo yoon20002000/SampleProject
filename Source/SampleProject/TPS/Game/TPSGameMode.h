@@ -23,7 +23,9 @@ public:
 	virtual void StartPlay() override;
 	virtual void BeginDestroy() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	void OnActorKilled(AActor* Actor, AActor* InstigatorActor);
 	
+public:
 	UPROPERTY(EditAnywhere, Category=TPS)
 	TSoftObjectPtr<UGameDataAsset> GameDataAsset;
 private:

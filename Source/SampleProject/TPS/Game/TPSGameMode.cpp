@@ -33,3 +33,8 @@ void ATPSGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	UTPSSystemManager::Get()->EndPlay(EndPlayReason);
 	Super::EndPlay(EndPlayReason);
 }
+
+void ATPSGameMode::OnActorKilled(AActor* Actor, AActor* InstigatorActor)
+{
+	UE_LOG(LogTemp, Log, TEXT("Actor is Death : %s"), *InstigatorActor->GetName());
+}
