@@ -7,6 +7,7 @@
 #include "Components/TPSCameraComponent.h"
 #include "Components/TPSSpringArmComponent.h"
 #include "Game/Action/ActionComponent.h"
+#include "Game/Action/SharedGameplayTags.h"
 
 // Sets default values
 ATPSPlayer::ATPSPlayer()
@@ -121,5 +122,5 @@ void ATPSPlayer::Interaction(const FInputActionValue& InputActionValue)
 
 void ATPSPlayer::Attack()
 {
-	// ActionComp->StartActionByName();
+	ActionComp->StartActionByName(this, SharedGameplayTags::Action_Attack);
 }

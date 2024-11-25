@@ -52,10 +52,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tags")
 	FGameplayTagContainer ActiveGameplayTags;
 
-	UPROPERTY(Blueprintable)
+	UPROPERTY(BlueprintAssignable)
 	FOnActionStateChanged OnActionStarted;
 	
-	UPROPERTY(Blueprintable)
+	UPROPERTY(BlueprintAssignable)
 	FOnActionStateChanged OnActionStopped;
 
 protected:
