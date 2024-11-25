@@ -2,6 +2,7 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "TPSPlayerController.h"
 #include "Components/InteractionComponent.h"
 #include "Components/TPSCameraComponent.h"
 #include "Components/TPSSpringArmComponent.h"
@@ -29,6 +30,20 @@ void ATPSPlayer::BeginPlay()
 
 	SpringArmComp = FindComponentByClass<UTPSSpringArmComponent>();
 	CameraComp = FindComponentByClass<UTPSCameraComponent>();
+}
+
+void ATPSPlayer::OnHealthChanged(AActor* InstigatorActor, UTPSAttributeComponent* OwningComp, float NewHealth,
+	float Delta)
+{
+	Super::OnHealthChanged(InstigatorActor, OwningComp, NewHealth, Delta);
+
+	if (NewHealth <= 0)
+	{
+		if (ATPSPlayerController* TPSPC = Cast<ATPSPlayerController>(GetController()))
+		{
+			TPSPC->SetGameEnd();
+		}
+	}
 }
 
 // Called every frame

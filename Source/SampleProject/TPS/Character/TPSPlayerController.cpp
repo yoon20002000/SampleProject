@@ -71,6 +71,7 @@ void ATPSPlayerController::SetGamePause(const bool bIsGamePause)
 
 void ATPSPlayerController::SetGameEnd()
 {
+	DisableInput(this);
 	UTPSSystemManager::Get()->SetGameState(EGameplayState::GameResult);
 }
 

@@ -78,14 +78,10 @@ void ATPSCharacter::OnHealthChanged(AActor* InstigatorActor, UTPSAttributeCompon
 {
 	UE_LOG(LogTemp, Log, TEXT("Instigator Actor : %s, OwningComp : %s, NewHealth : %f, Delta : %f"),
 		*InstigatorActor->GetName(), *OwningComp->GetName(), NewHealth, Delta);
-	
-	// UI 갱신 해줘야됨.
-	
-	// if (Health <= 0)
-	// {
-	// 	if (ATPSPlayerController* TPSPC = Cast<ATPSPlayerController>(GetController()))
-	// 	{
-	// 		TPSPC->SetGameEnd();
-	// 	}
-	// }
+
+	// 추후 죽는 ani 추가
+	if (NewHealth < 0 )
+	{
+		SetLifeSpan(5.0f);	
+	}
 }
