@@ -6,6 +6,7 @@
 #include "Components/InteractionComponent.h"
 #include "Components/TPSCameraComponent.h"
 #include "Components/TPSSpringArmComponent.h"
+#include "Game/Action/ActionComponent.h"
 
 // Sets default values
 ATPSPlayer::ATPSPlayer()
@@ -21,6 +22,7 @@ ATPSPlayer::ATPSPlayer()
 	CameraComp->SetupAttachment(SpringArmComp);
 
 	InteractionComp = CreateDefaultSubobject<UInteractionComponent>(TEXT("Interaction Comp"));
+	ActionComp = CreateDefaultSubobject<UActionComponent>(TEXT("Action Comp"));
 }
 
 // Called when the game starts or when spawned
@@ -115,4 +117,9 @@ void ATPSPlayer::Interaction(const FInputActionValue& InputActionValue)
 {
 	UE_LOG(LogTemp, Log, TEXT("Interaction"));
 	InteractionComp->Interaction();
+}
+
+void ATPSPlayer::Attack()
+{
+	// ActionComp->StartActionByName();
 }

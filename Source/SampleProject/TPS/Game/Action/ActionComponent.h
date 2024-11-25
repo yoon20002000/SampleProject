@@ -20,15 +20,33 @@ class SAMPLEPROJECT_API UActionComponent : public UActorComponent
 public:
 	// Sets default values for this component's properties
 	UActionComponent();
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
+							   FActorComponentTickFunction* ThisTickFunction) override;
+	
+	UFUNCTION(BlueprintCallable, Category = "Actions")
+	void AddAction(AActor* Instigator, TSubclassOf<UAction> ActionClass);
+	
+	UFUNCTION(BlueprintCallable, Category = "Actions")
+	void RemoveAction(UAction* ActionToRemove);
 
+	UFUNCTION(BlueprintCallable, Category = "Actions")
+	UAction* GetAction(const TSubclassOf<UAction> ActionClass) const;
+
+	UFUNCTION(BlueprintCallable, Category = "Actions")
+	bool StartActionByName(AActor* Instigator, FGameplayTag ActionName);
+	
+	UFUNCTION(BlueprintCallable, Category = "Actions")
+	bool StopActionByName(AActor* Instigator, FGameplayTag ActionName);
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-public:
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
-	                           FActorComponentTickFunction* ThisTickFunction) override;
+	UFUNCTION(Server, Reliable)
+	void ServerStartAction(AActor* Instigator, FGameplayTag ActionName);
+
+	UFUNCTION(Server, Reliable)
+	void ServerStopAction(AActor* Instigator, FGameplayTag ActionName);
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tags")
@@ -39,4 +57,11 @@ public:
 	
 	UPROPERTY(Blueprintable)
 	FOnActionStateChanged OnActionStopped;
+
+protected:
+	UPROPERTY(EditAnywhere, Category = "Actions")
+	TArray<TSubclassOf<UAction>> DefaultActions;
+	
+	UPROPERTY(BlueprintReadOnly, Replicated)
+	TArray<TObjectPtr<UAction>> Actions;
 };
