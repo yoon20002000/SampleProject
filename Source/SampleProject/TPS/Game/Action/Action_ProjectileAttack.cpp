@@ -88,6 +88,8 @@ void UAction_ProjectileAttack::AttackDelay_Elapsed(ACharacter* InstigatorCharact
 
 		FTransform SpawnTM = FTransform(ProjRotation, FireLocation);
 
+		// 방향 고정 필요 어떤 방향이든 캐릭터가 보고있는 arrow를 기준으로 해야 됨.
+		// to do pooling으로 변경 필요
 		GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
 	}
 

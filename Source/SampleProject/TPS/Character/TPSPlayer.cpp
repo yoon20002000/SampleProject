@@ -112,7 +112,6 @@ void ATPSPlayer::Look(const FInputActionValue& InputActionValue)
 void ATPSPlayer::Shot(const FInputActionValue& InputActionValue)
 {
 	UE_LOG(LogTemp, Log, TEXT("Shot!!"));
-	AttributeComp->ApplyHealthChange(this,-1);
 	Attack();
 }
 void ATPSPlayer::Interaction(const FInputActionValue& InputActionValue)
