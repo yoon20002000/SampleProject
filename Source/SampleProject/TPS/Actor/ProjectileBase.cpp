@@ -13,11 +13,9 @@
 // Sets default values
 AProjectileBase::AProjectileBase()
 {
-	SphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
-	SphereComp->SetCollisionProfileName("Projectile");
-	SphereComp->SetCanEverAffectNavigation(false);
-	RootComponent = SphereComp;
-
+	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Projectile Mesh"));
+	RootComponent = MeshComp;
+	
 	AudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("Effect Comp"));
 	AudioComp->SetupAttachment(RootComponent);
 
@@ -33,8 +31,7 @@ AProjectileBase::AProjectileBase()
 void AProjectileBase::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-
-	SphereComp->OnComponentHit.AddDynamic(this, &AProjectileBase::OnActorHit);
+	MeshComp->OnComponentHit.AddDynamic(this, &AProjectileBase::OnActorHit);
 }
 
 // Called when the game starts or when spawned

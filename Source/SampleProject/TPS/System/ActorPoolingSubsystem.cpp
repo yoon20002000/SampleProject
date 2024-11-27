@@ -77,7 +77,7 @@ AActor* UActorPoolingSubsystem::AcquireFromPool_Internal(TSubclassOf<AActor> Act
 		UE_LOGFMT(LogTemp, Log, "Acquired Actor for {actorclass} from pool", GetNameSafe(ActorClass));
 
 		AcquiredActor = ActorPool->FreeActors[0];
-		ActorPool->FreeActors.RemoveAt(0,1,false);
+		ActorPool->FreeActors.RemoveAt(0,1,EAllowShrinking::Yes);
 	}
 
 	if (AcquiredActor == nullptr)

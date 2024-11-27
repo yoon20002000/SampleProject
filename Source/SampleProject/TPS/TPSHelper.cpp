@@ -1,6 +1,7 @@
 ﻿#include "TPSHelper.h"
 
 #include "TPSSystemManager.h"
+#include "Components/TPSAttributeComponent.h"
 #include "Game/TPSGameInstance.h"
 #include "Game/TPSGameMode.h"
 #include "Kismet/GameplayStatics.h"
@@ -65,4 +66,30 @@ APlayerController* TPSHelper::GetFirstLocalPlayerController(UWorld* InWorld)
 	APlayerController* playerController = Cast<APlayerController>(
 		(GetWorld() && GEngine) ? GEngine->GetFirstLocalPlayerController(GetWorld()) : NULL);
 	return playerController;
+}
+
+bool TPSHelper::ApplyDamage(AActor* DamageCauser, AActor* TargetActor, float DamageAmount)
+{
+	if (UTPSAttributeComponent* AC = UTPSAttributeComponent::GetAttributes(TargetActor))
+	{
+		return AC->ApplyHealthChange(DamageCauser, DamageAmount);
+	}
+	return false;
+}
+
+bool TPSHelper::ApplyDirectionalDamage(AActor* DamageCauser, AActor* TargetActor, float DamageAmount,
+	const FHitResult& HitResult)
+{
+	if (ApplyDamage(DamageCauser,TargetActor,DamageAmount) == true)
+	{
+		if (UPrimitiveComponent* HitComp = HitResult.GetComponent(); HitComp->IsSimulatingPhysics(HitResult.BoneName) == true)
+		{
+			FVector Direction = HitResult.TraceEnd - HitResult.TraceStart;
+			Direction.Normalize();
+
+			HitComp->AddImpulseAtLocation(Direction* 300000.f, HitResult.Location,HitResult.BoneName);
+		}
+		return true;
+	}
+	return false;
 }
