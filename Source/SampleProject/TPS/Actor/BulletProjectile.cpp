@@ -4,7 +4,6 @@
 #include "Actor/BulletProjectile.h"
 
 #include "TPSHelper.h"
-#include "Components/SphereComponent.h"
 #include "Components/TPSProjectileMovementComponent.h"
 #include "Game/Action/ActionComponent.h"
 #include "Game/Action/ActionEffect.h"
@@ -38,6 +37,7 @@ void ABulletProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComp, AAct
                                        UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                                        const FHitResult& SweepResult)
 {
+	UE_LOG(LogTemp, Log, TEXT("Overlap Other Actor : %s"), *GetNameSafe(OtherActor));
 	if (OtherActor != nullptr && OtherActor != GetInstigator())
 	{
 		UActionComponent* AC = OtherActor->FindComponentByClass<UActionComponent>();
@@ -57,6 +57,13 @@ void ABulletProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComp, AAct
 			}
 		}
 	}
+}
+
+void ABulletProjectile::OnActorHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	FVector NormalImpulse, const FHitResult& Hit)
+{
+	Super::OnActorHit(HitComp, OtherActor, OtherComp, NormalImpulse, Hit);
+	UE_LOG(LogTemp, Log, TEXT("Hit!!!!!"));
 }
 
 void ABulletProjectile::PostInitializeComponents()

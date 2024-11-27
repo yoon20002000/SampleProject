@@ -14,6 +14,10 @@
 AProjectileBase::AProjectileBase()
 {
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Projectile Mesh"));
+	MeshComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	MeshComp->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
+	MeshComp->SetCollisionResponseToAllChannels(ECR_Overlap);
+	
 	RootComponent = MeshComp;
 	
 	AudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("Effect Comp"));
