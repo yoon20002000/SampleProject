@@ -19,7 +19,7 @@ public:
 
 protected:
 	UFUNCTION()
-	void AttackDelay_Elapsed(ACharacter* InstigatorCharacter);
+	void Attack(ACharacter* InstigatorCharacter);
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "Targeting")
@@ -33,10 +33,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Effects")
 	FName GunFireSocketName;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Attack")
-	float AttackAnimDelay;
-
+	
 	UPROPERTY(EditAnywhere, Category = "Attack")
 	TObjectPtr<UAnimMontage> AttackAnim;
 

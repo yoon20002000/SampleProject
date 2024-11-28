@@ -76,7 +76,7 @@ void UAction::StopAction_Implementation(AActor* Instigator)
 	RepData.bIsRunning = false;
 	RepData.Instigator = Instigator;
 
-	AC ->OnActionStopped.Broadcast(AC, this);
+	AC->OnActionStopped.Broadcast(AC, this);
 }
 
 UWorld* UAction::GetWorld() const

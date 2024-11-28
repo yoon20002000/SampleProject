@@ -6,12 +6,12 @@
 #include "Engine/EngineTypes.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
+#include "System/ActorPoolingSubsystem.h"
 
 UAction_ProjectileAttack::UAction_ProjectileAttack() :
 	SweepRadius(20.0f),
 	SweepDistanceFallback(5000),
-	GunFireSocketName(TEXT("Gun_LOS")),
-	AttackAnimDelay(.2f)
+	GunFireSocketName(TEXT("Gun_LOS"))
 {
 }
 
@@ -36,15 +36,11 @@ void UAction_ProjectileAttack::StartAction_Implementation(AActor* Instigator)
 
 	if (Character->HasAuthority() == true)
 	{
-		FTimerHandle TimerHandle_AttackDelay;
-		FTimerDelegate Delegate;
-		Delegate.BindUFunction(this, "AttackDelay_Elapsed", Character);
-
-		GetWorld()->GetTimerManager().SetTimer(TimerHandle_AttackDelay, Delegate, AttackAnimDelay, false);
+		Attack(Character);
 	}
 }
 
-void UAction_ProjectileAttack::AttackDelay_Elapsed(ACharacter* InstigatorCharacter)
+void UAction_ProjectileAttack::Attack(ACharacter* InstigatorCharacter)
 {
 	if (ensureAlways(ProjectileClass) == true)
 	{
@@ -74,7 +70,7 @@ void UAction_ProjectileAttack::AttackDelay_Elapsed(ACharacter* InstigatorCharact
 			AdjustedTraceEnd = Hits[0].ImpactPoint;
 		}
 #if !UE_BUILD_SHIPPING
-		const float DrawDuration = 5.0f;
+		const float DrawDuration = 2.0f;
 		//Start
 		DrawDebugPoint(GetWorld(), TraceStart, 8, FColor::Green, false, DrawDuration);
 		//End - possibly adjusted based on hit
@@ -89,8 +85,8 @@ void UAction_ProjectileAttack::AttackDelay_Elapsed(ACharacter* InstigatorCharact
 		FTransform SpawnTM = FTransform(ProjRotation, FireLocation);
 
 		// 방향 고정 필요 어떤 방향이든 캐릭터가 보고있는 arrow를 기준으로 해야 됨.
-		// to do pooling으로 변경 필요
-		GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
+
+		UActorPoolingSubsystem::AcquireFromPool(this,ProjectileClass,SpawnTM,SpawnParams);
 	}
 
 	StopAction(InstigatorCharacter);
