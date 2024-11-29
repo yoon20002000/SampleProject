@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "System/ActorPoolingSubsystem.h"
+#include "System/TPSActorPoolingSubsystem.h"
 
-#include "ActorPoolingInterface.h"
+#include "TPSActorPoolingInterface.h"
 #include "Logging/StructuredLog.h"
 
 static TAutoConsoleVariable CVarActorPoolingEnabled(
@@ -12,7 +12,7 @@ static TAutoConsoleVariable CVarActorPoolingEnabled(
 	TEXT("Enable actor pooling for selected objects."),
 	ECVF_Default);
 
-AActor* UActorPoolingSubsystem::SpawnActorPooled(const UObject* WorldContextObject, TSubclassOf<AActor> ActorClass,
+AActor* UTPSActorPoolingSubsystem::SpawnActorPooled(const UObject* WorldContextObject, TSubclassOf<AActor> ActorClass,
 	const FTransform& SpawnTransform, ESpawnActorCollisionHandlingMethod SpawnHandling)
 {
 	FActorSpawnParameters Params;
@@ -21,12 +21,12 @@ AActor* UActorPoolingSubsystem::SpawnActorPooled(const UObject* WorldContextObje
 	return AcquireFromPool(WorldContextObject, ActorClass, SpawnTransform, Params);
 }
 
-bool UActorPoolingSubsystem::ReleaseToPool(AActor* Actor)
+bool UTPSActorPoolingSubsystem::ReleaseToPool(AActor* Actor)
 {
 
 	if (IsPoolingEnabled(Actor) == true)
 	{
-		UActorPoolingSubsystem * PoolingSubsystem = Actor->GetWorld()->GetSubsystem<UActorPoolingSubsystem>();
+		UTPSActorPoolingSubsystem * PoolingSubsystem = Actor->GetWorld()->GetSubsystem<UTPSActorPoolingSubsystem>();
 		return PoolingSubsystem->ReleaseToPool_Internal(Actor);
 	}
 
@@ -34,24 +34,24 @@ bool UActorPoolingSubsystem::ReleaseToPool(AActor* Actor)
 	return false;
 }
 
-AActor* UActorPoolingSubsystem::AcquireFromPool(const UObject* WorldContextObject, TSubclassOf<AActor> ActorClass,
+AActor* UTPSActorPoolingSubsystem::AcquireFromPool(const UObject* WorldContextObject, TSubclassOf<AActor> ActorClass,
 	const FTransform& SpawnTransform, FActorSpawnParameters SpawnParams)
 {
 	if (IsPoolingEnabled(WorldContextObject))
 	{
-		UActorPoolingSubsystem* PoolingSubsystem = WorldContextObject->GetWorld()->GetSubsystem<UActorPoolingSubsystem>();
+		UTPSActorPoolingSubsystem* PoolingSubsystem = WorldContextObject->GetWorld()->GetSubsystem<UTPSActorPoolingSubsystem>();
 		return PoolingSubsystem->AcquireFromPool_Internal(ActorClass, SpawnTransform,SpawnParams);
 	}
 
 	return WorldContextObject->GetWorld()->SpawnActor<AActor>(ActorClass, SpawnTransform, SpawnParams);
 }
 
-bool UActorPoolingSubsystem::IsPoolingEnabled(const UObject* WorldContextObject)
+bool UTPSActorPoolingSubsystem::IsPoolingEnabled(const UObject* WorldContextObject)
 {
 	return CVarActorPoolingEnabled.GetValueOnAnyThread() && WorldContextObject->GetWorld()->IsNetMode(NM_Standalone);
 }
 
-void UActorPoolingSubsystem::PrimeActorPool(TSubclassOf<AActor> ActorClass, int32 Amount)
+void UTPSActorPoolingSubsystem::PrimeActorPool(TSubclassOf<AActor> ActorClass, int32 Amount)
 {
 	UE_LOGFMT(LogTemp, Log, "Priming Pool for {actorclass} ({amount})", GetNameSafe(ActorClass), Amount);
 
@@ -65,7 +65,7 @@ void UActorPoolingSubsystem::PrimeActorPool(TSubclassOf<AActor> ActorClass, int3
 	}
 }
 
-AActor* UActorPoolingSubsystem::AcquireFromPool_Internal(TSubclassOf<AActor> ActorClass,
+AActor* UTPSActorPoolingSubsystem::AcquireFromPool_Internal(TSubclassOf<AActor> ActorClass,
 	const FTransform& SpawnTransform, FActorSpawnParameters SpawnParams)
 {
 	AActor* AcquiredActor = nullptr;
@@ -96,11 +96,11 @@ AActor* UActorPoolingSubsystem::AcquireFromPool_Internal(TSubclassOf<AActor> Act
 
 	AcquiredActor->DispatchBeginPlay();
 
-	IActorPoolingInterface::Execute_PoolBeginPlay(AcquiredActor);
+	ITPSActorPoolingInterface::Execute_PoolBeginPlay(AcquiredActor);
 	return AcquiredActor;
 }
 
-bool UActorPoolingSubsystem::ReleaseToPool_Internal(AActor* Actor)
+bool UTPSActorPoolingSubsystem::ReleaseToPool_Internal(AActor* Actor)
 {
 	check(IsValid(Actor));
 
@@ -109,7 +109,7 @@ bool UActorPoolingSubsystem::ReleaseToPool_Internal(AActor* Actor)
 
 	Actor->RouteEndPlay(EEndPlayReason::Destroyed);
 
-	IActorPoolingInterface::Execute_PoolEndPlay(Actor);
+	ITPSActorPoolingInterface::Execute_PoolEndPlay(Actor);
 
 	FActorPool* ActorPool = &AvailableActorPool.FindOrAdd(Actor->GetClass());
 	ActorPool->FreeActors.Add(Actor);

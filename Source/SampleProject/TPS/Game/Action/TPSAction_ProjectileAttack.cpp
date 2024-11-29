@@ -1,21 +1,21 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Game/Action/Action_ProjectileAttack.h"
+#include "Game/Action/TPSAction_ProjectileAttack.h"
 
 #include "Engine/EngineTypes.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
-#include "System/ActorPoolingSubsystem.h"
+#include "System/TPSActorPoolingSubsystem.h"
 
-UAction_ProjectileAttack::UAction_ProjectileAttack() :
+UTPSAction_ProjectileAttack::UTPSAction_ProjectileAttack() :
 	SweepRadius(20.0f),
 	SweepDistanceFallback(5000),
 	GunFireSocketName(TEXT("Gun_LOS"))
 {
 }
 
-void UAction_ProjectileAttack::StartAction_Implementation(AActor* Instigator)
+void UTPSAction_ProjectileAttack::StartAction_Implementation(AActor* Instigator)
 {
 	Super::StartAction_Implementation(Instigator);
 
@@ -40,7 +40,7 @@ void UAction_ProjectileAttack::StartAction_Implementation(AActor* Instigator)
 	}
 }
 
-void UAction_ProjectileAttack::Attack(ACharacter* InstigatorCharacter)
+void UTPSAction_ProjectileAttack::Attack(ACharacter* InstigatorCharacter)
 {
 	if (ensureAlways(ProjectileClass) == true)
 	{
@@ -86,7 +86,7 @@ void UAction_ProjectileAttack::Attack(ACharacter* InstigatorCharacter)
 
 		// 방향 고정 필요 어떤 방향이든 캐릭터가 보고있는 arrow를 기준으로 해야 됨.
 
-		UActorPoolingSubsystem::AcquireFromPool(this,ProjectileClass,SpawnTM,SpawnParams);
+		UTPSActorPoolingSubsystem::AcquireFromPool(this,ProjectileClass,SpawnTM,SpawnParams);
 	}
 
 	StopAction(InstigatorCharacter);

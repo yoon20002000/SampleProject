@@ -1,12 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Actor/InteractionActor.h"
+#include "Actor/TPSInteractionActor.h"
 
 #include "Components/SphereComponent.h"
 
 // Sets default values
-AInteractionActor::AInteractionActor()
+ATPSInteractionActor::ATPSInteractionActor()
 {
 	SphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Comp"));
 	SphereComp->SetCollisionProfileName("InteractionObject");
@@ -19,13 +19,13 @@ AInteractionActor::AInteractionActor()
 	
 }
 
-void AInteractionActor::Interact_Implementation(APawn* InstigatorPawn)
+void ATPSInteractionActor::Interact_Implementation(APawn* InstigatorPawn)
 {
 	
 }
 
 // Called when the game starts or when spawned
-void AInteractionActor::BeginPlay()
+void ATPSInteractionActor::BeginPlay()
 {
 	Super::BeginPlay();
 }

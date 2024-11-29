@@ -1,14 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Actor/BulletProjectile.h"
+#include "Actor/TPSBulletProjectile.h"
 
 #include "TPSHelper.h"
 #include "Components/TPSProjectileMovementComponent.h"
-#include "Game/Action/ActionComponent.h"
-#include "Game/Action/ActionEffect.h"
+#include "Game/Action/TPSActionComponent.h"
+#include "Game/Action/TPSActionEffect.h"
 
-void ABulletProjectile::MoveDataToSparseClassDataStruct() const
+void ATPSBulletProjectile::MoveDataToSparseClassDataStruct() const
 {
 	const UBlueprintGeneratedClass* BPClass = Cast<UBlueprintGeneratedClass>(GetClass());
 	if (BPClass == nullptr || BPClass->bIsSparseClassDataSerializable == true)
@@ -28,19 +28,19 @@ void ABulletProjectile::MoveDataToSparseClassDataStruct() const
 #endif
 }
 
-ABulletProjectile::ABulletProjectile()
+ATPSBulletProjectile::ATPSBulletProjectile()
 {
 	InitialLifeSpan = 10.0f;
 }
 
-void ABulletProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+void ATPSBulletProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
                                        UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                                        const FHitResult& SweepResult)
 {
 	UE_LOG(LogTemp, Log, TEXT("Overlap Other Actor : %s"), *GetNameSafe(OtherActor));
 	if (OtherActor != nullptr && OtherActor != GetInstigator())
 	{
-		UActionComponent* AC = OtherActor->FindComponentByClass<UActionComponent>();
+		UTPSActionComponent* AC = OtherActor->FindComponentByClass<UTPSActionComponent>();
 		if (AC != nullptr && AC->ActiveGameplayTags.HasTag(GetParryTag()))
 		{
 			MoveComp->Velocity = -MoveComp->Velocity;
@@ -59,15 +59,15 @@ void ABulletProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComp, AAct
 	}
 }
 
-void ABulletProjectile::OnActorHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+void ATPSBulletProjectile::OnActorHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	FVector NormalImpulse, const FHitResult& Hit)
 {
 	Super::OnActorHit(HitComp, OtherActor, OtherComp, NormalImpulse, Hit);
 	UE_LOG(LogTemp, Log, TEXT("Hit!!!!!"));
 }
 
-void ABulletProjectile::PostInitializeComponents()
+void ATPSBulletProjectile::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-	MeshComp->OnComponentBeginOverlap.AddDynamic(this, &ABulletProjectile::OnActorOverlap);
+	MeshComp->OnComponentBeginOverlap.AddDynamic(this, &ATPSBulletProjectile::OnActorOverlap);
 }

@@ -3,11 +3,11 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "TPSPlayerController.h"
-#include "Components/InteractionComponent.h"
+#include "Components/TPSInteractionComponent.h"
 #include "Components/TPSCameraComponent.h"
 #include "Components/TPSSpringArmComponent.h"
-#include "Game/Action/ActionComponent.h"
-#include "Game/Action/SharedGameplayTags.h"
+#include "Game/Action/TPSActionComponent.h"
+#include "Game/Action/TPSSharedGameplayTags.h"
 
 // Sets default values
 ATPSPlayer::ATPSPlayer()
@@ -22,8 +22,8 @@ ATPSPlayer::ATPSPlayer()
 	CameraComp = CreateDefaultSubobject<UTPSCameraComponent>(TEXT("CustomCamera"));
 	CameraComp->SetupAttachment(SpringArmComp);
 
-	InteractionComp = CreateDefaultSubobject<UInteractionComponent>(TEXT("Interaction Comp"));
-	ActionComp = CreateDefaultSubobject<UActionComponent>(TEXT("Action Comp"));
+	InteractionComp = CreateDefaultSubobject<UTPSInteractionComponent>(TEXT("Interaction Comp"));
+	ActionComp = CreateDefaultSubobject<UTPSActionComponent>(TEXT("Action Comp"));
 }
 
 // Called when the game starts or when spawned
@@ -122,5 +122,5 @@ void ATPSPlayer::Interaction(const FInputActionValue& InputActionValue)
 
 void ATPSPlayer::Attack()
 {
-	ActionComp->StartActionByName(this, SharedGameplayTags::Action_Attack);
+	ActionComp->StartActionByName(this, TPSSharedGameplayTags::Action_Attack);
 }

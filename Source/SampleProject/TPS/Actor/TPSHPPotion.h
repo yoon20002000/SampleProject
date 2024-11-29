@@ -3,19 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Actor/InteractionActor.h"
-#include "HPPotion.generated.h"
+#include "Actor/TPSInteractionActor.h"
+#include "TPSHPPotion.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SAMPLEPROJECT_API AHPPotion : public AInteractionActor
+class SAMPLEPROJECT_API ATPSHPPotion : public ATPSInteractionActor
 {
 	GENERATED_BODY()
 
 public:
-	AHPPotion();
+	ATPSHPPotion();
 	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
 
 protected:

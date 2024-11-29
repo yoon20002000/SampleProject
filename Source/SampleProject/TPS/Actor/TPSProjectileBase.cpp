@@ -1,17 +1,17 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Actor/ProjectileBase.h"
+#include "Actor/TPSProjectileBase.h"
 
 #include "Components/AudioComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/TPSProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundCue.h"
-#include "System/ActorPoolingSubsystem.h"
+#include "System/TPSActorPoolingSubsystem.h"
 
 // Sets default values
-AProjectileBase::AProjectileBase()
+ATPSProjectileBase::ATPSProjectileBase()
 {
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Projectile Mesh"));
 	MeshComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
@@ -32,48 +32,48 @@ AProjectileBase::AProjectileBase()
 	bReplicates = true;
 }
 
-void AProjectileBase::PostInitializeComponents()
+void ATPSProjectileBase::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-	MeshComp->OnComponentHit.AddDynamic(this, &AProjectileBase::OnActorHit);
+	MeshComp->OnComponentHit.AddDynamic(this, &ATPSProjectileBase::OnActorHit);
 }
 
 // Called when the game starts or when spawned
-void AProjectileBase::BeginPlay()
+void ATPSProjectileBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
-void AProjectileBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
+void ATPSProjectileBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
 }
 
-void AProjectileBase::LifeSpanExpired()
+void ATPSProjectileBase::LifeSpanExpired()
 {
-	UActorPoolingSubsystem::ReleaseToPool(this);
+	UTPSActorPoolingSubsystem::ReleaseToPool(this);
 }
 
-void AProjectileBase::PoolBeginPlay_Implementation()
+void ATPSProjectileBase::PoolBeginPlay_Implementation()
 {
 	MoveComp->Reset();
 
 	AudioComp->SetPaused(false);
 }
 
-void AProjectileBase::PoolEndPlay_Implementation()
+void ATPSProjectileBase::PoolEndPlay_Implementation()
 {
 	AudioComp->SetPaused(true);
 }
 
-void AProjectileBase::OnActorHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+void ATPSProjectileBase::OnActorHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
                                  FVector NormalImpulse, const FHitResult& Hit)
 {
 	Explode();
 }
 
-void AProjectileBase::Explode_Implementation()
+void ATPSProjectileBase::Explode_Implementation()
 {
 	UGameplayStatics::SpawnEmitterAtLocation(this,ImpactVFX,GetActorLocation(),GetActorRotation(),true, EPSCPoolMethod::AutoRelease);
 
@@ -81,12 +81,12 @@ void AProjectileBase::Explode_Implementation()
 
 	UGameplayStatics::PlayWorldCameraShake(this, ImpactShake, GetActorLocation(), GetImpactShakeInnerRadius(),GetImpactShakeOuterRadius());
 
-	UActorPoolingSubsystem* PoolingSubsystem = GetWorld()->GetSubsystem<UActorPoolingSubsystem>();
+	UTPSActorPoolingSubsystem* PoolingSubsystem = GetWorld()->GetSubsystem<UTPSActorPoolingSubsystem>();
 	PoolingSubsystem->ReleaseToPool(this);
 }
 
 #if WITH_EDITOR
-void AProjectileBase::MoveDataToSparseClassDataStruct() const
+void ATPSProjectileBase::MoveDataToSparseClassDataStruct() const
 {
 	if (UBlueprintGeneratedClass* BPClass = Cast<UBlueprintGeneratedClass>(GetClass());
 		BPClass == nullptr || BPClass->bIsSparseClassDataSerializable == true)

@@ -3,7 +3,7 @@
 
 #include "Components/TPSProjectileMovementComponent.h"
 
-#include "System/TickablesSubsystem.h"
+#include "System/TPSTickablesSubsystem.h"
 
 void UTPSProjectileMovementComponent::Reset()
 {
@@ -16,7 +16,7 @@ void UTPSProjectileMovementComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	if (UTickablesSubsystem* Tickables = GetWorld()->GetSubsystem<UTickablesSubsystem>())
+	if (UTPSTickablesSubsystem* Tickables = GetWorld()->GetSubsystem<UTPSTickablesSubsystem>())
 	{
 		Tickables->RegisterComponent(&PrimaryComponentTick);	
 	}
@@ -26,7 +26,7 @@ void UTPSProjectileMovementComponent::EndPlay(const EEndPlayReason::Type EndPlay
 {
 	Super::EndPlay(EndPlayReason);
 
-	if (UTickablesSubsystem* Tickables = GetWorld()->GetSubsystem<UTickablesSubsystem>())
+	if (UTPSTickablesSubsystem* Tickables = GetWorld()->GetSubsystem<UTPSTickablesSubsystem>())
 	{
 		Tickables->UnregisterComponent(&PrimaryComponentTick);
 	}

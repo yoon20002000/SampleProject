@@ -4,33 +4,33 @@
 
 #include "GameplayTagContainer.h"
 #include "Components/ActorComponent.h"
-#include "ActionComponent.generated.h"
+#include "TPSActionComponent.generated.h"
 
-class UAction;
+class UTPSAction;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnActionStateChanged,
-                                             UActionComponent*, OwningComp,
-                                             UAction*, Action);
+                                             UTPSActionComponent*, OwningComp,
+                                             UTPSAction*, Action);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class SAMPLEPROJECT_API UActionComponent : public UActorComponent
+class SAMPLEPROJECT_API UTPSActionComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this component's properties
-	UActionComponent();
+	UTPSActionComponent();
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 							   FActorComponentTickFunction* ThisTickFunction) override;
 	
 	UFUNCTION(BlueprintCallable, Category = "Actions")
-	void AddAction(AActor* Instigator, TSubclassOf<UAction> ActionClass);
+	void AddAction(AActor* Instigator, TSubclassOf<UTPSAction> ActionClass);
 	
 	UFUNCTION(BlueprintCallable, Category = "Actions")
-	void RemoveAction(UAction* ActionToRemove);
+	void RemoveAction(UTPSAction* ActionToRemove);
 
 	UFUNCTION(BlueprintCallable, Category = "Actions")
-	UAction* GetAction(const TSubclassOf<UAction> ActionClass) const;
+	UTPSAction* GetAction(const TSubclassOf<UTPSAction> ActionClass) const;
 
 	UFUNCTION(BlueprintCallable, Category = "Actions")
 	bool StartActionByName(AActor* Instigator, FGameplayTag ActionName);
@@ -60,8 +60,8 @@ public:
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "Actions")
-	TArray<TSubclassOf<UAction>> DefaultActions;
+	TArray<TSubclassOf<UTPSAction>> DefaultActions;
 	
 	UPROPERTY(BlueprintReadOnly, Replicated)
-	TArray<TObjectPtr<UAction>> Actions;
+	TArray<TObjectPtr<UTPSAction>> Actions;
 };

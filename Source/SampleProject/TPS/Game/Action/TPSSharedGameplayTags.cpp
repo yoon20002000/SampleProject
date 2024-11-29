@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Game/Action/SharedGameplayTags.h"
+#include "Game/Action/TPSSharedGameplayTags.h"
 
-namespace SharedGameplayTags
+namespace TPSSharedGameplayTags
 {
 	UE_DEFINE_GAMEPLAY_TAG(Action_Attack, "Action.Attack");
 	UE_DEFINE_GAMEPLAY_TAG(Action_Sprint, "Action.Sprint");

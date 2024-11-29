@@ -2,19 +2,19 @@
 
 #pragma once
 
-#include "Game/Action/Action.h"
-#include "ActionEffect.generated.h"
+#include "Game/Action/TPSAction.h"
+#include "TPSActionEffect.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SAMPLEPROJECT_API UActionEffect : public UAction
+class SAMPLEPROJECT_API UTPSActionEffect : public UTPSAction
 {
 	GENERATED_BODY()
 
 public:
-	UActionEffect();
+	UTPSActionEffect();
 	float GetTimeRemaining() const;
 
 	virtual void StartAction_Implementation(AActor* Instigator) override;

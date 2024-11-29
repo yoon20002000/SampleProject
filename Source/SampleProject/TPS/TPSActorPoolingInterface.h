@@ -3,11 +3,11 @@
 #pragma once
 
 #include "UObject/Interface.h"
-#include "ActorPoolingInterface.generated.h"
+#include "TPSActorPoolingInterface.generated.h"
 
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
-class UActorPoolingInterface : public UInterface
+class UTPSActorPoolingInterface : public UInterface
 {
 	GENERATED_BODY()
 };
@@ -15,7 +15,7 @@ class UActorPoolingInterface : public UInterface
 /**
  * 
  */
-class SAMPLEPROJECT_API IActorPoolingInterface
+class SAMPLEPROJECT_API ITPSActorPoolingInterface
 {
 	GENERATED_BODY()
 

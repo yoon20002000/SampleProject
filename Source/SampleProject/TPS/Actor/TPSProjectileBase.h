@@ -2,9 +2,9 @@
 
 #pragma once
 #include "CoreMinimal.h"
-#include "ActorPoolingInterface.h"
+#include "TPSActorPoolingInterface.h"
 #include "GameFramework/Actor.h"
-#include "ProjectileBase.generated.h"
+#include "TPSProjectileBase.generated.h"
 
 class UTPSProjectileMovementComponent;
 class USphereComponent;
@@ -27,7 +27,7 @@ struct FProjectileSparseData
 };
 
 UCLASS(ABSTRACT, SparseClassDataTypes = ProjectileSparseData)
-class SAMPLEPROJECT_API AProjectileBase : public AActor, public IActorPoolingInterface
+class SAMPLEPROJECT_API ATPSProjectileBase : public AActor, public ITPSActorPoolingInterface
 {
 	GENERATED_BODY()
 
@@ -47,7 +47,7 @@ protected:
 
 public:
 	// Sets default values for this actor's properties
-	AProjectileBase();
+	ATPSProjectileBase();
 
 protected:
 	virtual void PostInitializeComponents() override;

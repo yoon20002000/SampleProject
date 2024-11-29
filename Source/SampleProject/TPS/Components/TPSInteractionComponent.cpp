@@ -1,13 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Components/InteractionComponent.h"
+#include "Components/TPSInteractionComponent.h"
 
 #include "TPSHelper.h"
 #include "Game/TPSGameplay.h"
 
 // Sets default values for this component's properties
-UInteractionComponent::UInteractionComponent() : FocusedActor(nullptr)
+UTPSInteractionComponent::UTPSInteractionComponent() : FocusedActor(nullptr)
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -16,7 +16,7 @@ UInteractionComponent::UInteractionComponent() : FocusedActor(nullptr)
 	// ...
 }
 
-void UInteractionComponent::Interaction()
+void UTPSInteractionComponent::Interaction()
 {
 	if (FocusedActor == nullptr)
 	{
@@ -30,14 +30,14 @@ void UInteractionComponent::Interaction()
 
 
 // Called when the game starts
-void UInteractionComponent::BeginPlay()
+void UTPSInteractionComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
 	// ...
 }
 
-void UInteractionComponent::FindInteractableActor()
+void UTPSInteractionComponent::FindInteractableActor()
 {
 	FCollisionObjectQueryParams ObjectQueryParams;
 	for (auto CollisionChannel : CollisionChannels)
@@ -85,7 +85,7 @@ void UInteractionComponent::FindInteractableActor()
 }
 
 // Called every frame
-void UInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+void UTPSInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
                                           FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);

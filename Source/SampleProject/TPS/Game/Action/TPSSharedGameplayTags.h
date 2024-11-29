@@ -4,7 +4,7 @@
 
 #include "NativeGameplayTags.h"
 
-namespace SharedGameplayTags
+namespace TPSSharedGameplayTags
 {
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Action_Attack);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Action_Sprint);

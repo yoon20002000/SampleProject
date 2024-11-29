@@ -3,17 +3,17 @@
 #pragma once
 
 #include "Components/ActorComponent.h"
-#include "InteractionComponent.generated.h"
+#include "TPSInteractionComponent.generated.h"
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class SAMPLEPROJECT_API UInteractionComponent : public UActorComponent
+class SAMPLEPROJECT_API UTPSInteractionComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	UInteractionComponent();
+	UTPSInteractionComponent();
 	void Interaction();
 protected:
 	// Called when the game starts

@@ -3,10 +3,10 @@
 #pragma once
 
 #include "GameplayTagContainer.h"
-#include "Actor/ProjectileBase.h"
-#include "BulletProjectile.generated.h"
+#include "Actor/TPSProjectileBase.h"
+#include "TPSBulletProjectile.generated.h"
 
-class UActionEffect;
+class UTPSActionEffect;
 
 USTRUCT(BlueprintType)
 struct FBulletProjectileSparseData : public FProjectileSparseData
@@ -25,27 +25,27 @@ public:
 	FGameplayTag ParryTag;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
-	TSubclassOf<UActionEffect> BleedingActionClass;
+	TSubclassOf<UTPSActionEffect> BleedingActionClass;
 };
 
 /**
  * 
  */
 UCLASS(SparseClassDataTypes = "BulletProjectileSparseData")
-class SAMPLEPROJECT_API ABulletProjectile : public AProjectileBase
+class SAMPLEPROJECT_API ATPSBulletProjectile : public ATPSProjectileBase
 {
 	GENERATED_BODY()
 
 #if WITH_EDITORONLY_DATA
 	float DamageAmount_DEPRECATED;
-	TSubclassOf<UActionEffect> BleedingActionClass_DEPRECATED;
+	TSubclassOf<UTPSActionEffect> BleedingActionClass_DEPRECATED;
 #endif
 #if WITH_EDITOR
 	virtual void MoveDataToSparseClassDataStruct() const override;
 #endif
 
 public:
-	ABulletProjectile();
+	ATPSBulletProjectile();
 protected:
 	UFUNCTION()
 	void OnActorOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

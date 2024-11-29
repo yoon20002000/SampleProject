@@ -3,7 +3,7 @@
 #pragma once
 
 #include "Subsystems/WorldSubsystem.h"
-#include "ActorPoolingSubsystem.generated.h"
+#include "TPSActorPoolingSubsystem.generated.h"
 
 USTRUCT()
 struct FActorPool
@@ -18,7 +18,7 @@ struct FActorPool
  * 
  */
 UCLASS()
-class SAMPLEPROJECT_API UActorPoolingSubsystem : public UWorldSubsystem
+class SAMPLEPROJECT_API UTPSActorPoolingSubsystem : public UWorldSubsystem
 {
 	GENERATED_BODY()
 

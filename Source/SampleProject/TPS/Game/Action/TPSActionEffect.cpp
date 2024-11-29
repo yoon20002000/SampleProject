@@ -1,17 +1,17 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Game/Action/ActionEffect.h"
+#include "Game/Action/TPSActionEffect.h"
 
-#include "ActionComponent.h"
+#include "TPSActionComponent.h"
 #include "GameFramework/GameStateBase.h"
 
-UActionEffect::UActionEffect()
+UTPSActionEffect::UTPSActionEffect()
 {
 	bAutoStart = true;
 }
 
-float UActionEffect::GetTimeRemaining() const
+float UTPSActionEffect::GetTimeRemaining() const
 {
 	if (AGameStateBase* GS = GetWorld()->GetGameState<AGameStateBase>())
 	{
@@ -22,7 +22,7 @@ float UActionEffect::GetTimeRemaining() const
 	return Duration;
 }
 
-void UActionEffect::StartAction_Implementation(AActor* Instigator)
+void UTPSActionEffect::StartAction_Implementation(AActor* Instigator)
 {
 	Super::StartAction_Implementation(Instigator);
 
@@ -43,7 +43,7 @@ void UActionEffect::StartAction_Implementation(AActor* Instigator)
 	}
 }
 
-void UActionEffect::StopAction_Implementation(AActor* Instigator)
+void UTPSActionEffect::StopAction_Implementation(AActor* Instigator)
 {
 	if (GetWorld()->GetTimerManager().GetTimerRemaining(PeriodHandle) < KINDA_SMALL_NUMBER)
 	{
@@ -55,12 +55,12 @@ void UActionEffect::StopAction_Implementation(AActor* Instigator)
 	GetWorld()->GetTimerManager().ClearTimer(DurationHandle);
 	GetWorld()->GetTimerManager().ClearTimer(PeriodHandle);
 	
-	if (UActionComponent* AC = GetOwningComponent())
+	if (UTPSActionComponent* AC = GetOwningComponent())
 	{
 		AC->RemoveAction(this);	
 	}
 }
 
-void UActionEffect::ExecutePeriodicEffect_Implementation(AActor* Instigator)
+void UTPSActionEffect::ExecutePeriodicEffect_Implementation(AActor* Instigator)
 {
 }

@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "System/TickablesSubsystem.h"
+#include "System/TPSTickablesSubsystem.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(TickablesSubsystem)
 
@@ -18,7 +18,7 @@ void FTickablesTickFunction::ExecuteTick(float DeltaTime, ELevelTick TickType, E
 	Target->ExecuteTick(TickGroup, DeltaTime, TickType, CurrentThread, CompletionGraphEvent);
 }
 
-void UTickablesSubsystem::RegisterComponent(FActorComponentTickFunction* TickFunction)
+void UTPSTickablesSubsystem::RegisterComponent(FActorComponentTickFunction* TickFunction)
 {
 	if (CVarAggregateTicks.GetValueOnGameThread())
 	{
@@ -29,7 +29,7 @@ void UTickablesSubsystem::RegisterComponent(FActorComponentTickFunction* TickFun
 	}
 }
 
-void UTickablesSubsystem::UnregisterComponent(FActorComponentTickFunction* TickFunction)
+void UTPSTickablesSubsystem::UnregisterComponent(FActorComponentTickFunction* TickFunction)
 {
 	if (CVarAggregateTicks.GetValueOnGameThread())
 	{
@@ -37,7 +37,7 @@ void UTickablesSubsystem::UnregisterComponent(FActorComponentTickFunction* TickF
 	}
 }
 
-void UTickablesSubsystem::ExecuteTick(ETickingGroup TickGroup, float DeltaTime, ELevelTick TickType,
+void UTPSTickablesSubsystem::ExecuteTick(ETickingGroup TickGroup, float DeltaTime, ELevelTick TickType,
 	ENamedThreads::Type CurrentThread, const FGraphEventRef& CompletionGraphEvent)
 {
 	for (FActorComponentTickFunction* Func : TickableComponents)
@@ -52,7 +52,7 @@ void UTickablesSubsystem::ExecuteTick(ETickingGroup TickGroup, float DeltaTime, 
 	CleanupQueue.Empty();
 }
 
-void UTickablesSubsystem::Initialize(FSubsystemCollectionBase& Collection)
+void UTPSTickablesSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 

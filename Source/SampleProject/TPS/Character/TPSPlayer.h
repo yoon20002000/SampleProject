@@ -7,8 +7,8 @@
 #include "TPSCharacter.h"
 #include "TPSPlayer.generated.h"
 
-class UActionComponent;
-class UInteractionComponent;
+class UTPSActionComponent;
+class UTPSInteractionComponent;
 class UInputMappingContext;
 class UInputAction;
 
@@ -59,7 +59,7 @@ public:
 	TObjectPtr<UInputAction> InteractAction;
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess), Category = "Components")
-	TObjectPtr<UInteractionComponent> InteractionComp;
+	TObjectPtr<UTPSInteractionComponent> InteractionComp;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess), Category = "Components")
-	TObjectPtr<UActionComponent> ActionComp;
+	TObjectPtr<UTPSActionComponent> ActionComp;
 };

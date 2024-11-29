@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "ActorPoolingInterface.h"
+#include "TPSActorPoolingInterface.h"
 
 // Add default functionality here for any IActorPoolingInterface functions that are not pure virtual.

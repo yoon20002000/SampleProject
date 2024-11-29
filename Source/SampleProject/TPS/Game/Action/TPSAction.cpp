@@ -1,47 +1,47 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Game/Action/Action.h"
+#include "Game/Action/TPSAction.h"
 
-#include "ActionComponent.h"
+#include "TPSActionComponent.h"
 #include "Logging/StructuredLog.h"
 #include "Net/UnrealNetwork.h"
 
 class UWorld;
 
-UActionComponent* UAction::GetOwningComponent() const
+UTPSActionComponent* UTPSAction::GetOwningComponent() const
 {
 	return ActionComp;
 }
 
-FGameplayTag UAction::GetActivationTag() const
+FGameplayTag UTPSAction::GetActivationTag() const
 {
 	return ActionTag;
 }
 
-bool UAction::IsAutoStart() const
+bool UTPSAction::IsAutoStart() const
 {
 	return bAutoStart;
 }
 
-void UAction::Initialize(UActionComponent* NewActionComp)
+void UTPSAction::Initialize(UTPSActionComponent* NewActionComp)
 {
 	ActionComp = NewActionComp;
 }
 
-bool UAction::IsRunning() const
+bool UTPSAction::IsRunning() const
 {
 	return RepData.bIsRunning;
 }
 
-bool UAction::CanStart_Implementation(AActor* Instigator)
+bool UTPSAction::CanStart_Implementation(AActor* Instigator)
 {
 	if (IsRunning() == true)
 	{
 		return false;
 	}
 
-	UActionComponent* AC = GetOwningComponent();
+	UTPSActionComponent* AC = GetOwningComponent();
 
 	if (AC->ActiveGameplayTags.HasAny(BlockedTags) == true)
 	{
@@ -50,11 +50,11 @@ bool UAction::CanStart_Implementation(AActor* Instigator)
 	return true;
 }
 
-void UAction::StartAction_Implementation(AActor* Instigator)
+void UTPSAction::StartAction_Implementation(AActor* Instigator)
 {
 	UE_LOGFMT(LogTemp, Log, "Started: {ActionName}", GetName());
 
-	UActionComponent* AC = GetOwningComponent();
+	UTPSActionComponent* AC = GetOwningComponent();
 	AC->ActiveGameplayTags.AppendTags(GrantsTags);
 
 	RepData.bIsRunning = true;
@@ -68,9 +68,9 @@ void UAction::StartAction_Implementation(AActor* Instigator)
 }
 
 
-void UAction::StopAction_Implementation(AActor* Instigator)
+void UTPSAction::StopAction_Implementation(AActor* Instigator)
 {
-	UActionComponent* AC = GetOwningComponent();
+	UTPSActionComponent* AC = GetOwningComponent();
 	AC->ActiveGameplayTags.RemoveTags(GrantsTags);
 
 	RepData.bIsRunning = false;
@@ -79,7 +79,7 @@ void UAction::StopAction_Implementation(AActor* Instigator)
 	AC->OnActionStopped.Broadcast(AC, this);
 }
 
-UWorld* UAction::GetWorld() const
+UWorld* UTPSAction::GetWorld() const
 {
 	if (AActor* Actor = Cast<AActor>(GetOuter()))
 	{
@@ -88,12 +88,12 @@ UWorld* UAction::GetWorld() const
 	return nullptr;
 }
 
-bool UAction::IsSupportedForNetworking() const
+bool UTPSAction::IsSupportedForNetworking() const
 {
 	return UObject::IsSupportedForNetworking();
 }
 
-void UAction::OnRep_RepData()
+void UTPSAction::OnRep_RepData()
 {
 	if (IsRunning() == true)
 	{
@@ -105,11 +105,11 @@ void UAction::OnRep_RepData()
 	}
 }
 
-void UAction::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+void UTPSAction::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(UAction, RepData);
-	DOREPLIFETIME(UAction, TimeStared);
-	DOREPLIFETIME(UAction, ActionComp);
+	DOREPLIFETIME(UTPSAction, RepData);
+	DOREPLIFETIME(UTPSAction, TimeStared);
+	DOREPLIFETIME(UTPSAction, ActionComp);
 }

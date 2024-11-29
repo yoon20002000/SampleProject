@@ -2,19 +2,19 @@
 
 #pragma once
 
-#include "Game/Action/Action.h"
-#include "Action_ProjectileAttack.generated.h"
+#include "Game/Action/TPSAction.h"
+#include "TPSAction_ProjectileAttack.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SAMPLEPROJECT_API UAction_ProjectileAttack : public UAction
+class SAMPLEPROJECT_API UTPSAction_ProjectileAttack : public UTPSAction
 {
 	GENERATED_BODY()
 
 public:
-	UAction_ProjectileAttack();
+	UTPSAction_ProjectileAttack();
 	virtual void StartAction_Implementation(AActor* Instigator) override;
 
 protected:

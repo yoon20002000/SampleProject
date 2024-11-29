@@ -4,18 +4,18 @@
 
 #include "Game/TPSGameplay.h"
 #include "GameFramework/Actor.h"
-#include "InteractionActor.generated.h"
+#include "TPSInteractionActor.generated.h"
 
 class USphereComponent;
 
 UCLASS()
-class SAMPLEPROJECT_API AInteractionActor : public AActor, public ITPSGameplay
+class SAMPLEPROJECT_API ATPSInteractionActor : public AActor, public ITPSGameplay
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
-	AInteractionActor();
+	ATPSInteractionActor();
 	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
 protected:
 	// Called when the game starts or when spawned

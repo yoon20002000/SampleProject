@@ -1,15 +1,15 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Actor/HPPotion.h"
+#include "Actor/TPSHPPotion.h"
 
 #include "Character/TPSPlayer.h"
 
-AHPPotion::AHPPotion()
+ATPSHPPotion::ATPSHPPotion()
 {
 }
 
-void AHPPotion::Interact_Implementation(APawn* InstigatorPawn)
+void ATPSHPPotion::Interact_Implementation(APawn* InstigatorPawn)
 {
 	if (InstigatorPawn == nullptr)
 	{

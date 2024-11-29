@@ -3,10 +3,10 @@
 #pragma once
 #include "GameplayTagContainer.h"
 
-#include "Action.generated.h"
+#include "TPSAction.generated.h"
 
 class UWorld;
-class UActionComponent;
+class UTPSActionComponent;
 
 USTRUCT()
 struct FActionRepData
@@ -29,13 +29,13 @@ public:
  * 
  */
 UCLASS(Blueprintable)
-class SAMPLEPROJECT_API UAction : public UObject
+class SAMPLEPROJECT_API UTPSAction : public UObject
 {
 	GENERATED_BODY()
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "Action")
-	UActionComponent* GetOwningComponent() const;
+	UTPSActionComponent* GetOwningComponent() const;
 
 	UFUNCTION(BlueprintPure)
 	FGameplayTag GetActivationTag() const;
@@ -43,7 +43,7 @@ public:
 	UFUNCTION(BlueprintPure)
 	bool IsAutoStart() const;
 
-	void Initialize(UActionComponent* NewActionComp);
+	void Initialize(UTPSActionComponent* NewActionComp);
 
 	UFUNCTION(BlueprintCallable, Category = "Action")
 	bool IsRunning() const;
@@ -68,7 +68,7 @@ protected:
 	TSoftObjectPtr<UTexture2D> Icon;
 
 	UPROPERTY(Replicated)
-	TObjectPtr<UActionComponent> ActionComp;
+	TObjectPtr<UTPSActionComponent> ActionComp;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Tags")
 	FGameplayTagContainer GrantsTags;

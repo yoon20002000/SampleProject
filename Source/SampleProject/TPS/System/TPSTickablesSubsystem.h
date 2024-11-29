@@ -3,14 +3,14 @@
 #pragma once
 
 #include "Subsystems/WorldSubsystem.h"
-#include "TickablesSubsystem.generated.h"
+#include "TPSTickablesSubsystem.generated.h"
 
 USTRUCT()
 struct FTickablesTickFunction : public FTickFunction
 {
 	GENERATED_BODY()
 	UPROPERTY()
-	UTickablesSubsystem* Target = nullptr;
+	UTPSTickablesSubsystem* Target = nullptr;
 	virtual void ExecuteTick(float DeltaTime, ELevelTick TickType, ENamedThreads::Type CurrentThread, const FGraphEventRef& CompletionGraphEvent) override;
 
 	virtual FString DiagnosticMessage() override
@@ -31,7 +31,7 @@ struct TStructOpsTypeTraits<FTickablesTickFunction> : TStructOpsTypeTraitsBase2<
  * 
  */
 UCLASS()
-class SAMPLEPROJECT_API UTickablesSubsystem : public UWorldSubsystem
+class SAMPLEPROJECT_API UTPSTickablesSubsystem : public UWorldSubsystem
 {
 	GENERATED_BODY()
 
