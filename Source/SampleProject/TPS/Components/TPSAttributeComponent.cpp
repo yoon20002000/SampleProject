@@ -16,7 +16,6 @@ UTPSAttributeComponent::UTPSAttributeComponent()
 	Health = MaxHealth;
 
 	Mana = MaxMana;
-	UE_LOG(LogTemp, Log,TEXT("Construct %f"), MaxHealth);
 }
 
 void UTPSAttributeComponent::OnRegister()

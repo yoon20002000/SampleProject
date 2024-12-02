@@ -3,7 +3,7 @@
 
 #include "System/TPSTickablesSubsystem.h"
 
-#include UE_INLINE_GENERATED_CPP_BY_NAME(TickablesSubsystem)
+#include UE_INLINE_GENERATED_CPP_BY_NAME(TPSTickablesSubsystem)
 
 
 static TAutoConsoleVariable CVarAggregateTicks(
