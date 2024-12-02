@@ -70,6 +70,7 @@ void UTPSAction::StartAction_Implementation(AActor* Instigator)
 
 void UTPSAction::StopAction_Implementation(AActor* Instigator)
 {
+UE_LOGFMT(LogTemp, Log, "Stop: {ActionName}", GetName());
 	UTPSActionComponent* AC = GetOwningComponent();
 	AC->ActiveGameplayTags.RemoveTags(GrantsTags);
 

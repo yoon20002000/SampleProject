@@ -37,9 +37,9 @@ void ATPSBulletProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComp, A
                                        UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                                        const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Log, TEXT("Overlap Other Actor : %s"), *GetNameSafe(OtherActor));
 	if (OtherActor != nullptr && OtherActor != GetInstigator())
 	{
+		UE_LOG(LogTemp, Log, TEXT("Overlap Other Actor : %s"), *GetNameSafe(OtherActor));
 		UTPSActionComponent* AC = OtherActor->FindComponentByClass<UTPSActionComponent>();
 		if (AC != nullptr && AC->ActiveGameplayTags.HasTag(GetParryTag()))
 		{

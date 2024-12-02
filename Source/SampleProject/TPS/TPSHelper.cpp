@@ -64,7 +64,7 @@ APlayerController* TPSHelper::GetFirstLocalPlayerController(UWorld* InWorld)
 		return nullptr;
 	}
 	APlayerController* playerController = Cast<APlayerController>(
-		(GetWorld() && GEngine) ? GEngine->GetFirstLocalPlayerController(GetWorld()) : NULL);
+		(GetWorld() && GEngine) ? GEngine->GetFirstLocalPlayerController(GetWorld()) : nullptr);
 	return playerController;
 }
 
