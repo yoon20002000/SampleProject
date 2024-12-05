@@ -5,6 +5,8 @@
 
 #include "TPSGameManager.h"
 #include "TPSSystemManager.h"
+#include "Character/TPSPlayer.h"
+#include "Character/TPSPlayerState.h"
 
 ATPSGameMode::ATPSGameMode()
 {
@@ -34,7 +36,16 @@ void ATPSGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	Super::EndPlay(EndPlayReason);
 }
 
-void ATPSGameMode::OnActorKilled(AActor* Actor, AActor* InstigatorActor)
+void ATPSGameMode::OnActorKilled(AActor* Causer, AActor* InstigatorActor)
 {
-	UE_LOG(LogTemp, Log, TEXT("Actor is Death : %s"), *InstigatorActor->GetName());
+	UE_LOG(LogTemp, Log, TEXT("Causer Actor : %s Actor is Death : %s"), *GetNameSafe(Causer),
+	       *InstigatorActor->GetName());
+	
+	if (ATPSPlayer* TPSPlayer = Cast<ATPSPlayer>(InstigatorActor))
+	{
+		if(ATPSPlayerState* PS = Cast<ATPSPlayerState>(TPSPlayer->GetPlayerState()))
+		{
+			PS->AddDeathCount();
+		}
+	}
 }
