@@ -3,22 +3,31 @@
 
 #include "Character/TPSPlayerState.h"
 
-ATPSPlayerState::ATPSPlayerState() : DeathCount(0)
+ATPSPlayerState::ATPSPlayerState() : KillCount(0)
 {
 }
 
 void ATPSPlayerState::BeginPlay()
 {
 	Super::BeginPlay();
-	ClearDeathCount();
+	ClearKillCount();
 }
 
-void ATPSPlayerState::AddDeathCount()
+void ATPSPlayerState::AddKillCount()
 {
-	++DeathCount;
+	UpdateKillCount(KillCount + 1);
 }
 
-void ATPSPlayerState::ClearDeathCount()
+void ATPSPlayerState::ClearKillCount()
 {
-	DeathCount = 0;
+	UpdateKillCount(0);
+}
+
+void ATPSPlayerState::UpdateKillCount(uint32 InKillCount)
+{
+	uint32 OldKillCount = KillCount;
+	KillCount = InKillCount;
+	uint32 Delta = KillCount - OldKillCount;
+
+	OnKillCountChanged.Broadcast(this, KillCount, Delta);
 }

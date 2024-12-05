@@ -23,7 +23,7 @@ public:
 	virtual void StartPlay() override;
 	virtual void BeginDestroy() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	void OnActorKilled(AActor* Causer, AActor* InstigatorActor);
+	void OnActorKilled(AActor* KilledActor, AActor* InstigatorActor);
 	
 public:
 	UPROPERTY(EditAnywhere, Category=TPS)

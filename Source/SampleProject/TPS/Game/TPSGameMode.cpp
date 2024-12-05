@@ -28,6 +28,7 @@ void ATPSGameMode::StartPlay()
 void ATPSGameMode::BeginDestroy()
 {	
 	Super::BeginDestroy();
+	
 }
 
 void ATPSGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -36,16 +37,22 @@ void ATPSGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	Super::EndPlay(EndPlayReason);
 }
 
-void ATPSGameMode::OnActorKilled(AActor* Causer, AActor* InstigatorActor)
+void ATPSGameMode::OnActorKilled(AActor* KilledActor, AActor* InstigatorActor)
 {
-	UE_LOG(LogTemp, Log, TEXT("Causer Actor : %s Actor is Death : %s"), *GetNameSafe(Causer),
+	UE_LOG(LogTemp, Log, TEXT("KilledActor Actor : %s InstigatorActor : %s"), *GetNameSafe(KilledActor),
 	       *InstigatorActor->GetName());
-	
-	if (ATPSPlayer* TPSPlayer = Cast<ATPSPlayer>(InstigatorActor))
+	ATPSPlayer* TPSPlayer = Cast<ATPSPlayer>(KilledActor);
+	if ( TPSPlayer != nullptr)
 	{
+		
+	}
+	else
+	{
+		TPSPlayer = Cast<ATPSPlayer>(InstigatorActor); 
+		
 		if(ATPSPlayerState* PS = Cast<ATPSPlayerState>(TPSPlayer->GetPlayerState()))
 		{
-			PS->AddDeathCount();
+			PS->AddKillCount();
 		}
 	}
 }

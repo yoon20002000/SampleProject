@@ -6,6 +6,12 @@
 #include "GameFramework/PlayerState.h"
 #include "TPSPlayerState.generated.h"
 
+class ATPSPlayerState;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnKillCountChanged,
+													ATPSPlayerState*, PlayerState,
+													uint32, KillCount,
+													uint8, Delta);
 /**
  * 
  */
@@ -17,9 +23,11 @@ public:
 	ATPSPlayerState();
 	virtual void BeginPlay() override;
 
-	void AddDeathCount();
-	void ClearDeathCount();
+	void AddKillCount();
+	void ClearKillCount();
+	void UpdateKillCount(uint32 InKillCount);
+public:
+	FOnKillCountChanged OnKillCountChanged;
 protected:
-	UPROPERTY(Transient)
-	uint32 DeathCount;
+	uint32 KillCount;
 };
