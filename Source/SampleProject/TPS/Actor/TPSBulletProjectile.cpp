@@ -64,6 +64,11 @@ void ATPSBulletProjectile::OnActorHit(UPrimitiveComponent* HitComp, AActor* Othe
 {
 	Super::OnActorHit(HitComp, OtherActor, OtherComp, NormalImpulse, Hit);
 	UE_LOG(LogTemp, Log, TEXT("Hit!!!!!"));
+
+	if (UTPSActionComponent* AC = OtherActor->FindComponentByClass<UTPSActionComponent>();  GetBleedingActionClass() && HasAuthority())
+	{
+		AC->AddAction(GetInstigator(), GetBleedingActionClass());
+	}
 }
 
 void ATPSBulletProjectile::PostInitializeComponents()

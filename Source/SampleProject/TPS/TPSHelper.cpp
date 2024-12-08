@@ -72,7 +72,7 @@ bool TPSHelper::ApplyDamage(AActor* DamageCauser, AActor* TargetActor, float Dam
 {
 	if (UTPSAttributeComponent* AC = UTPSAttributeComponent::GetAttributes(TargetActor))
 	{
-		return AC->ApplyHealthChange(DamageCauser, DamageAmount);
+		return AC->ApplyHealthChange(DamageCauser, -DamageAmount);
 	}
 	return false;
 }

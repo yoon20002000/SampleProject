@@ -26,6 +26,9 @@ protected:
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Effect")
+	float Damage;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Effect")
 	float Duration;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Effect")

@@ -4,6 +4,7 @@
 #include "Game/Action/TPSActionEffect.h"
 
 #include "TPSActionComponent.h"
+#include "TPSHelper.h"
 #include "GameFramework/GameStateBase.h"
 
 UTPSActionEffect::UTPSActionEffect()
@@ -63,4 +64,8 @@ void UTPSActionEffect::StopAction_Implementation(AActor* Instigator)
 
 void UTPSActionEffect::ExecutePeriodicEffect_Implementation(AActor* Instigator)
 {
+	if (Instigator != nullptr)
+	{
+		TPSHelper::ApplyDamage(Instigator, GetOwningComponent()->GetOwner(), Damage);
+	}
 }
