@@ -16,23 +16,20 @@ void UTPSCharacterAnimInstance::NativeInitializeAnimation()
 void UTPSCharacterAnimInstance::NativeBeginPlay()
 {
 	Super::NativeBeginPlay();
-
-	if (APlayerController* PlayerController = TPSHelper::GetPlayerController())
+	
+	if (ATPSCharacter* Player = Cast<ATPSCharacter>(GetOwningActor()))
 	{
-		if (ATPSCharacter* Player = Cast<ATPSCharacter>(PlayerController->GetPawn()))
-		{
-			ActionComp = Player->GetComponentByClass<UTPSActionComponent>();
-			AttributeComp = Player->GetComponentByClass<UTPSAttributeComponent>();
+		ActionComp = Player->GetComponentByClass<UTPSActionComponent>();
+		AttributeComp = Player->GetComponentByClass<UTPSAttributeComponent>();
 
-			UpdateIsAlive(AttributeComp);
-		}
+		UpdateIsAlive(AttributeComp);
 	}
 }
 
 void UTPSCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
-	
+
 	UpdateIsAlive(AttributeComp);
 }
 
@@ -41,7 +38,5 @@ void UTPSCharacterAnimInstance::UpdateIsAlive(const UTPSAttributeComponent* Attr
 	if (Attribute != nullptr)
 	{
 		bIsAlive = Attribute->IsAlive();
-		UE_LOG(LogTemp, Log, TEXT("Owner : %s, UpdateIsAlive : %d"), *GetNameSafe(GetOwningActor()), (bIsAlive ? 1:0));
 	}
 }
-
