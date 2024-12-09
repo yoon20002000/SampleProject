@@ -31,6 +31,8 @@ public class SampleProject : ModuleRules
 		"CommonUI",
 		"GameplayTags",
 		"CommonInput",
+		"GameplayAbilities",
+		"GameplayTasks"
 		});
 
 		if (bUseOnlineSubsystemV1)
