@@ -38,9 +38,10 @@ void UTPSCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 void UTPSCharacterAnimInstance::UpdateIsAlive(const UTPSAttributeComponent* Attribute)
 {
-	if (AttributeComp != nullptr)
+	if (Attribute != nullptr)
 	{
-		bIsAlive = AttributeComp->IsAlive();
+		bIsAlive = Attribute->IsAlive();
+		UE_LOG(LogTemp, Log, TEXT("Owner : %s, UpdateIsAlive : %d"), *GetNameSafe(GetOwningActor()), (bIsAlive ? 1:0));
 	}
 }
 

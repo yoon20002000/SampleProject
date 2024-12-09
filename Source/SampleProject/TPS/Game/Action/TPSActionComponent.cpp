@@ -36,7 +36,7 @@ void UTPSActionComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	TArray<UTPSAction*> ActionCopy = Actions;
 	
-	for (UTPSAction* Action : Actions)
+	for (UTPSAction* Action : ActionCopy)
 	{
 		if (Action->IsRunning() ==true)
 		{
