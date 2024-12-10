@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/TPSAttributeComponent.h"
 #include "GameFramework/Character.h"
+#include "AbilitySystemInterface.h"
 #include "TPSCharacter.generated.h"
 
 class UTPSAttributeComponent;
@@ -17,7 +18,7 @@ class UTPSSpringArmComponent;
 class UTPSActionComponent;
 
 UCLASS()
-class SAMPLEPROJECT_API ATPSCharacter : public ACharacter
+class SAMPLEPROJECT_API ATPSCharacter : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 public:
@@ -30,6 +31,8 @@ public:
 	float GetMaxHealth()const;
 	void AddHP(const int InValue);
 	UTPSAttributeComponent* GetAttributeComp();
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	
 protected:
 	UFUNCTION()
 	virtual void OnHealthChanged(AActor* InstigatorActor, UTPSAttributeComponent* OwningComp, float NewHealth, float Delta);\
@@ -48,4 +51,7 @@ protected:
 	int HPBarWidgetHeight = 180;
 	UPROPERTY(EditDefaultsOnly, Category="UI", meta=(AllowPrivateAccess=true))
 	FVector2D HPBarWidgetSize = FVector2D(150,50);
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Abilities")
+	TObjectPtr<UAbilitySystemComponent> AbilitySystemComp;
 };

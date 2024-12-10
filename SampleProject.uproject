@@ -13,7 +13,8 @@
 				"AIModule",
 				"CoreUObject",
 				"CommonUI",
-				"UMG"
+				"UMG",
+				"GameplayAbilities"
 			]
 		},
 		{

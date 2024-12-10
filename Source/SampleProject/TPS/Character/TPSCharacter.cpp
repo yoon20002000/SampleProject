@@ -8,14 +8,14 @@
 #include "Game/Action/TPSActionComponent.h"
 #include "Game/Action/TPSSharedGameplayTags.h"
 #include "UI/TPSFloatingHPBar.h"
-// Sets default values
+
 ATPSCharacter::ATPSCharacter()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	AttributeComp = CreateDefaultSubobject<UTPSAttributeComponent>(TEXT("Attribute Component"));
-	
+
 	HPBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HP Bar Widget"));
 	HPBarWidget->SetupAttachment(GetMesh());
 
@@ -30,6 +30,7 @@ ATPSCharacter::ATPSCharacter()
 	}
 
 	ActionComp = CreateDefaultSubobject<UTPSActionComponent>(TEXT("Action Comp"));
+	
 }
 
 // Called when the game starts or when spawned
@@ -43,7 +44,7 @@ void ATPSCharacter::PostInitializeComponents()
 	Super::PostInitializeComponents();
 
 	AttributeComp->OnHealthChanged.AddDynamic(this, &ATPSCharacter::OnHealthChanged);
-	
+
 	HPBarWidget->InitWidget();
 	UTPSFloatingHPBar* CharacterWidget = Cast<UTPSFloatingHPBar>(HPBarWidget->GetUserWidgetObject());
 	if (CharacterWidget != nullptr)
@@ -70,25 +71,32 @@ float ATPSCharacter::GetMaxHealth() const
 
 void ATPSCharacter::AddHP(const int InValue)
 {
-	AttributeComp->ApplyHealthChange(this,InValue);
+	AttributeComp->ApplyHealthChange(this, InValue);
 }
+
 UTPSAttributeComponent* ATPSCharacter::GetAttributeComp()
 {
 	return AttributeComp;
 }
 
+UAbilitySystemComponent* ATPSCharacter::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComp;
+}
+
 void ATPSCharacter::OnHealthChanged(AActor* InstigatorActor, UTPSAttributeComponent* OwningComp, float NewHealth,
-	float Delta)
+                                    float Delta)
 {
 	UE_LOG(LogTemp, Log, TEXT("Instigator Actor : %s, OwningComp : %s, NewHealth : %f, Delta : %f"),
-		*InstigatorActor->GetName(), *OwningComp->GetName(), NewHealth, Delta);
+	       *InstigatorActor->GetName(), *OwningComp->GetName(), NewHealth, Delta);
 
 	// 추후 죽는 ani 추가
-	if (NewHealth < 0 )
+	if (NewHealth < 0)
 	{
-		SetLifeSpan(5.0f);	
+		SetLifeSpan(5.0f);
 	}
 }
+
 void ATPSCharacter::Attack()
 {
 	ActionComp->StartActionByName(this, TPSSharedGameplayTags::Action_Attack);
