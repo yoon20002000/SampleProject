@@ -74,7 +74,7 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATPSPlayer::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATPSPlayer::Look);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ATPSPlayer::JumpAbilities);
-		//EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ATPSPlayer::StopJumpAbilities);
 		EnhancedInputComponent->BindAction(ShotAction, ETriggerEvent::Started, this, &ATPSPlayer::Shot);
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ATPSPlayer::Interaction);
 	}
@@ -124,4 +124,11 @@ void ATPSPlayer::JumpAbilities()
 	JumpTags.AddTag(TPSGameplayTags::Action_Jump);
 
 	AbilitySystemComp->TryActivateAbilitiesByTag(JumpTags);
+}
+
+void ATPSPlayer::StopJumpAbilities()
+{
+	FGameplayTagContainer JumpTags;
+	JumpTags.AddTag(TPSGameplayTags::Action_Jump);
+	AbilitySystemComp->CancelAbilities();
 }
