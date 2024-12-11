@@ -36,6 +36,7 @@ private:
 	void Look(const FInputActionValue& InputActionValue);
 	void Shot(const FInputActionValue& InputActionValue);
 	void Interaction(const FInputActionValue& InputActionValue);
+	virtual void Jump() override;
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UTPSSpringArmComponent> SpringArmComp;

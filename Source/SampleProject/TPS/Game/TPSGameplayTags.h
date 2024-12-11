@@ -7,6 +7,9 @@ namespace TPSGameplayTags
 {
 	SAMPLEPROJECT_API FGameplayTag FindTagByString(const FString& TagString, bool bMatchPartialString = false);
 
+	/// Action Tags
+	SAMPLEPROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Action_Attack);
+	SAMPLEPROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Action_Jump);
 	
 	/// Input Tags
 	SAMPLEPROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Move);

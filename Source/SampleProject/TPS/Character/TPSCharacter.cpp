@@ -5,6 +5,8 @@
 
 #include "Components/TPSAttributeComponent.h"
 #include "Components/WidgetComponent.h"
+#include "Game/TPSGameplayAbility.h"
+#include "Game/AbilitySystem/TPSAbilitySystemComponent.h"
 #include "Game/Action/TPSActionComponent.h"
 #include "Game/Action/TPSSharedGameplayTags.h"
 #include "UI/TPSFloatingHPBar.h"
@@ -30,7 +32,7 @@ ATPSCharacter::ATPSCharacter()
 	}
 
 	ActionComp = CreateDefaultSubobject<UTPSActionComponent>(TEXT("Action Comp"));
-	
+	AbilitySystemComp = CreateDefaultSubobject<UTPSAbilitySystemComponent>(TEXT("AbilitySystem Comp"));
 }
 
 // Called when the game starts or when spawned
@@ -82,6 +84,25 @@ UTPSAttributeComponent* ATPSCharacter::GetAttributeComp()
 UAbilitySystemComponent* ATPSCharacter::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComp;
+}
+
+void ATPSCharacter::AddAbilities()
+{
+	if (AbilitySystemComp == nullptr)
+	{
+		return;
+	}
+
+	for (TSubclassOf<UTPSGameplayAbility>& Ability : CharacterAbilities)
+	{
+		 AbilitySystemComp->GiveAbility(FGameplayAbilitySpec(Ability,GetAbilityLevel(),static_cast<int32>(1),this));
+	}
+}
+
+int32 ATPSCharacter::GetAbilityLevel()
+{
+	// 현재 level은 관계없이 작업 중 추후 필요시 구현 필요.
+	return 1;
 }
 
 void ATPSCharacter::OnHealthChanged(AActor* InstigatorActor, UTPSAttributeComponent* OwningComp, float NewHealth,

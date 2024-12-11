@@ -6,6 +6,8 @@
 #include "Components/TPSInteractionComponent.h"
 #include "Components/TPSCameraComponent.h"
 #include "Components/TPSSpringArmComponent.h"
+#include "Game/TPSGameplayTags.h"
+#include "Game/AbilitySystem/TPSAbilitySystemComponent.h"
 
 // Sets default values
 ATPSPlayer::ATPSPlayer()
@@ -30,6 +32,7 @@ void ATPSPlayer::BeginPlay()
 
 	SpringArmComp = FindComponentByClass<UTPSSpringArmComponent>();
 	CameraComp = FindComponentByClass<UTPSCameraComponent>();
+	AddAbilities();
 }
 
 void ATPSPlayer::OnHealthChanged(AActor* InstigatorActor, UTPSAttributeComponent* OwningComp, float NewHealth,
@@ -71,7 +74,7 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATPSPlayer::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATPSPlayer::Look);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ATPSPlayer::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 		EnhancedInputComponent->BindAction(ShotAction, ETriggerEvent::Started, this, &ATPSPlayer::Shot);
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ATPSPlayer::Interaction);
@@ -113,4 +116,10 @@ void ATPSPlayer::Shot(const FInputActionValue& InputActionValue)
 void ATPSPlayer::Interaction(const FInputActionValue& InputActionValue)
 {
 	InteractionComp->Interaction();
+}
+/// Test Code
+void ATPSPlayer::Jump()
+{
+	FGameplayTagContainer JumpTags;
+	JumpTags.AddTag(TPSGameplayTags::Action_Jump);
 }

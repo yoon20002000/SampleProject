@@ -8,6 +8,7 @@
 #include "AbilitySystemInterface.h"
 #include "TPSCharacter.generated.h"
 
+class UTPSGameplayAbility;
 class UTPSAttributeComponent;
 class UTPSFloatingHPBar;
 class UWidgetComponent;
@@ -16,7 +17,7 @@ class UInputAction;
 class UTPSCameraComponent;
 class UTPSSpringArmComponent;
 class UTPSActionComponent;
-
+class UTPSAbilitySystemComponent;
 UCLASS()
 class SAMPLEPROJECT_API ATPSCharacter : public ACharacter, public IAbilitySystemInterface
 {
@@ -34,6 +35,9 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	
 protected:
+
+	void AddAbilities();
+	int32 GetAbilityLevel();
 	UFUNCTION()
 	virtual void OnHealthChanged(AActor* InstigatorActor, UTPSAttributeComponent* OwningComp, float NewHealth, float Delta);\
 
@@ -53,5 +57,8 @@ protected:
 	FVector2D HPBarWidgetSize = FVector2D(150,50);
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Abilities")
-	TObjectPtr<UAbilitySystemComponent> AbilitySystemComp;
+	TObjectPtr<UTPSAbilitySystemComponent> AbilitySystemComp;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(allowPrivateAccess=true), Category = "Abilities")
+	TArray<TSubclassOf<UTPSGameplayAbility>> CharacterAbilities;
 };
