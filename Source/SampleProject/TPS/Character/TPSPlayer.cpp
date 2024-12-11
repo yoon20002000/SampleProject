@@ -36,7 +36,7 @@ void ATPSPlayer::BeginPlay()
 }
 
 void ATPSPlayer::OnHealthChanged(AActor* InstigatorActor, UTPSAttributeComponent* OwningComp, float NewHealth,
-	float Delta)
+                                 float Delta)
 {
 	Super::OnHealthChanged(InstigatorActor, OwningComp, NewHealth, Delta);
 
@@ -53,7 +53,6 @@ void ATPSPlayer::OnHealthChanged(AActor* InstigatorActor, UTPSAttributeComponent
 void ATPSPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
 }
 
 // Called to bind functionality to input
@@ -74,8 +73,8 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATPSPlayer::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATPSPlayer::Look);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ATPSPlayer::Jump);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ATPSPlayer::JumpAbilities);
+		//EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 		EnhancedInputComponent->BindAction(ShotAction, ETriggerEvent::Started, this, &ATPSPlayer::Shot);
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ATPSPlayer::Interaction);
 	}
@@ -113,13 +112,16 @@ void ATPSPlayer::Shot(const FInputActionValue& InputActionValue)
 {
 	Attack();
 }
+
 void ATPSPlayer::Interaction(const FInputActionValue& InputActionValue)
 {
 	InteractionComp->Interaction();
 }
-/// Test Code
-void ATPSPlayer::Jump()
+
+void ATPSPlayer::JumpAbilities()
 {
 	FGameplayTagContainer JumpTags;
 	JumpTags.AddTag(TPSGameplayTags::Action_Jump);
+
+	AbilitySystemComp->TryActivateAbilitiesByTag(JumpTags);
 }
