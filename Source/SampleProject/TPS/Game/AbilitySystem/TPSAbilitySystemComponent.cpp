@@ -49,18 +49,20 @@ void UTPSAbilitySystemComponent::ProcessAbilityInput(float DeltaTime, bool bGame
 	if (HasMatchingGameplayTag(TAG_Gameplay_AbilityInputBlocked) == true)
 	{
 		ClearAbilityInput();
+		return;
 	}
+	
 	static TArray<FGameplayAbilitySpecHandle> AbilitiesToActivate;
 	AbilitiesToActivate.Reset();
 
-	for (const FGameplayAbilitySpecHandle& AbilitySpecHandle : InputHeldSpecHandles)
+	for (const FGameplayAbilitySpecHandle& SpecHandle : InputHeldSpecHandles)
 	{
-		if (const FGameplayAbilitySpec* AbilitySpec = FindAbilitySpecFromHandle(AbilitySpecHandle))
+		if (const FGameplayAbilitySpec* AbilitySpec = FindAbilitySpecFromHandle(SpecHandle))
 		{
-			if (AbilitySpec->Ability != nullptr && AbilitySpec->IsActive() == false)
+			if (AbilitySpec->Ability != nullptr &&  AbilitySpec->IsActive() == false)
 			{
 				const UTPSGameplayAbility* TPSAbilityCDO = Cast<UTPSGameplayAbility>(AbilitySpec->Ability);
-				if (TPSAbilityCDO !=nullptr && TPSAbilityCDO->GetActivationPolicy() == ETPSAbilityActivationPolicy::WhileInputActive)
+				if (TPSAbilityCDO != nullptr && TPSAbilityCDO->GetActivationPolicy() == ETPSAbilityActivationPolicy::WhileInputActive)
 				{
 					AbilitiesToActivate.AddUnique(AbilitySpec->Handle);
 				}
@@ -68,11 +70,11 @@ void UTPSAbilitySystemComponent::ProcessAbilityInput(float DeltaTime, bool bGame
 		}
 	}
 
-	for (const FGameplayAbilitySpecHandle& AbilitySpecHandle : InputPressedSpecHandles)
+	for (const FGameplayAbilitySpecHandle& SpecHandle : InputPressedSpecHandles)
 	{
-		if (FGameplayAbilitySpec* AbilitySpec = FindAbilitySpecFromHandle(AbilitySpecHandle))
+		if (FGameplayAbilitySpec* AbilitySpec = FindAbilitySpecFromHandle(SpecHandle))
 		{
-			if (AbilitySpec->Ability != nullptr)
+			if (AbilitySpec->Ability != nullptr )
 			{
 				AbilitySpec->InputPressed = true;
 				if (AbilitySpec->IsActive() == true)
@@ -93,9 +95,14 @@ void UTPSAbilitySystemComponent::ProcessAbilityInput(float DeltaTime, bool bGame
 
 	for (const FGameplayAbilitySpecHandle& AbilitySpecHandle : AbilitiesToActivate)
 	{
-		if (FGameplayAbilitySpec* AbilitySpec = FindAbilitySpecFromHandle(AbilitySpecHandle))
+		TryActivateAbility(AbilitySpecHandle);
+	}
+
+	for (const FGameplayAbilitySpecHandle& SpecHandle : InputReleasedSpecHandles)
+	{
+		if (FGameplayAbilitySpec* AbilitySpec = FindAbilitySpecFromHandle(SpecHandle))
 		{
-			if (AbilitySpec->Ability == true)
+			if (AbilitySpec->Ability != nullptr)
 			{
 				AbilitySpec->InputPressed = false;
 				if (AbilitySpec->IsActive() == true)

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Game/AbilitySystem/TPSAbilitySystemComponent.h"
 #include "GameFramework/PlayerState.h"
 #include "TPSPlayerState.generated.h"
 
@@ -26,6 +27,7 @@ public:
 	void AddKillCount();
 	void ClearKillCount();
 	void UpdateKillCount(uint32 InKillCount);
+
 public:
 	FOnKillCountChanged OnKillCountChanged;
 protected:

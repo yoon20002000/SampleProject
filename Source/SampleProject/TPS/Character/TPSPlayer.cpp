@@ -8,6 +8,7 @@
 #include "Components/TPSSpringArmComponent.h"
 #include "Game/TPSGameplayTags.h"
 #include "Game/AbilitySystem/TPSAbilitySystemComponent.h"
+#include "System/TPSAbilitySet.h"
 #include "System/Input/TPSEnhancedInputComponent.h"
 
 // Sets default values
@@ -96,6 +97,19 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 		
 		TPSEIComp->BindAction(ShotAction, ETriggerEvent::Started, this, &ATPSPlayer::Shot);
 		TPSEIComp->BindAction(InteractAction, ETriggerEvent::Started, this, &ATPSPlayer::Interaction);
+	}
+}
+
+void ATPSPlayer::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	
+	for (auto AbilitySet : AbilitySets)
+	{
+		if (AbilitySet != nullptr)
+		{
+			AbilitySet->GiveToAbilitySystem(AbilitySystemComp, nullptr);
+		}
 	}
 }
 

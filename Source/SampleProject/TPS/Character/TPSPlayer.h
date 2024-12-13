@@ -7,6 +7,7 @@
 #include "TPSCharacter.h"
 #include "TPSPlayer.generated.h"
 
+class UTPSAbilitySet;
 struct FGameplayTag;
 class UTPSInputConfig;
 class UTPSActionComponent;
@@ -28,7 +29,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	virtual void PostInitializeComponents() override;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -68,7 +69,8 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="EI")
 	TObjectPtr<UTPSInputConfig> InputConfig;
-
+	UPROPERTY(EditAnywhere, Category="EI")
+	TArray<TObjectPtr<UTPSAbilitySet>> AbilitySets;
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess), Category = "Components")
 	TObjectPtr<UTPSInteractionComponent> InteractionComp;

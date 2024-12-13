@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "TPSPlayerState.h"
+#include "Game/AbilitySystem/TPSAbilitySystemComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "TPSPlayerController.generated.h"
 
@@ -21,6 +23,12 @@ public:
 	virtual void OnUnPossess() override;
 	virtual void SetGamePause(const bool bIsGamePause);
 	virtual void SetGameEnd();
+	
+	virtual void PostProcessInput(const float DeltaTime, const bool bGamePaused) override;
+
+	const ATPSPlayerState* GetTPSPlayerState() const;
+	UTPSAbilitySystemComponent* GetTPSAbilitySystemComponent() const;
+	
 protected:
 	virtual void OnRep_PlayerState() override;
 	

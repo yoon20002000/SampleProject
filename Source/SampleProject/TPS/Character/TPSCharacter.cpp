@@ -93,16 +93,15 @@ void ATPSCharacter::AddAbilities()
 		return;
 	}
 
-	for (TSubclassOf<UTPSGameplayAbility>& Ability : CharacterAbilities)
-	{
-		 AbilitySystemComp->GiveAbility(FGameplayAbilitySpec(Ability,GetAbilityLevel(),static_cast<int32>(1),this));
-	}
-}
-
-int32 ATPSCharacter::GetAbilityLevel()
-{
-	// 현재 level은 관계없이 작업 중 추후 필요시 구현 필요.
-	return 1;
+	// for (TSubclassOf<UTPSGameplayAbility>& Ability : CharacterAbilities)
+	// {
+	// 	UTPSGameplayAbility* AbilityCDO = Ability->GetDefaultObject<UTPSGameplayAbility>();
+	// 	FGameplayAbilitySpec AbilitySpec(AbilityCDO, 1);
+	// 	AbilitySpec.SourceObject = SourceObject;
+	// 	AbilitySpec.GetDynamicSpecSourceTags().AddTag(Ability->)
+	// 	
+	// 	AbilitySystemComp->GiveAbility(FGameplayAbilitySpec(Ability,GetAbilityLevel(),,this));
+	// }
 }
 
 void ATPSCharacter::OnHealthChanged(AActor* InstigatorActor, UTPSAttributeComponent* OwningComp, float NewHealth,

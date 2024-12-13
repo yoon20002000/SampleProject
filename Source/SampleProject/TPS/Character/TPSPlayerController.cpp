@@ -3,9 +3,13 @@
 
 #include "TPSPlayerController.h"
 
+#include "TPSCharacter.h"
+#include "TPSPlayer.h"
+#include "TPSPlayerState.h"
 #include "TPSSystemManager.h"
 #include "Game/TPSCommonLocalPlayer.h"
 #include "Game/TPSGameStateManager.h"
+#include "Game/AbilitySystem/TPSAbilitySystemComponent.h"
 
 
 void ATPSPlayerController::ReceivedPlayer()
@@ -73,6 +77,32 @@ void ATPSPlayerController::SetGameEnd()
 {
 	DisableInput(this);
 	UTPSSystemManager::Get()->SetGameState(EGameplayState::GameResult);
+}
+
+void ATPSPlayerController::PostProcessInput(const float DeltaTime, const bool bGamePaused)
+{
+	if (UTPSAbilitySystemComponent* TPSASComp = GetTPSAbilitySystemComponent())
+	{
+		TPSASComp->ProcessAbilityInput(DeltaTime,bGamePaused);
+	}
+	
+	Super::PostProcessInput(DeltaTime, bGamePaused);
+}
+
+const ATPSPlayerState* ATPSPlayerController::GetTPSPlayerState() const
+{
+	return CastChecked<ATPSPlayerState>(PlayerState, ECastCheckedType::NullAllowed);
+}
+
+UTPSAbilitySystemComponent* ATPSPlayerController::GetTPSAbilitySystemComponent() const
+{
+	ATPSPlayer* TPSPlayer = Cast<ATPSPlayer>(GetPawn());
+	if (TPSPlayer == nullptr)
+	{
+		return nullptr;	
+	}
+
+	return Cast<UTPSAbilitySystemComponent>(TPSPlayer->GetAbilitySystemComponent());
 }
 
 void ATPSPlayerController::OnRep_PlayerState()
