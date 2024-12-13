@@ -7,6 +7,8 @@
 #include "TPSCharacter.h"
 #include "TPSPlayer.generated.h"
 
+struct FGameplayTag;
+class UTPSInputConfig;
 class UTPSActionComponent;
 class UTPSInteractionComponent;
 class UInputMappingContext;
@@ -30,7 +32,12 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	virtual void OnHealthChanged(AActor* InstigatorActor, UTPSAttributeComponent* OwningComp, float NewHealth, float Delta) override;
+	virtual void OnHealthChanged(AActor* InstigatorActor, UTPSAttributeComponent* OwningComp, float NewHealth,
+	                             float Delta) override;
+
+	void AbilityInputTagPressed(FGameplayTag InputTag);
+	void AbilityInputTagReleased(FGameplayTag InputTag);
+
 private:
 	void Move(const FInputActionValue& InputActionValue);
 	void Look(const FInputActionValue& InputActionValue);
@@ -38,6 +45,7 @@ private:
 	void Interaction(const FInputActionValue& InputActionValue);
 	void JumpAbilities();
 	void StopJumpAbilities();
+
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UTPSSpringArmComponent> SpringArmComp;
@@ -57,6 +65,10 @@ public:
 	TObjectPtr<UInputAction> ShotAction;
 	UPROPERTY(EditAnywhere, Category="Input", meta=(AllowPrivateAccess=true))
 	TObjectPtr<UInputAction> InteractAction;
+
+	UPROPERTY(EditAnywhere, Category="EI")
+	TObjectPtr<UTPSInputConfig> InputConfig;
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess), Category = "Components")
 	TObjectPtr<UTPSInteractionComponent> InteractionComp;

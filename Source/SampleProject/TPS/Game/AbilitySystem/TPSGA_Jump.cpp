@@ -6,7 +6,7 @@
 #include "Character/TPSCharacter.h"
 #include "GameFramework/Character.h"
 
-UTPSGA_Jump::UTPSGA_Jump()
+UTPSGA_Jump::UTPSGA_Jump(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 	FGameplayTagContainer ActivateTags;

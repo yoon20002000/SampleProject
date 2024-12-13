@@ -8,6 +8,7 @@
 #include "Components/TPSSpringArmComponent.h"
 #include "Game/TPSGameplayTags.h"
 #include "Game/AbilitySystem/TPSAbilitySystemComponent.h"
+#include "System/Input/TPSEnhancedInputComponent.h"
 
 // Sets default values
 ATPSPlayer::ATPSPlayer()
@@ -49,6 +50,21 @@ void ATPSPlayer::OnHealthChanged(AActor* InstigatorActor, UTPSAttributeComponent
 	}
 }
 
+void ATPSPlayer::AbilityInputTagPressed(FGameplayTag InputTag)
+{
+	if (AbilitySystemComp == nullptr)
+	{
+		return;
+	}
+
+	AbilitySystemComp->AbilityInputTagPressed(InputTag);
+}
+
+void ATPSPlayer::AbilityInputTagReleased(FGameplayTag InputTag)
+{
+	AbilitySystemComp->AbilityInputTagReleased(InputTag);
+}
+
 // Called every frame
 void ATPSPlayer::Tick(float DeltaTime)
 {
@@ -68,15 +84,18 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 			Subsystem->AddMappingContext(InputMappingContext, 0);
 		}
 	}
-
-	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
+	UTPSEnhancedInputComponent* TPSEIComp = Cast<UTPSEnhancedInputComponent>(PlayerInputComponent);
+	if (TPSEIComp != nullptr)
 	{
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATPSPlayer::Move);
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATPSPlayer::Look);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ATPSPlayer::JumpAbilities);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ATPSPlayer::StopJumpAbilities);
-		EnhancedInputComponent->BindAction(ShotAction, ETriggerEvent::Started, this, &ATPSPlayer::Shot);
-		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ATPSPlayer::Interaction);
+		TPSEIComp->BindNativeAction(InputConfig, TPSGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this,
+		                            &ATPSPlayer::Move);
+		TPSEIComp->BindNativeAction(InputConfig, TPSGameplayTags::InputTag_Look_Mouse, ETriggerEvent::Triggered, this,
+		                            &ATPSPlayer::Look);
+		TArray<uint32> BindHandles;
+		TPSEIComp->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased,BindHandles);
+		
+		TPSEIComp->BindAction(ShotAction, ETriggerEvent::Started, this, &ATPSPlayer::Shot);
+		TPSEIComp->BindAction(InteractAction, ETriggerEvent::Started, this, &ATPSPlayer::Interaction);
 	}
 }
 
