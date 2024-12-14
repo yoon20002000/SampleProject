@@ -42,7 +42,6 @@ protected:
 private:
 	void Move(const FInputActionValue& InputActionValue);
 	void Look(const FInputActionValue& InputActionValue);
-	void Shot(const FInputActionValue& InputActionValue);
 	void Interaction(const FInputActionValue& InputActionValue);
 	void JumpAbilities();
 	void StopJumpAbilities();

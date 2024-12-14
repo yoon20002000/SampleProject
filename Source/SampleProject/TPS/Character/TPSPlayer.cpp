@@ -34,7 +34,6 @@ void ATPSPlayer::BeginPlay()
 
 	SpringArmComp = FindComponentByClass<UTPSSpringArmComponent>();
 	CameraComp = FindComponentByClass<UTPSCameraComponent>();
-	AddAbilities();
 }
 
 void ATPSPlayer::OnHealthChanged(AActor* InstigatorActor, UTPSAttributeComponent* OwningComp, float NewHealth,
@@ -95,7 +94,6 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 		TArray<uint32> BindHandles;
 		TPSEIComp->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased,BindHandles);
 		
-		TPSEIComp->BindAction(ShotAction, ETriggerEvent::Started, this, &ATPSPlayer::Shot);
 		TPSEIComp->BindAction(InteractAction, ETriggerEvent::Started, this, &ATPSPlayer::Interaction);
 	}
 }
@@ -139,11 +137,6 @@ void ATPSPlayer::Look(const FInputActionValue& InputActionValue)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
-}
-
-void ATPSPlayer::Shot(const FInputActionValue& InputActionValue)
-{
-	Attack();
 }
 
 void ATPSPlayer::Interaction(const FInputActionValue& InputActionValue)
