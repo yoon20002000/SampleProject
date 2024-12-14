@@ -86,24 +86,6 @@ UAbilitySystemComponent* ATPSCharacter::GetAbilitySystemComponent() const
 	return AbilitySystemComp;
 }
 
-void ATPSCharacter::AddAbilities()
-{
-	if (AbilitySystemComp == nullptr)
-	{
-		return;
-	}
-
-	// for (TSubclassOf<UTPSGameplayAbility>& Ability : CharacterAbilities)
-	// {
-	// 	UTPSGameplayAbility* AbilityCDO = Ability->GetDefaultObject<UTPSGameplayAbility>();
-	// 	FGameplayAbilitySpec AbilitySpec(AbilityCDO, 1);
-	// 	AbilitySpec.SourceObject = SourceObject;
-	// 	AbilitySpec.GetDynamicSpecSourceTags().AddTag(Ability->)
-	// 	
-	// 	AbilitySystemComp->GiveAbility(FGameplayAbilitySpec(Ability,GetAbilityLevel(),,this));
-	// }
-}
-
 void ATPSCharacter::OnHealthChanged(AActor* InstigatorActor, UTPSAttributeComponent* OwningComp, float NewHealth,
                                     float Delta)
 {

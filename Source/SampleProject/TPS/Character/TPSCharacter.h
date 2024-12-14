@@ -35,7 +35,6 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	
 protected:
-	void AddAbilities();
 	UFUNCTION()
 	virtual void OnHealthChanged(AActor* InstigatorActor, UTPSAttributeComponent* OwningComp, float NewHealth, float Delta);\
 
