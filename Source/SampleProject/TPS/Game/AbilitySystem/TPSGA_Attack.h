@@ -5,7 +5,16 @@
 #include "CoreMinimal.h"
 #include "Game/TPSGameplayAbility.h"
 #include "TPSGA_Attack.generated.h"
-
+UENUM(BlueprintType)
+enum class ETPSAbilityTargetingSource : uint8
+{
+	CameraTowardsFocus,
+	PawnForward,
+	PawnTowardsFocus,
+	WeaponForward,
+	WeaponTowardsFocus,
+	Custom
+};
 /**
  * 
  */
@@ -14,15 +23,15 @@ class SAMPLEPROJECT_API UTPSGA_Attack : public UTPSGameplayAbility
 {
 	GENERATED_BODY()
 public:
-	UTPSGA_Attack(const FObjectInitializer& ObjectInitializer);
+	UTPSGA_Attack(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
 	virtual bool CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags = nullptr, const FGameplayTagContainer* TargetTags = nullptr, FGameplayTagContainer* OptionalRelevantTags = nullptr) const override;
-	virtual void CancelAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateCancelAbility) override;
+	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 protected:
 	UFUNCTION()
 	void Attack(ACharacter* InstigatorCharacter);
-
+	void OnTargetDataReadyCallback(const FGameplayAbilityTargetDataHandle& GameplayAbilityTargetDataHandle, FGameplayTag GameplayTag);
 protected:
 	UPROPERTY(EditAnywhere, Category = "Targeting")
 	float SweepRadius;
@@ -44,4 +53,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Attack")
 	TObjectPtr<USoundBase> ShootingSound;
+
+private:
+	FDelegateHandle OnTargetDataReadyCallbackDelegateHandle;
 };

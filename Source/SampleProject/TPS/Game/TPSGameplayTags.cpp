@@ -51,4 +51,6 @@ namespace TPSGameplayTags
 		}
 		return Tag;
 	}
+
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Event_Movement_WeaponFire, "Event.Movement.WeaponFire", "Event Weapon fire");
 }
