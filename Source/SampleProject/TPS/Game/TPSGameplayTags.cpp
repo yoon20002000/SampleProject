@@ -4,6 +4,8 @@
 
 namespace TPSGameplayTags
 {
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Type_Action_WeaponFire, "Ability.Type.Action.WeaponFire", "Ability Weapon fire");
+	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Action_Attack,"Action.Attack", "Character Attack Action");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Action_Jump,"Action.Jump", "Character Jump Action");
 	

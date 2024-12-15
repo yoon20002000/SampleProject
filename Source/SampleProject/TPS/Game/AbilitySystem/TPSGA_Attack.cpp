@@ -48,7 +48,6 @@ UTPSGA_Attack::UTPSGA_Attack(const FObjectInitializer& ObjectInitializer): Super
 void UTPSGA_Attack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 	const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
-
 	UAbilitySystemComponent* AC = CurrentActorInfo->AbilitySystemComponent.Get();
 	check(AC);
 
@@ -75,9 +74,18 @@ void UTPSGA_Attack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 	}
 
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-
-	// 임시 End Montage 끝난 뒤 혹은 총 쏘는 간격 있으면 적용 필요
-	EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
+	FTimerHandle TimerHandle;
+	FTimerDelegate TimerDelegate;
+	
+	TimerDelegate.BindLambda([this, Handle, ActorInfo, ActivationInfo]() 
+	{
+		// 임시 End Montage 끝난 뒤 혹은 총 쏘는 간격 있으면 적용 필요
+		EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
+	});
+	
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle,TimerDelegate,3,false);
+	
+	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, true);
 }
 
 bool UTPSGA_Attack::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
