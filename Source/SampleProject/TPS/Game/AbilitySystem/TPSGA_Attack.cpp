@@ -43,8 +43,35 @@ UTPSGA_Attack::UTPSGA_Attack(const FObjectInitializer& ObjectInitializer): Super
 	SourceBlockedTags.AddTag(TAG_WeaponFireBlocked);
 }
 
+AController* UTPSGA_Attack::GetControllerFromActorInfo() const
+{
+	if (CurrentActorInfo != nullptr)
+	{
+		if (AController* PC = CurrentActorInfo->PlayerController.Get())
+		{
+			return PC;
+		}
+
+		AActor* Actor = CurrentActorInfo->OwnerActor.Get();
+		while (Actor != nullptr)
+		{
+			if (AController* C = Cast<AController>(Actor))
+			{
+				return C;
+			}
+
+			if (APawn* P = Cast<APawn>(Actor))
+			{
+				return P->GetController();
+			}
+			Actor = Actor->GetOwner();
+		}
+	}
+	return nullptr;
+}
+
 void UTPSGA_Attack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
-	const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
+                                    const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	UAbilitySystemComponent* AC = CurrentActorInfo->AbilitySystemComponent.Get();
 	check(AC);
@@ -52,7 +79,9 @@ void UTPSGA_Attack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 	OnTargetDataReadyCallbackDelegateHandle = AC->AbilityTargetDataSetDelegate(CurrentSpecHandle, CurrentActivationInfo.GetActivationPredictionKey()).AddUObject(this, &ThisClass::OnTargetDataReadyCallback);
 	
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-	
+
+	// Montage Wait 추가 필요
+	EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
 }
 
 bool UTPSGA_Attack::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
@@ -226,4 +255,73 @@ ECollisionChannel UTPSGA_Attack::DetermineTraceChannel(FCollisionQueryParams& Tr
 void UTPSGA_Attack::OnTargetDataReadyCallback(const FGameplayAbilityTargetDataHandle& GameplayAbilityTargetDataHandle,
 	FGameplayTag GameplayTag)
 {
+	UAbilitySystemComponent* ASC = CurrentActorInfo->AbilitySystemComponent.Get();
+	check(ASC);
+
+	if (const FGameplayAbilitySpec* AbilitySpec = ASC->FindAbilitySpecFromHandle(CurrentSpecHandle))
+	{
+		FScopedPredictionWindow ScopedPrediction(ASC);
+
+		FGameplayAbilityTargetDataHandle LocalTargetDataHandle(MoveTemp(const_cast<FGameplayAbilityTargetDataHandle&>(GameplayAbilityTargetDataHandle)));
+
+		const bool bShouldNotifyServer = CurrentActorInfo->IsLocallyControlled() == true && CurrentActorInfo->IsNetAuthority() == false;
+		if (bShouldNotifyServer == true)
+		{
+			ASC->CallServerSetReplicatedTargetData(CurrentSpecHandle,
+			                                       CurrentActivationInfo.GetActivationPredictionKey(),
+			                                       LocalTargetDataHandle, GameplayTag, ASC->ScopedPredictionKey);
+		}
+
+		const bool bIsTargetDataValid = true;
+		bool bProjectileWeapon = false;
+
+#if WITH_SERVER_CODE
+		if (bProjectileWeapon == false)
+		{
+			if (AController* Controller = GetControllerFromActorInfo())
+			{
+				if (Controller->GetLocalRole() == ROLE_Authority)
+				{
+					// 무기 추가 시 무기 관련 코드 해제 필요
+					// if (UTPSWeaponStateComponent* WeaponStateComponent = Controller->FindComponentByClass<UTPSWeaponStateComponent>())
+					// {
+					// 	TArray<uint8> HitReplaces;
+					// 	uint8 IndexLimit = 255;
+					// 	for (uint8 Index = 0; Index < LocalTargetDataHandle.Num() && Index < IndexLimit; ++Index )
+					// 	{
+					// 		if (FGameplayAbilityTargetData_SingleTargetHit* SingleTargetHit = static_cast<FGameplayAbilityTargetData_SingleTargetHit*>(LocalTargetDataHandle.Get(Index)))
+					// 		{
+					// 			if (SingleTargetHit->bHitReplaced == true)
+					// 			{
+					// 				HitReplaces.Add(Index);
+					// 			}
+					// 		}
+					// 	}
+					// 	WeaponStateComponent->ClientConfirmTargetData(LocalTargetDataHandle.UniqueId, bIsTargetDataValid, HitReplaces);
+					// }
+				}
+			}
+		}
+#endif
+		if (bIsTargetDataValid == true && CommitAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo) == true)
+		{
+			// 무기 추가 시 무기 관련 코드 해제 필요
+			// UTPSRangedWeaponInstance* WeaponData = GetWeapontInstance();
+			// check(WeaponData);
+			// WeaponData->AddSpread();
+
+			OnRangedWeaponTargetDataReady(LocalTargetDataHandle);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Weapon ability %s failed to commit (bIsTargetDataValid=%d)"), *GetPathName(), bIsTargetDataValid ? 1 : 0);
+			K2_EndAbility();
+		}
+	}
+	ASC->ConsumeClientReplicatedTargetData(CurrentSpecHandle, CurrentActivationInfo.GetActivationPredictionKey());
+}
+
+void UTPSGA_Attack::OnRangedWeaponTargetDataReady_Implementation(const FGameplayAbilityTargetDataHandle& TargetData)
+{
+	GEngine->AddOnScreenDebugMessage(1,1,FColor::Blue,"Test OnRangedWeaponTargetDataReady");
 }
