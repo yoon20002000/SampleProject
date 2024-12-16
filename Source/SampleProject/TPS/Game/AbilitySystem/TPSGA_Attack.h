@@ -28,32 +28,44 @@ public:
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
 	virtual bool CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags = nullptr, const FGameplayTagContainer* TargetTags = nullptr, FGameplayTagContainer* OptionalRelevantTags = nullptr) const override;
 	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
+
+
 protected:
-	UFUNCTION()
-	void Attack(ACharacter* InstigatorCharacter);
+	struct FRangedWeaponFiringInput
+	{
+		FVector StartTrace;
+		FVector EndAim;
+		FVector AimDir;
+		// Weapon Data 추가 시
+		// UTPSRangedWeaponInstance*
+		
+		bool bCanPlayBulletFX;
+
+		FRangedWeaponFiringInput() :
+			StartTrace(ForceInitToZero),
+			EndAim(ForceInitToZero),
+			AimDir(ForceInitToZero),
+			bCanPlayBulletFX(false)
+		{
+			
+		}
+	};
+
+protected:
+	static int32 FindFirstPawnHitResult(const TArray<FHitResult>& HitResults);
+
+	FHitResult WeaponTrace(const FVector& TraceStart, const FVector& TraceEnd, float SweepRadius, bool bIsSimulated,
+	                       OUT TArray<FHitResult>& OutHitResults) const;
+
+	FHitResult SingleBulletTrace(const FVector& TraceStart, const FVector& TraceEnd, float SweepRadius,
+	                             bool bIsSimulated, OUT TArray<FHitResult>& OutHitResults) const;
+
+	void TraceBulletsInCartridge(const FRangedWeaponFiringInput& InputData, OUT TArray<FHitResult>& OutHitResults);
+
+	virtual void AddAdditionalTraceIgnoreActors(FCollisionQueryParams& TraceParams) const;
+	virtual ECollisionChannel DetermineTraceChannel(FCollisionQueryParams& TraceParams, bool bIsSimulated) const;
 	void OnTargetDataReadyCallback(const FGameplayAbilityTargetDataHandle& GameplayAbilityTargetDataHandle, FGameplayTag GameplayTag);
-protected:
-	UPROPERTY(EditAnywhere, Category = "Targeting")
-	float SweepRadius;
-
-	UPROPERTY(EditAnywhere, Category = "Targeting")
-	float SweepDistanceFallback;
-
-	UPROPERTY(EditAnywhere, Category = "Attack")
-	TSubclassOf<AActor> ProjectileClass;
-
-	UPROPERTY(VisibleAnywhere, Category = "Effects")
-	FName GunFireSocketName;
 	
-	UPROPERTY(EditAnywhere, Category = "Attack")
-	TObjectPtr<UAnimMontage> AttackAnim;
-
-	UPROPERTY(EditAnywhere, Category = "Attack")
-	TObjectPtr<UParticleSystem> ShootingEffect;
-
-	UPROPERTY(EditAnywhere, Category = "Attack")
-	TObjectPtr<USoundBase> ShootingSound;
-
 private:
 	FDelegateHandle OnTargetDataReadyCallbackDelegateHandle;
 };

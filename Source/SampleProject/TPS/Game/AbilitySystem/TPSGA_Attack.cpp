@@ -8,6 +8,7 @@
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 #include "System/TPSActorPoolingSubsystem.h"
+#include "System/TPSCollisionChannels.h"
 
 UE_DEFINE_GAMEPLAY_TAG_STATIC(TAG_WeaponFireBlocked, "Ability.Weapon.NoFiring");
 
@@ -37,10 +38,7 @@ FVector VRandConeNormalDistribution(const FVector& Dir, const float ConeHalfAngl
 	}
 }
 
-UTPSGA_Attack::UTPSGA_Attack(const FObjectInitializer& ObjectInitializer): Super(ObjectInitializer),
-	SweepRadius(20.0f),
-	SweepDistanceFallback(5000),
-	GunFireSocketName(TEXT("Gun_LOS"))
+UTPSGA_Attack::UTPSGA_Attack(const FObjectInitializer& ObjectInitializer): Super(ObjectInitializer)
 {
 	SourceBlockedTags.AddTag(TAG_WeaponFireBlocked);
 }
@@ -53,39 +51,8 @@ void UTPSGA_Attack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 
 	OnTargetDataReadyCallbackDelegateHandle = AC->AbilityTargetDataSetDelegate(CurrentSpecHandle, CurrentActivationInfo.GetActivationPredictionKey()).AddUObject(this, &ThisClass::OnTargetDataReadyCallback);
 	
-	ACharacter* Character = CastChecked<ACharacter>(CurrentActorInfo->AvatarActor);
-	Character->PlayAnimMontage(AttackAnim);
-	
-	UGameplayStatics::SpawnEmitterAttached(
-		ShootingEffect,
-		Character->GetMesh(),
-		GunFireSocketName,
-		FVector::Zero(),
-		FRotator::ZeroRotator,
-		EAttachLocation::SnapToTarget,
-		true,
-		EPSCPoolMethod::AutoRelease);
-	
-	UGameplayStatics::SpawnSoundAttached(ShootingSound, Character->GetMesh());
-	
-	if (Character->HasAuthority() == true)
-	{
-		Attack(Character);
-	}
-
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-	FTimerHandle TimerHandle;
-	FTimerDelegate TimerDelegate;
 	
-	TimerDelegate.BindLambda([this, Handle, ActorInfo, ActivationInfo]() 
-	{
-		// 임시 End Montage 끝난 뒤 혹은 총 쏘는 간격 있으면 적용 필요
-		EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
-	});
-	
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle,TimerDelegate,3,false);
-	
-	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, true);
 }
 
 bool UTPSGA_Attack::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
@@ -119,56 +86,141 @@ void UTPSGA_Attack::EndAbility(const FGameplayAbilitySpecHandle Handle, const FG
 	}
 }
 
-void UTPSGA_Attack::Attack(ACharacter* InstigatorCharacter)
+int32 UTPSGA_Attack::FindFirstPawnHitResult(const TArray<FHitResult>& HitResults)
 {
-	if (ensureAlways(ProjectileClass) == true)
+	for (int Index = 0; Index < HitResults.Num(); ++Index)
 	{
-		FVector FireLocation = InstigatorCharacter->GetMesh()->GetSocketLocation(GunFireSocketName);
-
-		FActorSpawnParameters SpawnParams;
-		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-		SpawnParams.Instigator = InstigatorCharacter;
-
-		FCollisionShape Shape;
-		Shape.SetSphere(SweepRadius);
-
-		FCollisionQueryParams Params;
-		Params.AddIgnoredActor(InstigatorCharacter);
-
-		FVector TraceDirection = InstigatorCharacter->GetControlRotation().Vector();
-
-		const FVector TraceStart = InstigatorCharacter->GetPawnViewLocation();
-		const FVector TraceEnd = TraceStart + (TraceDirection * SweepDistanceFallback);
-		FVector AdjustedTraceEnd = TraceEnd;
-
-		TArray<FHitResult> Hits;
-
-		if (GetWorld()->SweepMultiByChannel(Hits, TraceStart, TraceEnd, FQuat::Identity, ECC_GameTraceChannel1, Shape,
-											Params))
+		const FHitResult& HitResult = HitResults[Index];
+		if (HitResult.HitObjectHandle.DoesRepresentClass(APawn::StaticClass()) == true)
 		{
-			AdjustedTraceEnd = Hits[0].ImpactPoint;
+			return Index;
 		}
-#if !UE_BUILD_SHIPPING
-		const float DrawDuration = 2.0f;
-		//Start
-		DrawDebugPoint(GetWorld(), TraceStart, 8, FColor::Green, false, DrawDuration);
-		//End - possibly adjusted based on hit
-		DrawDebugPoint(GetWorld(), AdjustedTraceEnd, 8, FColor::Green, false, DrawDuration);
-		DrawDebugLine(GetWorld(), TraceStart, AdjustedTraceEnd, FColor::Green, false, DrawDuration);
-		//End - Original
-		DrawDebugPoint(GetWorld(), TraceEnd, 8, FColor::Red, false, DrawDuration);
-		DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red, false, DrawDuration);
-#endif
-		FRotator ProjRotation = (AdjustedTraceEnd - FireLocation).Rotation();
+		else
+		{
+			AActor* HitActor = HitResult.HitObjectHandle.FetchActor();
+			if (HitActor != nullptr && HitActor->GetAttachParentActor() != nullptr && Cast<APawn>(HitActor->GetAttachParentActor()) != nullptr)
+			{
+				return Index;
+			}
+		}
+	}
+	return INDEX_NONE;
+}
 
-		FTransform SpawnTM = FTransform(ProjRotation, FireLocation);
+FHitResult UTPSGA_Attack::WeaponTrace(const FVector& TraceStart, const FVector& TraceEnd, float SweepRadius,
+	bool bIsSimulated, TArray<FHitResult>& OutHitResults) const
+{
+	TArray<FHitResult> HitResults;
+	FCollisionQueryParams TraceParams(SCENE_QUERY_STAT(WeaponTrace), true, GetAvatarActorFromActorInfo());
+	TraceParams.bReturnPhysicalMaterial = true;
+	AddAdditionalTraceIgnoreActors(TraceParams);
+	TraceParams.bDebugQuery = true;
 
-		// 방향 고정 필요 어떤 방향이든 캐릭터가 보고있는 arrow를 기준으로 해야 됨.
+	const ECollisionChannel TraceChannel = DetermineTraceChannel(TraceParams, bIsSimulated);
 
-		UTPSActorPoolingSubsystem::AcquireFromPool(this,ProjectileClass,SpawnTM,SpawnParams);
+	if (SweepRadius > 0.0f)
+	{
+		GetWorld()->SweepMultiByChannel(HitResults, TraceStart, TraceEnd,FQuat::Identity, TraceChannel, FCollisionShape::MakeSphere(SweepRadius), TraceParams);
+	}
+	else
+	{
+		GetWorld()->LineTraceMultiByChannel(HitResults, TraceStart, TraceEnd, TraceChannel, TraceParams);
 	}
 
-	// end active 해줘야 되나?
+	FHitResult Hit(ForceInit);
+	if (HitResults.Num() > 0)
+	{
+		for (FHitResult& HitResult : HitResults)
+		{
+			auto Pred = [&HitResult](const FHitResult& Other)
+			{
+				return Other.HitObjectHandle == HitResult.HitObjectHandle;	
+			};
+
+			if (OutHitResults.ContainsByPredicate(Pred) == false)
+			{
+				OutHitResults.Add(HitResult);
+			}
+		}
+		Hit = OutHitResults.Last();
+	}
+	else
+	{
+		Hit.TraceStart = TraceStart;
+		Hit.TraceEnd = TraceEnd;
+	}
+	
+	return Hit;
+}
+
+FHitResult UTPSGA_Attack::SingleBulletTrace(const FVector& TraceStart, const FVector& TraceEnd, float SweepRadius,
+	bool bIsSimulated, TArray<FHitResult>& OutHitResults) const
+{
+	// Draw Debug
+	{
+		float DebugThickness = 1.0f;
+		DrawDebugLine(GetWorld(),TraceStart,TraceEnd,FColor::Red, false, 1,0,DebugThickness);
+	}
+
+	FHitResult Impact;
+
+	// Not use SweepRadius
+	if (FindFirstPawnHitResult(OutHitResults) == INDEX_NONE)
+	{
+		Impact = WeaponTrace(TraceStart, TraceEnd, 0.0f, bIsSimulated, OutHitResults);
+	}
+
+	if (FindFirstPawnHitResult(OutHitResults) == INDEX_NONE)
+	{
+		if (SweepRadius > 0.0f)
+		{
+			TArray<FHitResult> SweepHits;
+			Impact = WeaponTrace(TraceStart, TraceEnd, SweepRadius, bIsSimulated, SweepHits);
+
+			const int32 FirstPawnIndex = FindFirstPawnHitResult(OutHitResults);
+			if (SweepHits.IsValidIndex(FirstPawnIndex) == true)
+			{
+				bool bUseSweepHits = true;
+				for (int32 Index = 0; Index < FirstPawnIndex; ++Index)
+				{
+					const FHitResult& HitResult = SweepHits[Index];
+
+					auto Pred = [&HitResult](const FHitResult& Other)
+					{
+						return Other.HitObjectHandle == HitResult.HitObjectHandle;
+					};
+					if (HitResult.bBlockingHit == true && OutHitResults.ContainsByPredicate(Pred) == true)
+					{
+						bUseSweepHits = false;
+						break;
+					}
+				}
+				if (bUseSweepHits == true)
+				{
+					OutHitResults = SweepHits;
+				}
+			}
+		}
+	}
+	return Impact;
+}
+
+void UTPSGA_Attack::TraceBulletsInCartridge(const FRangedWeaponFiringInput& InputData, TArray<FHitResult>& OutHitResults)
+{
+}
+
+void UTPSGA_Attack::AddAdditionalTraceIgnoreActors(FCollisionQueryParams& TraceParams) const
+{
+	if (AActor* Avatar = GetAvatarActorFromActorInfo())
+	{
+		TArray<AActor*> AttachedActors;
+		Avatar->GetAttachedActors(AttachedActors);
+		TraceParams.AddIgnoredActors(AttachedActors);
+	}
+}
+ECollisionChannel UTPSGA_Attack::DetermineTraceChannel(FCollisionQueryParams& TraceParams, bool bIsSimulated) const
+{
+	return TPS_TraceChannel_Weapon;
 }
 
 void UTPSGA_Attack::OnTargetDataReadyCallback(const FGameplayAbilityTargetDataHandle& GameplayAbilityTargetDataHandle,
