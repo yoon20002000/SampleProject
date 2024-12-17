@@ -3,9 +3,6 @@
 
 #include "Actor/TPSBulletProjectile.h"
 
-#include "TPSHelper.h"
-#include "Components/TPSProjectileMovementComponent.h"
-
 
 void ATPSBulletProjectile::MoveDataToSparseClassDataStruct() const
 {

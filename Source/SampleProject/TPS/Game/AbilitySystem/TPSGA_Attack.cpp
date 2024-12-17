@@ -5,11 +5,8 @@
 
 #include "AbilitySystemComponent.h"
 #include "AIController.h"
-#include "MathUtil.h"
 #include "NativeGameplayTags.h"
 #include "GameFramework/Character.h"
-#include "Kismet/GameplayStatics.h"
-#include "System/TPSActorPoolingSubsystem.h"
 #include "System/TPSCollisionChannels.h"
 #include "System/TPSGATargetData_SingleTargetHit.h"
 
@@ -85,10 +82,23 @@ void UTPSGA_Attack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 	
 	StartRangedWeaponTargeting();
 
-	
+	AActor* OwnerActor = GetAvatarActorFromActorInfo();
+	if (ACharacter* OwnerPawn = Cast<ACharacter>(OwnerActor);PlayMontage != nullptr)
+	{
+		UAnimInstance* AnimInstance = OwnerPawn->GetMesh()->GetAnimInstance();
 
-	// montage end wait  
-	EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
+		AnimInstance->Montage_Play(PlayMontage);
+		FOnMontageEnded MontageEndDelegate;
+		MontageEndDelegate.BindLambda([this,Handle, ActorInfo, ActivationInfo](UAnimMontage* Montage, bool bInterrupted)
+		{
+			this->EndAbility(Handle, ActorInfo, ActivationInfo, true, false);			
+		});
+		AnimInstance->Montage_SetEndDelegate(MontageEndDelegate,PlayMontage);
+	}
+	else
+	{
+		EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
+	}
 }
 
 bool UTPSGA_Attack::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,

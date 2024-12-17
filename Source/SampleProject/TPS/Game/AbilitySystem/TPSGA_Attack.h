@@ -76,6 +76,10 @@ protected:
 	
 	UFUNCTION(BlueprintNativeEvent)
 	void OnRangedWeaponTargetDataReady(const FGameplayAbilityTargetDataHandle& TargetData);
+	
 private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(allowPrivateAccess=true))
+	TObjectPtr<UAnimMontage> PlayMontage;
+	
 	FDelegateHandle OnTargetDataReadyCallbackDelegateHandle;
 };
