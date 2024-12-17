@@ -24,8 +24,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 	FGameplayTag ParryTag;
 	
-	UPROPERTY(EditDefaultsOnly, Category = "Damage")
-	TSubclassOf<UTPSActionEffect> BleedingActionClass;
+	// UPROPERTY(EditDefaultsOnly, Category = "Damage")
+	// TSubclassOf<UTPSActionEffect> BleedingActionClass;
 };
 
 /**

@@ -2,10 +2,7 @@
 
 
 #include "TPSCharacterAnimInstance.h"
-
-#include "TPSHelper.h"
 #include "TPSPlayer.h"
-#include "Game/Action/TPSActionComponent.h"
 #include "Components/TPSAttributeComponent.h"
 
 void UTPSCharacterAnimInstance::NativeInitializeAnimation()
@@ -19,7 +16,6 @@ void UTPSCharacterAnimInstance::NativeBeginPlay()
 	
 	if (ATPSCharacter* Player = Cast<ATPSCharacter>(GetOwningActor()))
 	{
-		ActionComp = Player->GetComponentByClass<UTPSActionComponent>();
 		AttributeComp = Player->GetComponentByClass<UTPSAttributeComponent>();
 
 		UpdateIsAlive(AttributeComp);

@@ -22,8 +22,6 @@ public:
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess))
-	TObjectPtr<UTPSActionComponent> ActionComp;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess))
 	TObjectPtr<UTPSAttributeComponent> AttributeComp;
 
 	UPROPERTY(BlueprintReadOnly)

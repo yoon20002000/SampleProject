@@ -82,10 +82,13 @@ void UTPSGA_Attack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 	OnTargetDataReadyCallbackDelegateHandle = AC->AbilityTargetDataSetDelegate(CurrentSpecHandle, CurrentActivationInfo.GetActivationPredictionKey()).AddUObject(this, &ThisClass::OnTargetDataReadyCallback);
 	
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+	
+	StartRangedWeaponTargeting();
 
-	// Montage Wait 추가 필요
+	
+
+	// montage end wait  
 	EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
-	// bp 에 작업 돼 있는 내용 옮겨야 됨.
 }
 
 bool UTPSGA_Attack::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,

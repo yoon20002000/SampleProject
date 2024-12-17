@@ -5,8 +5,7 @@
 
 #include "TPSHelper.h"
 #include "Components/TPSProjectileMovementComponent.h"
-#include "Game/Action/TPSActionComponent.h"
-#include "Game/Action/TPSActionEffect.h"
+
 
 void ATPSBulletProjectile::MoveDataToSparseClassDataStruct() const
 {
@@ -22,7 +21,7 @@ void ATPSBulletProjectile::MoveDataToSparseClassDataStruct() const
 	if (FBulletProjectileSparseData* SD = GetBulletProjectileSparseData())
 	{
 		SD->DamageAmount = DamageAmount_DEPRECATED;
-		SD->BleedingActionClass = BleedingActionClass_DEPRECATED;
+		//SD->BleedingActionClass = BleedingActionClass_DEPRECATED;
 	}
 
 #endif
@@ -40,22 +39,22 @@ void ATPSBulletProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComp, A
 	if (OtherActor != nullptr && OtherActor != GetInstigator())
 	{
 		UE_LOG(LogTemp, Log, TEXT("Overlap Other Actor : %s"), *GetNameSafe(OtherActor));
-		UTPSActionComponent* AC = OtherActor->FindComponentByClass<UTPSActionComponent>();
-		if (AC != nullptr && AC->ActiveGameplayTags.HasTag(GetParryTag()))
-		{
-			MoveComp->Velocity = -MoveComp->Velocity;
-			SetInstigator(Cast<APawn>(OtherActor));
-			return;
-		}
-
-		if (TPSHelper::ApplyDirectionalDamage(GetInstigator(), OtherActor, GetDamageAmount(), SweepResult) == true)
-		{
-			Explode();
-			if (AC != nullptr && GetBleedingActionClass() && HasAuthority())
-			{
-				AC->AddAction(GetInstigator(), GetBleedingActionClass());
-			}
-		}
+		// UTPSActionComponent* AC = OtherActor->FindComponentByClass<UTPSActionComponent>();
+		// if (AC != nullptr && AC->ActiveGameplayTags.HasTag(GetParryTag()))
+		// {
+		// 	MoveComp->Velocity = -MoveComp->Velocity;
+		// 	SetInstigator(Cast<APawn>(OtherActor));
+		// 	return;
+		// }
+		//
+		// if (TPSHelper::ApplyDirectionalDamage(GetInstigator(), OtherActor, GetDamageAmount(), SweepResult) == true)
+		// {
+		// 	Explode();
+		// 	if (AC != nullptr && GetBleedingActionClass() && HasAuthority())
+		// 	{
+		// 		AC->AddAction(GetInstigator(), GetBleedingActionClass());
+		// 	}
+		// }
 	}
 }
 
@@ -65,10 +64,10 @@ void ATPSBulletProjectile::OnActorHit(UPrimitiveComponent* HitComp, AActor* Othe
 	Super::OnActorHit(HitComp, OtherActor, OtherComp, NormalImpulse, Hit);
 	UE_LOG(LogTemp, Log, TEXT("Hit!!!!!"));
 
-	if (UTPSActionComponent* AC = OtherActor->FindComponentByClass<UTPSActionComponent>();  GetBleedingActionClass() && HasAuthority())
-	{
-		AC->AddAction(GetInstigator(), GetBleedingActionClass());
-	}
+	// if (UTPSActionComponent* AC = OtherActor->FindComponentByClass<UTPSActionComponent>();  GetBleedingActionClass() && HasAuthority())
+	// {
+	// 	AC->AddAction(GetInstigator(), GetBleedingActionClass());
+	// }
 }
 
 void ATPSBulletProjectile::PostInitializeComponents()

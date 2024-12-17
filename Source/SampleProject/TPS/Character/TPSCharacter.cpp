@@ -5,10 +5,7 @@
 
 #include "Components/TPSAttributeComponent.h"
 #include "Components/WidgetComponent.h"
-#include "Game/TPSGameplayAbility.h"
 #include "Game/AbilitySystem/TPSAbilitySystemComponent.h"
-#include "Game/Action/TPSActionComponent.h"
-#include "Game/Action/TPSSharedGameplayTags.h"
 #include "UI/TPSFloatingHPBar.h"
 
 ATPSCharacter::ATPSCharacter()
@@ -30,8 +27,7 @@ ATPSCharacter::ATPSCharacter()
 		HPBarWidget->SetWidgetClass(UI_HPBAR.Class);
 		HPBarWidget->SetDrawSize(HPBarWidgetSize);
 	}
-
-	ActionComp = CreateDefaultSubobject<UTPSActionComponent>(TEXT("Action Comp"));
+	
 	AbilitySystemComp = CreateDefaultSubobject<UTPSAbilitySystemComponent>(TEXT("AbilitySystem Comp"));
 }
 
@@ -97,9 +93,4 @@ void ATPSCharacter::OnHealthChanged(AActor* InstigatorActor, UTPSAttributeCompon
 	{
 		SetLifeSpan(5.0f);
 	}
-}
-
-void ATPSCharacter::Attack()
-{
-	ActionComp->StartActionByName(this, TPSSharedGameplayTags::Action_Attack);
 }
