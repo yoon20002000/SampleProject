@@ -71,6 +71,9 @@ protected:
 	FTransform GetTargetingTransform(APawn* SourcePawn, ETPSAbilityTargetingSource Source) const;
 	void OnTargetDataReadyCallback(const FGameplayAbilityTargetDataHandle& GameplayAbilityTargetDataHandle, FGameplayTag GameplayTag);
 
+	UFUNCTION(BlueprintCallable)
+	void StartRangedWeaponTargeting();
+	
 	UFUNCTION(BlueprintNativeEvent)
 	void OnRangedWeaponTargetDataReady(const FGameplayAbilityTargetDataHandle& TargetData);
 private:

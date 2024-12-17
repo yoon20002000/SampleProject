@@ -5,11 +5,13 @@
 
 #include "AbilitySystemComponent.h"
 #include "AIController.h"
+#include "MathUtil.h"
 #include "NativeGameplayTags.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 #include "System/TPSActorPoolingSubsystem.h"
 #include "System/TPSCollisionChannels.h"
+#include "System/TPSGATargetData_SingleTargetHit.h"
 
 UE_DEFINE_GAMEPLAY_TAG_STATIC(TAG_WeaponFireBlocked, "Ability.Weapon.NoFiring");
 
@@ -238,7 +240,49 @@ FHitResult UTPSGA_Attack::SingleBulletTrace(const FVector& TraceStart, const FVe
 
 void UTPSGA_Attack::TraceBulletsInCartridge(const FRangedWeaponFiringInput& InputData, TArray<FHitResult>& OutHitResults)
 {
-	//
+	
+	const float BaseSpreadAngle = 2.5f;
+	const float SpreadAngleMultiplier = 0.902564f;
+	const float ActualSpreadAngle = BaseSpreadAngle * SpreadAngleMultiplier;
+
+	const float HalfSpreadAngleInRadians = FMath::DegreesToRadians(ActualSpreadAngle * 0.5f);
+
+	constexpr float SpreadExponent = 1.0f;
+	constexpr float MaxDamageRange = 25000.0f;
+	constexpr float BulletTraceSweepRaidus = 6.0f;
+	const FVector BulletDir = VRandConeNormalDistribution(InputData.AimDir, HalfSpreadAngleInRadians, SpreadExponent);
+
+	const FVector EndTrace = InputData.StartTrace + (BulletDir * MaxDamageRange);
+	FVector HitLocation = EndTrace;
+
+	TArray<FHitResult> AllImpacts;
+
+	FHitResult Impact = SingleBulletTrace(InputData.StartTrace, EndTrace, BulletTraceSweepRaidus, false, AllImpacts);
+
+	const AActor* HitActor = Impact.GetActor();
+
+	if (HitActor != nullptr)
+	{
+		DrawDebugPoint(GetWorld(), Impact.ImpactPoint, 3.0f, FColor::Red, false, 2);
+		
+		if (AllImpacts.Num() > 0)
+		{
+			OutHitResults.Append(AllImpacts);
+		}
+
+		HitLocation = Impact.ImpactPoint;
+	}
+	
+	if (OutHitResults.Num() == 0)
+	{
+		if (!Impact.bBlockingHit)
+		{
+			Impact.Location = EndTrace;
+			Impact.ImpactPoint = EndTrace;
+		}
+
+		OutHitResults.Add(Impact);
+	}
 }
 
 void UTPSGA_Attack::AddAdditionalTraceIgnoreActors(FCollisionQueryParams& TraceParams) const
@@ -266,6 +310,14 @@ void UTPSGA_Attack::PerformLocalTargeting(TArray<FHitResult>& OutHitResults)
 		InputData.bCanPlayBulletFX = AvatarPawn->GetNetMode() != NM_DedicatedServer;
 
 		const FTransform TargetTransform = GetTargetingTransform(AvatarPawn, ETPSAbilityTargetingSource::CameraTowardsFocus);
+		InputData.AimDir = TargetTransform.GetUnitAxis(EAxis::X);
+		InputData.StartTrace = TargetTransform.GetTranslation();
+
+		InputData.EndAim = InputData.StartTrace + InputData.AimDir * 10;
+		
+		DrawDebugLine(GetWorld(), InputData.StartTrace, InputData.StartTrace + (InputData.AimDir * 100.0f), FColor::Yellow, false, 1.f,0,2.0f);
+
+		TraceBulletsInCartridge(InputData, OutHitResults);
 	}
 }
 
@@ -336,7 +388,7 @@ FTransform UTPSGA_Attack::GetTargetingTransform(APawn* SourcePawn, ETPSAbilityTa
 			CamLocation = FocallLocation + (((WeaponLocation - FocallLocation) | AimDir) * AimDir);
 			FocallLocation = CamLocation + (AimDir * FocalDistance);
 		}
-		else if (AAIController* AIController = Cast<AAIController>(SourcePawn))
+		else if (AAIController* AIController = Cast<AAIController>(SourcePawnController))
 		{
 			CamLocation = SourcePawn->GetActorLocation() + FVector(0, 0, SourcePawn->BaseEyeHeight);
 		}
@@ -430,6 +482,49 @@ void UTPSGA_Attack::OnTargetDataReadyCallback(const FGameplayAbilityTargetDataHa
 		}
 	}
 	ASC->ConsumeClientReplicatedTargetData(CurrentSpecHandle, CurrentActivationInfo.GetActivationPredictionKey());
+}
+
+void UTPSGA_Attack::StartRangedWeaponTargeting()
+{
+	check(CurrentActorInfo);
+
+	AActor* AvatarActor = CurrentActorInfo->AvatarActor.Get();
+	check(AvatarActor);
+
+	UAbilitySystemComponent* AC = CurrentActorInfo->AbilitySystemComponent.Get();
+	check(AC);
+
+	AController* Controller = GetControllerFromActorInfo();
+	check(Controller);
+
+	TArray<FHitResult> FoundHits;
+	PerformLocalTargeting(FoundHits);
+	
+	FGameplayAbilityTargetDataHandle TargetDataHandle;
+	// 무기 추가시 수정 필요
+	TargetDataHandle.UniqueId = 0;
+
+	if (FoundHits.Num() > 0)
+	{
+		const int32 CartridgeID = FMath::Rand();
+
+		for (const FHitResult& FoundHit : FoundHits)
+		{
+			FTPSGameplayAbilityTargetData_SingleTargetHit* NewTargetData = new FTPSGameplayAbilityTargetData_SingleTargetHit();
+			NewTargetData->HitResult = FoundHit;
+			NewTargetData->CartridgeID = CartridgeID;
+			
+			TargetDataHandle.Add(NewTargetData);
+		}
+	}
+
+	const bool bProjectileWeapon = false;
+	if (bProjectileWeapon == false)
+	{
+		// WeaponStateComponent->AddUnconfirmedServerSideHitMarkers();
+	}
+
+	OnTargetDataReadyCallback(TargetDataHandle, FGameplayTag());
 }
 
 void UTPSGA_Attack::OnRangedWeaponTargetDataReady_Implementation(const FGameplayAbilityTargetDataHandle& TargetData)
