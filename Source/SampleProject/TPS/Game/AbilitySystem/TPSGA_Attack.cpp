@@ -4,6 +4,7 @@
 #include "Game/AbilitySystem/TPSGA_Attack.h"
 
 #include "AbilitySystemComponent.h"
+#include "AIController.h"
 #include "NativeGameplayTags.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
@@ -82,6 +83,7 @@ void UTPSGA_Attack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 
 	// Montage Wait 추가 필요
 	EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
+	// bp 에 작업 돼 있는 내용 옮겨야 됨.
 }
 
 bool UTPSGA_Attack::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
@@ -236,6 +238,7 @@ FHitResult UTPSGA_Attack::SingleBulletTrace(const FVector& TraceStart, const FVe
 
 void UTPSGA_Attack::TraceBulletsInCartridge(const FRangedWeaponFiringInput& InputData, TArray<FHitResult>& OutHitResults)
 {
+	//
 }
 
 void UTPSGA_Attack::AddAdditionalTraceIgnoreActors(FCollisionQueryParams& TraceParams) const
@@ -252,8 +255,116 @@ ECollisionChannel UTPSGA_Attack::DetermineTraceChannel(FCollisionQueryParams& Tr
 	return TPS_TraceChannel_Weapon;
 }
 
+void UTPSGA_Attack::PerformLocalTargeting(TArray<FHitResult>& OutHitResults)
+{
+	APawn* const AvatarPawn= Cast<APawn>(GetAvatarActorFromActorInfo());
+	check(AvatarPawn);
+
+	if (AvatarPawn->IsLocallyControlled() == true)
+	{
+		FRangedWeaponFiringInput InputData;
+		InputData.bCanPlayBulletFX = AvatarPawn->GetNetMode() != NM_DedicatedServer;
+
+		const FTransform TargetTransform = GetTargetingTransform(AvatarPawn, ETPSAbilityTargetingSource::CameraTowardsFocus);
+	}
+}
+
+FVector UTPSGA_Attack::GetWeaponTargetingSourceLocation() const
+{
+	APawn* const AvatarPawn = Cast<APawn>(GetAvatarActorFromActorInfo());
+	check(AvatarPawn);
+	FName SocketName = TEXT("Gun_LOS");
+
+	// Original Lyra Code
+	// const FVector SourceLocation = AvatarPawn->GetActorLocation();
+	// const FQuat SourceRotation = AvatarPawn->GetActorQuat();
+	//FVector TargetingSourceLocation = SourceLocation;
+
+	USkeletalMeshComponent* SkelMeshComp = AvatarPawn->GetComponentByClass<USkeletalMeshComponent>();
+	FVector TargetingSourceLocation = SkelMeshComp->GetSocketLocation(SocketName);
+	
+	return TargetingSourceLocation;
+}
+
+FTransform UTPSGA_Attack::GetTargetingTransform(APawn* SourcePawn, ETPSAbilityTargetingSource Source) const
+{
+	check(SourcePawn);
+	AController* SourcePawnController = SourcePawn->GetController();
+
+	check(Source != ETPSAbilityTargetingSource::Custom);
+
+	const FVector ActorLocation = SourcePawn->GetActorLocation();
+	FQuat AimQuat = SourcePawn->GetActorQuat();
+	FVector SourceLocation;
+
+	double FocalDistance = 1024.0f;
+	FVector FocallLocation;
+
+	FVector CamLocation;
+	FRotator CamRotation;
+	bool bFoundFocus = false;
+
+	 
+
+	if (SourcePawnController != nullptr &&
+											(
+												(Source == ETPSAbilityTargetingSource::CameraTowardsFocus) ||
+												(Source == ETPSAbilityTargetingSource::PawnTowardsFocus) ||
+												(Source == ETPSAbilityTargetingSource::WeaponTowardsFocus))
+											)
+	{
+		bFoundFocus = true;
+
+		APlayerController* PC = Cast<APlayerController>(SourcePawn->GetController());
+		if (PC != nullptr)
+		{
+			PC->GetPlayerViewPoint(CamLocation, CamRotation);	
+		}
+		else
+		{
+			SourceLocation = GetWeaponTargetingSourceLocation();
+			CamLocation = SourceLocation;
+			CamRotation = SourcePawnController->GetControlRotation();
+		}
+
+		FVector AimDir = CamRotation.Vector().GetSafeNormal();
+		FocallLocation = CamLocation + (AimDir * FocalDistance);
+
+		if (PC != nullptr)
+		{
+			const FVector WeaponLocation = GetWeaponTargetingSourceLocation();
+			CamLocation = FocallLocation + (((WeaponLocation - FocallLocation) | AimDir) * AimDir);
+			FocallLocation = CamLocation + (AimDir * FocalDistance);
+		}
+		else if (AAIController* AIController = Cast<AAIController>(SourcePawn))
+		{
+			CamLocation = SourcePawn->GetActorLocation() + FVector(0, 0, SourcePawn->BaseEyeHeight);
+		}
+
+		if (Source == ETPSAbilityTargetingSource::CameraTowardsFocus)
+		{
+			return FTransform(CamRotation, CamLocation);
+		}
+	}
+
+	if ((Source == ETPSAbilityTargetingSource::WeaponForward) || (Source == ETPSAbilityTargetingSource::WeaponTowardsFocus))
+	{
+		SourceLocation = GetWeaponTargetingSourceLocation();
+	}
+	else
+	{
+		SourceLocation = ActorLocation;
+	}
+
+	if (bFoundFocus == true && ((Source == ETPSAbilityTargetingSource::PawnTowardsFocus) ||(Source == ETPSAbilityTargetingSource::WeaponTowardsFocus)))
+	{
+		return FTransform((FocallLocation - SourceLocation).Rotation(), SourceLocation);
+	}
+	return FTransform(AimQuat, SourceLocation);
+}
+
 void UTPSGA_Attack::OnTargetDataReadyCallback(const FGameplayAbilityTargetDataHandle& GameplayAbilityTargetDataHandle,
-	FGameplayTag GameplayTag)
+                                              FGameplayTag GameplayTag)
 {
 	UAbilitySystemComponent* ASC = CurrentActorInfo->AbilitySystemComponent.Get();
 	check(ASC);

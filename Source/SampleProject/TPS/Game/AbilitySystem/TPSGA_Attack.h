@@ -32,7 +32,6 @@ public:
 	virtual bool CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags = nullptr, const FGameplayTagContainer* TargetTags = nullptr, FGameplayTagContainer* OptionalRelevantTags = nullptr) const override;
 	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 
-
 protected:
 	struct FRangedWeaponFiringInput
 	{
@@ -67,6 +66,9 @@ protected:
 
 	virtual void AddAdditionalTraceIgnoreActors(FCollisionQueryParams& TraceParams) const;
 	virtual ECollisionChannel DetermineTraceChannel(FCollisionQueryParams& TraceParams, bool bIsSimulated) const;
+	void PerformLocalTargeting(OUT TArray<FHitResult>& OutHitResults);
+	FVector GetWeaponTargetingSourceLocation() const;
+	FTransform GetTargetingTransform(APawn* SourcePawn, ETPSAbilityTargetingSource Source) const;
 	void OnTargetDataReadyCallback(const FGameplayAbilityTargetDataHandle& GameplayAbilityTargetDataHandle, FGameplayTag GameplayTag);
 
 	UFUNCTION(BlueprintNativeEvent)
