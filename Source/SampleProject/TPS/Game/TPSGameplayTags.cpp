@@ -56,3 +56,27 @@ namespace TPSGameplayTags
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Event_Movement_WeaponFire, "Event.Movement.WeaponFire", "Event Weapon fire");
 }
+
+namespace TPSGGameplayEffectTags
+{
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(GameplayEffect_DamageType_Normal,"GameplayEffect.DamageType.Normal", "Damage Type Normal");
+	
+	FGameplayTag FindTagByString(const FString& TagString, bool bMatchPartialString)
+	{
+		const UGameplayTagsManager& GTM = UGameplayTagsManager::Get();
+		FGameplayTag Tag = GTM.RequestGameplayTag(FName(*TagString));
+		if (Tag.IsValid() == false && bMatchPartialString == true)
+		{
+			FGameplayTagContainer AllTags;
+			GTM.RequestAllGameplayTags(AllTags, true);
+
+			for (const FGameplayTag& TestTag : AllTags)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Partial String Matched. Applied Tag : %s"), *TestTag.ToString());
+				Tag = TestTag;
+				break;
+			}
+		}
+		return Tag;
+	}
+}

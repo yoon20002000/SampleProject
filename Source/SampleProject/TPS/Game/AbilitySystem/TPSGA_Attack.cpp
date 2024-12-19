@@ -475,6 +475,23 @@ void UTPSGA_Attack::OnTargetDataReadyCallback(const FGameplayAbilityTargetDataHa
 					// 	}
 					// 	WeaponStateComponent->ClientConfirmTargetData(LocalTargetDataHandle.UniqueId, bIsTargetDataValid, HitReplaces);
 					// }
+
+					TArray<uint8> HitReplaces;
+					uint8 IndexLimit = 255;
+					for (uint8 Index = 0; Index < LocalTargetDataHandle.Num() && Index < IndexLimit; ++Index )
+					{
+						if (FGameplayAbilityTargetData_SingleTargetHit* SingleTargetHit = static_cast<FGameplayAbilityTargetData_SingleTargetHit*>(LocalTargetDataHandle.Get(Index)))
+						{
+							if (SingleTargetHit->bHitReplaced == true)
+							{
+								HitReplaces.Add(Index);
+								if (AActor* HitActor = SingleTargetHit->HitResult.GetActor())
+								{
+									UE_LOG(LogTemp, Log, TEXT("Hit !!! : %s"),*GetNameSafe(HitActor));	
+								}
+							}
+						}
+					}
 				}
 			}
 		}

@@ -42,3 +42,10 @@ namespace TPSGameplayTags
 	/// Event
 	SAMPLEPROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Event_Movement_WeaponFire);
 }
+
+namespace TPSGGameplayEffectTags
+{
+	SAMPLEPROJECT_API FGameplayTag FindTagByString(const FString& TagString, bool bMatchPartialString = false);
+	
+	SAMPLEPROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameplayEffect_DamageType_Normal);
+}
