@@ -5,6 +5,7 @@
 #include "AttributeSet.h"
 #include "TPSAttributeSet.generated.h"
 
+struct FGameplayEffectSpec;
 class UTPSAbilitySystemComponent;
 #define ATTRIBUTE_ACCESSORS(ClassName, PropertyName)			\
 	GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName)	\
@@ -12,6 +13,13 @@ class UTPSAbilitySystemComponent;
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName)				\
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+DECLARE_MULTICAST_DELEGATE_SixParams(FTPSAttributeEvent,
+	AActor* /*EffectInstigator*/,
+	AActor* /*EffectCauser*/,
+    const FGameplayEffectSpec* /*EffectSpec*/,
+    float /*EffectMagnitude*/,
+    float /*OldValue*/,
+    float /*NewValue*/);
 /**
  * 
  */

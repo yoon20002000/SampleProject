@@ -35,6 +35,13 @@ namespace TPSGameplayTags
 		{MOVE_Falling, Movement_Mode_Falling},
 		{MOVE_Flying, Movement_Mode_Flying},
 	};
+
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Gameplay_Damage, "Gameplay.Damage", "Gameplay Damage");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Gameplay_DamageImmunity, "Gameplay.DamageImmunity", "Gameplay Damage Immunity");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Gameplay_DamageSelfDestruct, "Gameplay.DamageSelfDestruct", "Gameplay Damage Self Destruct");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Gameplay_FellOutOfWorld, "Gameplay.FellOutOfWorld", "Gameplay Fell Out Of World");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Gameplay_Damage_Message, "Gameplay.Damage.Message", "Gameplay Damage Message");
+	
 	FGameplayTag FindTagByString(const FString& TagString, bool bMatchPartialString)
 	{
 		const UGameplayTagsManager& GTM = UGameplayTagsManager::Get();

@@ -1,6 +1,4 @@
 #include "Game/AbilitySystem/TPSAbilitySourceInterface.h"
 
-UTPSAbilitySourceInterface::UTPSAbilitySourceInterface(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
-{
-	
-}
+#include UE_INLINE_GENERATED_CPP_BY_NAME(TPSAbilitySourceInterface)
+
