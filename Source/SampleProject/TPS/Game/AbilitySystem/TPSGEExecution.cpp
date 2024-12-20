@@ -28,5 +28,12 @@ UTPSGEExecution::UTPSGEExecution()
 void UTPSGEExecution::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
                                              FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const
 {
-	Super::Execute_Implementation(ExecutionParams, OutExecutionOutput);
+#if WITH_SERVER_CODE
+	const FGameplayEffectSpec& Spec = ExecutionParams.GetOwningSpec();
+	
+	
+#endif
+	
+
+	
 }
