@@ -12,7 +12,7 @@ class UTPSAbilitySystemComponent;
 	GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName)				\
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName)				\
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
-
+/// EffectInstigator, EffectCauser, EffectSpec, EffectMagnitude, OldValue, NewValue
 DECLARE_MULTICAST_DELEGATE_SixParams(FTPSAttributeEvent,
 	AActor* /*EffectInstigator*/,
 	AActor* /*EffectCauser*/,
