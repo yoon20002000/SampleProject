@@ -23,8 +23,7 @@ protected:
 	virtual void NativeConstruct() override;
 	virtual void BeginDestroy() override;
 	UFUNCTION()
-	void UpdateUIs(AActor* InstigatorActor, UTPSHealthComponent* AttributeComp, float NewHealth, float Delta);
-	
+	void UpdateUIs(UTPSHealthComponent* HealthComp, float OldValue, float NewValue, AActor* Actor);
 	virtual void UpdateHealthBar(float NewHealth, float MaxHealth);
 	virtual void UpdateHealthPoint(float NewHealth);
 private:

@@ -67,20 +67,3 @@ APlayerController* TPSHelper::GetFirstLocalPlayerController(UWorld* InWorld)
 		(GetWorld() && GEngine) ? GEngine->GetFirstLocalPlayerController(GetWorld()) : nullptr);
 	return playerController;
 }
-
-bool TPSHelper::ApplyDirectionalDamage(AActor* DamageCauser, AActor* TargetActor, float DamageAmount,
-	const FHitResult& HitResult)
-{
-	if (ApplyDamage(DamageCauser,TargetActor,DamageAmount) == true)
-	{
-		if (UPrimitiveComponent* HitComp = HitResult.GetComponent(); HitComp->IsSimulatingPhysics(HitResult.BoneName) == true)
-		{
-			FVector Direction = HitResult.TraceEnd - HitResult.TraceStart;
-			Direction.Normalize();
-
-			HitComp->AddImpulseAtLocation(Direction* 300000.f, HitResult.Location,HitResult.BoneName);
-		}
-		return true;
-	}
-	return false;
-}

@@ -21,6 +21,4 @@ public:
 	static ULocalPlayer* GetLocalPlayer(UWorld* InWorld = nullptr);
 	static APlayerCameraManager* GetPlayerCameraManager(UWorld* InWorld = nullptr);
 	static APlayerController* GetFirstLocalPlayerController(UWorld* InWorld);
-	
-	static bool ApplyDirectionalDamage(AActor* DamageCauser, AActor* TargetActor, float DamageAmount, const FHitResult& HitResult);
 };

@@ -13,7 +13,7 @@ ATPSCharacter::ATPSCharacter()
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	AttributeComp = CreateDefaultSubobject<UTPSHealthComponent>(TEXT("Attribute Component"));
+	HealthComp = CreateDefaultSubobject<UTPSHealthComponent>(TEXT("Attribute Component"));
 
 	HPBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HP Bar Widget"));
 	HPBarWidget->SetupAttachment(GetMesh());
@@ -29,6 +29,8 @@ ATPSCharacter::ATPSCharacter()
 	}
 	
 	AbilitySystemComp = CreateDefaultSubobject<UTPSAbilitySystemComponent>(TEXT("AbilitySystem Comp"));
+
+	OnAbilitySystemInitialized();
 }
 
 // Called when the game starts or when spawned
@@ -37,11 +39,18 @@ void ATPSCharacter::BeginPlay()
 	Super::BeginPlay();
 }
 
+void ATPSCharacter::OnHealthChanged(UTPSHealthComponent* HealthComponent, float OldValue, float NewValue,
+	AActor* InstigatorActor)
+{
+	UE_LOG(LogTemp, Log, TEXT("Instigator Actor : %s, OwningComp : %s, NewHealth : %f, Delta : %f"),
+		   *InstigatorActor->GetName(), *HealthComponent->GetName(), NewValue, NewValue - OldValue);
+}
+
 void ATPSCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
-	AttributeComp->HandleHealthChanged.AddDynamic(this, &ATPSCharacter::OnHealthChanged);
+	HealthComp->OnHealthChanged.AddDynamic(this, &ThisClass::OnHealthChanged);
 
 	HPBarWidget->InitWidget();
 	UTPSFloatingHPBar* CharacterWidget = Cast<UTPSFloatingHPBar>(HPBarWidget->GetUserWidgetObject());
@@ -59,22 +68,17 @@ void ATPSCharacter::Tick(float DeltaTime)
 
 float ATPSCharacter::GetHealth() const
 {
-	return AttributeComp->GetHealth();
+	return HealthComp->GetHealth();
 }
 
 float ATPSCharacter::GetMaxHealth() const
 {
-	return AttributeComp->GetMaxHealth();
-}
-
-void ATPSCharacter::AddHP(const int InValue)
-{
-	AttributeComp->ApplyHealthChange(this, InValue);
+	return HealthComp->GetMaxHealth();
 }
 
 UTPSHealthComponent* ATPSCharacter::GetAttributeComp()
 {
-	return AttributeComp;
+	return HealthComp;
 }
 
 UAbilitySystemComponent* ATPSCharacter::GetAbilitySystemComponent() const
@@ -82,15 +86,23 @@ UAbilitySystemComponent* ATPSCharacter::GetAbilitySystemComponent() const
 	return AbilitySystemComp;
 }
 
-void ATPSCharacter::OnHealthChanged(AActor* InstigatorActor, UTPSHealthComponent* OwningComp, float NewHealth,
-                                    float Delta)
+UTPSAbilitySystemComponent* ATPSCharacter::GetTPSAbilitySystemComponent() const
 {
-	UE_LOG(LogTemp, Log, TEXT("Instigator Actor : %s, OwningComp : %s, NewHealth : %f, Delta : %f"),
-	       *InstigatorActor->GetName(), *OwningComp->GetName(), NewHealth, Delta);
-
-	// 추후 죽는 ani 추가
-	if (NewHealth < 0)
-	{
-		SetLifeSpan(5.0f);
-	}
+	return Cast<UTPSAbilitySystemComponent>(GetAbilitySystemComponent());
 }
+
+void ATPSCharacter::OnAbilitySystemInitialized()
+{
+	UTPSAbilitySystemComponent* ASComp = GetTPSAbilitySystemComponent();
+	if (ASComp != nullptr)
+	{
+		HealthComp->Initialize(ASComp);	
+	}
+
+	// Init Tag 
+}
+
+
+
+
+

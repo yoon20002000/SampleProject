@@ -21,8 +21,19 @@ void UTPSHealthBar::NativeConstruct()
 	{
 		UpdateHealthBar(TPSPlayer->GetHealth(), TPSPlayer->GetMaxHealth());
 		UpdateHealthPoint(TPSPlayer->GetHealth());
-		TPSPlayer->GetAttributeComp()->HandleHealthChanged.AddDynamic(this, &UTPSHealthBar::UpdateUIs);
+		TPSPlayer->GetAttributeComp()->OnHealthChanged.AddDynamic(this, &ThisClass::UpdateUIs);
 	}
+}
+
+void UTPSHealthBar::UpdateUIs(UTPSHealthComponent* HealthComp, float OldValue, float NewValue, AActor* Actor)
+{
+	if (HealthComp == nullptr)
+	{
+		return;
+	}
+	
+	UpdateHealthBar(HealthComp->GetHealth(), HealthComp->GetMaxHealth());
+	UpdateHealthPoint(HealthComp->GetHealth());
 }
 
 void UTPSHealthBar::BeginDestroy()
@@ -31,20 +42,8 @@ void UTPSHealthBar::BeginDestroy()
 	
 	if (ATPSPlayer* TPSPlayer = GetTPSPlayer())
 	{
-		TPSPlayer->GetAttributeComp()->HandleHealthChanged.RemoveDynamic(this, &UTPSHealthBar::UpdateUIs);
+		TPSPlayer->GetAttributeComp()->OnHealthChanged.RemoveDynamic(this, &ThisClass::UpdateUIs);
 	}
-}
-
-void UTPSHealthBar::UpdateUIs(AActor* InstigatorActor, UTPSHealthComponent* AttributeComp, float NewHealth,
-	float Delta)
-{
-	if (AttributeComp == nullptr)
-	{
-		return;
-	}
-	
-	UpdateHealthBar(AttributeComp->GetHealth(), AttributeComp->GetMaxHealth());
-	UpdateHealthPoint(AttributeComp->GetHealth());
 }
 
 void UTPSHealthBar::UpdateHealthBar(const float NewHealth, const float MaxHealth)

@@ -36,20 +36,6 @@ void ATPSPlayer::BeginPlay()
 	CameraComp = FindComponentByClass<UTPSCameraComponent>();
 }
 
-void ATPSPlayer::OnHealthChanged(AActor* InstigatorActor, UTPSHealthComponent* OwningComp, float NewHealth,
-                                 float Delta)
-{
-	Super::OnHealthChanged(InstigatorActor, OwningComp, NewHealth, Delta);
-
-	if (NewHealth <= 0)
-	{
-		if (ATPSPlayerController* TPSPC = Cast<ATPSPlayerController>(GetController()))
-		{
-			TPSPC->SetGameEnd();
-		}
-	}
-}
-
 void ATPSPlayer::AbilityInputTagPressed(FGameplayTag InputTag)
 {
 	if (AbilitySystemComp == nullptr)

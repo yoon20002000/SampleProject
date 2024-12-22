@@ -24,7 +24,10 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "TPS|Health AttributeSet")
 	void Initialize(UTPSAbilitySystemComponent* InASComp);
-
+	void Uninitialize();
+	float GetHealth() const;
+	float GetMaxHealth() const;
+	float GetHealthPercentage() const;
 	bool IsAlive() const;
 protected:
 	void ClearGameplayTags();

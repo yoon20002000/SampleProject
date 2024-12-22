@@ -25,25 +25,28 @@ class SAMPLEPROJECT_API ATPSCharacter : public ACharacter, public IAbilitySystem
 public:
 	ATPSCharacter();
 	virtual void BeginPlay() override;
+
+	
 	virtual void PostInitializeComponents() override;
 	virtual void Tick(float DeltaTime) override;
 	
 	float GetHealth()const;
 	float GetMaxHealth()const;
-	void AddHP(const int InValue);
+	
 	UTPSHealthComponent* GetAttributeComp();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-	
+	UTPSAbilitySystemComponent* GetTPSAbilitySystemComponent()const;
 protected:
+	void OnAbilitySystemInitialized();
 	UFUNCTION()
-	virtual void OnHealthChanged(AActor* InstigatorActor, UTPSHealthComponent* OwningComp, float NewHealth, float Delta);
+	void OnHealthChanged(UTPSHealthComponent* HealthComponent, float OldValue, float NewValue, AActor* InstigatorActor);
 
 public:
 	UPROPERTY(VisibleAnywhere, Category = UI)
 	TObjectPtr<UWidgetComponent> HPBarWidget;
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
-	TObjectPtr<UTPSHealthComponent> AttributeComp;
+	TObjectPtr<UTPSHealthComponent> HealthComp;
 	
 	UPROPERTY(EditDefaultsOnly, Category="UI", meta=(AllowPrivateAccess=true))
 	int HPBarWidgetHeight = 180;

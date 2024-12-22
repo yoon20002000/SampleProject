@@ -18,11 +18,13 @@ class SAMPLEPROJECT_API UTPSFloatingHPBar : public UUserWidget
 	GENERATED_BODY()
 public:
 	void UpdateFloatingHPBar(const float Health, const float MaxHealth);
-	UFUNCTION()
-	void UpdateUIs(AActor* InstigatorActor, UTPSHealthComponent* AttributeComp, float NewHealth, float Delta);
+	
 	void BindCharacter(ATPSCharacter* InCharacter);
 	void UnbindCharacter();
-
+	
+protected:
+	UFUNCTION()
+	void UpdateUIs(UTPSHealthComponent* HealthComponent, float OldValue, float NewValue, AActor* Instigator);
 private:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<UProgressBar> HPBar;

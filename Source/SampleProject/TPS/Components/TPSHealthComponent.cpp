@@ -39,7 +39,7 @@ void UTPSHealthComponent::Initialize(UTPSAbilitySystemComponent* InASComp)
 		return;
 	}
 
-	if (AbilitySystemComp == nullptr)
+	if (AbilitySystemComp != nullptr)
 	{
 		UE_LOG(LogTemp, Error, TEXT("AttributeComp Error : Already Initialized"));
 		return;
@@ -60,10 +60,51 @@ void UTPSHealthComponent::Initialize(UTPSAbilitySystemComponent* InASComp)
 	HealthAttributeSet->OnOutOfHealth.AddUObject(this, &ThisClass::HandleOutOfHealth);
 
 	AbilitySystemComp->SetNumericAttributeBase(UTPSHealthSet::GetHealthAttribute(), HealthAttributeSet->GetHealth());
-
+	
 	ClearGameplayTags();
 	OnHealthChanged.Broadcast(this, HealthAttributeSet->GetHealth(),HealthAttributeSet->GetHealth(), nullptr);
 	OnMaxHealthChanged.Broadcast(this, HealthAttributeSet->GetMaxHealth(),HealthAttributeSet->GetMaxHealth(), nullptr);
+}
+
+void UTPSHealthComponent::Uninitialize()
+{
+	ClearGameplayTags();
+	if (HealthAttributeSet != nullptr)
+	{
+		HealthAttributeSet->OnHealthChanged.RemoveAll(this);
+		HealthAttributeSet->OnMaxHealthChanged.RemoveAll(this);
+		HealthAttributeSet->OnOutOfHealth.RemoveAll(this);
+	}
+
+	HealthAttributeSet = nullptr;
+	AbilitySystemComp = nullptr;
+}
+
+float UTPSHealthComponent::GetHealth() const
+{
+	if (HealthAttributeSet == nullptr)
+	{
+		return -1.0f;
+	}
+	return HealthAttributeSet->GetHealth();
+}
+
+float UTPSHealthComponent::GetMaxHealth() const
+{
+	if (HealthAttributeSet == nullptr)
+	{
+		return -1.0f;
+	}
+	return HealthAttributeSet->GetMaxHealth();
+}
+
+float UTPSHealthComponent::GetHealthPercentage() const
+{
+	if (HealthAttributeSet == nullptr)
+	{
+		return -1.0f;
+	}
+	return HealthAttributeSet->GetHealth() / HealthAttributeSet->GetMaxHealth();
 }
 
 bool UTPSHealthComponent::IsAlive() const

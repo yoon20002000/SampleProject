@@ -22,6 +22,6 @@ void ATPSHPPotion::Interact_Implementation(APawn* InstigatorPawn)
 	 */
 	if (ATPSPlayer* TP = Cast<ATPSPlayer>(InstigatorPawn))
 	{
-		TP->AddHP(RecoverPoint);
+		// TP->AddHP(RecoverPoint);
 	}
 }

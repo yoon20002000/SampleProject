@@ -11,17 +11,6 @@ void UTPSFloatingHPBar::UpdateFloatingHPBar(const float Health, const float MaxH
 	HPBar->SetPercent(Health / MaxHealth);
 }
 
-void UTPSFloatingHPBar::UpdateUIs(AActor* InstigatorActor, UTPSHealthComponent* AttributeComp, float NewHealth,
-                                        float Delta)
-{
-	if (HPBar == nullptr)
-	{
-		return;
-	}
-	
-	UpdateFloatingHPBar(AttributeComp->GetHealth(), AttributeComp->GetMaxHealth());
-}
-
 void UTPSFloatingHPBar::BindCharacter(ATPSCharacter* InCharacter)
 {
 	if (InCharacter == nullptr)
@@ -34,7 +23,7 @@ void UTPSFloatingHPBar::BindCharacter(ATPSCharacter* InCharacter)
 	{
 		UTPSHealthComponent* AttributeComp = OwnerCharacter.Get()->GetAttributeComp();
 		UpdateFloatingHPBar(AttributeComp->GetHealth(), AttributeComp->GetMaxHealth());
-		AttributeComp->HandleHealthChanged.AddDynamic(this, &UTPSFloatingHPBar::UpdateUIs);
+		AttributeComp->OnHealthChanged.AddDynamic(this, &ThisClass::UpdateUIs);
 	}
 }
 
@@ -42,7 +31,18 @@ void UTPSFloatingHPBar::UnbindCharacter()
 {
 	if (OwnerCharacter.IsValid() == true)
 	{
-		OwnerCharacter.Get()->GetAttributeComp()->HandleHealthChanged.RemoveDynamic(this, &UTPSFloatingHPBar::UpdateUIs);
+		OwnerCharacter.Get()->GetAttributeComp()->OnHealthChanged.RemoveDynamic(this, &UTPSFloatingHPBar::UpdateUIs);
 	}
 	OwnerCharacter = nullptr;
+}
+
+void UTPSFloatingHPBar::UpdateUIs(UTPSHealthComponent* HealthComponent, float OldValue, float NewValue,
+	AActor* Instigator)
+{
+	if (HPBar == nullptr)
+	{
+		return;
+	}
+	
+	UpdateFloatingHPBar(HealthComponent->GetHealth(), HealthComponent->GetMaxHealth());
 }
