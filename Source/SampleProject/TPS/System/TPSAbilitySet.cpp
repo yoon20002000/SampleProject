@@ -93,7 +93,7 @@ void UTPSAbilitySet::GiveToAbilitySystem(UTPSAbilitySystemComponent* TPSASComp,
 
 		UAttributeSet* NewSet = NewObject<UAttributeSet>(TPSASComp->GetOwner(), SetToGrant.AttributeSet);
 		TPSASComp->AddAttributeSetSubobject(NewSet);
-
+		
 		if (OutGrantedHandles != nullptr)
 		{
 			OutGrantedHandles->AddAttributeSet(NewSet);

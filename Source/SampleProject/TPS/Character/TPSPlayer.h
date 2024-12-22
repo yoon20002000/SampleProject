@@ -66,8 +66,6 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="EI")
 	TObjectPtr<UTPSInputConfig> InputConfig;
-	UPROPERTY(EditAnywhere, Category="EI")
-	TArray<TObjectPtr<UTPSAbilitySet>> AbilitySets;
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess), Category = "Components")
 	TObjectPtr<UTPSInteractionComponent> InteractionComp;

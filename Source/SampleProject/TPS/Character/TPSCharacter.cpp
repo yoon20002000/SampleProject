@@ -6,6 +6,7 @@
 #include "Components/TPSHealthComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Game/AbilitySystem/TPSAbilitySystemComponent.h"
+#include "System/TPSAbilitySet.h"
 #include "UI/TPSFloatingHPBar.h"
 
 ATPSCharacter::ATPSCharacter()
@@ -29,8 +30,6 @@ ATPSCharacter::ATPSCharacter()
 	}
 	
 	AbilitySystemComp = CreateDefaultSubobject<UTPSAbilitySystemComponent>(TEXT("AbilitySystem Comp"));
-
-	OnAbilitySystemInitialized();
 }
 
 // Called when the game starts or when spawned
@@ -42,14 +41,23 @@ void ATPSCharacter::BeginPlay()
 void ATPSCharacter::OnHealthChanged(UTPSHealthComponent* HealthComponent, float OldValue, float NewValue,
 	AActor* InstigatorActor)
 {
+	FString InstigatorActorName = InstigatorActor != nullptr ? InstigatorActor->GetName() : TEXT("null");
 	UE_LOG(LogTemp, Log, TEXT("Instigator Actor : %s, OwningComp : %s, NewHealth : %f, Delta : %f"),
-		   *InstigatorActor->GetName(), *HealthComponent->GetName(), NewValue, NewValue - OldValue);
+		   *InstigatorActorName, *HealthComponent->GetName(), NewValue, NewValue - OldValue);
 }
 
 void ATPSCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
+	for (auto AbilitySet : AbilitySets)
+	{
+		if (AbilitySet != nullptr)
+		{
+			AbilitySet->GiveToAbilitySystem(AbilitySystemComp, nullptr);
+		}
+	}
+	
 	HealthComp->OnHealthChanged.AddDynamic(this, &ThisClass::OnHealthChanged);
 
 	HPBarWidget->InitWidget();
@@ -58,6 +66,8 @@ void ATPSCharacter::PostInitializeComponents()
 	{
 		CharacterWidget->BindCharacter(this);
 	}
+
+	OnAbilitySystemInitialized();
 }
 
 // Called every frame

@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "Components/TPSHealthComponent.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
@@ -18,6 +17,7 @@ class UTPSCameraComponent;
 class UTPSSpringArmComponent;
 class UTPSActionComponent;
 class UTPSAbilitySystemComponent;
+class UTPSAbilitySet;
 UCLASS()
 class SAMPLEPROJECT_API ATPSCharacter : public ACharacter, public IAbilitySystemInterface
 {
@@ -53,6 +53,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="UI", meta=(AllowPrivateAccess=true))
 	FVector2D HPBarWidgetSize = FVector2D(150,50);
 
+	UPROPERTY(EditAnywhere, Category="EI")
+	TArray<TObjectPtr<UTPSAbilitySet>> AbilitySets;
+	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Abilities")
 	TObjectPtr<UTPSAbilitySystemComponent> AbilitySystemComp;
 

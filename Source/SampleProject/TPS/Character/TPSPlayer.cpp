@@ -2,13 +2,11 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "TPSPlayerController.h"
 #include "Components/TPSInteractionComponent.h"
 #include "Components/TPSCameraComponent.h"
 #include "Components/TPSSpringArmComponent.h"
 #include "Game/TPSGameplayTags.h"
 #include "Game/AbilitySystem/TPSAbilitySystemComponent.h"
-#include "System/TPSAbilitySet.h"
 #include "System/Input/TPSEnhancedInputComponent.h"
 
 // Sets default values
@@ -87,14 +85,6 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 void ATPSPlayer::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-	
-	for (auto AbilitySet : AbilitySets)
-	{
-		if (AbilitySet != nullptr)
-		{
-			AbilitySet->GiveToAbilitySystem(AbilitySystemComp, nullptr);
-		}
-	}
 }
 
 void ATPSPlayer::Move(const FInputActionValue& InputActionValue)

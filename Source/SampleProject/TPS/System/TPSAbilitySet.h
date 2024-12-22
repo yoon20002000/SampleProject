@@ -86,6 +86,6 @@ protected:
 	TArray<FTPSAbilitySet_GameplayAbility> GrantedGameplayAbilities;
 	// UPROPERTY(EditDefaultsOnly, Category = "Gameplay Effects", meta = (TitleProperty = "GameplayEffect"))
 	// TArray<FTPSAbilitySet_GameplayEffect> GrantedGameplayEffects;
-	UPROPERTY(EditDefaultsOnly, Category = "Abilitie Sets", meta=(TitleProperty = "AbilitySet"))
+	UPROPERTY(EditDefaultsOnly, Category = "Attribute Sets", meta=(TitleProperty=AttributeSet))
 	TArray<FTPSAbilitySet_AttributeSet> GrantedAttributes;
 };
