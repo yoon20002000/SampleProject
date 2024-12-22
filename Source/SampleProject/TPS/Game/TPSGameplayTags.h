@@ -30,7 +30,8 @@ namespace TPSGameplayTags
 
 	/// Status
 	SAMPLEPROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Status_Crouching);
-	SAMPLEPROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Status_Death);
+	SAMPLEPROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Status_Death_Dying);
+	SAMPLEPROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Status_Death_Death);
 
 	/// Movement
 	SAMPLEPROJECT_API extern const TMap<uint8, FGameplayTag> MovementModeTags;

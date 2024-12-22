@@ -3,7 +3,7 @@
 
 #include "TPSCharacterAnimInstance.h"
 #include "TPSPlayer.h"
-#include "Components/TPSAttributeComponent.h"
+#include "Components/TPSHealthComponent.h"
 
 void UTPSCharacterAnimInstance::NativeInitializeAnimation()
 {
@@ -16,7 +16,7 @@ void UTPSCharacterAnimInstance::NativeBeginPlay()
 	
 	if (ATPSCharacter* Player = Cast<ATPSCharacter>(GetOwningActor()))
 	{
-		AttributeComp = Player->GetComponentByClass<UTPSAttributeComponent>();
+		AttributeComp = Player->GetComponentByClass<UTPSHealthComponent>();
 
 		UpdateIsAlive(AttributeComp);
 	}
@@ -29,7 +29,7 @@ void UTPSCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	UpdateIsAlive(AttributeComp);
 }
 
-void UTPSCharacterAnimInstance::UpdateIsAlive(const UTPSAttributeComponent* Attribute)
+void UTPSCharacterAnimInstance::UpdateIsAlive(const UTPSHealthComponent* Attribute)
 {
 	if (Attribute != nullptr)
 	{

@@ -7,7 +7,7 @@
 #include "TPSCharacterAnimInstance.generated.h"
 
 class UTPSActionComponent;
-class UTPSAttributeComponent;
+class UTPSHealthComponent;
 /**
  * 
  */
@@ -22,10 +22,10 @@ public:
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess))
-	TObjectPtr<UTPSAttributeComponent> AttributeComp;
+	TObjectPtr<UTPSHealthComponent> AttributeComp;
 
 	UPROPERTY(BlueprintReadOnly)
 	bool bIsAlive ;
 
-	void UpdateIsAlive(const UTPSAttributeComponent* Attribute);
+	void UpdateIsAlive(const UTPSHealthComponent* Attribute);
 };

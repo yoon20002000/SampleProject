@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "TPSCommonUserWidget.h"
-#include "Components/TPSAttributeComponent.h"
+#include "Components/TPSHealthComponent.h"
 #include "TPSHealthBar.generated.h"
 
 class UTextBlock;
@@ -23,7 +23,7 @@ protected:
 	virtual void NativeConstruct() override;
 	virtual void BeginDestroy() override;
 	UFUNCTION()
-	void UpdateUIs(AActor* InstigatorActor, UTPSAttributeComponent* AttributeComp, float NewHealth, float Delta);
+	void UpdateUIs(AActor* InstigatorActor, UTPSHealthComponent* AttributeComp, float NewHealth, float Delta);
 	
 	virtual void UpdateHealthBar(float NewHealth, float MaxHealth);
 	virtual void UpdateHealthPoint(float NewHealth);

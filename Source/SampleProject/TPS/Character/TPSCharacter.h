@@ -3,13 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/TPSAttributeComponent.h"
+#include "Components/TPSHealthComponent.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
 #include "TPSCharacter.generated.h"
 
 class UTPSGameplayAbility;
-class UTPSAttributeComponent;
+class UTPSHealthComponent;
 class UTPSFloatingHPBar;
 class UWidgetComponent;
 class UInputMappingContext;
@@ -31,19 +31,19 @@ public:
 	float GetHealth()const;
 	float GetMaxHealth()const;
 	void AddHP(const int InValue);
-	UTPSAttributeComponent* GetAttributeComp();
+	UTPSHealthComponent* GetAttributeComp();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	
 protected:
 	UFUNCTION()
-	virtual void OnHealthChanged(AActor* InstigatorActor, UTPSAttributeComponent* OwningComp, float NewHealth, float Delta);
+	virtual void OnHealthChanged(AActor* InstigatorActor, UTPSHealthComponent* OwningComp, float NewHealth, float Delta);
 
 public:
 	UPROPERTY(VisibleAnywhere, Category = UI)
 	TObjectPtr<UWidgetComponent> HPBarWidget;
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
-	TObjectPtr<UTPSAttributeComponent> AttributeComp;
+	TObjectPtr<UTPSHealthComponent> AttributeComp;
 	
 	UPROPERTY(EditDefaultsOnly, Category="UI", meta=(AllowPrivateAccess=true))
 	int HPBarWidgetHeight = 180;

@@ -36,7 +36,7 @@ void ATPSPlayer::BeginPlay()
 	CameraComp = FindComponentByClass<UTPSCameraComponent>();
 }
 
-void ATPSPlayer::OnHealthChanged(AActor* InstigatorActor, UTPSAttributeComponent* OwningComp, float NewHealth,
+void ATPSPlayer::OnHealthChanged(AActor* InstigatorActor, UTPSHealthComponent* OwningComp, float NewHealth,
                                  float Delta)
 {
 	Super::OnHealthChanged(InstigatorActor, OwningComp, NewHealth, Delta);

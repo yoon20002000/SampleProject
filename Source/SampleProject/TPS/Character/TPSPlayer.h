@@ -33,7 +33,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	virtual void OnHealthChanged(AActor* InstigatorActor, UTPSAttributeComponent* OwningComp, float NewHealth,
+	virtual void OnHealthChanged(AActor* InstigatorActor, UTPSHealthComponent* OwningComp, float NewHealth,
 	                             float Delta) override;
 
 	void AbilityInputTagPressed(FGameplayTag InputTag);

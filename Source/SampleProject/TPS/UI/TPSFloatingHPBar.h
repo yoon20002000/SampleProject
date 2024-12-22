@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Components/TPSAttributeComponent.h"
+#include "Components/TPSHealthComponent.h"
 #include "TPSFloatingHPBar.generated.h"
 
 class ATPSCharacter;
@@ -19,7 +19,7 @@ class SAMPLEPROJECT_API UTPSFloatingHPBar : public UUserWidget
 public:
 	void UpdateFloatingHPBar(const float Health, const float MaxHealth);
 	UFUNCTION()
-	void UpdateUIs(AActor* InstigatorActor, UTPSAttributeComponent* AttributeComp, float NewHealth, float Delta);
+	void UpdateUIs(AActor* InstigatorActor, UTPSHealthComponent* AttributeComp, float NewHealth, float Delta);
 	void BindCharacter(ATPSCharacter* InCharacter);
 	void UnbindCharacter();
 

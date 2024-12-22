@@ -1,7 +1,7 @@
 ﻿#include "TPSHelper.h"
 
 #include "TPSSystemManager.h"
-#include "Components/TPSAttributeComponent.h"
+#include "Components/TPSHealthComponent.h"
 #include "Game/TPSGameInstance.h"
 #include "Game/TPSGameMode.h"
 #include "Kismet/GameplayStatics.h"
@@ -47,7 +47,7 @@ ULocalPlayer* TPSHelper::GetLocalPlayer(UWorld* InWorld)
 	return nullptr;
 }
 
-APlayerCameraManager* TPSHelper::GetPlayeCameraManager(UWorld* InWorld)
+APlayerCameraManager* TPSHelper::GetPlayerCameraManager(UWorld* InWorld)
 {
 	APlayerController* PlayerController = GetPlayerController(InWorld);
 	if (PlayerController != nullptr)
@@ -66,15 +66,6 @@ APlayerController* TPSHelper::GetFirstLocalPlayerController(UWorld* InWorld)
 	APlayerController* playerController = Cast<APlayerController>(
 		(GetWorld() && GEngine) ? GEngine->GetFirstLocalPlayerController(GetWorld()) : nullptr);
 	return playerController;
-}
-
-bool TPSHelper::ApplyDamage(AActor* DamageCauser, AActor* TargetActor, float DamageAmount)
-{
-	if (UTPSAttributeComponent* AC = UTPSAttributeComponent::GetAttributes(TargetActor))
-	{
-		return AC->ApplyHealthChange(DamageCauser, -DamageAmount);
-	}
-	return false;
 }
 
 bool TPSHelper::ApplyDirectionalDamage(AActor* DamageCauser, AActor* TargetActor, float DamageAmount,
