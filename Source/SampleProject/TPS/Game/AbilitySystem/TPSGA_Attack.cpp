@@ -559,5 +559,16 @@ void UTPSGA_Attack::StartRangedWeaponTargeting()
 
 void UTPSGA_Attack::OnRangedWeaponTargetDataReady_Implementation(const FGameplayAbilityTargetDataHandle& TargetData)
 {
-	GEngine->AddOnScreenDebugMessage(1,1,FColor::Blue,"Test OnRangedWeaponTargetDataReady");
+	
+
+	if (ToTargetGEs.Num() > 0)
+	{
+		for (TSubclassOf<UGameplayEffect> GE : ToTargetGEs)
+		{
+			UE_LOG(LogTemp, Log,TEXT("Test OnRangedWeaponTargetDataReady %s"),*GetNameSafe(GE));
+			GEngine->AddOnScreenDebugMessage(1,1,FColor::Blue,TEXT("Test OnRangedWeaponTargetDataReady"));
+			ApplyGameplayEffectToTarget(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, TargetData, GE, 1);	
+		}
+			
+	}
 }

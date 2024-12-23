@@ -82,4 +82,7 @@ private:
 	TObjectPtr<UAnimMontage> PlayMontage;
 	
 	FDelegateHandle OnTargetDataReadyCallbackDelegateHandle;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess=true))
+	TArray<TSubclassOf<UGameplayEffect>> ToTargetGEs;
 };

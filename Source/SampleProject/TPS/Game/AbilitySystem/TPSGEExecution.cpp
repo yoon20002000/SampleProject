@@ -32,7 +32,12 @@ void UTPSGEExecution::Execute_Implementation(const FGameplayEffectCustomExecutio
 #if WITH_SERVER_CODE
 	const FGameplayEffectSpec& Spec = ExecutionParams.GetOwningSpec();
 	FTPSGameplayEffectContext* TypedContext = FTPSGameplayEffectContext::ExtractEffectContext(Spec.GetContext());
-	check(TypedContext);
+	// check로 바꿔야됨 무조건 있어야됨 hit 시 계산을 위해 발생하는데 null이면 진행을 못함
+	if (TypedContext == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Typed Context is nullptr!!!!"));
+		return;
+	}
 
 	const FGameplayTagContainer* SourceTags = Spec.CapturedSourceTags.GetAggregatedTags();
 	const FGameplayTagContainer* TargetTags = Spec.CapturedTargetTags.GetAggregatedTags();
