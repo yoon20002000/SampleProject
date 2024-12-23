@@ -1,11 +1,9 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "Game/AbilitySystem/TPSGEExecution.h"
 
 #include "TPSAbilitySourceInterface.h"
 #include "TPSCombatAttributeSet.h"
 #include "TPSGameplayEffectContext.h"
+#include "TPSHealthSet.h"
 
 
 struct FDamageStatics
@@ -110,10 +108,7 @@ void UTPSGEExecution::Execute_Implementation(const FGameplayEffectCustomExecutio
 	
 	if (DamageDone > 0.0f)
 	{
-		//OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(UTPSHealthSet))
+		OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(UTPSHealthSet::GetDamageAttribute(), EGameplayModOp::Additive, DamageDone));
 	}
 #endif
-	
-
-	
 }

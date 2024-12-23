@@ -9,7 +9,7 @@
 
 UTPSHealthSet::UTPSHealthSet() :
 		Health(100.0f),
-		MaxHealth(100.0f),
+		MaxHealth(120.0f),
 		bOutOfHealth(false),
 		MaxHealthBeforeAttributeChange(0.0f),
 		HealthBeforeAttributeChange(0.0f)
@@ -47,7 +47,6 @@ void UTPSHealthSet::OnRep_MaxHealth(const FGameplayAttributeData& OldValue)
 	OnMaxHealthChanged.Broadcast(nullptr, nullptr, nullptr, GetMaxHealth() - OldValue.GetCurrentValue(),
 	                             OldValue.GetCurrentValue(), GetMaxHealth());
 }
-
 bool UTPSHealthSet::PreGameplayEffectExecute(FGameplayEffectModCallbackData& Data)
 {
 	if (Super::PreGameplayEffectExecute(Data) == false)

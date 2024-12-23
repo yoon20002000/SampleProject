@@ -40,9 +40,9 @@ protected:
 
 	void ClampAttribute(const FGameplayAttribute& Attribute, float& NewValue) const;
 private:
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "TPS|Health", meta=(HideFromModifiers, AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "TPS|Health", meta=(AllowPrivateAccess = true))
 	FGameplayAttributeData Health;
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxHealth, Category = "TPS|Health", meta=(HideFromModifiers, AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxHealth, Category = "TPS|Health", meta=(AllowPrivateAccess = true))
 	FGameplayAttributeData MaxHealth;
 
 	bool bOutOfHealth;
