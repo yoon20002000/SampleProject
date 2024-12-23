@@ -5,8 +5,6 @@
 
 namespace TPSGameplayTags
 {
-	SAMPLEPROJECT_API FGameplayTag FindTagByString(const FString& TagString, bool bMatchPartialString = false);
-
 	/// Ability
 	SAMPLEPROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Type_Action_WeaponFire);
 	
@@ -53,7 +51,14 @@ namespace TPSGameplayTags
 
 namespace TPSGGameplayEffectTags
 {
-	SAMPLEPROJECT_API FGameplayTag FindTagByString(const FString& TagString, bool bMatchPartialString = false);
-	
 	SAMPLEPROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameplayEffect_DamageType_Normal);
 }
+namespace TPSGameplayCueTags
+{
+	SAMPLEPROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameplayCue_Character_DamageTaken);
+}
+class FTPSGameplayTagHelper
+{
+public:
+	static FGameplayTag FindTagByString(const FString& TagString, bool bMatchPartialsString = false);
+};

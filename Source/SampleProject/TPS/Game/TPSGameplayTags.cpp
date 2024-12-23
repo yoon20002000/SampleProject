@@ -42,25 +42,6 @@ namespace TPSGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Gameplay_DamageSelfDestruct, "Gameplay.DamageSelfDestruct", "Gameplay Damage Self Destruct");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Gameplay_FellOutOfWorld, "Gameplay.FellOutOfWorld", "Gameplay Fell Out Of World");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Gameplay_Damage_Message, "Gameplay.Damage.Message", "Gameplay Damage Message");
-	
-	FGameplayTag FindTagByString(const FString& TagString, bool bMatchPartialString)
-	{
-		const UGameplayTagsManager& GTM = UGameplayTagsManager::Get();
-		FGameplayTag Tag = GTM.RequestGameplayTag(FName(*TagString));
-		if (Tag.IsValid() == false && bMatchPartialString == true)
-		{
-			FGameplayTagContainer AllTags;
-			GTM.RequestAllGameplayTags(AllTags, true);
-
-			for (const FGameplayTag& TestTag : AllTags)
-			{
-				UE_LOG(LogTemp, Warning, TEXT("Partial String Matched. Applied Tag : %s"), *TestTag.ToString());
-				Tag = TestTag;
-				break;
-			}
-		}
-		return Tag;
-	}
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Event_Movement_WeaponFire, "Event.Movement.WeaponFire", "Event Weapon fire");
 }
@@ -68,23 +49,31 @@ namespace TPSGameplayTags
 namespace TPSGGameplayEffectTags
 {
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(GameplayEffect_DamageType_Normal,"GameplayEffect.DamageType.Normal", "Damage Type Normal");
-	
-	FGameplayTag FindTagByString(const FString& TagString, bool bMatchPartialString)
-	{
-		const UGameplayTagsManager& GTM = UGameplayTagsManager::Get();
-		FGameplayTag Tag = GTM.RequestGameplayTag(FName(*TagString));
-		if (Tag.IsValid() == false && bMatchPartialString == true)
-		{
-			FGameplayTagContainer AllTags;
-			GTM.RequestAllGameplayTags(AllTags, true);
+}
+namespace TPSGameplayCueTags
+{
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(GameplayCue_Character_DamageTaken,"GameplayCue.Character.DamageTaken", "Character Damaged Play Cue");
+}
 
-			for (const FGameplayTag& TestTag : AllTags)
+FGameplayTag FTPSGameplayTagHelper::FindTagByString(const FString& TagString, bool bMatchPartialsString)
+{
+	const UGameplayTagsManager& GTM = UGameplayTagsManager::Get();
+
+	FGameplayTag Tag = GTM.RequestGameplayTag(FName(*TagString));
+	if (Tag.IsValid() == false && bMatchPartialsString == true)
+	{
+		FGameplayTagContainer TagContainer;
+		GTM.RequestAllGameplayTags(TagContainer, true);
+
+		for (const FGameplayTag TagElem : TagContainer)
+		{
+			if (TagElem.ToString().Contains(TagString) == true)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("Partial String Matched. Applied Tag : %s"), *TestTag.ToString());
-				Tag = TestTag;
+				UE_LOG(LogTemp, Warning, TEXT("Applied Partial !! InputTagString : %s / Tag : %s"), *TagString, *TagElem.ToString());
+				Tag = TagElem;
 				break;
 			}
 		}
-		return Tag;
 	}
+	return Tag;
 }
