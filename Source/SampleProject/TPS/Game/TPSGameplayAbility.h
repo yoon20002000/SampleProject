@@ -5,6 +5,8 @@
 #include "Abilities/GameplayAbility.h"
 #include "TPSGameplayAbility.generated.h"
 
+class ITPSAbilitySourceInterface;
+
 UENUM(BlueprintType)
 enum class ETPSAbilityActivationPolicy : uint8
 {
@@ -37,6 +39,10 @@ public:
 
 	ETPSAbilityActivationPolicy GetActivationPolicy() const ;
 	ETPSAbilityActivationGroup GetActivationGroup() const ;
+protected:
+	virtual FGameplayEffectContextHandle MakeEffectContext(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo) const override;
+
+	virtual void GetAbilitySource(FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, float& OutSourceLevel, const ITPSAbilitySourceInterface*& OutAbilitySource, AActor*& OutEffectCauser)const;
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "TPS|Ability Activation")
 	ETPSAbilityActivationPolicy ActivationPolicy;

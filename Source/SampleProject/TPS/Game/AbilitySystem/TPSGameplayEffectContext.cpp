@@ -18,11 +18,13 @@ FTPSGameplayEffectContext::FTPSGameplayEffectContext(AActor* Instigator, AActor*
 
 FTPSGameplayEffectContext* FTPSGameplayEffectContext::ExtractEffectContext(FGameplayEffectContextHandle Handle)
 {
-	if (FGameplayEffectContext* BaseEffectContext = Handle.Get(); BaseEffectContext != nullptr && BaseEffectContext->GetScriptStruct()->IsChildOf(FTPSGameplayEffectContext::StaticStruct()))
+	FGameplayEffectContext* BaseEffectContext = Handle.Get();
+	if (BaseEffectContext != nullptr && BaseEffectContext->GetScriptStruct()->IsChildOf(
+		FTPSGameplayEffectContext::StaticStruct()) == true)
 	{
 		return static_cast<FTPSGameplayEffectContext*>(BaseEffectContext);
 	}
-	
+
 	return nullptr;
 }
 
