@@ -56,14 +56,27 @@ void UTPSGEExecution::Execute_Implementation(const FGameplayEffectCustomExecutio
 	FVector StartTrace = FVector::ZeroVector;
 	FVector EndTrace = FVector::ZeroVector;
 
-	if (HitActorResult != nullptr)
+	// if (HitActorResult != nullptr)
+	// {
+	// 	const FHitResult& CurHitResult = *HitActorResult;
+	// 	HitActor = CurHitResult.HitObjectHandle.FetchActor();
+	// 	if (HitActor != nullptr)
+	// 	{
+	// 		ImpactLocation = HitActor->GetActorLocation();
+	// 		ImpactNormal = HitActor->GetActorForwardVector().GetSafeNormal();
+	// 		StartTrace = CurHitResult.TraceStart;
+	// 		EndTrace = CurHitResult.TraceEnd;
+	// 	}
+	// }
+
+	if (HitActorResult!= nullptr)
 	{
 		const FHitResult& CurHitResult = *HitActorResult;
 		HitActor = CurHitResult.HitObjectHandle.FetchActor();
-		if (HitActor != nullptr)
+		if (HitActor!= nullptr)
 		{
-			ImpactLocation = HitActor->GetActorLocation();
-			ImpactNormal = HitActor->GetActorForwardVector().GetSafeNormal();
+			ImpactLocation = CurHitResult.ImpactPoint;
+			ImpactNormal = CurHitResult.ImpactNormal;
 			StartTrace = CurHitResult.TraceStart;
 			EndTrace = CurHitResult.TraceEnd;
 		}
