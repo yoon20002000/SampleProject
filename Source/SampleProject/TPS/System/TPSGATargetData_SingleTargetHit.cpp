@@ -2,6 +2,8 @@
 
 #include "TPSGATargetData_SingleTargetHit.h"
 
+#include "Game/AbilitySystem/TPSGameplayEffectContext.h"
+
 FTPSGameplayAbilityTargetData_SingleTargetHit::FTPSGameplayAbilityTargetData_SingleTargetHit() : CartridgeID(-1)
 {
 }
@@ -10,12 +12,11 @@ void FTPSGameplayAbilityTargetData_SingleTargetHit::AddTargetDataToContext(FGame
 	bool bIncludeActorArray) const
 {
 	FGameplayAbilityTargetData_SingleTargetHit::AddTargetDataToContext(Context, bIncludeActorArray);
-
-	// 이후 Effect Context 추가 시
-	// if (FTPSGameplayEffectContext* TypedContext = FTPSGameplayEffectContext::ExtractEffectContext(Context))
-	// {
-	// 	TypedContext->CartridgeID = CartridgeID;
-	// }
+	
+	if (FTPSGameplayEffectContext* TypedContext = FTPSGameplayEffectContext::ExtractEffectContext(Context))
+	{
+		TypedContext->CartridgeID = CartridgeID;
+	}
 }
 
 bool FTPSGameplayAbilityTargetData_SingleTargetHit::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess)
