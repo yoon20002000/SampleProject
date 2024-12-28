@@ -22,7 +22,7 @@ FTPSGameplayEffectContext* FTPSGameplayEffectContext::ExtractEffectContext(FGame
 	if (BaseEffectContext != nullptr && BaseEffectContext->GetScriptStruct()->IsChildOf(
 		FTPSGameplayEffectContext::StaticStruct()) == true)
 	{
-		return static_cast<FTPSGameplayEffectContext*>(BaseEffectContext);
+		return (FTPSGameplayEffectContext*)(BaseEffectContext);
 	}
 
 	return nullptr;

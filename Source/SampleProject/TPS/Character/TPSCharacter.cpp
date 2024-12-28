@@ -1,4 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "TPSCharacter.h"
@@ -6,6 +6,7 @@
 #include "Components/TPSHealthComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Game/AbilitySystem/TPSAbilitySystemComponent.h"
+#include "Game/AbilitySystem/TPSCombatAttributeSet.h"
 #include "System/TPSAbilitySet.h"
 #include "UI/TPSFloatingHPBar.h"
 
@@ -30,6 +31,9 @@ ATPSCharacter::ATPSCharacter()
 	}
 	
 	AbilitySystemComp = CreateDefaultSubobject<UTPSAbilitySystemComponent>(TEXT("AbilitySystem Comp"));
+	CombatSet = CreateDefaultSubobject<UTPSCombatAttributeSet>(TEXT("Combat Set"));
+
+	ATPSCharacter::InitializeAttributes();
 }
 
 // Called when the game starts or when spawned
@@ -44,6 +48,16 @@ void ATPSCharacter::OnHealthChanged(UTPSHealthComponent* HealthComponent, float 
 	FString InstigatorActorName = InstigatorActor != nullptr ? InstigatorActor->GetName() : TEXT("null");
 	UE_LOG(LogTemp, Log, TEXT("Instigator Actor : %s, OwningComp : %s, NewHealth : %f, Delta : %f"),
 		   *InstigatorActorName, *HealthComponent->GetName(), NewValue, NewValue - OldValue);
+}
+
+void ATPSCharacter::InitializeAttributes()
+{
+	if (AbilitySystemComp == nullptr)
+	{
+		return;
+	}
+	
+	AbilitySystemComp->AddAttributeSetSubobject<UTPSCombatAttributeSet>(CombatSet);
 }
 
 void ATPSCharacter::PostInitializeComponents()

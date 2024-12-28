@@ -7,6 +7,7 @@
 #include "AbilitySystemInterface.h"
 #include "TPSCharacter.generated.h"
 
+class UTPSCombatAttributeSet;
 class UTPSGameplayAbility;
 class UTPSHealthComponent;
 class UTPSFloatingHPBar;
@@ -41,6 +42,7 @@ protected:
 	UFUNCTION()
 	void OnHealthChanged(UTPSHealthComponent* HealthComponent, float OldValue, float NewValue, AActor* InstigatorActor);
 
+	virtual void InitializeAttributes();
 public:
 	UPROPERTY(VisibleAnywhere, Category = UI)
 	TObjectPtr<UWidgetComponent> HPBarWidget;
@@ -61,4 +63,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(allowPrivateAccess=true), Category = "Abilities")
 	TArray<TSubclassOf<UTPSGameplayAbility>> CharacterAbilities;
+private:
+	UPROPERTY()
+	TObjectPtr<UTPSCombatAttributeSet> CombatSet;
 };
