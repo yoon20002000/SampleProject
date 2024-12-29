@@ -3,9 +3,29 @@
 
 #include "TPSAIController.h"
 
+#include "NavigationSystem.h"
 #include "TPSPlayer.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "Kismet/GameplayStatics.h"
+
+ATPSAIController::ATPSAIController() : RepeatInterval(3.0f)
+{
+	
+}
+
+void ATPSAIController::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+	GetWorld()->GetTimerManager().SetTimer(RepeatTimerHandle, this, &ThisClass::OnRepeatTimer, RepeatInterval,
+	                                       true);
+}
+
+void ATPSAIController::OnUnPossess()
+{
+	Super::OnUnPossess();
+	GetWorld()->GetTimerManager().ClearTimer(RepeatTimerHandle);
+}
 
 void ATPSAIController::Tick(float DeltaSeconds)
 {
@@ -36,4 +56,24 @@ void ATPSAIController::BeginPlay()
 			GetBlackboardComponent()->SetValueAsVector(TEXT("StartLocation"), GetPawn()->GetActorLocation());
 		}
 	}
+}
+
+void ATPSAIController::OnRepeatTimer()
+{
+	APawn* CurrentPawn = GetPawn();
+	check(CurrentPawn);
+
+	UNavigationSystemV1* NavSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+
+	if (NavSystem == nullptr)
+	{
+		return;
+	}
+
+	FNavLocation NextLocation ;
+	if (NavSystem->GetRandomPointInNavigableRadius(FVector::ZeroVector, 500.0f, NextLocation))
+	{
+		UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, NextLocation);
+	}
+		
 }

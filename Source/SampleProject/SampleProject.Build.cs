@@ -32,7 +32,8 @@ public class SampleProject : ModuleRules
 		"GameplayTags",
 		"CommonInput",
 		"GameplayAbilities",
-		"GameplayTasks"
+		"GameplayTasks",
+		"NavigationSystem"
 		});
 
 		if (bUseOnlineSubsystemV1)
