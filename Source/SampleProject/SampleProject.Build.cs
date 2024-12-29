@@ -33,7 +33,8 @@ public class SampleProject : ModuleRules
 		"CommonInput",
 		"GameplayAbilities",
 		"GameplayTasks",
-		"NavigationSystem"
+		"NavigationSystem",
+		"AIModule"
 		});
 
 		if (bUseOnlineSubsystemV1)
