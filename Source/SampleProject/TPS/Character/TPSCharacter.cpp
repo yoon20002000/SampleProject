@@ -100,7 +100,7 @@ float ATPSCharacter::GetMaxHealth() const
 	return HealthComp->GetMaxHealth();
 }
 
-UTPSHealthComponent* ATPSCharacter::GetAttributeComp()
+UTPSHealthComponent* ATPSCharacter::GetHealthAttributeComp()
 {
 	return HealthComp;
 }

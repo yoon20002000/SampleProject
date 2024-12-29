@@ -34,7 +34,7 @@ public:
 	float GetHealth()const;
 	float GetMaxHealth()const;
 	
-	UTPSHealthComponent* GetAttributeComp();
+	UTPSHealthComponent* GetHealthAttributeComp();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UTPSAbilitySystemComponent* GetTPSAbilitySystemComponent()const;
 protected:

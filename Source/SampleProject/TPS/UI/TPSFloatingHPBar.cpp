@@ -21,7 +21,7 @@ void UTPSFloatingHPBar::BindCharacter(ATPSCharacter* InCharacter)
 	OwnerCharacter = InCharacter;
 	if (OwnerCharacter.IsValid() == true)
 	{
-		UTPSHealthComponent* AttributeComp = OwnerCharacter.Get()->GetAttributeComp();
+		UTPSHealthComponent* AttributeComp = OwnerCharacter.Get()->GetHealthAttributeComp();
 		UpdateFloatingHPBar(AttributeComp->GetHealth(), AttributeComp->GetMaxHealth());
 		AttributeComp->OnHealthChanged.AddDynamic(this, &ThisClass::UpdateUIs);
 	}
@@ -31,7 +31,7 @@ void UTPSFloatingHPBar::UnbindCharacter()
 {
 	if (OwnerCharacter.IsValid() == true)
 	{
-		OwnerCharacter.Get()->GetAttributeComp()->OnHealthChanged.RemoveDynamic(this, &UTPSFloatingHPBar::UpdateUIs);
+		OwnerCharacter.Get()->GetHealthAttributeComp()->OnHealthChanged.RemoveDynamic(this, &UTPSFloatingHPBar::UpdateUIs);
 	}
 	OwnerCharacter = nullptr;
 }

@@ -21,7 +21,7 @@ void UTPSHealthBar::NativeConstruct()
 	{
 		UpdateHealthBar(TPSPlayer->GetHealth(), TPSPlayer->GetMaxHealth());
 		UpdateHealthPoint(TPSPlayer->GetHealth());
-		TPSPlayer->GetAttributeComp()->OnHealthChanged.AddDynamic(this, &ThisClass::UpdateUIs);
+		TPSPlayer->GetHealthAttributeComp()->OnHealthChanged.AddDynamic(this, &ThisClass::UpdateUIs);
 	}
 }
 
@@ -42,7 +42,7 @@ void UTPSHealthBar::BeginDestroy()
 	
 	if (ATPSPlayer* TPSPlayer = GetTPSPlayer())
 	{
-		TPSPlayer->GetAttributeComp()->OnHealthChanged.RemoveDynamic(this, &ThisClass::UpdateUIs);
+		TPSPlayer->GetHealthAttributeComp()->OnHealthChanged.RemoveDynamic(this, &ThisClass::UpdateUIs);
 	}
 }
 

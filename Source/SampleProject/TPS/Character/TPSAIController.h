@@ -13,5 +13,12 @@ UCLASS(Blueprintable)
 class SAMPLEPROJECT_API ATPSAIController : public AAIController
 {
 	GENERATED_BODY()
-	
+public:
+	virtual void Tick(float DeltaSeconds) override;
+	bool IsAlive() const;
+protected:
+	virtual void BeginPlay() override;
+private:
+	UPROPERTY(EditDefaultsOnly, meta=(AllowPrivateAccess))
+	TObjectPtr<UBehaviorTree> AIBT;
 };
