@@ -3,6 +3,11 @@
 
 #include "TPSAIController.h"
 
+#include "BehaviorTree/BlackboardComponent.h"
+
+const FName ATPSAIController::StartLocation(TEXT("StartLocation"));
+const FName ATPSAIController::PatrolLocation(TEXT("PatrolLocation"));
+
 ATPSAIController::ATPSAIController() 
 {
 	
@@ -18,6 +23,8 @@ void ATPSAIController::OnPossess(APawn* InPawn)
 	UBlackboardComponent* BBC = Blackboard;
 	if (UseBlackboard(BBAsset,BBC))
 	{
+		BBC->SetValueAsVector(StartLocation, InPawn->GetActorLocation());
+		
 		if (RunBehaviorTree(BTAsset) == false)
 		{
 			UE_LOG(LogTemp, Log, TEXT("AIController not run"));

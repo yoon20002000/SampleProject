@@ -18,6 +18,9 @@ public:
 	ATPSAIController();
 	virtual void OnPossess(APawn* InPawn) override;
 
+	static const FName StartLocation;
+	static const FName PatrolLocation;
+
 private:
 	UPROPERTY(EditDefaultsOnly,  meta=(AllowPrivateAccess=true))
 	TObjectPtr<UBehaviorTree> BTAsset;
