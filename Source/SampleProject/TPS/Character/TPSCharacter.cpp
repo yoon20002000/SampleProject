@@ -7,6 +7,7 @@
 #include "Components/WidgetComponent.h"
 #include "Game/AbilitySystem/TPSAbilitySystemComponent.h"
 #include "Game/AbilitySystem/TPSCombatAttributeSet.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "System/TPSAbilitySet.h"
 #include "UI/TPSFloatingHPBar.h"
 
@@ -58,6 +59,28 @@ void ATPSCharacter::InitializeAttributes()
 	}
 	
 	AbilitySystemComp->AddAttributeSetSubobject<UTPSCombatAttributeSet>(CombatSet);
+}
+
+void ATPSCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	UCharacterMovementComponent* CMC = GetCharacterMovement();
+	if (IsPlayerControlled() == true)
+	{
+		bUseControllerRotationYaw = false;
+		CMC->bUseControllerDesiredRotation = false;
+		CMC->bOrientRotationToMovement = true;
+		CMC->RotationRate = FRotator(0.0f,720.f,0.0f);
+		CMC->MaxWalkSpeed = 600.0f;
+	}
+	else
+	{
+		bUseControllerRotationYaw = false;
+		CMC->bUseControllerDesiredRotation = false;
+		CMC->bOrientRotationToMovement = true;
+		CMC->RotationRate = FRotator(0.0f,480.f,0.0f);
+		CMC->MaxWalkSpeed = 300.0f;
+	}
 }
 
 void ATPSCharacter::PostInitializeComponents()

@@ -43,6 +43,7 @@ protected:
 	void OnHealthChanged(UTPSHealthComponent* HealthComponent, float OldValue, float NewValue, AActor* InstigatorActor);
 
 	virtual void InitializeAttributes();
+	virtual void PossessedBy(AController* NewController) override;
 public:
 	UPROPERTY(VisibleAnywhere, Category = UI)
 	TObjectPtr<UWidgetComponent> HPBarWidget;

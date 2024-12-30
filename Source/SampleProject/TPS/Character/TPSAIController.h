@@ -20,6 +20,7 @@ public:
 
 	static const FName StartLocation;
 	static const FName PatrolLocation;
+	static const FName TargetActor;
 
 private:
 	UPROPERTY(EditDefaultsOnly,  meta=(AllowPrivateAccess=true))

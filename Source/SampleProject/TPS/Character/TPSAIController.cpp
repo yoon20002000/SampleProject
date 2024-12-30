@@ -7,6 +7,7 @@
 
 const FName ATPSAIController::StartLocation(TEXT("StartLocation"));
 const FName ATPSAIController::PatrolLocation(TEXT("PatrolLocation"));
+const FName ATPSAIController::TargetActor(TEXT("TargetActor"));
 
 ATPSAIController::ATPSAIController() 
 {
