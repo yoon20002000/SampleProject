@@ -10,7 +10,7 @@
 #include "Engine/OverlapResult.h"
 
 
-UBTService_DetectTarget::UBTService_DetectTarget()
+UBTService_DetectTarget::UBTService_DetectTarget() : DetectRadius(1000.0f)
 {
 	NodeName = TEXT("Detect Target");
 	Interval = 1.0f;
@@ -29,7 +29,7 @@ void UBTService_DetectTarget::TickNode(UBehaviorTreeComponent& OwnerComp, uint8*
 
 	UWorld* World = ControllingPawn->GetWorld();
 	FVector Center = ControllingPawn->GetActorLocation();
-	float DetectRadius = 600.0f;
+	
 
 	if (World == nullptr)
 	{
@@ -54,19 +54,19 @@ void UBTService_DetectTarget::TickNode(UBehaviorTreeComponent& OwnerComp, uint8*
 			ATPSPlayer* TargetPlayer = Cast<ATPSPlayer>(Hit.GetActor());
 			if (TargetPlayer != nullptr && TargetPlayer->GetController()->IsPlayerController() == true)
 			{
-				BBC->SetValueAsObject(ATPSAIController::TargetActor, TargetPlayer);
+				BBC->SetValueAsObject(ATPSAIController::TargetActorKey, TargetPlayer);
 				DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Red, false, .2f);
 				DrawDebugPoint(World, TargetPlayer->GetActorLocation(), 10.0f, FColor::Blue, false, .2f);
 				DrawDebugLine(World, ControllingPawn->GetActorLocation(), TargetPlayer->GetActorLocation(), FColor::Blue, false, .2f);
 				return;
 			}
 		}
-		BBC->SetValueAsObject(ATPSAIController::TargetActor, nullptr);
+		BBC->SetValueAsObject(ATPSAIController::TargetActorKey, nullptr);
 		DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Yellow, false, .2f);
 	}
 	else
 	{
-		BBC->SetValueAsObject(ATPSAIController::TargetActor, nullptr);
+		BBC->SetValueAsObject(ATPSAIController::TargetActorKey, nullptr);
 		DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Yellow, false, .2f);
 	}
 	DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Red, false, .2f);

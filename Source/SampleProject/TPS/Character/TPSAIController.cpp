@@ -5,9 +5,9 @@
 
 #include "BehaviorTree/BlackboardComponent.h"
 
-const FName ATPSAIController::StartLocation(TEXT("StartLocation"));
-const FName ATPSAIController::PatrolLocation(TEXT("PatrolLocation"));
-const FName ATPSAIController::TargetActor(TEXT("TargetActor"));
+const FName ATPSAIController::StartLocationKey(TEXT("StartLocation"));
+const FName ATPSAIController::PatrolLocationKey(TEXT("PatrolLocation"));
+const FName ATPSAIController::TargetActorKey(TEXT("TargetActor"));
 
 ATPSAIController::ATPSAIController() 
 {
@@ -24,7 +24,7 @@ void ATPSAIController::OnPossess(APawn* InPawn)
 	UBlackboardComponent* BBC = Blackboard;
 	if (UseBlackboard(BBAsset,BBC))
 	{
-		BBC->SetValueAsVector(StartLocation, InPawn->GetActorLocation());
+		BBC->SetValueAsVector(StartLocationKey, InPawn->GetActorLocation());
 		
 		if (RunBehaviorTree(BTAsset) == false)
 		{

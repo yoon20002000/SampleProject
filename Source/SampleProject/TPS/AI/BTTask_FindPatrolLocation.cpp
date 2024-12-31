@@ -33,12 +33,12 @@ EBTNodeResult::Type UBTTask_FindPatrolLocation::ExecuteTask(UBehaviorTreeCompone
 
 	auto BBC = OwnerComp.GetBlackboardComponent();
 	
-	FVector Origin = BBC->GetValueAsVector(ATPSAIController::StartLocation);
+	FVector Origin = BBC->GetValueAsVector(ATPSAIController::StartLocationKey);
 	FNavLocation NextPatrolLoc;
 
 	if (NavSystem->GetRandomPointInNavigableRadius(FVector::ZeroVector, 500.0f, NextPatrolLoc))
 	{
-		BBC->SetValueAsVector(ATPSAIController::PatrolLocation, NextPatrolLoc);
+		BBC->SetValueAsVector(ATPSAIController::PatrolLocationKey, NextPatrolLoc);
 		return EBTNodeResult::Succeeded;
 	}
 	

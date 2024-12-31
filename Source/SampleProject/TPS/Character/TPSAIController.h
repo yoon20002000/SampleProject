@@ -18,9 +18,9 @@ public:
 	ATPSAIController();
 	virtual void OnPossess(APawn* InPawn) override;
 
-	static const FName StartLocation;
-	static const FName PatrolLocation;
-	static const FName TargetActor;
+	static const FName StartLocationKey;
+	static const FName PatrolLocationKey;
+	static const FName TargetActorKey;
 
 private:
 	UPROPERTY(EditDefaultsOnly,  meta=(AllowPrivateAccess=true))

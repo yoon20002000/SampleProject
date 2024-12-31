@@ -16,4 +16,7 @@ public:
 	UBTService_DetectTarget();
 protected:
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
+private:
+	UPROPERTY(EditAnywhere)
+	float DetectRadius = 600.0f;
 };
