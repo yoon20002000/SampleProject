@@ -28,6 +28,8 @@ bool UBTDecorator_TargetIsInRange::CalculateRawConditionValue(UBehaviorTreeCompo
 	{
 		return false;
 	}
+
+	UE_LOG(LogTemp, Log, TEXT("Is in range ? : %d"), (Target->GetDistanceTo(ControllingPawn) <= Range) ? 1:0);
 	
 	return Target->GetDistanceTo(ControllingPawn) <= Range; 
 }
