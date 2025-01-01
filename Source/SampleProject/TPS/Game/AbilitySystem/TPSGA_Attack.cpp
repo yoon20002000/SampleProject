@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "AIController.h"
 #include "NativeGameplayTags.h"
+#include "Character/TPSCharacter.h"
 #include "GameFramework/Character.h"
 #include "System/TPSCollisionChannels.h"
 #include "System/TPSGATargetData_SingleTargetHit.h"
@@ -55,14 +56,14 @@ AController* UTPSGA_Attack::GetControllerFromActorInfo() const
 		AActor* Actor = CurrentActorInfo->OwnerActor.Get();
 		while (Actor != nullptr)
 		{
-			if (AController* C = Cast<AController>(Actor))
+			if (AController* Controller = Cast<AController>(Actor))
 			{
-				return C;
+				return Controller;
 			}
 
-			if (APawn* P = Cast<APawn>(Actor))
+			if (APawn* Pawn = Cast<APawn>(Actor))
 			{
-				return P->GetController();
+				return Pawn->GetController();
 			}
 			Actor = Actor->GetOwner();
 		}
@@ -83,14 +84,15 @@ void UTPSGA_Attack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 	StartRangedWeaponTargeting();
 
 	AActor* OwnerActor = GetAvatarActorFromActorInfo();
-	if (ACharacter* OwnerPawn = Cast<ACharacter>(OwnerActor);PlayMontage != nullptr)
+	if (ATPSCharacter* OwnerPawn = Cast<ATPSCharacter>(OwnerActor);PlayMontage != nullptr)
 	{
 		UAnimInstance* AnimInstance = OwnerPawn->GetMesh()->GetAnimInstance();
 
 		AnimInstance->Montage_Play(PlayMontage);
 		FOnMontageEnded MontageEndDelegate;
-		MontageEndDelegate.BindLambda([this,Handle, ActorInfo, ActivationInfo](UAnimMontage* Montage, bool bInterrupted)
+		MontageEndDelegate.BindLambda([this,Handle, ActorInfo, ActivationInfo, OwnerPawn](UAnimMontage* Montage, bool bInterrupted)
 		{
+			OwnerPawn->OnAttackEnd.Broadcast();
 			this->EndAbility(Handle, ActorInfo, ActivationInfo, true, false);			
 		});
 		AnimInstance->Montage_SetEndDelegate(MontageEndDelegate,PlayMontage);
@@ -475,23 +477,9 @@ void UTPSGA_Attack::OnTargetDataReadyCallback(const FGameplayAbilityTargetDataHa
 					// 	}
 					// 	WeaponStateComponent->ClientConfirmTargetData(LocalTargetDataHandle.UniqueId, bIsTargetDataValid, HitReplaces);
 					// }
-
-					TArray<uint8> HitReplaces;
-					uint8 IndexLimit = 255;
-					for (uint8 Index = 0; Index < LocalTargetDataHandle.Num() && Index < IndexLimit; ++Index )
-					{
-						if (FGameplayAbilityTargetData_SingleTargetHit* SingleTargetHit = static_cast<FGameplayAbilityTargetData_SingleTargetHit*>(LocalTargetDataHandle.Get(Index)))
-						{
-							if (SingleTargetHit->bHitReplaced == true)
-							{
-								HitReplaces.Add(Index);
-								if (AActor* HitActor = SingleTargetHit->HitResult.GetActor())
-								{
-									UE_LOG(LogTemp, Log, TEXT("Hit !!! : %s"),*GetNameSafe(HitActor));	
-								}
-							}
-						}
-					}
+					
+					
+					// WeaponStateComponent->ClientConfirmTargetData(LocalTargetDataHandle.UniqueId, bIsTargetDataValid, HitReplaces);
 				}
 			}
 		}
@@ -543,7 +531,7 @@ void UTPSGA_Attack::StartRangedWeaponTargeting()
 			FTPSGameplayAbilityTargetData_SingleTargetHit* NewTargetData = new FTPSGameplayAbilityTargetData_SingleTargetHit();
 			NewTargetData->HitResult = FoundHit;
 			NewTargetData->CartridgeID = CartridgeID;
-			
+			UE_LOG(LogTemp, Log, TEXT("Target Data In!!"));
 			TargetDataHandle.Add(NewTargetData);
 		}
 	}

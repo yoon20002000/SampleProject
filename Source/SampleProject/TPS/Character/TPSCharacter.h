@@ -19,6 +19,9 @@ class UTPSSpringArmComponent;
 class UTPSActionComponent;
 class UTPSAbilitySystemComponent;
 class UTPSAbilitySet;
+
+DECLARE_MULTICAST_DELEGATE(FOnAttackEndDelegate)
+
 UCLASS()
 class SAMPLEPROJECT_API ATPSCharacter : public ACharacter, public IAbilitySystemInterface
 {
@@ -47,6 +50,8 @@ protected:
 public:
 	UPROPERTY(VisibleAnywhere, Category = UI)
 	TObjectPtr<UWidgetComponent> HPBarWidget;
+
+	FOnAttackEndDelegate OnAttackEnd;
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UTPSHealthComponent> HealthComp;
