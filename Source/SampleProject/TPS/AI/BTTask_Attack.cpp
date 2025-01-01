@@ -5,6 +5,9 @@
 
 #include "AIController.h"
 #include "Character/TPSCharacter.h"
+#include "Game/TPSGameplayTags.h"
+#include "Game/AbilitySystem/TPSAbilitySystemComponent.h"
+#include "Game/AbilitySystem/TPSGA_Attack.h"
 
 
 UBTTask_Attack::UBTTask_Attack() : IsAttacking(false)
@@ -22,19 +25,36 @@ EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 		return EBTNodeResult::Failed;
 	}
 
-	// Character-> 공격 action call 필요
-	UE_LOG(LogTemp, Log, TEXT("Action Call 필요"));
-	IsAttacking = true;
-	if (AttackEndDelegateHandle.IsValid() == false)
+	UTPSAbilitySystemComponent* ASC = Character->GetTPSAbilitySystemComponent();
+	if (ASC == nullptr)
 	{
-		Character->OnAttackEnd.AddLambda(
-			[this]() -> void
-			{
-				IsAttacking = false;
-			});	
+		return EBTNodeResult::Failed;
 	}
+
+	FGameplayTagContainer AttackTag;
+	AttackTag.AddTag(TPSGameplayTags::InputTag_Weapon_Fire);
 	
-	return EBTNodeResult::InProgress;
+	//if (ASC->TryActivateAbilitiesByTag(AttackTag) == true)
+	if (ASC->TryActivateAbilityByClass(GA_Attack) == true)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Success!!!!"));
+		IsAttacking = true;
+		if (AttackEndDelegateHandle.IsValid() == false)
+		{
+			Character->OnAttackEnd.AddLambda(
+				[this]() -> void
+				{
+					IsAttacking = false;
+				});	
+		}
+	
+		return EBTNodeResult::InProgress;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("Failed!!!!"));
+		return EBTNodeResult::Failed;
+	}
 }
 
 void UBTTask_Attack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)

@@ -5,6 +5,7 @@
 #include "BehaviorTree/BTTaskNode.h"
 #include "BTTask_Attack.generated.h"
 
+class UTPSGA_Attack;
 /**
  * 
  */
@@ -22,4 +23,6 @@ protected:
 private:
 	FDelegateHandle AttackEndDelegateHandle;
 	bool IsAttacking;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UTPSGA_Attack> GA_Attack;
 };
