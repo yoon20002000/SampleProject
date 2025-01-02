@@ -30,11 +30,7 @@ EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 	{
 		return EBTNodeResult::Failed;
 	}
-
-	FGameplayTagContainer AttackTag;
-	AttackTag.AddTag(TPSGameplayTags::InputTag_Weapon_Fire);
 	
-	//if (ASC->TryActivateAbilitiesByTag(AttackTag) == true)
 	if (ASC->TryActivateAbilityByClass(GA_Attack) == true)
 	{
 		UE_LOG(LogTemp, Log, TEXT("Success!!!!"));
