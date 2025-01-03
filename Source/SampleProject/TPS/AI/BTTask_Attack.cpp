@@ -31,26 +31,38 @@ EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 		return EBTNodeResult::Failed;
 	}
 	
-	if (ASC->TryActivateAbilityByClass(GA_Attack) == true)
-	{
-		UE_LOG(LogTemp, Log, TEXT("Success!!!!"));
-		IsAttacking = true;
-		if (AttackEndDelegateHandle.IsValid() == false)
-		{
-			Character->OnAttackEnd.AddLambda(
-				[this]() -> void
-				{
-					IsAttacking = false;
-				});	
-		}
 	
-		return EBTNodeResult::InProgress;
+	FGameplayAbilitySpec* AbilitySpec = ASC->FindAbilitySpecFromClass(GA_Attack);
+	if (AbilitySpec != nullptr)
+	{
+		FGameplayAbilitySpecHandle AbilityHandle = AbilitySpec->Handle;
+
+		if (ASC->TryActivateAbility(AbilityHandle))
+		{
+			IsAttacking = true;
+			if (AttackEndDelegateHandle.IsValid() == false)
+			{
+				Character->OnAttackEnd.AddLambda(
+					[this]() -> void
+					{
+						IsAttacking = false;
+					});	
+			}
+	
+			return EBTNodeResult::InProgress;
+		}
+		else
+		{
+			UE_LOG(LogTemp, Log, TEXT("Failed : TryActivate Ability Failed!!!"));
+			return EBTNodeResult::Failed;
+		}
 	}
 	else
 	{
-		UE_LOG(LogTemp, Log, TEXT("Failed!!!!"));
-		return EBTNodeResult::Failed;
+		UE_LOG(LogTemp, Log, TEXT("Failed : Ability Spec is nullptr !!!!"));
 	}
+	
+	return EBTNodeResult::Failed;
 }
 
 void UBTTask_Attack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)

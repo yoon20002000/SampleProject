@@ -531,7 +531,6 @@ void UTPSGA_Attack::StartRangedWeaponTargeting()
 			FTPSGameplayAbilityTargetData_SingleTargetHit* NewTargetData = new FTPSGameplayAbilityTargetData_SingleTargetHit();
 			NewTargetData->HitResult = FoundHit;
 			NewTargetData->CartridgeID = CartridgeID;
-			UE_LOG(LogTemp, Log, TEXT("Target Data In!!"));
 			TargetDataHandle.Add(NewTargetData);
 		}
 	}
