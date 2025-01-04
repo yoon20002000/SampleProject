@@ -4,6 +4,7 @@
 #include "Components/TPSHealthComponent.h"
 
 #include "Character/TPSCharacter.h"
+#include "Game/TPSGameMode.h"
 #include "Game/TPSGameplayTags.h"
 #include "Game/AbilitySystem/TPSAbilitySystemComponent.h"
 #include "Game/AbilitySystem/TPSHealthSet.h"
@@ -146,7 +147,12 @@ void UTPSHealthComponent::HandleOutOfHealth(AActor* DamageInstigator, AActor* Da
 	float DamageMagnitude, float OldValue, float NewValue)
 {
 	AActor* OwnerActor = GetOwner();
-	UE_LOG(LogTemp, Log, TEXT("%s kill %s"), *GetNameSafe(DamageCauser), *GetNameSafe(OwnerActor));
 
 	OnDeathStart.Broadcast(OwnerActor);
+
+	ATPSGameMode* GM = Cast<ATPSGameMode>(GetWorld()->GetAuthGameMode());
+	if (GM != nullptr)
+	{
+		GM->OnActorKilled(OwnerActor,DamageCauser);	
+	}
 }

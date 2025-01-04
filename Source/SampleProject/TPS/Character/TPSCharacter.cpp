@@ -209,6 +209,12 @@ ECharacterState ATPSCharacter::GetCharacterState() const
 	return CurrentState;
 }
 
+void ATPSCharacter::UninitAndDestroy()
+{
+	HealthComp->Uninitialize();
+	SetLifeSpan(0.1f);
+}
+
 void ATPSCharacter::OnAbilitySystemInitialized()
 {
 	UTPSAbilitySystemComponent* ASComp = GetTPSAbilitySystemComponent();

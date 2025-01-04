@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "TPSGameMode.generated.h"
 
+class ATPSPlayer;
 enum class EGameplayState : uint8;
 class UGameDataAsset;
 class UTPSGameInstance;
@@ -31,4 +32,8 @@ public:
 private:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, meta=(AllowPrivateAccess = true))
 	EGameplayState GameplayState;
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<ATPSPlayer> PlayerClass;
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<ACharacter> AICharacterClass;
 };

@@ -5,6 +5,7 @@
 
 #include "TPSGameManager.h"
 #include "TPSSystemManager.h"
+#include "Character/TPSAIController.h"
 #include "Character/TPSPlayer.h"
 #include "Character/TPSPlayerState.h"
 
@@ -41,10 +42,17 @@ void ATPSGameMode::OnActorKilled(AActor* KilledActor, AActor* InstigatorActor)
 {
 	UE_LOG(LogTemp, Log, TEXT("KilledActor Actor : %s InstigatorActor : %s"), *GetNameSafe(KilledActor),
 	       *InstigatorActor->GetName());
-	ATPSPlayer* TPSPlayer = Cast<ATPSPlayer>(KilledActor);
-	if ( TPSPlayer != nullptr)
+	
+	if (const ATPSPlayer* TPSPlayer = Cast<ATPSPlayer>(KilledActor))
 	{
-		
+		ATPSCharacter* AICharacter = Cast<ATPSCharacter>(InstigatorActor);
+		if (AICharacter != nullptr)
+		{
+			if (ATPSAIController* AIController = Cast<ATPSAIController>(AICharacter->GetController()))
+			{
+				AIController->StopAI();
+			}
+		}
 	}
 	else
 	{
@@ -55,4 +63,17 @@ void ATPSGameMode::OnActorKilled(AActor* KilledActor, AActor* InstigatorActor)
 			PS->AddKillCount();
 		}
 	}
+	FTimerHandle TimerHandle;
+	FTimerDelegate TimerDelegate;
+	TimerDelegate.BindLambda(
+		[KilledActor]()
+		{
+			ATPSCharacter* DieCharacter = Cast<ATPSCharacter>(KilledActor);
+			DieCharacter->UninitAndDestroy();
+			
+			// 새로운 캐릭터 생성 로직 추가
+			UE_LOG(LogTemp, Log, TEXT("3 sec gone"));
+		});
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle,TimerDelegate,5,false);
+	
 }
