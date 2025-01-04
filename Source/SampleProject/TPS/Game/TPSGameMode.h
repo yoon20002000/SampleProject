@@ -25,15 +25,16 @@ public:
 	virtual void BeginDestroy() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	void OnActorKilled(AActor* KilledActor, AActor* InstigatorActor);
-	
+
 public:
 	UPROPERTY(EditAnywhere, Category=TPS)
 	TSoftObjectPtr<UGameDataAsset> GameDataAsset;
+
 private:
-	UPROPERTY(EditAnywhere,BlueprintReadWrite, meta=(AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
 	EGameplayState GameplayState;
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere, Category=TPS, meta=(AllowPrivateAccess = true))
 	TSubclassOf<ATPSPlayer> PlayerClass;
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere, Category=TPS, meta=(AllowPrivateAccess = true))
 	TSubclassOf<ACharacter> AICharacterClass;
 };
