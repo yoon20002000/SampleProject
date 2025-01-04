@@ -3,6 +3,8 @@
 
 #include "TPSCharacter.h"
 
+#include "TPSAIController.h"
+#include "TPSPlayerState.h"
 #include "Components/TPSHealthComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Game/AbilitySystem/TPSAbilitySystemComponent.h"
@@ -11,7 +13,7 @@
 #include "System/TPSAbilitySet.h"
 #include "UI/TPSFloatingHPBar.h"
 
-ATPSCharacter::ATPSCharacter()
+ATPSCharacter::ATPSCharacter() : bCanBeDamaged(false)
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -41,10 +43,21 @@ ATPSCharacter::ATPSCharacter()
 void ATPSCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	SetCharacterState(ECharacterState::READY);
+}
+
+void ATPSCharacter::OnDeathStart(AActor* OwningActor)
+{
+	if (OwningActor != this)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Actor not matching!! %s %s "), *GetNameSafe(OwningActor), *GetNameSafe(this));
+		return;
+	}
+	SetCharacterState(ECharacterState::DEAD);
 }
 
 void ATPSCharacter::OnHealthChanged(UTPSHealthComponent* HealthComponent, float OldValue, float NewValue,
-	AActor* InstigatorActor)
+                                    AActor* InstigatorActor)
 {
 	FString InstigatorActorName = InstigatorActor != nullptr ? InstigatorActor->GetName() : TEXT("null");
 	UE_LOG(LogTemp, Log, TEXT("Instigator Actor : %s, OwningComp : %s, NewHealth : %f, Delta : %f"),
@@ -65,7 +78,8 @@ void ATPSCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 	UCharacterMovementComponent* CMC = GetCharacterMovement();
-	if (IsPlayerControlled() == true)
+	bIsPlayerControlled = IsPlayerControlled(); 
+	if (bIsPlayerControlled == true)
 	{
 		bUseControllerRotationYaw = false;
 		CMC->bUseControllerDesiredRotation = false;
@@ -96,7 +110,7 @@ void ATPSCharacter::PostInitializeComponents()
 	}
 	
 	HealthComp->OnHealthChanged.AddDynamic(this, &ThisClass::OnHealthChanged);
-
+	HealthComp->OnDeathStart.AddDynamic(this, &ThisClass::OnDeathStart);
 	HPBarWidget->InitWidget();
 	UTPSFloatingHPBar* CharacterWidget = Cast<UTPSFloatingHPBar>(HPBarWidget->GetUserWidgetObject());
 	if (CharacterWidget != nullptr)
@@ -138,6 +152,63 @@ UTPSAbilitySystemComponent* ATPSCharacter::GetTPSAbilitySystemComponent() const
 	return Cast<UTPSAbilitySystemComponent>(GetAbilitySystemComponent());
 }
 
+void ATPSCharacter::SetCharacterState(ECharacterState CharacterState)
+{
+	if (CurrentState == CharacterState)
+	{
+		return;
+	}
+	CurrentState = CharacterState;
+
+	switch (CurrentState)
+	{
+	case ECharacterState::PREINIT:
+		{
+			bCanBeDamaged=false;
+			SetPlayerInput(false);
+			break;
+		}
+	case ECharacterState::LOADING:
+		{
+			bCanBeDamaged=false;
+			SetPlayerInput(false);
+			break;
+		}
+	case ECharacterState::READY:
+		{
+			bCanBeDamaged=true;
+			HPBarWidget->SetHiddenInGame(false);
+			SetPlayerInput(true);
+			break;
+		}
+	case ECharacterState::DEAD:
+		{
+			bCanBeDamaged=false;
+			HPBarWidget->SetHiddenInGame(true);
+			SetPlayerInput(false);
+
+			if (bIsPlayerControlled == false)
+			{
+				ATPSAIController* AIController = Cast<ATPSAIController>(GetController());
+				if (AIController != nullptr)
+				{
+					AIController->StopAI();
+				}
+			}
+			break;
+		}
+		default:
+			{
+				break;
+			}
+	}
+}
+
+ECharacterState ATPSCharacter::GetCharacterState() const
+{
+	return CurrentState;
+}
+
 void ATPSCharacter::OnAbilitySystemInitialized()
 {
 	UTPSAbilitySystemComponent* ASComp = GetTPSAbilitySystemComponent();
@@ -150,6 +221,22 @@ void ATPSCharacter::OnAbilitySystemInitialized()
 }
 
 
+void ATPSCharacter::SetPlayerInput(bool SetActive)
+{
+	if (bIsPlayerControlled == false)
+	{
+		return;
+	}
 
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	check(PlayerController != nullptr);
 
-
+	if (SetActive == true)
+	{
+		EnableInput(PlayerController);
+	}
+	else
+	{
+		DisableInput(PlayerController);
+	}
+}

@@ -5,6 +5,7 @@
 #include "Components/TPSHealthComponent.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
+#include "TPSPlayerState.h"
 #include "TPSCharacter.generated.h"
 
 class UTPSCombatAttributeSet;
@@ -30,7 +31,8 @@ public:
 	ATPSCharacter();
 	virtual void BeginPlay() override;
 
-	
+	UFUNCTION()
+	void OnDeathStart(AActor* OwningActor);
 	virtual void PostInitializeComponents() override;
 	virtual void Tick(float DeltaTime) override;
 	
@@ -40,6 +42,9 @@ public:
 	UTPSHealthComponent* GetHealthAttributeComp();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UTPSAbilitySystemComponent* GetTPSAbilitySystemComponent()const;
+
+	void SetCharacterState(ECharacterState CharacterState);
+	ECharacterState GetCharacterState()const;
 protected:
 	void OnAbilitySystemInitialized();
 	UFUNCTION()
@@ -47,6 +52,7 @@ protected:
 
 	virtual void InitializeAttributes();
 	virtual void PossessedBy(AController* NewController) override;
+	void SetPlayerInput(bool SetActive);
 public:
 	UPROPERTY(VisibleAnywhere, Category = UI)
 	TObjectPtr<UWidgetComponent> HPBarWidget;
@@ -69,6 +75,12 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(allowPrivateAccess=true), Category = "Abilities")
 	TArray<TSubclassOf<UTPSGameplayAbility>> CharacterAbilities;
+
+	UPROPERTY(Transient, VisibleInstanceOnly, BlueprintReadonly, meta=(AllowPrivateAccess))
+	ECharacterState CurrentState;
+
+	bool bIsPlayerControlled;
+	bool bCanBeDamaged;
 private:
 	UPROPERTY()
 	TObjectPtr<UTPSCombatAttributeSet> CombatSet;

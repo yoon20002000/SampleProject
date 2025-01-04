@@ -9,6 +9,15 @@
 
 class ATPSPlayerState;
 
+UENUM(BlueprintType)
+enum class ECharacterState : uint8
+{
+	PREINIT,
+	LOADING,
+	READY,
+	DEAD
+};
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnKillCountChanged,
 													ATPSPlayerState*, PlayerState,
 													uint32, KillCount,

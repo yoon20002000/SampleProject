@@ -3,6 +3,7 @@
 
 #include "Components/TPSHealthComponent.h"
 
+#include "Character/TPSCharacter.h"
 #include "Game/TPSGameplayTags.h"
 #include "Game/AbilitySystem/TPSAbilitySystemComponent.h"
 #include "Game/AbilitySystem/TPSHealthSet.h"
@@ -144,7 +145,8 @@ void UTPSHealthComponent::HandleMaxHealthChanged(AActor* Instigator, AActor* Dam
 void UTPSHealthComponent::HandleOutOfHealth(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec* GameplayEffectSpec,
 	float DamageMagnitude, float OldValue, float NewValue)
 {
-	// 추가 작업 필요
 	AActor* OwnerActor = GetOwner();
 	UE_LOG(LogTemp, Log, TEXT("%s kill %s"), *GetNameSafe(DamageCauser), *GetNameSafe(OwnerActor));
+
+	OnDeathStart.Broadcast(OwnerActor);
 }
