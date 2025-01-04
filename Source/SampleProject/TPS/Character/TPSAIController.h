@@ -17,14 +17,17 @@ class SAMPLEPROJECT_API ATPSAIController : public AAIController
 public:
 	ATPSAIController();
 	virtual void OnPossess(APawn* InPawn) override;
+	void RunAI(const AActor* ThisActor);
+	void StopAI() const;
 
+public:
 	static const FName StartLocationKey;
 	static const FName PatrolLocationKey;
 	static const FName TargetActorKey;
 
 private:
-	UPROPERTY(EditDefaultsOnly,  meta=(AllowPrivateAccess=true))
+	UPROPERTY(EditDefaultsOnly, meta=(AllowPrivateAccess=true))
 	TObjectPtr<UBehaviorTree> BTAsset;
-	UPROPERTY(EditDefaultsOnly,  meta=(AllowPrivateAccess=true))
+	UPROPERTY(EditDefaultsOnly, meta=(AllowPrivateAccess=true))
 	TObjectPtr<UBlackboardData> BBAsset;
 };

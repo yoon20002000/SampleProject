@@ -145,5 +145,6 @@ void UTPSHealthComponent::HandleOutOfHealth(AActor* DamageInstigator, AActor* Da
 	float DamageMagnitude, float OldValue, float NewValue)
 {
 	// 추가 작업 필요
-	UE_LOG(LogTemp, Log, TEXT("Death!!!!!!"));
+	AActor* OwnerActor = GetOwner();
+	UE_LOG(LogTemp, Log, TEXT("%s kill %s"), *GetNameSafe(DamageCauser), *GetNameSafe(OwnerActor));
 }
