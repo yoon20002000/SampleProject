@@ -46,7 +46,7 @@ public:
 	void SetCharacterState(ECharacterState CharacterState);
 	ECharacterState GetCharacterState()const;
 
-	void UninitAndDestroy();
+	virtual void UninitAndDestroy();
 protected:
 	void OnAbilitySystemInitialized();
 	UFUNCTION()

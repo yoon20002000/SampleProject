@@ -8,6 +8,9 @@
 #include "Game/TPSGameplayTags.h"
 #include "Game/AbilitySystem/TPSAbilitySystemComponent.h"
 #include "System/Input/TPSEnhancedInputComponent.h"
+#include "UI/TPSBattleHUD.h"
+#include "UI/TPSPrimaryGameLayout.h"
+#include "UI/TPSUIManager.h"
 
 // Sets default values
 ATPSPlayer::ATPSPlayer()
@@ -32,6 +35,7 @@ void ATPSPlayer::BeginPlay()
 
 	SpringArmComp = FindComponentByClass<UTPSSpringArmComponent>();
 	CameraComp = FindComponentByClass<UTPSCameraComponent>();
+	InitHUD();
 }
 
 void ATPSPlayer::AbilityInputTagPressed(FGameplayTag InputTag)
@@ -87,6 +91,12 @@ void ATPSPlayer::PostInitializeComponents()
 	Super::PostInitializeComponents();
 }
 
+void ATPSPlayer::UninitAndDestroy()
+{
+	UninitHUD();
+	Super::UninitAndDestroy();
+}
+
 void ATPSPlayer::Move(const FInputActionValue& InputActionValue)
 {
 	const FVector2D MovementVector = InputActionValue.Get<FVector2D>();
@@ -133,4 +143,38 @@ void ATPSPlayer::StopJumpAbilities()
 	FGameplayTagContainer JumpTags;
 	JumpTags.AddTag(TPSGameplayTags::Action_Jump);
 	AbilitySystemComp->CancelAbilities();
+}
+
+void ATPSPlayer::InitHUD()
+{
+	FString LayerTagName = UCommonUIExtensions::GetTPSUIManager()->GetLayerNameByLayerType(EUILayerType::GameLayer);
+	FGameplayTag LayerTag = FTPSGameplayTagHelper::FindTagByString(LayerTagName);
+	if (UTPSPrimaryGameLayout* PGLayout = UTPSPrimaryGameLayout::GetPrimaryGameLayout(Cast<APlayerController>(GetController())))
+	{
+		UCommonActivatableWidgetContainerBase* WC = PGLayout->GetLayerWidget(LayerTag);
+		if (UCommonActivatableWidget* Widget =  WC->GetActiveWidget())
+		{
+			if (UTPSBattleHUD* BattleHUD = Cast<UTPSBattleHUD>(Widget))
+			{
+				BattleHUD->InitHealthBar(this);
+			}	
+		}
+	}
+}
+
+void ATPSPlayer::UninitHUD() const
+{
+	FString LayerTagName = UCommonUIExtensions::GetTPSUIManager()->GetLayerNameByLayerType(EUILayerType::GameLayer);
+	FGameplayTag LayerTag = FTPSGameplayTagHelper::FindTagByString(LayerTagName);
+	if (UTPSPrimaryGameLayout* PGLayout = UTPSPrimaryGameLayout::GetPrimaryGameLayout(Cast<APlayerController>(GetController())))
+	{
+		UCommonActivatableWidgetContainerBase* WC = PGLayout->GetLayerWidget(LayerTag);
+		if (UCommonActivatableWidget* Widget =  WC->GetActiveWidget())
+		{
+			if (UTPSBattleHUD* BattleHUD = Cast<UTPSBattleHUD>(Widget))
+			{
+				BattleHUD->UnitHealthBar();
+			}	
+		}
+	}
 }

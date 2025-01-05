@@ -7,22 +7,36 @@
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
 
+void UTPSHealthBar::InitHealthBar(ATPSPlayer* TPSPlayer) 
+{
+	if (TPSPlayer == nullptr)
+	{
+		return;
+	}
+	
+	UpdateHealthBar(TPSPlayer->GetHealth(), TPSPlayer->GetMaxHealth());
+	UpdateHealthPoint(TPSPlayer->GetHealth());
+	TPSPlayer->GetHealthAttributeComp()->OnHealthChanged.AddDynamic(this, &ThisClass::UpdateUIs);
+}
+
+void UTPSHealthBar::UninitHealthBar()
+{
+	if (ATPSPlayer* TPSPlayer = GetTPSPlayer())
+	{
+		TPSPlayer->GetHealthAttributeComp()->OnHealthChanged.RemoveDynamic(this, &ThisClass::UpdateUIs);
+	}
+}
+
 bool UTPSHealthBar::Initialize()
 {
 	bool bResult = Super::Initialize();
-	
+
 	return bResult;
 }
 
 void UTPSHealthBar::NativeConstruct()
 {
 	Super::NativeConstruct();
-	if (ATPSPlayer* TPSPlayer = GetTPSPlayer())
-	{
-		UpdateHealthBar(TPSPlayer->GetHealth(), TPSPlayer->GetMaxHealth());
-		UpdateHealthPoint(TPSPlayer->GetHealth());
-		TPSPlayer->GetHealthAttributeComp()->OnHealthChanged.AddDynamic(this, &ThisClass::UpdateUIs);
-	}
 }
 
 void UTPSHealthBar::UpdateUIs(UTPSHealthComponent* HealthComp, float OldValue, float NewValue, AActor* Actor)
@@ -31,7 +45,7 @@ void UTPSHealthBar::UpdateUIs(UTPSHealthComponent* HealthComp, float OldValue, f
 	{
 		return;
 	}
-	
+
 	UpdateHealthBar(HealthComp->GetHealth(), HealthComp->GetMaxHealth());
 	UpdateHealthPoint(HealthComp->GetHealth());
 }
@@ -39,7 +53,7 @@ void UTPSHealthBar::UpdateUIs(UTPSHealthComponent* HealthComp, float OldValue, f
 void UTPSHealthBar::BeginDestroy()
 {
 	Super::BeginDestroy();
-	
+
 	if (ATPSPlayer* TPSPlayer = GetTPSPlayer())
 	{
 		TPSPlayer->GetHealthAttributeComp()->OnHealthChanged.RemoveDynamic(this, &ThisClass::UpdateUIs);

@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "TPSCommonUserWidget.h"
 #include "Components/TPSHealthComponent.h"
 #include "TPSHealthBar.generated.h"
@@ -17,6 +16,9 @@ UCLASS()
 class SAMPLEPROJECT_API UTPSHealthBar : public UTPSCommonUserWidget
 {
 	GENERATED_BODY()
+public:
+	void InitHealthBar(ATPSPlayer* TPSPlayer);
+	void UninitHealthBar();
 protected:
 	virtual bool Initialize() override;
 	

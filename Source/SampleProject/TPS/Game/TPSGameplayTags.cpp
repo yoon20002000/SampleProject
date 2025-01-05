@@ -57,6 +57,16 @@ namespace TPSGameplayCueTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(GameplayCue_Character_DamageTaken,"GameplayCue.Character.DamageTaken", "Character Damaged Play Cue");
 }
 
+namespace TPSUILayerTags
+{
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_UI_LAYER_Menu,"UI.Layer.Menu", "Layer Menu");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_UI_LAYER_Game,"UI.Layer.Game", "Layer Game");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_UI_LAYER_GameMenu,"UI.Layer.GameMenu", "Layer GameMenu");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_UI_LAYER_Modal,"UI.Layer.Modal", "Layer Modal");
+	
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_UI_ACTION_ESCAPE,"UI.Action.Escape", "UI Action Escape");
+}
+
 FGameplayTag FTPSGameplayTagHelper::FindTagByString(const FString& TagString, bool bMatchPartialsString)
 {
 	const UGameplayTagsManager& GTM = UGameplayTagsManager::Get();

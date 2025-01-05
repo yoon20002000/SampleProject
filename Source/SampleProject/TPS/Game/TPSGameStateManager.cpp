@@ -37,9 +37,9 @@ void UTPSGameStateManager::SetGameplayState(EGameplayState InGameState)
 			}
 		case EGameplayState::MainGame:
 			{
-				UTPSSystemManager::Get()->GetGameManager()->SpawnPlayer("Player");
 				UTPSSystemManager::Get()->GetUIManager()->LoadUI("BattleHUD");
-
+				UTPSSystemManager::Get()->GetGameManager()->SpawnPlayer("Player");
+				
 				APlayerController* PC = UGameplayStatics::GetPlayerController(TPSHelper::GetWorld(), 0);
 				PC->SetInputMode(InputGameOnly);
 				PC->SetShowMouseCursor(false);

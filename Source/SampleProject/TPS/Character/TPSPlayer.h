@@ -30,6 +30,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void PostInitializeComponents() override;
+	virtual void UninitAndDestroy() override;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -43,7 +44,8 @@ private:
 	void Interaction(const FInputActionValue& InputActionValue);
 	void JumpAbilities();
 	void StopJumpAbilities();
-
+	void InitHUD();
+	void UninitHUD() const;
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UTPSSpringArmComponent> SpringArmComp;
