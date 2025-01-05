@@ -66,14 +66,26 @@ void ATPSGameMode::OnActorKilled(AActor* KilledActor, AActor* InstigatorActor)
 	FTimerHandle TimerHandle;
 	FTimerDelegate TimerDelegate;
 	TimerDelegate.BindLambda(
-		[KilledActor]()
+		[KilledActor, this]()
 		{
 			ATPSCharacter* DieCharacter = Cast<ATPSCharacter>(KilledActor);
-			DieCharacter->UninitAndDestroy();
+			ATPSPlayer* Player = Cast<ATPSPlayer>(DieCharacter);
 			
-			// 새로운 캐릭터 생성 로직 추가
-			UE_LOG(LogTemp, Log, TEXT("3 sec gone"));
+			UClass* SpawnActor = Player != nullptr ? PlayerClass : AICharacterClass;
+			
+			FVector SpawnLocation(0.0f, 0.0f, 100.0f);
+			FRotator SpawnRotation(0.0f, 0.0f, 0.0f);
+			APawn* SpawnedActor = GetWorld()->SpawnActor<APawn>(SpawnActor, SpawnLocation, SpawnRotation);
+			
+			if (SpawnedActor != nullptr && Player != nullptr)
+			{
+				if (APlayerController* PC = Cast<APlayerController>(Player->GetController()) )
+				{
+					PC->UnPossess();
+					PC->Possess(SpawnedActor);	
+				}
+			}
+			DieCharacter->UninitAndDestroy();
 		});
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle,TimerDelegate,5,false);
-	
 }
