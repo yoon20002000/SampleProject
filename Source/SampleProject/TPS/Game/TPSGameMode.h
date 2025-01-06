@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "TPSGameMode.generated.h"
 
+class ATPSCharacter;
 class ATPSPlayer;
 enum class EGameplayState : uint8;
 class UGameDataAsset;
@@ -22,6 +23,7 @@ class SAMPLEPROJECT_API ATPSGameMode : public AGameModeBase
 public:
 	ATPSGameMode();
 	virtual void StartPlay() override;
+	virtual void BeginPlay() override;
 	virtual void BeginDestroy() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	void OnActorKilled(AActor* KilledActor, AActor* InstigatorActor);
@@ -37,4 +39,7 @@ private:
 	TSubclassOf<ATPSPlayer> PlayerClass;
 	UPROPERTY(EditAnywhere, Category=TPS, meta=(AllowPrivateAccess = true))
 	TSubclassOf<ACharacter> AICharacterClass;
+
+	UPROPERTY()
+	TArray<TObjectPtr<ATPSCharacter>> SpawnedCharacters;
 };

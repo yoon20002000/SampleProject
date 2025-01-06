@@ -26,6 +26,23 @@ void ATPSGameMode::StartPlay()
 	UTPSSystemManager::Get()->SetGameState(GameplayState);
 }
 
+void ATPSGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	for (int i = 0 ; i < 3 ; ++i)
+	{
+		FVector SpawnLocation(0.0f, 0.0f, 100.0f);
+		FRotator SpawnRotation(0.0f, 0.0f, 0.0f);
+		ATPSCharacter* SpawnedActor = GetWorld()->SpawnActor<ATPSCharacter>(AICharacterClass, SpawnLocation, SpawnRotation);
+
+		if (SpawnedActor != nullptr)
+		{
+			SpawnedCharacters.Add(SpawnedActor);
+		}
+	}
+}
+
 void ATPSGameMode::BeginDestroy()
 {	
 	Super::BeginDestroy();
@@ -45,10 +62,9 @@ void ATPSGameMode::OnActorKilled(AActor* KilledActor, AActor* InstigatorActor)
 	
 	if (const ATPSPlayer* TPSPlayer = Cast<ATPSPlayer>(KilledActor))
 	{
-		ATPSCharacter* AICharacter = Cast<ATPSCharacter>(InstigatorActor);
-		if (AICharacter != nullptr)
+		for (ATPSCharacter* SpawnedCharacter : SpawnedCharacters)
 		{
-			if (ATPSAIController* AIController = Cast<ATPSAIController>(AICharacter->GetController()))
+			if (ATPSAIController* AIController = Cast<ATPSAIController>(SpawnedCharacter->GetController()))
 			{
 				AIController->StopAI();
 			}
@@ -77,15 +93,31 @@ void ATPSGameMode::OnActorKilled(AActor* KilledActor, AActor* InstigatorActor)
 			FRotator SpawnRotation(0.0f, 0.0f, 0.0f);
 			APawn* SpawnedActor = GetWorld()->SpawnActor<APawn>(SpawnActor, SpawnLocation, SpawnRotation);
 			
-			if (SpawnedActor != nullptr && Player != nullptr)
+			if (SpawnedActor != nullptr )
 			{
-				if (APlayerController* PC = Cast<APlayerController>(Player->GetController()) )
+				if (Player != nullptr)
 				{
-					PC->UnPossess();
-					PC->Possess(SpawnedActor);	
+					if (APlayerController* PC = Cast<APlayerController>(Player->GetController()) )
+					{
+						PC->UnPossess();
+						PC->Possess(SpawnedActor);	
+					}
+				}
+				else
+				{
+					SpawnedCharacters.Remove(DieCharacter);
+					SpawnedCharacters.Add(Cast<ATPSCharacter>(SpawnedActor));
 				}
 			}
 			DieCharacter->UninitAndDestroy();
+
+			for (ATPSCharacter* SpawnedCharacter : SpawnedCharacters)
+			{
+				if (ATPSAIController* AIController = Cast<ATPSAIController>(SpawnedCharacter->GetController()))
+				{
+					AIController->RunAI(SpawnedActor);
+				}
+			}
 		});
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle,TimerDelegate,5,false);
 }
