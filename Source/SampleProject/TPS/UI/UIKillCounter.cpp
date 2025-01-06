@@ -11,13 +11,21 @@ void UUIKillCounter::NativeConstruct()
 {
 	Super::NativeConstruct();
 	UpdateKillCount(0);
+}
 
-	if (ATPSPlayer* Player = GetTPSPlayer())
+void UUIKillCounter::InitKillCount(ATPSPlayer* Player)
+{
+	if (ATPSPlayerState* PS = Cast<ATPSPlayerState>(Player->GetPlayerState()))
 	{
-		if (ATPSPlayerState* PS = Cast<ATPSPlayerState>(Player->GetPlayerState()))
-		{
-			PS->OnKillCountChanged.AddDynamic(this, &UUIKillCounter::OnUpdateKillCount);
-		}
+		PS->OnKillCountChanged.AddDynamic(this, &UUIKillCounter::OnUpdateKillCount);
+	}
+}
+
+void UUIKillCounter::UninitKillCount(ATPSPlayer* Player)
+{
+	if (ATPSPlayerState* PS = Cast<ATPSPlayerState>(Player->GetPlayerState()))
+	{
+		PS->OnKillCountChanged.RemoveDynamic(this, &UUIKillCounter::OnUpdateKillCount);
 	}
 }
 

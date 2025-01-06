@@ -19,12 +19,14 @@ void UTPSHealthBar::InitHealthBar(ATPSPlayer* TPSPlayer)
 	TPSPlayer->GetHealthAttributeComp()->OnHealthChanged.AddDynamic(this, &ThisClass::UpdateUIs);
 }
 
-void UTPSHealthBar::UninitHealthBar()
+void UTPSHealthBar::UninitHealthBar(ATPSPlayer* TPSPlayer)
 {
-	if (ATPSPlayer* TPSPlayer = GetTPSPlayer())
+	if (TPSPlayer == nullptr)
 	{
-		TPSPlayer->GetHealthAttributeComp()->OnHealthChanged.RemoveDynamic(this, &ThisClass::UpdateUIs);
+		return;
 	}
+	
+	TPSPlayer->GetHealthAttributeComp()->OnHealthChanged.RemoveDynamic(this, &ThisClass::UpdateUIs);
 }
 
 bool UTPSHealthBar::Initialize()

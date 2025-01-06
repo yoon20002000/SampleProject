@@ -18,7 +18,7 @@ class SAMPLEPROJECT_API UTPSHealthBar : public UTPSCommonUserWidget
 	GENERATED_BODY()
 public:
 	void InitHealthBar(ATPSPlayer* TPSPlayer);
-	void UninitHealthBar();
+	void UninitHealthBar(ATPSPlayer* TPSPlayer);
 protected:
 	virtual bool Initialize() override;
 	

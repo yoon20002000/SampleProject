@@ -18,8 +18,10 @@ class SAMPLEPROJECT_API UUIKillCounter : public UTPSCommonUserWidget
 	GENERATED_BODY()
 
 public:
+	void InitKillCount(ATPSPlayer* Player);
+	void UninitKillCount(ATPSPlayer* Player);
 	void UpdateKillCount(int32 InValue);
-
+	
 private:
 	virtual void NativeConstruct() override;
 

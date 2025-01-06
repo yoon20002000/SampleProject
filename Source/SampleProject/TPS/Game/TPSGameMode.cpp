@@ -83,6 +83,14 @@ void ATPSGameMode::OnActorKilled(AActor* KilledActor, AActor* InstigatorActor)
 				{
 					PC->UnPossess();
 					GameManager->SpawnPlayer(TEXT("Player"),0);
+					
+					for (ATPSCharacter* SpawnedCharacter : UTPSSystemManager::Get()->GetGameManager()->GetAllCharacters())
+					{
+						if (ATPSAIController* AIController = Cast<ATPSAIController>(SpawnedCharacter->GetController()))
+						{
+							AIController->RunAI(GameManager->GetPlayer());
+						}
+					}
 				}
 			}
 			else
@@ -92,14 +100,6 @@ void ATPSGameMode::OnActorKilled(AActor* KilledActor, AActor* InstigatorActor)
 			}
 			
 			DieCharacter->UninitAndDestroy();
-
-			for (ATPSCharacter* SpawnedCharacter : UTPSSystemManager::Get()->GetGameManager()->GetAllCharacters())
-			{
-				if (ATPSAIController* AIController = Cast<ATPSAIController>(SpawnedCharacter->GetController()))
-				{
-					AIController->RunAI(GameManager->GetPlayer());
-				}
-			}
 		});
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle,TimerDelegate,5,false);
 }

@@ -5,6 +5,7 @@
 #include "UI/TPSHUDLayout.h"
 #include "TPSBattleHUD.generated.h"
 
+class UUIKillCounter;
 class ATPSPlayer;
 class UTPSHealthBar;
 /**
@@ -17,9 +18,17 @@ class SAMPLEPROJECT_API UTPSBattleHUD : public UTPSHUDLayout
 
 public:
 	UTPSBattleHUD(const FObjectInitializer& ObjectInitializer);
+	void InitBattleHUD(ATPSPlayer* Player);
+	void UninitBattleHUD(ATPSPlayer* Player);
+	
+private:
 	void InitHealthBar(ATPSPlayer* Player);
-	void UnitHealthBar();
+	void UnitHealthBar(ATPSPlayer* Player);
+	void InitKillCounter(ATPSPlayer* Player);
+	void UnitKillCounter(ATPSPlayer* Player);
 private:
 	UPROPERTY(EditAnywhere, Category=UI, meta = (AllowPrivateAccess = true, BindWidget))
 	TObjectPtr<UTPSHealthBar> WBP_HealthBar;
+	UPROPERTY(EditAnywhere, Category=UI, meta = (AllowPrivateAccess = true, BindWidget))
+	TObjectPtr<UUIKillCounter> WBP_DeathCount;
 };

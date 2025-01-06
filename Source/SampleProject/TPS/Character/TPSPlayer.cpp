@@ -156,13 +156,13 @@ void ATPSPlayer::InitHUD()
 		{
 			if (UTPSBattleHUD* BattleHUD = Cast<UTPSBattleHUD>(Widget))
 			{
-				BattleHUD->InitHealthBar(this);
+				BattleHUD->InitBattleHUD(this);
 			}	
 		}
 	}
 }
 
-void ATPSPlayer::UninitHUD() const
+void ATPSPlayer::UninitHUD()
 {
 	FString LayerTagName = UCommonUIExtensions::GetTPSUIManager()->GetLayerNameByLayerType(EUILayerType::GameLayer);
 	FGameplayTag LayerTag = FTPSGameplayTagHelper::FindTagByString(LayerTagName);
@@ -173,7 +173,7 @@ void ATPSPlayer::UninitHUD() const
 		{
 			if (UTPSBattleHUD* BattleHUD = Cast<UTPSBattleHUD>(Widget))
 			{
-				BattleHUD->UnitHealthBar();
+				BattleHUD->UninitBattleHUD(this);
 			}	
 		}
 	}
