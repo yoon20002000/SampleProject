@@ -23,9 +23,9 @@ public:
 	
 private:
 	void InitHealthBar(ATPSPlayer* Player);
-	void UnitHealthBar(ATPSPlayer* Player);
+	void UninitHealthBar(ATPSPlayer* Player);
 	void InitKillCounter(ATPSPlayer* Player);
-	void UnitKillCounter(ATPSPlayer* Player);
+	void UninitKillCounter(ATPSPlayer* Player);
 private:
 	UPROPERTY(EditAnywhere, Category=UI, meta = (AllowPrivateAccess = true, BindWidget))
 	TObjectPtr<UTPSHealthBar> WBP_HealthBar;

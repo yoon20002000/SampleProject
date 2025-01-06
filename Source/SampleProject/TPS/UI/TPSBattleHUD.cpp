@@ -18,8 +18,8 @@ void UTPSBattleHUD::InitBattleHUD(ATPSPlayer* Player)
 
 void UTPSBattleHUD::UninitBattleHUD(ATPSPlayer* Player)
 {
-	UnitHealthBar(Player);
-	UnitKillCounter(Player);
+	UninitHealthBar(Player);
+	UninitKillCounter(Player);
 }
 
 void UTPSBattleHUD::InitHealthBar(ATPSPlayer* Player)
@@ -31,7 +31,7 @@ void UTPSBattleHUD::InitHealthBar(ATPSPlayer* Player)
 	WBP_HealthBar->InitHealthBar(Player);
 }
 
-void UTPSBattleHUD::UnitHealthBar(ATPSPlayer* Player)
+void UTPSBattleHUD::UninitHealthBar(ATPSPlayer* Player)
 {
 	if (WBP_HealthBar == nullptr)
 	{
@@ -49,7 +49,7 @@ void UTPSBattleHUD::InitKillCounter(ATPSPlayer* Player)
 	WBP_DeathCount->InitKillCount(Player);
 }
 
-void UTPSBattleHUD::UnitKillCounter(ATPSPlayer* Player)
+void UTPSBattleHUD::UninitKillCounter(ATPSPlayer* Player)
 {
 	if (WBP_DeathCount == nullptr)
 	{

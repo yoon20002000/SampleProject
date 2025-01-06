@@ -60,11 +60,13 @@ void ATPSGameMode::OnActorKilled(AActor* KilledActor, AActor* InstigatorActor)
 	}
 	else
 	{
-		TPSPlayer = Cast<ATPSPlayer>(InstigatorActor); 
-		
-		if(ATPSPlayerState* PS = Cast<ATPSPlayerState>(TPSPlayer->GetPlayerState()))
+		TPSPlayer = Cast<ATPSPlayer>(InstigatorActor);
+		if (TPSPlayer != nullptr)
 		{
-			PS->AddKillCount();
+			if(ATPSPlayerState* PS = Cast<ATPSPlayerState>(TPSPlayer->GetPlayerState()))
+			{
+				PS->AddKillCount();
+			}			
 		}
 	}
 	FTimerHandle TimerHandle;
