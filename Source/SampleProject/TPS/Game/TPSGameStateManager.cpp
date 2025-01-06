@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "Game/TPSGameStateManager.h"
 
 #include "TPSGameManager.h"
@@ -38,8 +35,13 @@ void UTPSGameStateManager::SetGameplayState(EGameplayState InGameState)
 		case EGameplayState::MainGame:
 			{
 				UTPSSystemManager::Get()->GetUIManager()->LoadUI("BattleHUD");
-				UTPSSystemManager::Get()->GetGameManager()->SpawnPlayer("Player");
-				
+				UTPSSystemManager::Get()->GetGameManager()->SpawnPlayer("Player", 0);
+
+				for (int i = 0; i < 3; ++i)
+				{
+					UTPSSystemManager::Get()->GetGameManager()->SpawnCharacter("AICharacter");
+				}
+
 				APlayerController* PC = UGameplayStatics::GetPlayerController(TPSHelper::GetWorld(), 0);
 				PC->SetInputMode(InputGameOnly);
 				PC->SetShowMouseCursor(false);
@@ -69,7 +71,7 @@ void UTPSGameStateManager::SetGameplayState(EGameplayState InGameState)
 
 void UTPSGameStateManager::OpenLevel(const EGameplayState InGameState)
 {
-	FName LevelName; 
+	FName LevelName;
 	switch (InGameState)
 	{
 	case EGameplayState::None:
@@ -100,6 +102,6 @@ void UTPSGameStateManager::OpenLevel(const EGameplayState InGameState)
 
 	if (LevelName.IsNone() == false)
 	{
-		UGameplayStatics::OpenLevel(TPSHelper::GetWorld(), LevelName);	
+		UGameplayStatics::OpenLevel(TPSHelper::GetWorld(), LevelName);
 	}
 }

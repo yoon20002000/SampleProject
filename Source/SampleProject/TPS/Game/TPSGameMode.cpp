@@ -29,18 +29,6 @@ void ATPSGameMode::StartPlay()
 void ATPSGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	for (int i = 0 ; i < 3 ; ++i)
-	{
-		FVector SpawnLocation(0.0f, 0.0f, 100.0f);
-		FRotator SpawnRotation(0.0f, 0.0f, 0.0f);
-		ATPSCharacter* SpawnedActor = GetWorld()->SpawnActor<ATPSCharacter>(AICharacterClass, SpawnLocation, SpawnRotation);
-
-		if (SpawnedActor != nullptr)
-		{
-			SpawnedCharacters.Add(SpawnedActor);
-		}
-	}
 }
 
 void ATPSGameMode::BeginDestroy()
@@ -62,7 +50,7 @@ void ATPSGameMode::OnActorKilled(AActor* KilledActor, AActor* InstigatorActor)
 	
 	if (const ATPSPlayer* TPSPlayer = Cast<ATPSPlayer>(KilledActor))
 	{
-		for (ATPSCharacter* SpawnedCharacter : SpawnedCharacters)
+		for (ATPSCharacter* SpawnedCharacter : UTPSSystemManager::Get()->GetGameManager()->GetAllCharacters())
 		{
 			if (ATPSAIController* AIController = Cast<ATPSAIController>(SpawnedCharacter->GetController()))
 			{
@@ -84,38 +72,32 @@ void ATPSGameMode::OnActorKilled(AActor* KilledActor, AActor* InstigatorActor)
 	TimerDelegate.BindLambda(
 		[KilledActor, this]()
 		{
+			UTPSGameManager* GameManager = UTPSSystemManager::Get()->GetGameManager();
+			
 			ATPSCharacter* DieCharacter = Cast<ATPSCharacter>(KilledActor);
 			ATPSPlayer* Player = Cast<ATPSPlayer>(DieCharacter);
 			
-			UClass* SpawnActor = Player != nullptr ? PlayerClass : AICharacterClass;
-			
-			FVector SpawnLocation(0.0f, 0.0f, 100.0f);
-			FRotator SpawnRotation(0.0f, 0.0f, 0.0f);
-			APawn* SpawnedActor = GetWorld()->SpawnActor<APawn>(SpawnActor, SpawnLocation, SpawnRotation);
-			
-			if (SpawnedActor != nullptr )
+			if (Player != nullptr)
 			{
-				if (Player != nullptr)
+				if (APlayerController* PC = Cast<APlayerController>(Player->GetController()))
 				{
-					if (APlayerController* PC = Cast<APlayerController>(Player->GetController()) )
-					{
-						PC->UnPossess();
-						PC->Possess(SpawnedActor);	
-					}
-				}
-				else
-				{
-					SpawnedCharacters.Remove(DieCharacter);
-					SpawnedCharacters.Add(Cast<ATPSCharacter>(SpawnedActor));
+					PC->UnPossess();
+					GameManager->SpawnPlayer(TEXT("Player"),0);
 				}
 			}
+			else
+			{
+				GameManager->DespawnCharacter(DieCharacter);
+				GameManager->SpawnCharacter();
+			}
+			
 			DieCharacter->UninitAndDestroy();
 
-			for (ATPSCharacter* SpawnedCharacter : SpawnedCharacters)
+			for (ATPSCharacter* SpawnedCharacter : UTPSSystemManager::Get()->GetGameManager()->GetAllCharacters())
 			{
 				if (ATPSAIController* AIController = Cast<ATPSAIController>(SpawnedCharacter->GetController()))
 				{
-					AIController->RunAI(SpawnedActor);
+					AIController->RunAI(GameManager->GetPlayer());
 				}
 			}
 		});

@@ -34,7 +34,7 @@ void UTPSGameManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 }
 
-void UTPSGameManager::SpawnPlayer(const FString& CharacterDataName)
+void UTPSGameManager::SpawnPlayer(const FString& CharacterDataName, const int SpawnPointIndex)
 {
 	if (GameDataAsset == nullptr)
 	{
@@ -53,7 +53,7 @@ void UTPSGameManager::SpawnPlayer(const FString& CharacterDataName)
 
 	FVector SpawnPoint;
 	FRotator SpawnRotation;
-	GetSpawnPoint(SpawnPoint, SpawnRotation);
+	GetSpawnPoint(SpawnPoint, SpawnRotation, SpawnPointIndex);
 	Player = TPSHelper::GetWorld()->SpawnActor<ATPSPlayer>(assetInfo.Character.LoadSynchronous(), SpawnPoint,
 	                                                       SpawnRotation, ActorSpawnParameter);
 	if (Player)
@@ -61,6 +61,50 @@ void UTPSGameManager::SpawnPlayer(const FString& CharacterDataName)
 		TPSHelper::GetPlayerController()->SetPawn(Player);
 		TPSHelper::GetPlayerController()->Possess(Player);
 	}
+}
+
+void UTPSGameManager::SpawnCharacter(const FString& CharacterDataName, const int SpawnPointIndex)
+{
+	if (GameDataAsset == nullptr)
+	{
+		return;
+	}
+
+	const FCharacterAssetInfo& AssetInfo = GameDataAsset->GetCharacterData(CharacterDataName);
+	if (AssetInfo.AssetName.IsEmpty() == true)
+	{
+		return;
+	}
+
+	FActorSpawnParameters ActorSpawnParameter;
+	ActorSpawnParameter.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	ActorSpawnParameter.ObjectFlags |= RF_Transient;
+
+	FVector SpawnPoint;
+	FRotator SpawnRotation;
+	GetSpawnPoint(SpawnPoint, SpawnRotation, SpawnPointIndex);
+	ATPSCharacter* SpawnedCharacter = TPSHelper::GetWorld()->SpawnActor<ATPSCharacter>(AssetInfo.Character.LoadSynchronous(), SpawnPoint,
+														   SpawnRotation, ActorSpawnParameter);
+	if (SpawnedCharacter!=nullptr)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Spawned Character : %s"), *GetNameSafe(SpawnedCharacter));
+		SpawnedCharacters.Add(SpawnedCharacter);
+	}
+}
+
+void UTPSGameManager::DespawnCharacter(ATPSCharacter* DespawnCharacter)
+{
+	SpawnedCharacters.Remove(DespawnCharacter);
+}
+
+TArray<TObjectPtr<ATPSCharacter>>& UTPSGameManager::GetAllCharacters()
+{
+	return SpawnedCharacters;
+}
+
+ATPSPlayer* UTPSGameManager::GetPlayer()
+{
+	return Player;
 }
 
 void UTPSGameManager::GetSpawnPoint(FVector& OutPosition, FRotator& OutRotator, int InIndex)
@@ -75,10 +119,6 @@ void UTPSGameManager::GetSpawnPoint(FVector& OutPosition, FRotator& OutRotator, 
 		if (InIndex < 0 || InIndex >= Num)
 		{
 			InIndex = FMath::RandRange(0, Num - 1);
-		}
-		else
-		{
-			InIndex = 0;
 		}
 
 		OutPosition = PlayerStarts[InIndex]->GetActorLocation();

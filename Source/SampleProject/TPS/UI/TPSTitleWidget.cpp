@@ -32,7 +32,6 @@ void UTPSTitleWidget::OnClickedPlayButton()
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
 	{
 		UGameplayStatics::OpenLevel(TPSHelper::GetWorld(),FName(TEXT("MainGame")));
-		UTPSSystemManager::Get()->SetGameState(EGameplayState::MainGame);	
 	}, 0.5f,false);
 }
 

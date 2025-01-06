@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "TPSGameManager.generated.h"
 
+class ATPSCharacter;
 class ATPSPlayer;
 class UGameDataAsset;
 class ATPSGameMode;
@@ -16,15 +17,21 @@ public:
 	void InitData(const ATPSGameMode* InGameMode);
 	void BeginPlay();
 	void EndPlay(const EEndPlayReason::Type EndPlayReason);
-	void SpawnPlayer(const FString& CharacterDataName = TEXT("Player"));
-	
+	void SpawnPlayer(const FString& CharacterDataName = TEXT("Player"), const int SpawnPointIndex = -1);
+	void SpawnCharacter(const FString& CharacterDataName = TEXT("AICharacter"), const int SpawnPointIndex = -1);
+	void DespawnCharacter(ATPSCharacter* DespawnCharacter);
+	TArray<TObjectPtr<ATPSCharacter>>& GetAllCharacters();
+	ATPSPlayer* GetPlayer();
+private:
+	void GetSpawnPoint(FVector& OutPosition, FRotator& OutRotator, int InIndex = -1);
+
 private:
 	UPROPERTY(Transient)
 	TObjectPtr<UGameDataAsset> GameDataAsset;
-	
+
 	UPROPERTY(Transient)
 	TObjectPtr<ATPSPlayer> Player;
 
-	void GetSpawnPoint(FVector& OutPosition, FRotator& OutRotator, int InIndex = -1) ;
-	
+	UPROPERTY()
+	TArray<TObjectPtr<ATPSCharacter>> SpawnedCharacters;
 };

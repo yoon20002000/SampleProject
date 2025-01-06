@@ -39,7 +39,4 @@ private:
 	TSubclassOf<ATPSPlayer> PlayerClass;
 	UPROPERTY(EditAnywhere, Category=TPS, meta=(AllowPrivateAccess = true))
 	TSubclassOf<ACharacter> AICharacterClass;
-
-	UPROPERTY()
-	TArray<TObjectPtr<ATPSCharacter>> SpawnedCharacters;
 };
