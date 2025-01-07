@@ -80,8 +80,11 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 		TPSEIComp->BindNativeAction(InputConfig, TPSGameplayTags::InputTag_Look_Mouse, ETriggerEvent::Triggered, this,
 		                            &ATPSPlayer::Look);
 		TArray<uint32> BindHandles;
-		TPSEIComp->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased,BindHandles);
+		TPSEIComp->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed,
+		                              &ThisClass::AbilityInputTagReleased, BindHandles);
 	}
+
+	TPSEIComp->BindAction(JumpAction, ETriggerEvent::Started, this, &ThisClass::PrintTags);
 }
 
 void ATPSPlayer::PostInitializeComponents()
@@ -147,15 +150,16 @@ void ATPSPlayer::InitHUD()
 {
 	FString LayerTagName = UCommonUIExtensions::GetTPSUIManager()->GetLayerNameByLayerType(EUILayerType::GameLayer);
 	FGameplayTag LayerTag = FTPSGameplayTagHelper::FindTagByString(LayerTagName);
-	if (UTPSPrimaryGameLayout* PGLayout = UTPSPrimaryGameLayout::GetPrimaryGameLayout(Cast<APlayerController>(GetController())))
+	if (UTPSPrimaryGameLayout* PGLayout = UTPSPrimaryGameLayout::GetPrimaryGameLayout(
+		Cast<APlayerController>(GetController())))
 	{
 		UCommonActivatableWidgetContainerBase* WC = PGLayout->GetLayerWidget(LayerTag);
-		if (UCommonActivatableWidget* Widget =  WC->GetActiveWidget())
+		if (UCommonActivatableWidget* Widget = WC->GetActiveWidget())
 		{
 			if (UTPSBattleHUD* BattleHUD = Cast<UTPSBattleHUD>(Widget))
 			{
 				BattleHUD->InitBattleHUD(this);
-			}	
+			}
 		}
 	}
 }
@@ -164,15 +168,34 @@ void ATPSPlayer::UninitHUD()
 {
 	FString LayerTagName = UCommonUIExtensions::GetTPSUIManager()->GetLayerNameByLayerType(EUILayerType::GameLayer);
 	FGameplayTag LayerTag = FTPSGameplayTagHelper::FindTagByString(LayerTagName);
-	if (UTPSPrimaryGameLayout* PGLayout = UTPSPrimaryGameLayout::GetPrimaryGameLayout(Cast<APlayerController>(GetController())))
+	if (UTPSPrimaryGameLayout* PGLayout = UTPSPrimaryGameLayout::GetPrimaryGameLayout(
+		Cast<APlayerController>(GetController())))
 	{
 		UCommonActivatableWidgetContainerBase* WC = PGLayout->GetLayerWidget(LayerTag);
-		if (UCommonActivatableWidget* Widget =  WC->GetActiveWidget())
+		if (UCommonActivatableWidget* Widget = WC->GetActiveWidget())
 		{
 			if (UTPSBattleHUD* BattleHUD = Cast<UTPSBattleHUD>(Widget))
 			{
 				BattleHUD->UninitBattleHUD(this);
-			}	
+			}
 		}
+	}
+}
+
+void ATPSPlayer::PrintTags()
+{
+	if (AbilitySystemComp == nullptr)
+	{
+		return;
+	}
+
+	FGameplayTagContainer TagContainer;
+
+	AbilitySystemComp->GetOwnedGameplayTags(TagContainer);
+	
+	int i = 0;
+	for (auto Tag : TagContainer)
+	{
+		UE_LOG(LogTemp, Log, TEXT("%d : %s"), ++i, *Tag.ToString());
 	}
 }

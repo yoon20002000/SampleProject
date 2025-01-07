@@ -46,6 +46,7 @@ private:
 	void StopJumpAbilities();
 	void InitHUD();
 	void UninitHUD();
+	void PrintTags();
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UTPSSpringArmComponent> SpringArmComp;
