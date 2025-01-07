@@ -16,7 +16,6 @@ class SAMPLEPROJECT_API ATPSHPPotion : public ATPSInteractionActor
 
 public:
 	ATPSHPPotion();
-	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="HP Potion")

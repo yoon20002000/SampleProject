@@ -1,9 +1,7 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "Actor/TPSInteractionActor.h"
 
 #include "Components/SphereComponent.h"
+#include "Game/AbilitySystem/TPSAbilitySystemComponent.h"
 
 // Sets default values
 ATPSInteractionActor::ATPSInteractionActor()
@@ -15,13 +13,21 @@ ATPSInteractionActor::ATPSInteractionActor()
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh Comp"));
 	MeshComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	MeshComp->SetupAttachment(RootComponent);
-
+	PrimaryActorTick.bCanEverTick = false;
 	
 }
 
-void ATPSInteractionActor::Interact_Implementation(APawn* InstigatorPawn)
+FActiveGameplayEffectHandle ATPSInteractionActor::ApplyGE(UTPSAbilitySystemComponent* AbilitySystemComponent)
 {
+	check(AbilitySystemComponent);
+
+	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
+
+	const UGameplayEffect* Effect = EffectClass->GetDefaultObject<UGameplayEffect>();
 	
+	FActiveGameplayEffectHandle ApplyEffectHandle = AbilitySystemComponent->ApplyGameplayEffectToSelf(Effect,1,EffectContext);
+	
+	return ApplyEffectHandle;
 }
 
 // Called when the game starts or when spawned

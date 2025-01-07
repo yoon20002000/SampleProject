@@ -8,20 +8,3 @@
 ATPSHPPotion::ATPSHPPotion()
 {
 }
-
-void ATPSHPPotion::Interact_Implementation(APawn* InstigatorPawn)
-{
-	if (InstigatorPawn == nullptr)
-	{
-		return;
-	}
-
-	UE_LOG(LogTemp, Log, TEXT("Interact !! "));
-	/*
-	 * Temp Code
-	 */
-	if (ATPSPlayer* TP = Cast<ATPSPlayer>(InstigatorPawn))
-	{
-		// TP->AddHP(RecoverPoint);
-	}
-}
