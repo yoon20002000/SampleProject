@@ -11,7 +11,6 @@ class UTPSAbilitySet;
 struct FGameplayTag;
 class UTPSInputConfig;
 class UTPSActionComponent;
-class UTPSInteractionComponent;
 class UInputMappingContext;
 class UInputAction;
 
@@ -41,7 +40,6 @@ protected:
 private:
 	void Move(const FInputActionValue& InputActionValue);
 	void Look(const FInputActionValue& InputActionValue);
-	void Interaction(const FInputActionValue& InputActionValue);
 	void JumpAbilities();
 	void StopJumpAbilities();
 	void InitHUD();
@@ -61,7 +59,4 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="EI")
 	TObjectPtr<UTPSInputConfig> InputConfig;
-protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess), Category = "Components")
-	TObjectPtr<UTPSInteractionComponent> InteractionComp;
 };

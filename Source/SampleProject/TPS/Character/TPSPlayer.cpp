@@ -2,7 +2,6 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "Components/TPSInteractionComponent.h"
 #include "Components/TPSCameraComponent.h"
 #include "Components/TPSSpringArmComponent.h"
 #include "Game/TPSGameplayTags.h"
@@ -24,8 +23,6 @@ ATPSPlayer::ATPSPlayer()
 
 	CameraComp = CreateDefaultSubobject<UTPSCameraComponent>(TEXT("CustomCamera"));
 	CameraComp->SetupAttachment(SpringArmComp);
-
-	InteractionComp = CreateDefaultSubobject<UTPSInteractionComponent>(TEXT("Interaction Comp"));
 }
 
 // Called when the game starts or when spawned
@@ -124,11 +121,6 @@ void ATPSPlayer::Look(const FInputActionValue& InputActionValue)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
-}
-
-void ATPSPlayer::Interaction(const FInputActionValue& InputActionValue)
-{
-	InteractionComp->Interaction();
 }
 
 void ATPSPlayer::JumpAbilities()
