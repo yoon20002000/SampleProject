@@ -81,8 +81,6 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 		                            &ATPSPlayer::Look);
 		TArray<uint32> BindHandles;
 		TPSEIComp->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased,BindHandles);
-		
-		TPSEIComp->BindAction(InteractAction, ETriggerEvent::Started, this, &ATPSPlayer::Interaction);
 	}
 }
 
