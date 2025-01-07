@@ -15,6 +15,8 @@ namespace TPSGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Crouch, "InputTag.Crouch", "Crouch Input");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Jump, "InputTag.Jump", "Jump Input");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Weapon_Fire, "InputTag.Weapon.Fire", "Input Weapon Fire");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Interaction, "InputTag.Interaction", "Input Interaction");
+	
 	
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InitState_Spawned, "InitState.Spawned", "Init Spawn");
@@ -44,6 +46,8 @@ namespace TPSGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Gameplay_DamageSelfDestruct, "Gameplay.DamageSelfDestruct", "Gameplay Damage Self Destruct");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Gameplay_FellOutOfWorld, "Gameplay.FellOutOfWorld", "Gameplay Fell Out Of World");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Gameplay_Damage_Message, "Gameplay.Damage.Message", "Gameplay Damage Message");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Gameplay_Interaction, "Gameplay.Interaction", "Gameplay Interaction");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Gameplay_Heal, "Gameplay.Heal", "Gameplay Heal");
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Event_Movement_WeaponFire, "Event.Movement.WeaponFire", "Event Weapon fire");
 }
