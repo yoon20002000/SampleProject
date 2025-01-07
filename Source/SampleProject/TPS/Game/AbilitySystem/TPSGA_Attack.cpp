@@ -7,11 +7,10 @@
 #include "AIController.h"
 #include "NativeGameplayTags.h"
 #include "Character/TPSCharacter.h"
+#include "Game/TPSGameplayTags.h"
 #include "GameFramework/Character.h"
 #include "System/TPSCollisionChannels.h"
 #include "System/TPSGATargetData_SingleTargetHit.h"
-
-UE_DEFINE_GAMEPLAY_TAG_STATIC(TAG_WeaponFireBlocked, "Ability.Weapon.NoFiring");
 
 FVector VRandConeNormalDistribution(const FVector& Dir, const float ConeHalfAngleRad, const float Exponent)
 {
@@ -41,7 +40,7 @@ FVector VRandConeNormalDistribution(const FVector& Dir, const float ConeHalfAngl
 
 UTPSGA_Attack::UTPSGA_Attack(const FObjectInitializer& ObjectInitializer): Super(ObjectInitializer)
 {
-	SourceBlockedTags.AddTag(TAG_WeaponFireBlocked);
+	SourceBlockedTags.AddTag(TPSGameplayTags::TAG_WeaponFireBlocked);
 }
 
 AController* UTPSGA_Attack::GetControllerFromActorInfo() const

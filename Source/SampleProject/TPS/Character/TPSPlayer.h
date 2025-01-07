@@ -57,15 +57,7 @@ public:
 	UPROPERTY(EditAnywhere, Category="Input", meta=(AllowPrivateAccess=true))
 	TObjectPtr<UInputMappingContext> InputMappingContext;
 	UPROPERTY(EditAnywhere, Category="Input", meta=(AllowPrivateAccess=true))
-	TObjectPtr<UInputAction> MoveAction;
-	UPROPERTY(EditAnywhere, Category="Input", meta=(AllowPrivateAccess=true))
-	TObjectPtr<UInputAction> LookAction;
-	UPROPERTY(EditAnywhere, Category="Input", meta=(AllowPrivateAccess=true))
 	TObjectPtr<UInputAction> JumpAction;
-	UPROPERTY(EditAnywhere, Category="Input", meta=(AllowPrivateAccess=true))
-	TObjectPtr<UInputAction> ShotAction;
-	UPROPERTY(EditAnywhere, Category="Input", meta=(AllowPrivateAccess=true))
-	TObjectPtr<UInputAction> InteractAction;
 
 	UPROPERTY(EditAnywhere, Category="EI")
 	TObjectPtr<UTPSInputConfig> InputConfig;
