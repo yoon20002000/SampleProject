@@ -60,8 +60,8 @@ void ATPSCharacter::OnHealthChanged(UTPSHealthComponent* HealthComponent, float 
                                     AActor* InstigatorActor)
 {
 	FString InstigatorActorName = InstigatorActor != nullptr ? InstigatorActor->GetName() : TEXT("null");
-	UE_LOG(LogTemp, Log, TEXT("Instigator Actor : %s, OwningComp : %s, NewHealth : %f, Delta : %f"),
-		   *InstigatorActorName, *HealthComponent->GetName(), NewValue, NewValue - OldValue);
+	// UE_LOG(LogTemp, Log, TEXT("Instigator Actor : %s, OwningComp : %s, NewHealth : %f, Delta : %f"),
+	// 	   *InstigatorActorName, *HealthComponent->GetName(), NewValue, NewValue - OldValue);
 }
 
 void ATPSCharacter::InitializeAttributes()

@@ -33,7 +33,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	virtual void BeginDestroy() override;
 	void AbilityInputTagPressed(FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
 
@@ -59,4 +59,7 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="EI")
 	TObjectPtr<UTPSInputConfig> InputConfig;
+private:
+	UPROPERTY(Transient, EditInstanceOnly, Category = "Debug", meta = (AllowPrivateAccess = true))
+	bool bPrintTag;
 };

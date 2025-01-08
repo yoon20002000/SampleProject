@@ -12,7 +12,7 @@
 #include "UI/TPSUIManager.h"
 
 // Sets default values
-ATPSPlayer::ATPSPlayer()
+ATPSPlayer::ATPSPlayer() : bPrintTag(false)
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -35,6 +35,11 @@ void ATPSPlayer::BeginPlay()
 	InitHUD();
 }
 
+void ATPSPlayer::BeginDestroy()
+{
+	Super::BeginDestroy();
+}
+
 void ATPSPlayer::AbilityInputTagPressed(FGameplayTag InputTag)
 {
 	if (AbilitySystemComp == nullptr)
@@ -54,7 +59,10 @@ void ATPSPlayer::AbilityInputTagReleased(FGameplayTag InputTag)
 void ATPSPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	PrintTags();
+	if (bPrintTag == true)
+	{
+		PrintTags();	
+	}
 }
 
 // Called to bind functionality to input
@@ -183,9 +191,9 @@ void ATPSPlayer::PrintTags()
 	FGameplayTagContainer TagContainer;
 
 	AbilitySystemComp->GetOwnedGameplayTags(TagContainer);
-	
+
 	int i = 0;
-	for (auto Tag : TagContainer)
+	for (const FGameplayTag& Tag : TagContainer)
 	{
 		UE_LOG(LogTemp, Log, TEXT("%d : %s"), ++i, *Tag.ToString());
 	}

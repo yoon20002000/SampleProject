@@ -6,6 +6,7 @@ namespace TPSGameplayTags
 {
 	/// Ability
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Type_Action_WeaponFire, "Ability.Type.Action.WeaponFire", "Ability Weapon fire");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Type_Action_WeaponSPFire, "Ability.Type.Action.WeaponSPFire", "Ability Weapon SP fire");
 
 	/// Action Tags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Action_Attack,"Action.Attack", "Character Attack Action");
@@ -23,16 +24,21 @@ namespace TPSGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Weapon_Fire, "InputTag.Weapon.Fire", "Input Weapon Fire");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Interaction, "InputTag.Interaction", "Input Interaction");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Weapon_SPFire, "InputTag.Weapon.SPFire", "Input Weapon SPFire");
-	
+
+	/// InitState
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InitState_Spawned, "InitState.Spawned", "Init Spawn");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InitState_GameplayReady, "InitState.GameplayReady", "Gameplay Ready");
 
+	/// GameplayEvent
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(GameplayEvent_Death, "GameplayEvent.Death", "Event when fire on death");
 
+	/// Status
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Status_Crouching, "Status.Crouching", "Target is Crouching");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Status_Death_Dying, "Status.Death.Dying", "Target is Dying");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Status_Death_Death, "Status.Death.Death", "Target is Death");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Status_Healing, "Status.Healing", "Target is Healing");
 
+	/// Movement
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Walking, "Movement.Mode.Walking",
 	                               "Default Character Movement Walking");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Falling, "Movement.Mode.Falling",
@@ -46,6 +52,7 @@ namespace TPSGameplayTags
 		{MOVE_Flying, Movement_Mode_Flying},
 	};
 
+	/// GameplayEvent
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Gameplay_Damage, "Gameplay.Damage", "Gameplay Damage");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Gameplay_DamageImmunity, "Gameplay.DamageImmunity", "Gameplay Damage Immunity");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Gameplay_DamageSelfDestruct, "Gameplay.DamageSelfDestruct", "Gameplay Damage Self Destruct");
@@ -55,6 +62,7 @@ namespace TPSGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Gameplay_Heal, "Gameplay.Heal", "Gameplay Heal");
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Event_Movement_WeaponFire, "Event.Movement.WeaponFire", "Event Weapon fire");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Event_Movement_WeaponSPFire, "Event.Movement.WeaponSPFire", "Event Weapon SP fire");
 }
 
 namespace TPSGGameplayEffectTags

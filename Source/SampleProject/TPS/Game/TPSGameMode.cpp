@@ -45,8 +45,8 @@ void ATPSGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void ATPSGameMode::OnActorKilled(AActor* KilledActor, AActor* InstigatorActor)
 {
-	UE_LOG(LogTemp, Log, TEXT("KilledActor Actor : %s InstigatorActor : %s"), *GetNameSafe(KilledActor),
-	       *InstigatorActor->GetName());
+	// UE_LOG(LogTemp, Log, TEXT("KilledActor Actor : %s InstigatorActor : %s"), *GetNameSafe(KilledActor),
+	//        *InstigatorActor->GetName());
 	
 	if (const ATPSPlayer* TPSPlayer = Cast<ATPSPlayer>(KilledActor))
 	{
@@ -90,6 +90,7 @@ void ATPSGameMode::OnActorKilled(AActor* KilledActor, AActor* InstigatorActor)
 			{
 				if (APlayerController* PC = Cast<APlayerController>(Player->GetController()))
 				{
+					Player->UninitAndDestroy();
 					PC->UnPossess();
 					GameManager->SpawnPlayer(TEXT("Player"),0);
 					int i=0;
@@ -112,9 +113,8 @@ void ATPSGameMode::OnActorKilled(AActor* KilledActor, AActor* InstigatorActor)
 			{
 				GameManager->DespawnCharacter(DieCharacter);
 				GameManager->SpawnCharacter();
+				DieCharacter->UninitAndDestroy();
 			}
-			
-			DieCharacter->UninitAndDestroy();
 		});
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle,TimerDelegate,5,false);
 }
