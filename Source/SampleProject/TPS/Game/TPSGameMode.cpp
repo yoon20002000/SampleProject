@@ -92,9 +92,15 @@ void ATPSGameMode::OnActorKilled(AActor* KilledActor, AActor* InstigatorActor)
 				{
 					PC->UnPossess();
 					GameManager->SpawnPlayer(TEXT("Player"),0);
-					
+					int i=0;
 					for (ATPSCharacter* SpawnedCharacter : UTPSSystemManager::Get()->GetGameManager()->GetAllCharacters())
 					{
+						if (SpawnedCharacter == nullptr)
+						{
+							UE_LOG(LogTemp, Error, TEXT("SpawnedCharacter is nullptr Index : %d"),++i);
+							continue;
+						}
+			
 						if (ATPSAIController* AIController = Cast<ATPSAIController>(SpawnedCharacter->GetController()))
 						{
 							AIController->RunAI(GameManager->GetPlayer());

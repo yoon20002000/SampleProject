@@ -54,6 +54,7 @@ void ATPSPlayer::AbilityInputTagReleased(FGameplayTag InputTag)
 void ATPSPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	PrintTags();
 }
 
 // Called to bind functionality to input
@@ -80,8 +81,6 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 		TPSEIComp->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed,
 		                              &ThisClass::AbilityInputTagReleased, BindHandles);
 	}
-
-	TPSEIComp->BindAction(JumpAction, ETriggerEvent::Started, this, &ThisClass::PrintTags);
 }
 
 void ATPSPlayer::PostInitializeComponents()

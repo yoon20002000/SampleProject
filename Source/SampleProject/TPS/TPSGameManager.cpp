@@ -56,7 +56,7 @@ void UTPSGameManager::SpawnPlayer(const FString& CharacterDataName, const int Sp
 	GetSpawnPoint(SpawnPoint, SpawnRotation, SpawnPointIndex);
 	Player = TPSHelper::GetWorld()->SpawnActor<ATPSPlayer>(assetInfo.Character.LoadSynchronous(), SpawnPoint,
 	                                                       SpawnRotation, ActorSpawnParameter);
-	if (Player)
+	if (Player != nullptr)
 	{
 		TPSHelper::GetPlayerController()->SetPawn(Player);
 		TPSHelper::GetPlayerController()->Possess(Player);
@@ -83,9 +83,10 @@ void UTPSGameManager::SpawnCharacter(const FString& CharacterDataName, const int
 	FVector SpawnPoint;
 	FRotator SpawnRotation;
 	GetSpawnPoint(SpawnPoint, SpawnRotation, SpawnPointIndex);
-	ATPSCharacter* SpawnedCharacter = TPSHelper::GetWorld()->SpawnActor<ATPSCharacter>(AssetInfo.Character.LoadSynchronous(), SpawnPoint,
-														   SpawnRotation, ActorSpawnParameter);
-	if (SpawnedCharacter!=nullptr)
+	ATPSCharacter* SpawnedCharacter = TPSHelper::GetWorld()->SpawnActor<ATPSCharacter>(
+		AssetInfo.Character.LoadSynchronous(), SpawnPoint,
+		SpawnRotation, ActorSpawnParameter);
+	if (SpawnedCharacter != nullptr)
 	{
 		UE_LOG(LogTemp, Log, TEXT("Spawned Character : %s"), *GetNameSafe(SpawnedCharacter));
 		SpawnedCharacters.Add(SpawnedCharacter);
