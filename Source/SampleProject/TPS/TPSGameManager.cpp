@@ -28,10 +28,28 @@ void UTPSGameManager::InitData(const ATPSGameMode* InGameMode)
 
 void UTPSGameManager::BeginPlay()
 {
+	
 }
 
 void UTPSGameManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+	if (SpawnedCharacters.Num() > 0)
+	{
+		for (ATPSCharacter* Character : SpawnedCharacters)
+		{
+			if (Character!=nullptr)
+			{
+				Character->UninitAndDestroy();
+			}
+		}
+	}
+	SpawnedCharacters.Empty();
+
+	if (Player!=nullptr)
+	{
+		Player->UninitAndDestroy();
+	}
+	Player= nullptr;
 }
 
 void UTPSGameManager::SpawnPlayer(const FString& CharacterDataName, const int SpawnPointIndex)
