@@ -1,10 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "Game/AbilitySystem/TPSGA_Attack.h"
 
 #include "AbilitySystemComponent.h"
-#include "AbilitySystemGlobals.h"
 #include "AIController.h"
 #include "NativeGameplayTags.h"
 #include "Character/TPSCharacter.h"
@@ -30,7 +26,7 @@ FVector VRandConeNormalDistribution(const FVector& Dir, const float ConeHalfAngl
 		FRotator Rot = Dir.Rotation();
 		FQuat DirQuat(Rot);
 		FQuat FromCenterQuat(FRotator(0.0f, AngleFromCenter, 0.0f));
-		FQuat AroundQuat(FRotator(0.0f,0.0f,AngleAround));
+		FQuat AroundQuat(FRotator(0.0f, 0.0f, AngleAround));
 		FQuat FinalDirectionQuat = DirQuat * AroundQuat * FromCenterQuat;
 
 		FinalDirectionQuat.Normalize();
@@ -76,116 +72,92 @@ AController* UTPSGA_Attack::GetControllerFromActorInfo() const
 }
 
 void UTPSGA_Attack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
-                                    const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
+                                    const FGameplayAbilityActivationInfo ActivationInfo,
+                                    const FGameplayEventData* TriggerEventData)
 {
 	UAbilitySystemComponent* AC = CurrentActorInfo->AbilitySystemComponent.Get();
 	check(AC);
-	bool bIsUseCooldown = UAbilitySystemGlobals::Get().ShouldIgnoreCooldowns() ;
-	bool bIsCooldown = CheckCooldown(CurrentSpecHandle, CurrentActorInfo);
-	FString CooldownResult = (bIsUseCooldown ? TEXT("YES") : TEXT("NO"));
-	UE_LOG(LogTemp, Log, TEXT("Is Use Cool down ? : %s"),*CooldownResult );
-	FString CostResult = (bIsCooldown ? TEXT("YES") : TEXT("NO"));
-	UE_LOG(LogTemp, Log, TEXT("Is Cooling down ? : %s"), *CostResult);
-	
 
-	
-	const FGameplayTag CooldownTag = TPSGameplayTags::Cooldown_WeaponSPFire;
-	bool bIsHaveCooldownTag = AC->HasMatchingGameplayTag(CooldownTag);
-	FString HaveTagResult = (bIsHaveCooldownTag ? TEXT("YES") : TEXT("NO"));
-	UE_LOG(LogTemp, Log, TEXT("Is have Cooling down Tag ? : %s"),*HaveTagResult);
 
-	
-	
-	
-		OnTargetDataReadyCallbackDelegateHandle = AC->AbilityTargetDataSetDelegate(CurrentSpecHandle, CurrentActivationInfo.GetActivationPredictionKey()).AddUObject(this, &ThisClass::OnTargetDataReadyCallback);
-	
-		Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-	
-		StartRangedWeaponTargeting();
+	OnTargetDataReadyCallbackDelegateHandle = AC->AbilityTargetDataSetDelegate(
+		CurrentSpecHandle, CurrentActivationInfo.GetActivationPredictionKey()).AddUObject(
+		this, &ThisClass::OnTargetDataReadyCallback);
 
-		AActor* OwnerActor = GetAvatarActorFromActorInfo();
-		if (ATPSCharacter* OwnerPawn = Cast<ATPSCharacter>(OwnerActor);PlayMontage != nullptr)
-		{
-			UGameplayStatics::SpawnSoundAttached(ShotSoundCue, OwnerPawn->GetMesh(), SocketName);
-		
-			UAnimInstance* AnimInstance = OwnerPawn->GetMesh()->GetAnimInstance();
+	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-			AnimInstance->Montage_Play(PlayMontage);
-			FOnMontageEnded MontageEndDelegate;
-			MontageEndDelegate.BindLambda([this,Handle, ActorInfo, ActivationInfo, OwnerPawn](UAnimMontage* Montage, bool bInterrupted)
+	StartRangedWeaponTargeting();
+
+	AActor* OwnerActor = GetAvatarActorFromActorInfo();
+	if (ATPSCharacter* OwnerPawn = Cast<ATPSCharacter>(OwnerActor); PlayMontage != nullptr)
+	{
+		UGameplayStatics::SpawnSoundAttached(ShotSoundCue, OwnerPawn->GetMesh(), SocketName);
+
+		UAnimInstance* AnimInstance = OwnerPawn->GetMesh()->GetAnimInstance();
+
+		AnimInstance->Montage_Play(PlayMontage);
+		FOnMontageEnded MontageEndDelegate;
+		MontageEndDelegate.BindLambda(
+			[this,Handle, ActorInfo, ActivationInfo, OwnerPawn](UAnimMontage* Montage, bool bInterrupted)
 			{
 				OwnerPawn->OnAttackEnd.Broadcast();
-				this->EndAbility(Handle, ActorInfo, ActivationInfo, true, false);			
+				this->EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
 			});
-			AnimInstance->Montage_SetEndDelegate(MontageEndDelegate,PlayMontage);
-		}
-		else
-		{
-			EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
-		}
-	
-
+		AnimInstance->Montage_SetEndDelegate(MontageEndDelegate, PlayMontage);
+	}
+	else
+	{
+		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
+	}
 }
 
 bool UTPSGA_Attack::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
-	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags,
-	const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const
+                                       const FGameplayAbilityActorInfo* ActorInfo,
+                                       const FGameplayTagContainer* SourceTags,
+                                       const FGameplayTagContainer* TargetTags,
+                                       FGameplayTagContainer* OptionalRelevantTags) const
 {
 	bool bResult = Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags);
 	if (bResult == false)
 	{
 		return false;
 	}
-	
+
 	const FGameplayTag CooldownTag = TPSGameplayTags::Cooldown_WeaponSPFire;
-	// if (CurrentActorInfo != nullptr)
-	// {
-	// 	if (CurrentActorInfo->AbilitySystemComponent != nullptr && CurrentActorInfo->AbilitySystemComponent.IsValid() == true)
-	// 	{
-	// 		if (UAbilitySystemComponent* AC = CurrentActorInfo->AbilitySystemComponent.Get())
-	// 		{
-	// 			if (AC != nullptr && AC->HasMatchingGameplayTag(CooldownTag) == true)
-	// 			{
-	// 				return false;
-	// 			}
-	// 		}
-	// 	}
-	// }
-	//if (ActorInfo != nullptr)
+
+	if (ActorInfo->AbilitySystemComponent != nullptr && ActorInfo->AbilitySystemComponent.IsValid() == true)
 	{
-		if (ActorInfo->AbilitySystemComponent != nullptr && ActorInfo->AbilitySystemComponent.IsValid() == true)
+		if (UAbilitySystemComponent* ASC = ActorInfo->AbilitySystemComponent.Get())
 		{
-			if (UAbilitySystemComponent* AC = ActorInfo->AbilitySystemComponent.Get())
+			if (ASC != nullptr && ASC->HasMatchingGameplayTag(CooldownTag) == true)
 			{
-				if (AC != nullptr && AC->HasMatchingGameplayTag(CooldownTag) == true)
-				{
-					return false;
-				}
+				return false;
 			}
 		}
 	}
-	
-
 	// 이후 무기를 추가시 추가 조건 할 것
-	
-	return bResult ; 
+
+	return bResult;
 }
 
 void UTPSGA_Attack::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
-	const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
+                               const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility,
+                               bool bWasCancelled)
 {
 	if (IsEndAbilityValid(Handle, ActorInfo) == true)
 	{
 		if (ScopeLockCount > 0)
 		{
-			WaitingToExecute.Add(FPostLockDelegate::CreateUObject(this, &ThisClass::EndAbility, Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled));;
+			WaitingToExecute.Add(FPostLockDelegate::CreateUObject(this, &ThisClass::EndAbility, Handle, ActorInfo,
+			                                                      ActivationInfo, bReplicateEndAbility,
+			                                                      bWasCancelled));;
 			return;
 		}
 
 		UAbilitySystemComponent* AC = CurrentActorInfo->AbilitySystemComponent.Get();
 		check(AC);
 
-		FAbilityTargetDataSetDelegate& ATDSD = AC->AbilityTargetDataSetDelegate(CurrentSpecHandle, CurrentActivationInfo.GetActivationPredictionKey());
+		FAbilityTargetDataSetDelegate& ATDSD = AC->AbilityTargetDataSetDelegate(
+			CurrentSpecHandle, CurrentActivationInfo.GetActivationPredictionKey());
 		ATDSD.Remove(OnTargetDataReadyCallbackDelegateHandle);
 		AC->ConsumeClientReplicatedTargetData(CurrentSpecHandle, CurrentActivationInfo.GetActivationPredictionKey());
 
@@ -205,7 +177,8 @@ int32 UTPSGA_Attack::FindFirstPawnHitResult(const TArray<FHitResult>& HitResults
 		else
 		{
 			AActor* HitActor = HitResult.HitObjectHandle.FetchActor();
-			if (HitActor != nullptr && HitActor->GetAttachParentActor() != nullptr && Cast<APawn>(HitActor->GetAttachParentActor()) != nullptr)
+			if (HitActor != nullptr && HitActor->GetAttachParentActor() != nullptr && Cast<APawn>(
+				HitActor->GetAttachParentActor()) != nullptr)
 			{
 				return Index;
 			}
@@ -215,7 +188,7 @@ int32 UTPSGA_Attack::FindFirstPawnHitResult(const TArray<FHitResult>& HitResults
 }
 
 FHitResult UTPSGA_Attack::WeaponTrace(const FVector& TraceStart, const FVector& TraceEnd, float SweepRadius,
-	bool bIsSimulated, TArray<FHitResult>& OutHitResults) const
+                                      bool bIsSimulated, TArray<FHitResult>& OutHitResults) const
 {
 	TArray<FHitResult> HitResults;
 	FCollisionQueryParams TraceParams(SCENE_QUERY_STAT(WeaponTrace), true, GetAvatarActorFromActorInfo());
@@ -227,7 +200,8 @@ FHitResult UTPSGA_Attack::WeaponTrace(const FVector& TraceStart, const FVector& 
 
 	if (SweepRadius > 0.0f)
 	{
-		GetWorld()->SweepMultiByChannel(HitResults, TraceStart, TraceEnd,FQuat::Identity, TraceChannel, FCollisionShape::MakeSphere(SweepRadius), TraceParams);
+		GetWorld()->SweepMultiByChannel(HitResults, TraceStart, TraceEnd, FQuat::Identity, TraceChannel,
+		                                FCollisionShape::MakeSphere(SweepRadius), TraceParams);
 	}
 	else
 	{
@@ -241,7 +215,7 @@ FHitResult UTPSGA_Attack::WeaponTrace(const FVector& TraceStart, const FVector& 
 		{
 			auto Pred = [&HitResult](const FHitResult& Other)
 			{
-				return Other.HitObjectHandle == HitResult.HitObjectHandle;	
+				return Other.HitObjectHandle == HitResult.HitObjectHandle;
 			};
 
 			if (OutHitResults.ContainsByPredicate(Pred) == false)
@@ -256,17 +230,17 @@ FHitResult UTPSGA_Attack::WeaponTrace(const FVector& TraceStart, const FVector& 
 		Hit.TraceStart = TraceStart;
 		Hit.TraceEnd = TraceEnd;
 	}
-	
+
 	return Hit;
 }
 
 FHitResult UTPSGA_Attack::SingleBulletTrace(const FVector& TraceStart, const FVector& TraceEnd, float SweepRadius,
-	bool bIsSimulated, TArray<FHitResult>& OutHitResults) const
+                                            bool bIsSimulated, TArray<FHitResult>& OutHitResults) const
 {
 	// Draw Debug
 	{
 		float DebugThickness = 1.0f;
-		DrawDebugLine(GetWorld(),TraceStart,TraceEnd,FColor::Red, false, 1,0,DebugThickness);
+		DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red, false, 1, 0, DebugThickness);
 	}
 
 	FHitResult Impact;
@@ -312,9 +286,9 @@ FHitResult UTPSGA_Attack::SingleBulletTrace(const FVector& TraceStart, const FVe
 	return Impact;
 }
 
-void UTPSGA_Attack::TraceBulletsInCartridge(const FRangedWeaponFiringInput& InputData, TArray<FHitResult>& OutHitResults)
+void UTPSGA_Attack::TraceBulletsInCartridge(const FRangedWeaponFiringInput& InputData,
+                                            TArray<FHitResult>& OutHitResults)
 {
-	
 	const float BaseSpreadAngle = 2.5f;
 	const float SpreadAngleMultiplier = 0.902564f;
 	const float ActualSpreadAngle = BaseSpreadAngle * SpreadAngleMultiplier;
@@ -338,7 +312,7 @@ void UTPSGA_Attack::TraceBulletsInCartridge(const FRangedWeaponFiringInput& Inpu
 	if (HitActor != nullptr)
 	{
 		DrawDebugPoint(GetWorld(), Impact.ImpactPoint, 3.0f, FColor::Red, false, 2);
-		
+
 		if (AllImpacts.Num() > 0)
 		{
 			OutHitResults.Append(AllImpacts);
@@ -346,7 +320,7 @@ void UTPSGA_Attack::TraceBulletsInCartridge(const FRangedWeaponFiringInput& Inpu
 
 		HitLocation = Impact.ImpactPoint;
 	}
-	
+
 	if (OutHitResults.Num() == 0)
 	{
 		if (!Impact.bBlockingHit)
@@ -368,6 +342,7 @@ void UTPSGA_Attack::AddAdditionalTraceIgnoreActors(FCollisionQueryParams& TraceP
 		TraceParams.AddIgnoredActors(AttachedActors);
 	}
 }
+
 ECollisionChannel UTPSGA_Attack::DetermineTraceChannel(FCollisionQueryParams& TraceParams, bool bIsSimulated) const
 {
 	return TPS_TraceChannel_Weapon;
@@ -375,7 +350,7 @@ ECollisionChannel UTPSGA_Attack::DetermineTraceChannel(FCollisionQueryParams& Tr
 
 void UTPSGA_Attack::PerformLocalTargeting(TArray<FHitResult>& OutHitResults)
 {
-	APawn* const AvatarPawn= Cast<APawn>(GetAvatarActorFromActorInfo());
+	APawn* const AvatarPawn = Cast<APawn>(GetAvatarActorFromActorInfo());
 	check(AvatarPawn);
 
 	if (AvatarPawn->IsLocallyControlled() == true)
@@ -383,13 +358,15 @@ void UTPSGA_Attack::PerformLocalTargeting(TArray<FHitResult>& OutHitResults)
 		FRangedWeaponFiringInput InputData;
 		InputData.bCanPlayBulletFX = AvatarPawn->GetNetMode() != NM_DedicatedServer;
 
-		const FTransform TargetTransform = GetTargetingTransform(AvatarPawn, ETPSAbilityTargetingSource::CameraTowardsFocus);
+		const FTransform TargetTransform = GetTargetingTransform(
+			AvatarPawn, ETPSAbilityTargetingSource::CameraTowardsFocus);
 		InputData.AimDir = TargetTransform.GetUnitAxis(EAxis::X);
 		InputData.StartTrace = TargetTransform.GetTranslation();
 
 		InputData.EndAim = InputData.StartTrace + InputData.AimDir * 10;
-		
-		DrawDebugLine(GetWorld(), InputData.StartTrace, InputData.StartTrace + (InputData.AimDir * 100.0f), FColor::Yellow, false, 1.f,0,2.0f);
+
+		DrawDebugLine(GetWorld(), InputData.StartTrace, InputData.StartTrace + (InputData.AimDir * 100.0f),
+		              FColor::Yellow, false, 1.f, 0, 2.0f);
 
 		TraceBulletsInCartridge(InputData, OutHitResults);
 	}
@@ -399,7 +376,7 @@ FVector UTPSGA_Attack::GetWeaponTargetingSourceLocation() const
 {
 	APawn* const AvatarPawn = Cast<APawn>(GetAvatarActorFromActorInfo());
 	check(AvatarPawn);
-	
+
 
 	// Original Lyra Code
 	// const FVector SourceLocation = AvatarPawn->GetActorLocation();
@@ -408,7 +385,7 @@ FVector UTPSGA_Attack::GetWeaponTargetingSourceLocation() const
 
 	USkeletalMeshComponent* SkelMeshComp = AvatarPawn->GetComponentByClass<USkeletalMeshComponent>();
 	FVector TargetingSourceLocation = SkelMeshComp->GetSocketLocation(SocketName);
-	
+
 	return TargetingSourceLocation;
 }
 
@@ -430,21 +407,20 @@ FTransform UTPSGA_Attack::GetTargetingTransform(APawn* SourcePawn, ETPSAbilityTa
 	FRotator CamRotation;
 	bool bFoundFocus = false;
 
-	 
 
 	if (SourcePawnController != nullptr &&
-											(
-												(Source == ETPSAbilityTargetingSource::CameraTowardsFocus) ||
-												(Source == ETPSAbilityTargetingSource::PawnTowardsFocus) ||
-												(Source == ETPSAbilityTargetingSource::WeaponTowardsFocus))
-											)
+		(
+			(Source == ETPSAbilityTargetingSource::CameraTowardsFocus) ||
+			(Source == ETPSAbilityTargetingSource::PawnTowardsFocus) ||
+			(Source == ETPSAbilityTargetingSource::WeaponTowardsFocus))
+	)
 	{
 		bFoundFocus = true;
 
 		APlayerController* PC = Cast<APlayerController>(SourcePawn->GetController());
 		if (PC != nullptr)
 		{
-			PC->GetPlayerViewPoint(CamLocation, CamRotation);	
+			PC->GetPlayerViewPoint(CamLocation, CamRotation);
 		}
 		else
 		{
@@ -473,7 +449,8 @@ FTransform UTPSGA_Attack::GetTargetingTransform(APawn* SourcePawn, ETPSAbilityTa
 		}
 	}
 
-	if ((Source == ETPSAbilityTargetingSource::WeaponForward) || (Source == ETPSAbilityTargetingSource::WeaponTowardsFocus))
+	if ((Source == ETPSAbilityTargetingSource::WeaponForward) || (Source ==
+		ETPSAbilityTargetingSource::WeaponTowardsFocus))
 	{
 		SourceLocation = GetWeaponTargetingSourceLocation();
 	}
@@ -482,7 +459,8 @@ FTransform UTPSGA_Attack::GetTargetingTransform(APawn* SourcePawn, ETPSAbilityTa
 		SourceLocation = ActorLocation;
 	}
 
-	if (bFoundFocus == true && ((Source == ETPSAbilityTargetingSource::PawnTowardsFocus) ||(Source == ETPSAbilityTargetingSource::WeaponTowardsFocus)))
+	if (bFoundFocus == true && ((Source == ETPSAbilityTargetingSource::PawnTowardsFocus) || (Source ==
+		ETPSAbilityTargetingSource::WeaponTowardsFocus)))
 	{
 		return FTransform((FocallLocation - SourceLocation).Rotation(), SourceLocation);
 	}
@@ -499,9 +477,11 @@ void UTPSGA_Attack::OnTargetDataReadyCallback(const FGameplayAbilityTargetDataHa
 	{
 		FScopedPredictionWindow ScopedPrediction(ASC);
 
-		FGameplayAbilityTargetDataHandle LocalTargetDataHandle(MoveTemp(const_cast<FGameplayAbilityTargetDataHandle&>(GameplayAbilityTargetDataHandle)));
+		FGameplayAbilityTargetDataHandle LocalTargetDataHandle(
+			MoveTemp(const_cast<FGameplayAbilityTargetDataHandle&>(GameplayAbilityTargetDataHandle)));
 
-		const bool bShouldNotifyServer = CurrentActorInfo->IsLocallyControlled() == true && CurrentActorInfo->IsNetAuthority() == false;
+		const bool bShouldNotifyServer = CurrentActorInfo->IsLocallyControlled() == true && CurrentActorInfo->
+			IsNetAuthority() == false;
 		if (bShouldNotifyServer == true)
 		{
 			ASC->CallServerSetReplicatedTargetData(CurrentSpecHandle,
@@ -536,14 +516,15 @@ void UTPSGA_Attack::OnTargetDataReadyCallback(const FGameplayAbilityTargetDataHa
 					// 	}
 					// 	WeaponStateComponent->ClientConfirmTargetData(LocalTargetDataHandle.UniqueId, bIsTargetDataValid, HitReplaces);
 					// }
-					
-					
+
+
 					// WeaponStateComponent->ClientConfirmTargetData(LocalTargetDataHandle.UniqueId, bIsTargetDataValid, HitReplaces);
 				}
 			}
 		}
 #endif
-		if (bIsTargetDataValid == true && CommitAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo) == true)
+		if (bIsTargetDataValid == true && CommitAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo) ==
+			true)
 		{
 			// 무기 추가 시 무기 관련 코드 해제 필요
 			// UTPSRangedWeaponInstance* WeaponData = GetWeapontInstance();
@@ -554,7 +535,8 @@ void UTPSGA_Attack::OnTargetDataReadyCallback(const FGameplayAbilityTargetDataHa
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Weapon ability %s failed to commit (bIsTargetDataValid=%d)"), *GetPathName(), bIsTargetDataValid ? 1 : 0);
+			UE_LOG(LogTemp, Warning, TEXT("Weapon ability %s failed to commit (bIsTargetDataValid=%d)"), *GetPathName(),
+			       bIsTargetDataValid ? 1 : 0);
 			K2_EndAbility();
 		}
 	}
@@ -576,7 +558,7 @@ void UTPSGA_Attack::StartRangedWeaponTargeting()
 
 	TArray<FHitResult> FoundHits;
 	PerformLocalTargeting(FoundHits);
-	
+
 	FGameplayAbilityTargetDataHandle TargetDataHandle;
 	// 무기 추가시 수정 필요
 	TargetDataHandle.UniqueId = 0;
@@ -587,7 +569,8 @@ void UTPSGA_Attack::StartRangedWeaponTargeting()
 
 		for (const FHitResult& FoundHit : FoundHits)
 		{
-			FTPSGameplayAbilityTargetData_SingleTargetHit* NewTargetData = new FTPSGameplayAbilityTargetData_SingleTargetHit();
+			FTPSGameplayAbilityTargetData_SingleTargetHit* NewTargetData = new
+				FTPSGameplayAbilityTargetData_SingleTargetHit();
 			NewTargetData->HitResult = FoundHit;
 			NewTargetData->CartridgeID = CartridgeID;
 			TargetDataHandle.Add(NewTargetData);
@@ -610,10 +593,9 @@ void UTPSGA_Attack::OnRangedWeaponTargetDataReady_Implementation(const FGameplay
 		for (TSubclassOf<UGameplayEffect> GE : ToTargetGEs)
 		{
 			//UE_LOG(LogTemp, Log,TEXT("Test OnRangedWeaponTargetDataReady %s"),*GetNameSafe(GE));
-			GEngine->AddOnScreenDebugMessage(1,1,FColor::Blue,TEXT("Test OnRangedWeaponTargetDataReady"));
-			
+			GEngine->AddOnScreenDebugMessage(1, 1, FColor::Blue,TEXT("Test OnRangedWeaponTargetDataReady"));
+
 			ApplyGameplayEffectToTarget(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, TargetData, GE, 1);
 		}
-			
 	}
 }
