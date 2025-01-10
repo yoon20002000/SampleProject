@@ -7,7 +7,9 @@ namespace TPSGameplayTags
 	/// Ability
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Type_Action_WeaponFire, "Ability.Type.Action.WeaponFire", "Ability Weapon fire");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Type_Action_WeaponSPFire, "Ability.Type.Action.WeaponSPFire", "Ability Weapon SP fire");
-
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_ActivateFail_Cooldown, "Ability.ActivateFail.Cooldown", "Ability fail cooldown");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_ActivateFail_Cost, "Ability.ActivateFail.Cost", "Ability fail cost");
+	
 	/// Action Tags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Action_Attack,"Action.Attack", "Character Attack Action");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Action_Jump,"Action.Jump", "Character Jump Action");
@@ -63,6 +65,9 @@ namespace TPSGameplayTags
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Event_Movement_WeaponFire, "Event.Movement.WeaponFire", "Event Weapon fire");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Event_Movement_WeaponSPFire, "Event.Movement.WeaponSPFire", "Event Weapon SP fire");
+
+	/// Cooldown
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Cooldown_WeaponSPFire, "Cooldown.WeaponSPFire", "Cooldown Weapon SP Fire");
 }
 
 namespace TPSGGameplayEffectTags
