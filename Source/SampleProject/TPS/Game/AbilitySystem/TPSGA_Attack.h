@@ -82,4 +82,7 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess=true))
 	TArray<TSubclassOf<UGameplayEffect>> ToTargetGEs;
+
+	UPROPERTY(EditDefaultsOnly,meta = (allowPrivateAccess=true))
+	TObjectPtr<USoundCue> ShotSoundCue;
 };

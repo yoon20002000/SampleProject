@@ -9,8 +9,12 @@
 #include "Character/TPSCharacter.h"
 #include "Game/TPSGameplayTags.h"
 #include "GameFramework/Character.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 #include "System/TPSCollisionChannels.h"
 #include "System/TPSGATargetData_SingleTargetHit.h"
+
+const FName SocketName = TEXT("Gun_LOS");
 
 FVector VRandConeNormalDistribution(const FVector& Dir, const float ConeHalfAngleRad, const float Exponent)
 {
@@ -85,6 +89,8 @@ void UTPSGA_Attack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 	AActor* OwnerActor = GetAvatarActorFromActorInfo();
 	if (ATPSCharacter* OwnerPawn = Cast<ATPSCharacter>(OwnerActor);PlayMontage != nullptr)
 	{
+		UGameplayStatics::SpawnSoundAttached(ShotSoundCue, OwnerPawn->GetMesh(), SocketName);
+		
 		UAnimInstance* AnimInstance = OwnerPawn->GetMesh()->GetAnimInstance();
 
 		AnimInstance->Montage_Play(PlayMontage);
@@ -339,7 +345,7 @@ FVector UTPSGA_Attack::GetWeaponTargetingSourceLocation() const
 {
 	APawn* const AvatarPawn = Cast<APawn>(GetAvatarActorFromActorInfo());
 	check(AvatarPawn);
-	FName SocketName = TEXT("Gun_LOS");
+	
 
 	// Original Lyra Code
 	// const FVector SourceLocation = AvatarPawn->GetActorLocation();
