@@ -4,6 +4,7 @@
 #include "Game/AbilitySystem/TPSGA_Attack.h"
 
 #include "AbilitySystemComponent.h"
+#include "AbilitySystemGlobals.h"
 #include "AIController.h"
 #include "NativeGameplayTags.h"
 #include "Character/TPSCharacter.h"
@@ -79,42 +80,95 @@ void UTPSGA_Attack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 {
 	UAbilitySystemComponent* AC = CurrentActorInfo->AbilitySystemComponent.Get();
 	check(AC);
-
-	OnTargetDataReadyCallbackDelegateHandle = AC->AbilityTargetDataSetDelegate(CurrentSpecHandle, CurrentActivationInfo.GetActivationPredictionKey()).AddUObject(this, &ThisClass::OnTargetDataReadyCallback);
+	bool bIsUseCooldown = UAbilitySystemGlobals::Get().ShouldIgnoreCooldowns() ;
+	bool bIsCooldown = CheckCooldown(CurrentSpecHandle, CurrentActorInfo);
+	FString CooldownResult = (bIsUseCooldown ? TEXT("YES") : TEXT("NO"));
+	UE_LOG(LogTemp, Log, TEXT("Is Use Cool down ? : %s"),*CooldownResult );
+	FString CostResult = (bIsCooldown ? TEXT("YES") : TEXT("NO"));
+	UE_LOG(LogTemp, Log, TEXT("Is Cooling down ? : %s"), *CostResult);
 	
-	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+
 	
-	StartRangedWeaponTargeting();
+	const FGameplayTag CooldownTag = TPSGameplayTags::Cooldown_WeaponSPFire;
+	bool bIsHaveCooldownTag = AC->HasMatchingGameplayTag(CooldownTag);
+	FString HaveTagResult = (bIsHaveCooldownTag ? TEXT("YES") : TEXT("NO"));
+	UE_LOG(LogTemp, Log, TEXT("Is have Cooling down Tag ? : %s"),*HaveTagResult);
 
-	AActor* OwnerActor = GetAvatarActorFromActorInfo();
-	if (ATPSCharacter* OwnerPawn = Cast<ATPSCharacter>(OwnerActor);PlayMontage != nullptr)
-	{
-		UGameplayStatics::SpawnSoundAttached(ShotSoundCue, OwnerPawn->GetMesh(), SocketName);
-		
-		UAnimInstance* AnimInstance = OwnerPawn->GetMesh()->GetAnimInstance();
+	
+	
+	
+		OnTargetDataReadyCallbackDelegateHandle = AC->AbilityTargetDataSetDelegate(CurrentSpecHandle, CurrentActivationInfo.GetActivationPredictionKey()).AddUObject(this, &ThisClass::OnTargetDataReadyCallback);
+	
+		Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+	
+		StartRangedWeaponTargeting();
 
-		AnimInstance->Montage_Play(PlayMontage);
-		FOnMontageEnded MontageEndDelegate;
-		MontageEndDelegate.BindLambda([this,Handle, ActorInfo, ActivationInfo, OwnerPawn](UAnimMontage* Montage, bool bInterrupted)
+		AActor* OwnerActor = GetAvatarActorFromActorInfo();
+		if (ATPSCharacter* OwnerPawn = Cast<ATPSCharacter>(OwnerActor);PlayMontage != nullptr)
 		{
-			OwnerPawn->OnAttackEnd.Broadcast();
-			this->EndAbility(Handle, ActorInfo, ActivationInfo, true, false);			
-		});
-		AnimInstance->Montage_SetEndDelegate(MontageEndDelegate,PlayMontage);
-	}
-	else
-	{
-		EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
-	}
+			UGameplayStatics::SpawnSoundAttached(ShotSoundCue, OwnerPawn->GetMesh(), SocketName);
+		
+			UAnimInstance* AnimInstance = OwnerPawn->GetMesh()->GetAnimInstance();
+
+			AnimInstance->Montage_Play(PlayMontage);
+			FOnMontageEnded MontageEndDelegate;
+			MontageEndDelegate.BindLambda([this,Handle, ActorInfo, ActivationInfo, OwnerPawn](UAnimMontage* Montage, bool bInterrupted)
+			{
+				OwnerPawn->OnAttackEnd.Broadcast();
+				this->EndAbility(Handle, ActorInfo, ActivationInfo, true, false);			
+			});
+			AnimInstance->Montage_SetEndDelegate(MontageEndDelegate,PlayMontage);
+		}
+		else
+		{
+			EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
+		}
+	
+
 }
 
 bool UTPSGA_Attack::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags,
 	const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const
 {
-	bool bResult = Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags); 
+	bool bResult = Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags);
+	if (bResult == false)
+	{
+		return false;
+	}
+	
+	const FGameplayTag CooldownTag = TPSGameplayTags::Cooldown_WeaponSPFire;
+	// if (CurrentActorInfo != nullptr)
+	// {
+	// 	if (CurrentActorInfo->AbilitySystemComponent != nullptr && CurrentActorInfo->AbilitySystemComponent.IsValid() == true)
+	// 	{
+	// 		if (UAbilitySystemComponent* AC = CurrentActorInfo->AbilitySystemComponent.Get())
+	// 		{
+	// 			if (AC != nullptr && AC->HasMatchingGameplayTag(CooldownTag) == true)
+	// 			{
+	// 				return false;
+	// 			}
+	// 		}
+	// 	}
+	// }
+	//if (ActorInfo != nullptr)
+	{
+		if (ActorInfo->AbilitySystemComponent != nullptr && ActorInfo->AbilitySystemComponent.IsValid() == true)
+		{
+			if (UAbilitySystemComponent* AC = ActorInfo->AbilitySystemComponent.Get())
+			{
+				if (AC != nullptr && AC->HasMatchingGameplayTag(CooldownTag) == true)
+				{
+					return false;
+				}
+			}
+		}
+	}
+	
+
 	// 이후 무기를 추가시 추가 조건 할 것
-	return bResult; 
+	
+	return bResult ; 
 }
 
 void UTPSGA_Attack::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
@@ -269,7 +323,7 @@ void UTPSGA_Attack::TraceBulletsInCartridge(const FRangedWeaponFiringInput& Inpu
 
 	constexpr float SpreadExponent = 1.0f;
 	constexpr float MaxDamageRange = 25000.0f;
-	constexpr float BulletTraceSweepRaidus = 6.0f;
+	constexpr float BulletTraceSweepRadius = 6.0f;
 	const FVector BulletDir = VRandConeNormalDistribution(InputData.AimDir, HalfSpreadAngleInRadians, SpreadExponent);
 
 	const FVector EndTrace = InputData.StartTrace + (BulletDir * MaxDamageRange);
@@ -277,7 +331,7 @@ void UTPSGA_Attack::TraceBulletsInCartridge(const FRangedWeaponFiringInput& Inpu
 
 	TArray<FHitResult> AllImpacts;
 
-	FHitResult Impact = SingleBulletTrace(InputData.StartTrace, EndTrace, BulletTraceSweepRaidus, false, AllImpacts);
+	FHitResult Impact = SingleBulletTrace(InputData.StartTrace, EndTrace, BulletTraceSweepRadius, false, AllImpacts);
 
 	const AActor* HitActor = Impact.GetActor();
 
