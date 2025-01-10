@@ -65,6 +65,6 @@ bool UTPSGCNotify_Static::OnExecute_Implementation(AActor* MyTarget, const FGame
 
 	FVector SpawnLocation = GetSpawnLocation(*HitResult);
 	UGameplayStatics::SpawnEmitterAtLocation(MyTarget, Particle, SpawnLocation);
-	
+
 	return Super::OnExecute_Implementation(MyTarget, Parameters);
 }
