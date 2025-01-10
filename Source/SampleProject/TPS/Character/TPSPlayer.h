@@ -45,6 +45,7 @@ private:
 	void InitHUD();
 	void UninitHUD();
 	void PrintTags();
+	bool CanMove() const;
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UTPSSpringArmComponent> SpringArmComp;
@@ -62,4 +63,6 @@ public:
 private:
 	UPROPERTY(Transient, EditInstanceOnly, Category = "Debug", meta = (AllowPrivateAccess = true))
 	bool bPrintTag;
+	UPROPERTY(EditDefaultsOnly, Category = "Action")
+	FGameplayTagContainer MoveLimitTagContainer;
 };

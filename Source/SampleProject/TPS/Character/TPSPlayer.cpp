@@ -2,6 +2,7 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "TPSHelper.h"
 #include "Components/TPSCameraComponent.h"
 #include "Components/TPSSpringArmComponent.h"
 #include "Game/TPSGameplayTags.h"
@@ -105,8 +106,8 @@ void ATPSPlayer::UninitAndDestroy()
 void ATPSPlayer::Move(const FInputActionValue& InputActionValue)
 {
 	const FVector2D MovementVector = InputActionValue.Get<FVector2D>();
-
-	if (Controller != nullptr)
+	
+	if (Controller != nullptr && CanMove() == true)
 	{
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
@@ -197,4 +198,17 @@ void ATPSPlayer::PrintTags()
 	{
 		UE_LOG(LogTemp, Log, TEXT("%d : %s"), ++i, *Tag.ToString());
 	}
+}
+
+bool ATPSPlayer::CanMove() const
+{
+	for (const FGameplayTag& Tag : MoveLimitTagContainer)
+	{
+		if ( AbilitySystemComp->HasMatchingGameplayTag(Tag) == true)
+		{
+			return false;
+		}
+	}
+
+	return true;
 }
