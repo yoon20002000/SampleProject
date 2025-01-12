@@ -3,6 +3,7 @@
 #include "AbilitySystemComponent.h"
 #include "AIController.h"
 #include "NativeGameplayTags.h"
+#include "TPSAT_PlayMontageAndWaitForEvent.h"
 #include "Character/TPSCharacter.h"
 #include "Character/TPSPlayer.h"
 #include "Components/TPSCameraComponent.h"
@@ -93,14 +94,15 @@ void UTPSGA_Attack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 	if (ATPSCharacter* OwnerPawn = Cast<ATPSCharacter>(OwnerActor); PlayMontage != nullptr)
 	{
 		UGameplayStatics::SpawnSoundAttached(ShotSoundCue, OwnerPawn->GetMesh(), SocketName);
-		
-		UAbilityTask_PlayMontageAndWait* AT = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(
-this,NAME_None,PlayMontage);
+
+		UTPSAT_PlayMontageAndWaitForEvent* AT = UTPSAT_PlayMontageAndWaitForEvent::CreatePlayMontageAndWaitForEvent(
+			this, NAME_None, PlayMontage,FGameplayTagContainer());
 
 		AT->OnBlendOut.AddDynamic(this, &ThisClass::OnCompleted);
 		AT->OnCompleted.AddDynamic(this, &ThisClass::OnCompleted);
 		AT->OnInterrupted.AddDynamic(this, &ThisClass::OnCancelled);
 		AT->OnCancelled.AddDynamic(this, &ThisClass::OnCancelled);
+		AT->OnEventReceived.AddDynamic(this, &ThisClass::OnReceived);
 		
 		AT->ReadyForActivation();
 	}
@@ -532,7 +534,12 @@ void UTPSGA_Attack::OnTargetDataReadyCallback(const FGameplayAbilityTargetDataHa
 }
 
 
-void UTPSGA_Attack::OnCompleted()
+void UTPSGA_Attack::OnCompleted(FGameplayTag EventTag,FGameplayEventData EventData)
+{
+	EndAbility(CurrentSpecHandle, CurrentActorInfo,CurrentActivationInfo,true,false);
+}
+
+void UTPSGA_Attack::OnReceived(FGameplayTag EventTag, FGameplayEventData EventData)
 {
 	check(CurrentActorInfo);
 	
@@ -573,11 +580,9 @@ void UTPSGA_Attack::OnCompleted()
 	}
 
 	OnTargetDataReadyCallback(TargetDataHandle, FGameplayTag());
-
-	EndAbility(CurrentSpecHandle, CurrentActorInfo,CurrentActivationInfo,true,false);
 }
 
-void UTPSGA_Attack::OnCancelled()
+void UTPSGA_Attack::OnCancelled(FGameplayTag EventTag,FGameplayEventData EventData)
 {
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, true);
 }

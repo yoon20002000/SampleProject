@@ -72,9 +72,11 @@ protected:
 	void OnRangedWeaponTargetDataReady(const FGameplayAbilityTargetDataHandle& TargetData);
 	
 	UFUNCTION()
-	void OnCompleted();
+	void OnCompleted(FGameplayTag EventTag,FGameplayEventData EventData);
 	UFUNCTION()
-	void OnCancelled();
+	void OnCancelled(FGameplayTag EventTag,FGameplayEventData EventData);
+	UFUNCTION()
+	void OnReceived(FGameplayTag EventTag,FGameplayEventData EventData);
 	
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(allowPrivateAccess=true))
