@@ -81,9 +81,9 @@ void ATPSCharacter::PossessedBy(AController* NewController)
 	bIsPlayerControlled = IsPlayerControlled(); 
 	if (bIsPlayerControlled == true)
 	{
-		bUseControllerRotationYaw = false;
+		bUseControllerRotationYaw = true;
 		CMC->bUseControllerDesiredRotation = false;
-		CMC->bOrientRotationToMovement = true;
+		CMC->bOrientRotationToMovement = false;
 		CMC->RotationRate = FRotator(0.0f,720.f,0.0f);
 		CMC->MaxWalkSpeed = 600.0f;
 	}

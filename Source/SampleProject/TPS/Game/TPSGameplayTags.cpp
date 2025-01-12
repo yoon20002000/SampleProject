@@ -63,8 +63,10 @@ namespace TPSGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Gameplay_Interaction, "Gameplay.Interaction", "Gameplay Interaction");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Gameplay_Heal, "Gameplay.Heal", "Gameplay Heal");
 
+	/// Event
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Event_Movement_WeaponFire, "Event.Movement.WeaponFire", "Event Weapon fire");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Event_Movement_WeaponSPFire, "Event.Movement.WeaponSPFire", "Event Weapon SP fire");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Event_Fire, "Event.Fire", "Event fire");
 
 	/// Cooldown
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Cooldown_WeaponSPFire, "Cooldown.WeaponSPFire", "Cooldown Weapon SP Fire");

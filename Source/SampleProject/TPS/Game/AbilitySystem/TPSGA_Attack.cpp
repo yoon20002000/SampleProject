@@ -4,12 +4,15 @@
 #include "AIController.h"
 #include "NativeGameplayTags.h"
 #include "Character/TPSCharacter.h"
+#include "Character/TPSPlayer.h"
+#include "Components/TPSCameraComponent.h"
 #include "Game/TPSGameplayTags.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundCue.h"
 #include "System/TPSCollisionChannels.h"
 #include "System/TPSGATargetData_SingleTargetHit.h"
+#include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 
 const FName SocketName = TEXT("Gun_LOS");
 
@@ -85,24 +88,21 @@ void UTPSGA_Attack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	StartRangedWeaponTargeting();
 
 	AActor* OwnerActor = GetAvatarActorFromActorInfo();
 	if (ATPSCharacter* OwnerPawn = Cast<ATPSCharacter>(OwnerActor); PlayMontage != nullptr)
 	{
 		UGameplayStatics::SpawnSoundAttached(ShotSoundCue, OwnerPawn->GetMesh(), SocketName);
+		
+		UAbilityTask_PlayMontageAndWait* AT = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(
+this,NAME_None,PlayMontage);
 
-		UAnimInstance* AnimInstance = OwnerPawn->GetMesh()->GetAnimInstance();
-
-		AnimInstance->Montage_Play(PlayMontage);
-		FOnMontageEnded MontageEndDelegate;
-		MontageEndDelegate.BindLambda(
-			[this,Handle, ActorInfo, ActivationInfo, OwnerPawn](UAnimMontage* Montage, bool bInterrupted)
-			{
-				OwnerPawn->OnAttackEnd.Broadcast();
-				this->EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
-			});
-		AnimInstance->Montage_SetEndDelegate(MontageEndDelegate, PlayMontage);
+		AT->OnBlendOut.AddDynamic(this, &ThisClass::OnCompleted);
+		AT->OnCompleted.AddDynamic(this, &ThisClass::OnCompleted);
+		AT->OnInterrupted.AddDynamic(this, &ThisClass::OnCancelled);
+		AT->OnCancelled.AddDynamic(this, &ThisClass::OnCancelled);
+		
+		AT->ReadyForActivation();
 	}
 	else
 	{
@@ -121,19 +121,7 @@ bool UTPSGA_Attack::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	{
 		return false;
 	}
-
-	const FGameplayTag CooldownTag = TPSGameplayTags::Cooldown_WeaponSPFire;
-
-	if (ActorInfo->AbilitySystemComponent != nullptr && ActorInfo->AbilitySystemComponent.IsValid() == true)
-	{
-		if (UAbilitySystemComponent* ASC = ActorInfo->AbilitySystemComponent.Get())
-		{
-			if (ASC != nullptr && ASC->HasMatchingGameplayTag(CooldownTag) == true)
-			{
-				return false;
-			}
-		}
-	}
+	
 	// 이후 무기를 추가시 추가 조건 할 것
 
 	return bResult;
@@ -543,13 +531,14 @@ void UTPSGA_Attack::OnTargetDataReadyCallback(const FGameplayAbilityTargetDataHa
 	ASC->ConsumeClientReplicatedTargetData(CurrentSpecHandle, CurrentActivationInfo.GetActivationPredictionKey());
 }
 
-void UTPSGA_Attack::StartRangedWeaponTargeting()
+
+void UTPSGA_Attack::OnCompleted()
 {
 	check(CurrentActorInfo);
-
+	
 	AActor* AvatarActor = CurrentActorInfo->AvatarActor.Get();
 	check(AvatarActor);
-
+	
 	UAbilitySystemComponent* AC = CurrentActorInfo->AbilitySystemComponent.Get();
 	check(AC);
 
@@ -584,6 +573,13 @@ void UTPSGA_Attack::StartRangedWeaponTargeting()
 	}
 
 	OnTargetDataReadyCallback(TargetDataHandle, FGameplayTag());
+
+	EndAbility(CurrentSpecHandle, CurrentActorInfo,CurrentActivationInfo,true,false);
+}
+
+void UTPSGA_Attack::OnCancelled()
+{
+	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, true);
 }
 
 void UTPSGA_Attack::OnRangedWeaponTargetDataReady_Implementation(const FGameplayAbilityTargetDataHandle& TargetData)
@@ -593,8 +589,6 @@ void UTPSGA_Attack::OnRangedWeaponTargetDataReady_Implementation(const FGameplay
 		for (TSubclassOf<UGameplayEffect> GE : ToTargetGEs)
 		{
 			//UE_LOG(LogTemp, Log,TEXT("Test OnRangedWeaponTargetDataReady %s"),*GetNameSafe(GE));
-			GEngine->AddOnScreenDebugMessage(1, 1, FColor::Blue,TEXT("Test OnRangedWeaponTargetDataReady"));
-
 			ApplyGameplayEffectToTarget(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, TargetData, GE, 1);
 		}
 	}

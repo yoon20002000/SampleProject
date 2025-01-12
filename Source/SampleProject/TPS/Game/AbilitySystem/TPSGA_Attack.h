@@ -67,12 +67,14 @@ protected:
 	FVector GetWeaponTargetingSourceLocation() const;
 	FTransform GetTargetingTransform(APawn* SourcePawn, ETPSAbilityTargetingSource Source) const;
 	void OnTargetDataReadyCallback(const FGameplayAbilityTargetDataHandle& GameplayAbilityTargetDataHandle, FGameplayTag GameplayTag);
-
-	UFUNCTION(BlueprintCallable)
-	void StartRangedWeaponTargeting();
 	
 	UFUNCTION(BlueprintNativeEvent)
 	void OnRangedWeaponTargetDataReady(const FGameplayAbilityTargetDataHandle& TargetData);
+	
+	UFUNCTION()
+	void OnCompleted();
+	UFUNCTION()
+	void OnCancelled();
 	
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(allowPrivateAccess=true))
