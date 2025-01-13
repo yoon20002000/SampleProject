@@ -3,8 +3,11 @@
 
 #include "UI/TPSBattleHUD.h"
 
+#include "TPSCooldown.h"
 #include "TPSHealthBar.h"
 #include "UIKillCounter.h"
+#include "Character/TPSCharacter.h"
+#include "Character/TPSPlayer.h"
 
 UTPSBattleHUD::UTPSBattleHUD(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
@@ -14,12 +17,14 @@ void UTPSBattleHUD::InitBattleHUD(ATPSPlayer* Player)
 {
 	InitHealthBar(Player);
 	InitKillCounter(Player);
+	InitCooldown(Player);
 }
 
 void UTPSBattleHUD::UninitBattleHUD(ATPSPlayer* Player)
 {
 	UninitHealthBar(Player);
 	UninitKillCounter(Player);
+	UninitCooldown(Player);
 }
 
 void UTPSBattleHUD::InitHealthBar(ATPSPlayer* Player)
@@ -56,4 +61,28 @@ void UTPSBattleHUD::UninitKillCounter(ATPSPlayer* Player)
 		return;
 	}
 	WBP_DeathCount->UninitKillCount(Player);
+}
+
+void UTPSBattleHUD::InitCooldown(ATPSPlayer* Player)
+{
+	if (WBP_Cooldown == nullptr)
+	{
+		return;
+	}
+	if (ATPSCharacter* Character = Cast<ATPSCharacter>(Player))
+	{
+		WBP_Cooldown->InitCooldownUI(Character);	
+	}
+}
+
+void UTPSBattleHUD::UninitCooldown(ATPSPlayer* Player)
+{
+	if (WBP_Cooldown == nullptr)
+	{
+		return;
+	}
+	if (ATPSCharacter* Character = Cast<ATPSCharacter>(Player))
+	{
+		WBP_Cooldown->UninitCooldownUI(Character);	
+	}
 }

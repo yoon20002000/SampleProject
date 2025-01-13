@@ -5,6 +5,7 @@
 #include "UI/TPSHUDLayout.h"
 #include "TPSBattleHUD.generated.h"
 
+class UTPSCooldown;
 class UUIKillCounter;
 class ATPSPlayer;
 class UTPSHealthBar;
@@ -26,9 +27,13 @@ private:
 	void UninitHealthBar(ATPSPlayer* Player);
 	void InitKillCounter(ATPSPlayer* Player);
 	void UninitKillCounter(ATPSPlayer* Player);
+	void InitCooldown(ATPSPlayer* Player);
+	void UninitCooldown(ATPSPlayer* Player);
 private:
-	UPROPERTY(EditAnywhere, Category=UI, meta = (AllowPrivateAccess = true, BindWidget))
+	UPROPERTY(meta = (AllowPrivateAccess = true, BindWidget))
 	TObjectPtr<UTPSHealthBar> WBP_HealthBar;
-	UPROPERTY(EditAnywhere, Category=UI, meta = (AllowPrivateAccess = true, BindWidget))
+	UPROPERTY(meta = (AllowPrivateAccess = true, BindWidget))
 	TObjectPtr<UUIKillCounter> WBP_DeathCount;
+	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = true, BindWidget))
+	TObjectPtr<UTPSCooldown> WBP_Cooldown;
 };
