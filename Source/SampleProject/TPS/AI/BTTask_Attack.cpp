@@ -9,9 +9,9 @@
 #include "Game/AbilitySystem/TPSGA_Attack.h"
 
 
-UBTTask_Attack::UBTTask_Attack() : IsAttacking(false)
+UBTTask_Attack::UBTTask_Attack() : Character(nullptr)
 {
-	bNotifyTick = true;
+	bNotifyTick = false;
 }
 
 EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -37,12 +37,10 @@ EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 
 		if (ASC->TryActivateAbility(AbilityHandle) == true)
 		{
-			IsAttacking=true;
-			
 			Character->OnEndDelegate.AddLambda(
-				[this]()
+				[this, &OwnerComp]()
 				{
-					IsAttacking = false;
+					FinishLatentTask(OwnerComp,EBTNodeResult::Succeeded);	
 				});
 			return EBTNodeResult::InProgress;
 		}
@@ -58,13 +56,4 @@ EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 	}
 	
 	return EBTNodeResult::Failed;
-}
-
-void UBTTask_Attack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
-{
-	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
-	if (IsAttacking == false)
-	{
-		FinishLatentTask(OwnerComp,EBTNodeResult::Succeeded);	
-	}
 }

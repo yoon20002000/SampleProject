@@ -199,7 +199,6 @@ void UTPSAT_PlayMontageAndWaitForEvent::OnMontageBlendingOut(UAnimMontage* Monta
 
 void UTPSAT_PlayMontageAndWaitForEvent::OnAbilityCancelled()
 {
-	UE_LOG(LogTemp, Log, TEXT("OnAbilityCancelled"));
 	if (StopPlayingMontage() == true)
 	{
 		if (ShouldBroadcastAbilityTaskDelegates() == true)
@@ -211,7 +210,6 @@ void UTPSAT_PlayMontageAndWaitForEvent::OnAbilityCancelled()
 
 void UTPSAT_PlayMontageAndWaitForEvent::OnMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
-	UE_LOG(LogTemp, Log, TEXT("OnMontageEnded"));
 	if (bInterrupted == true)
 	{
 		if (ShouldBroadcastAbilityTaskDelegates() == true)
@@ -224,7 +222,6 @@ void UTPSAT_PlayMontageAndWaitForEvent::OnMontageEnded(UAnimMontage* Montage, bo
 
 void UTPSAT_PlayMontageAndWaitForEvent::OnGameplayEvent(FGameplayTag EventTag, const FGameplayEventData* InData)
 {
-	UE_LOG(LogTemp, Log, TEXT("OnGameplayEvent"));
 	if (ShouldBroadcastAbilityTaskDelegates() == true)
 	{
 		FGameplayEventData Data = *InData;

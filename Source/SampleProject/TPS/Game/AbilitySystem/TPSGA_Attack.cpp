@@ -587,8 +587,7 @@ void UTPSGA_Attack::OnReceived(FGameplayTag EventTag, FGameplayEventData EventDa
 
 	AController* Controller = GetControllerFromActorInfo();
 	check(Controller);
-
-	UE_LOG(LogTemp, Log, TEXT("Tag : %s"), *EventTag.ToString());
+	
 	if (EventTag == TPSGameplayTags::Event_Montage_EndAbility)
 	{
 		if (ATPSCharacter* Character = Cast<ATPSCharacter>(AvatarActor))
