@@ -66,7 +66,8 @@ namespace TPSGameplayTags
 	/// Event
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Event_Movement_WeaponFire, "Event.Movement.WeaponFire", "Event Weapon fire");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Event_Movement_WeaponSPFire, "Event.Movement.WeaponSPFire", "Event Weapon SP fire");
-	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Event_Fire, "Event.Fire", "Event fire");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Event_Montage_EndAbility, "Event.Montage.EndAbility", "Event Montage EndAbility");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Event_Montage_Fire, "Event.Montage.Fire", "Event Montage fire");
 
 	/// Cooldown
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Cooldown_WeaponSPFire, "Cooldown.WeaponSPFire", "Cooldown Weapon SP Fire");

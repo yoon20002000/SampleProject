@@ -5,6 +5,7 @@
 #include "BehaviorTree/BTTaskNode.h"
 #include "BTTask_Attack.generated.h"
 
+class ATPSCharacter;
 class UTPSGA_Attack;
 /**
  * 
@@ -17,10 +18,9 @@ public:
 	UBTTask_Attack();
 	
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
-protected:
-	virtual auto TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) -> void override;
-
+virtual void TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
 private:
+	TWeakObjectPtr<ATPSCharacter> Character;
 	FDelegateHandle AttackEndDelegateHandle;
 	bool IsAttacking;
 	UPROPERTY(EditAnywhere)

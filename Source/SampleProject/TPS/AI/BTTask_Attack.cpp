@@ -5,7 +5,6 @@
 
 #include "AIController.h"
 #include "Character/TPSCharacter.h"
-#include "Game/TPSGameplayTags.h"
 #include "Game/AbilitySystem/TPSAbilitySystemComponent.h"
 #include "Game/AbilitySystem/TPSGA_Attack.h"
 
@@ -19,8 +18,8 @@ EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 {
 	EBTNodeResult::Type Result = Super::ExecuteTask(OwnerComp, NodeMemory);;
 
-	ATPSCharacter* Character = Cast<ATPSCharacter>(OwnerComp.GetAIOwner()->GetPawn());
-	if (Character == nullptr)
+	Character = Cast<ATPSCharacter>(OwnerComp.GetAIOwner()->GetPawn());
+	if (Character.IsValid() == false)
 	{
 		return EBTNodeResult::Failed;
 	}
@@ -31,24 +30,20 @@ EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 		return EBTNodeResult::Failed;
 	}
 	
-	
 	FGameplayAbilitySpec* AbilitySpec = ASC->FindAbilitySpecFromClass(GA_Attack);
 	if (AbilitySpec != nullptr)
 	{
 		FGameplayAbilitySpecHandle AbilityHandle = AbilitySpec->Handle;
 
-		if (ASC->TryActivateAbility(AbilityHandle))
+		if (ASC->TryActivateAbility(AbilityHandle) == true)
 		{
-			IsAttacking = true;
-			if (AttackEndDelegateHandle.IsValid() == false)
-			{
-				Character->OnAttackEnd.AddLambda(
-					[this]() -> void
-					{
-						IsAttacking = false;
-					});	
-			}
-	
+			IsAttacking=true;
+			
+			Character->OnEndDelegate.AddLambda(
+				[this]()
+				{
+					IsAttacking = false;
+				});
 			return EBTNodeResult::InProgress;
 		}
 		else
@@ -70,6 +65,6 @@ void UBTTask_Attack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemo
 	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
 	if (IsAttacking == false)
 	{
-		FinishLatentTask(OwnerComp,EBTNodeResult::Succeeded);
+		FinishLatentTask(OwnerComp,EBTNodeResult::Succeeded);	
 	}
 }

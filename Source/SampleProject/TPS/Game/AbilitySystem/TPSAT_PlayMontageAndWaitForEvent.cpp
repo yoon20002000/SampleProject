@@ -115,6 +115,7 @@ FString UTPSAT_PlayMontageAndWaitForEvent::GetDebugString() const
 
 void UTPSAT_PlayMontageAndWaitForEvent::OnDestroy(bool bInOwnerFinished)
 {
+	UE_LOG(LogTemp, Log, TEXT("OnDestroy"));
 	if (Ability != nullptr)
 	{
 		Ability->OnGameplayAbilityCancelled.Remove(CancelledHandle);
@@ -166,6 +167,7 @@ bool UTPSAT_PlayMontageAndWaitForEvent::StopPlayingMontage()
 
 void UTPSAT_PlayMontageAndWaitForEvent::OnMontageBlendingOut(UAnimMontage* Montage, bool bInterrupted)
 {
+	UE_LOG(LogTemp, Log, TEXT("OnMontageBlendingOut"));
 	if (Ability != nullptr && Ability->GetCurrentMontage() == MontageToPlay)
 	{
 		if (Montage == MontageToPlay)
@@ -197,6 +199,7 @@ void UTPSAT_PlayMontageAndWaitForEvent::OnMontageBlendingOut(UAnimMontage* Monta
 
 void UTPSAT_PlayMontageAndWaitForEvent::OnAbilityCancelled()
 {
+	UE_LOG(LogTemp, Log, TEXT("OnAbilityCancelled"));
 	if (StopPlayingMontage() == true)
 	{
 		if (ShouldBroadcastAbilityTaskDelegates() == true)
@@ -208,6 +211,7 @@ void UTPSAT_PlayMontageAndWaitForEvent::OnAbilityCancelled()
 
 void UTPSAT_PlayMontageAndWaitForEvent::OnMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
+	UE_LOG(LogTemp, Log, TEXT("OnMontageEnded"));
 	if (bInterrupted == true)
 	{
 		if (ShouldBroadcastAbilityTaskDelegates() == true)
@@ -220,6 +224,7 @@ void UTPSAT_PlayMontageAndWaitForEvent::OnMontageEnded(UAnimMontage* Montage, bo
 
 void UTPSAT_PlayMontageAndWaitForEvent::OnGameplayEvent(FGameplayTag EventTag, const FGameplayEventData* InData)
 {
+	UE_LOG(LogTemp, Log, TEXT("OnGameplayEvent"));
 	if (ShouldBroadcastAbilityTaskDelegates() == true)
 	{
 		FGameplayEventData Data = *InData;

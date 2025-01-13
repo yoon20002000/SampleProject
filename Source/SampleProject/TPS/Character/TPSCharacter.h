@@ -60,8 +60,8 @@ protected:
 public:
 	UPROPERTY(VisibleAnywhere, Category = UI)
 	TObjectPtr<UWidgetComponent> HPBarWidget;
-
-	FOnAttackEndDelegate OnAttackEnd;
+	
+	FOnAttackEndDelegate OnEndDelegate;
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UTPSHealthComponent> HealthComp;

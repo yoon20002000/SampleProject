@@ -96,14 +96,14 @@ void UTPSGA_Attack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 		UGameplayStatics::SpawnSoundAttached(ShotSoundCue, OwnerPawn->GetMesh(), SocketName);
 
 		UTPSAT_PlayMontageAndWaitForEvent* AT = UTPSAT_PlayMontageAndWaitForEvent::CreatePlayMontageAndWaitForEvent(
-			this, NAME_None, PlayMontage,FGameplayTagContainer());
+			this, NAME_None, PlayMontage, FGameplayTagContainer());
 
 		AT->OnBlendOut.AddDynamic(this, &ThisClass::OnCompleted);
 		AT->OnCompleted.AddDynamic(this, &ThisClass::OnCompleted);
 		AT->OnInterrupted.AddDynamic(this, &ThisClass::OnCancelled);
 		AT->OnCancelled.AddDynamic(this, &ThisClass::OnCancelled);
 		AT->OnEventReceived.AddDynamic(this, &ThisClass::OnReceived);
-		
+
 		AT->ReadyForActivation();
 	}
 	else
@@ -123,7 +123,7 @@ bool UTPSGA_Attack::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	{
 		return false;
 	}
-	
+
 	// 이후 무기를 추가시 추가 조건 할 것
 
 	return bResult;
@@ -175,6 +175,38 @@ int32 UTPSGA_Attack::FindFirstPawnHitResult(const TArray<FHitResult>& HitResults
 		}
 	}
 	return INDEX_NONE;
+}
+
+void UTPSGA_Attack::AttackExecute()
+{
+	TArray<FHitResult> FoundHits;
+	PerformLocalTargeting(FoundHits);
+
+	FGameplayAbilityTargetDataHandle TargetDataHandle;
+	// 무기 추가시 수정 필요
+	TargetDataHandle.UniqueId = 0;
+
+	if (FoundHits.Num() > 0)
+	{
+		const int32 CartridgeID = FMath::Rand();
+
+		for (const FHitResult& FoundHit : FoundHits)
+		{
+			FTPSGameplayAbilityTargetData_SingleTargetHit* NewTargetData = new
+				FTPSGameplayAbilityTargetData_SingleTargetHit();
+			NewTargetData->HitResult = FoundHit;
+			NewTargetData->CartridgeID = CartridgeID;
+			TargetDataHandle.Add(NewTargetData);
+		}
+	}
+
+	const bool bProjectileWeapon = false;
+	if (bProjectileWeapon == false)
+	{
+		// WeaponStateComponent->AddUnconfirmedServerSideHitMarkers();
+	}
+
+	OnTargetDataReadyCallback(TargetDataHandle, FGameplayTag());
 }
 
 FHitResult UTPSGA_Attack::WeaponTrace(const FVector& TraceStart, const FVector& TraceEnd, float SweepRadius,
@@ -534,56 +566,50 @@ void UTPSGA_Attack::OnTargetDataReadyCallback(const FGameplayAbilityTargetDataHa
 }
 
 
-void UTPSGA_Attack::OnCompleted(FGameplayTag EventTag,FGameplayEventData EventData)
+void UTPSGA_Attack::OnCompleted(FGameplayTag EventTag, FGameplayEventData EventData)
 {
-	EndAbility(CurrentSpecHandle, CurrentActorInfo,CurrentActivationInfo,true,false);
+	if (ATPSCharacter* Character = Cast<ATPSCharacter>(CurrentActorInfo->AvatarActor.Get()))
+	{
+		Character->OnEndDelegate.Broadcast();
+	}
+	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
 }
 
 void UTPSGA_Attack::OnReceived(FGameplayTag EventTag, FGameplayEventData EventData)
 {
 	check(CurrentActorInfo);
-	
+
 	AActor* AvatarActor = CurrentActorInfo->AvatarActor.Get();
 	check(AvatarActor);
-	
+
 	UAbilitySystemComponent* AC = CurrentActorInfo->AbilitySystemComponent.Get();
 	check(AC);
 
 	AController* Controller = GetControllerFromActorInfo();
 	check(Controller);
 
-	TArray<FHitResult> FoundHits;
-	PerformLocalTargeting(FoundHits);
-
-	FGameplayAbilityTargetDataHandle TargetDataHandle;
-	// 무기 추가시 수정 필요
-	TargetDataHandle.UniqueId = 0;
-
-	if (FoundHits.Num() > 0)
+	UE_LOG(LogTemp, Log, TEXT("Tag : %s"), *EventTag.ToString());
+	if (EventTag == TPSGameplayTags::Event_Montage_EndAbility)
 	{
-		const int32 CartridgeID = FMath::Rand();
-
-		for (const FHitResult& FoundHit : FoundHits)
+		if (ATPSCharacter* Character = Cast<ATPSCharacter>(AvatarActor))
 		{
-			FTPSGameplayAbilityTargetData_SingleTargetHit* NewTargetData = new
-				FTPSGameplayAbilityTargetData_SingleTargetHit();
-			NewTargetData->HitResult = FoundHit;
-			NewTargetData->CartridgeID = CartridgeID;
-			TargetDataHandle.Add(NewTargetData);
+			Character->OnEndDelegate.Broadcast();
 		}
+		EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
+		return;
 	}
-
-	const bool bProjectileWeapon = false;
-	if (bProjectileWeapon == false)
+	else
 	{
-		// WeaponStateComponent->AddUnconfirmedServerSideHitMarkers();
+		AttackExecute();
 	}
-
-	OnTargetDataReadyCallback(TargetDataHandle, FGameplayTag());
 }
 
-void UTPSGA_Attack::OnCancelled(FGameplayTag EventTag,FGameplayEventData EventData)
+void UTPSGA_Attack::OnCancelled(FGameplayTag EventTag, FGameplayEventData EventData)
 {
+	if (ATPSCharacter* Character = Cast<ATPSCharacter>(CurrentActorInfo->AvatarActor.Get()))
+	{
+		Character->OnEndDelegate.Broadcast();
+	}
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, true);
 }
 
