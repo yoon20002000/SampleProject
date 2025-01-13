@@ -6,27 +6,38 @@
 #include "Character/TPSPlayer.h"
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
+#include "Game/AbilitySystem/TPSHealthSet.h"
 
-void UTPSHealthBar::InitHealthBar(ATPSPlayer* TPSPlayer) 
+void UTPSHealthBar::InitHealthBar(const ATPSPlayer* TPSPlayer) 
 {
 	if (TPSPlayer == nullptr)
 	{
 		return;
 	}
 	
-	UpdateHealthBar(TPSPlayer->GetHealth(), TPSPlayer->GetMaxHealth());
-	UpdateHealthPoint(TPSPlayer->GetHealth());
-	TPSPlayer->GetHealthAttributeComp()->OnHealthChanged.AddDynamic(this, &ThisClass::UpdateUIs);
+	CurrentHealth = TPSPlayer->GetHealth();
+	CurrentMaxHealth = TPSPlayer->GetMaxHealth(); 
+	UpdateUI();
+	
+	if (UTPSAbilitySystemComponent* ASC = TPSPlayer->GetTPSAbilitySystemComponent())
+	{
+		ASC->GetGameplayAttributeValueChangeDelegate(UTPSHealthSet::GetHealthAttribute()).AddUObject(this, &ThisClass::OnHealthChanged);
+		ASC->GetGameplayAttributeValueChangeDelegate(UTPSHealthSet::GetMaxHealthAttribute()).AddUObject(this, &ThisClass::OnHealthChanged);
+	}
 }
 
-void UTPSHealthBar::UninitHealthBar(ATPSPlayer* TPSPlayer)
+void UTPSHealthBar::UninitHealthBar(const ATPSPlayer* TPSPlayer)
 {
 	if (TPSPlayer == nullptr)
 	{
 		return;
 	}
 	
-	TPSPlayer->GetHealthAttributeComp()->OnHealthChanged.RemoveDynamic(this, &ThisClass::UpdateUIs);
+	if (UTPSAbilitySystemComponent* ASC = TPSPlayer->GetTPSAbilitySystemComponent())
+	{
+		ASC->GetGameplayAttributeValueChangeDelegate(UTPSHealthSet::GetHealthAttribute()).RemoveAll(this);
+		ASC->GetGameplayAttributeValueChangeDelegate(UTPSHealthSet::GetMaxHealthAttribute()).RemoveAll(this);
+	}
 }
 
 bool UTPSHealthBar::Initialize()
@@ -41,34 +52,31 @@ void UTPSHealthBar::NativeConstruct()
 	Super::NativeConstruct();
 }
 
-void UTPSHealthBar::UpdateUIs(UTPSHealthComponent* HealthComp, float OldValue, float NewValue, AActor* Actor)
-{
-	if (HealthComp == nullptr)
-	{
-		return;
-	}
-
-	UpdateHealthBar(HealthComp->GetHealth(), HealthComp->GetMaxHealth());
-	UpdateHealthPoint(HealthComp->GetHealth());
-}
-
 void UTPSHealthBar::BeginDestroy()
 {
 	Super::BeginDestroy();
 
 	if (ATPSPlayer* TPSPlayer = GetTPSPlayer())
 	{
-		TPSPlayer->GetHealthAttributeComp()->OnHealthChanged.RemoveDynamic(this, &ThisClass::UpdateUIs);
+		UninitHealthBar(TPSPlayer);
 	}
 }
 
-void UTPSHealthBar::UpdateHealthBar(const float NewHealth, const float MaxHealth)
+void UTPSHealthBar::UpdateUI()
 {
-	const float Percent = NewHealth / MaxHealth;
+	HealthPointText->SetText(FText::AsNumber(CurrentHealth));
+	const float Percent = CurrentHealth / CurrentMaxHealth;
 	HealthBar->SetPercent(Percent);
 }
 
-void UTPSHealthBar::UpdateHealthPoint(float NewHealth)
+void UTPSHealthBar::OnHealthChanged(const FOnAttributeChangeData& Data)
 {
-	HealthPointText->SetText(FText::AsNumber(NewHealth));
+	CurrentHealth = Data.NewValue;
+	UpdateUI();
+}
+
+void UTPSHealthBar::OnMaxHealthChanged(const FOnAttributeChangeData& Data)
+{
+	CurrentMaxHealth = Data.NewValue;
+	UpdateUI();
 }

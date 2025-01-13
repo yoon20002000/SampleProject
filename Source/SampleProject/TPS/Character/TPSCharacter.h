@@ -43,6 +43,8 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UTPSAbilitySystemComponent* GetTPSAbilitySystemComponent()const;
 
+	bool GetCooldownRemainingForTag(const FGameplayTagContainer& CooldownTags, float& RemainingTime, float& CooldownDuration) const;
+	
 	void SetCharacterState(ECharacterState CharacterState);
 	ECharacterState GetCharacterState()const;
 

@@ -152,6 +152,36 @@ UTPSAbilitySystemComponent* ATPSCharacter::GetTPSAbilitySystemComponent() const
 	return Cast<UTPSAbilitySystemComponent>(GetAbilitySystemComponent());
 }
 
+bool ATPSCharacter::GetCooldownRemainingForTag(const FGameplayTagContainer& CooldownTags, float& RemainingTime,
+	float& CooldownDuration) const
+{
+	if (IsValid(AbilitySystemComp) == true && CooldownTags.Num() > 0)
+	{
+		RemainingTime = 0.f;
+		CooldownDuration = 0.f;
+
+		FGameplayEffectQuery const Query = FGameplayEffectQuery::MakeQuery_MatchAnyOwningTags(CooldownTags);
+		TArray<TPair<float,float>> DurationAndTimeRemaining = AbilitySystemComp->GetActiveEffectsTimeRemainingAndDuration(Query);
+		if (DurationAndTimeRemaining.Num() > 0)
+		{
+			int32 BestIdx = 0;
+			float LongestTime = DurationAndTimeRemaining[0].Key;
+			for (int32 Idx = 1; Idx < DurationAndTimeRemaining.Num(); Idx++)
+			{
+				if (DurationAndTimeRemaining[Idx].Key > LongestTime)
+				{
+					LongestTime = DurationAndTimeRemaining[Idx].Key;
+					BestIdx = Idx;
+				}
+			}
+			RemainingTime = DurationAndTimeRemaining[BestIdx].Key;
+			CooldownDuration = DurationAndTimeRemaining[BestIdx].Value;
+			return true;
+		}
+	}
+	return false;
+}
+
 void ATPSCharacter::SetCharacterState(ECharacterState CharacterState)
 {
 	if (CurrentState == CharacterState)
