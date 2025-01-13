@@ -115,7 +115,6 @@ FString UTPSAT_PlayMontageAndWaitForEvent::GetDebugString() const
 
 void UTPSAT_PlayMontageAndWaitForEvent::OnDestroy(bool bInOwnerFinished)
 {
-	UE_LOG(LogTemp, Log, TEXT("OnDestroy"));
 	if (Ability != nullptr)
 	{
 		Ability->OnGameplayAbilityCancelled.Remove(CancelledHandle);
@@ -167,7 +166,6 @@ bool UTPSAT_PlayMontageAndWaitForEvent::StopPlayingMontage()
 
 void UTPSAT_PlayMontageAndWaitForEvent::OnMontageBlendingOut(UAnimMontage* Montage, bool bInterrupted)
 {
-	UE_LOG(LogTemp, Log, TEXT("OnMontageBlendingOut"));
 	if (Ability != nullptr && Ability->GetCurrentMontage() == MontageToPlay)
 	{
 		if (Montage == MontageToPlay)
