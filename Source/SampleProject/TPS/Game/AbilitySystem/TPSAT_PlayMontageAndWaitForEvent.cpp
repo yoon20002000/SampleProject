@@ -38,7 +38,6 @@ void UTPSAT_PlayMontageAndWaitForEvent::Activate()
 		return;
 	}
 
-	UE_LOG(LogTemp, Log, TEXT("UTPSAT_PlayMontageAndWaitForEvent Activate"));
 	bool bPlayedMontage = false;
 
 	if (AbilitySystemComponent.IsValid() == true)
@@ -221,7 +220,6 @@ void UTPSAT_PlayMontageAndWaitForEvent::OnMontageEnded(UAnimMontage* Montage, bo
 
 void UTPSAT_PlayMontageAndWaitForEvent::OnGameplayEvent(FGameplayTag EventTag, const FGameplayEventData* InData)
 {
-	UE_LOG(LogTemp, Log, TEXT("Event Called"));
 	if (ShouldBroadcastAbilityTaskDelegates() == true)
 	{
 		FGameplayEventData Data = *InData;
