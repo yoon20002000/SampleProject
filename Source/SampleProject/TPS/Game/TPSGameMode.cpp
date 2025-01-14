@@ -107,7 +107,6 @@ void ATPSGameMode::OnActorKilled(AActor* KilledActor, AActor* InstigatorActor)
 			else
 			{
 				GameManager->DespawnCharacter(DieCharacter);
-				GameManager->SpawnCharacter();
 				DieCharacter->UninitAndDestroy();
 			}
 		});

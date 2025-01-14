@@ -18,8 +18,10 @@ public:
 	void BeginPlay();
 	void EndPlay(const EEndPlayReason::Type EndPlayReason);
 	void SpawnPlayer(const FString& CharacterDataName = TEXT("Player"), const int SpawnPointIndex = -1);
-	void SpawnCharacter(const FString& CharacterDataName = TEXT("AICharacter"), const int SpawnPointIndex = -1);
 	void DespawnCharacter(ATPSCharacter* DespawnCharacter);
+	void AddSpawnedCharacter(ATPSCharacter* InSpawnCharacter);
+	UGameDataAsset* GetDataAsset();
+	
 	TArray<TObjectPtr<ATPSCharacter>>& GetAllCharacters();
 	ATPSPlayer* GetPlayer();
 private:

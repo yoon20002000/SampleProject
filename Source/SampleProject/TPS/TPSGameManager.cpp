@@ -81,39 +81,19 @@ void UTPSGameManager::SpawnPlayer(const FString& CharacterDataName, const int Sp
 	}
 }
 
-void UTPSGameManager::SpawnCharacter(const FString& CharacterDataName, const int SpawnPointIndex)
-{
-	if (GameDataAsset == nullptr)
-	{
-		return;
-	}
-
-	const FCharacterAssetInfo& AssetInfo = GameDataAsset->GetCharacterData(CharacterDataName);
-	if (AssetInfo.AssetName.IsEmpty() == true)
-	{
-		return;
-	}
-
-	FActorSpawnParameters ActorSpawnParameter;
-	ActorSpawnParameter.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	ActorSpawnParameter.ObjectFlags |= RF_Transient;
-
-	FVector SpawnPoint;
-	FRotator SpawnRotation;
-	GetSpawnPoint(SpawnPoint, SpawnRotation, SpawnPointIndex);
-	ATPSCharacter* SpawnedCharacter = TPSHelper::GetWorld()->SpawnActor<ATPSCharacter>(
-		AssetInfo.Character.LoadSynchronous(), SpawnPoint,
-		SpawnRotation, ActorSpawnParameter);
-	if (SpawnedCharacter != nullptr)
-	{
-		UE_LOG(LogTemp, Log, TEXT("Spawned Character : %s"), *GetNameSafe(SpawnedCharacter));
-		SpawnedCharacters.Add(SpawnedCharacter);
-	}
-}
-
 void UTPSGameManager::DespawnCharacter(ATPSCharacter* DespawnCharacter)
 {
 	SpawnedCharacters.Remove(DespawnCharacter);
+}
+
+void UTPSGameManager::AddSpawnedCharacter(ATPSCharacter* InSpawnCharacter)
+{
+	SpawnedCharacters.Add(InSpawnCharacter);
+}
+
+UGameDataAsset* UTPSGameManager::GetDataAsset()
+{
+	return GameDataAsset;
 }
 
 TArray<TObjectPtr<ATPSCharacter>>& UTPSGameManager::GetAllCharacters()
