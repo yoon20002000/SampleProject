@@ -44,6 +44,7 @@ void ATPSAIController::StopAI() const
 	UBehaviorTreeComponent* BTC = Cast<UBehaviorTreeComponent>(BrainComponent);
 	if (BTC != nullptr)
 	{
+		BTC->StopLogic(TEXT("Stop BT"));
 		BTC->StopTree(EBTStopMode::Safe);
 	}
 }
