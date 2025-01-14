@@ -218,18 +218,10 @@ void ATPSCharacter::SetCharacterState(ECharacterState CharacterState)
 		}
 	case ECharacterState::DEAD:
 		{
+			AbilitySystemComp->CancelAbilities();
 			bCanBeDamaged=false;
 			HPBarWidget->SetHiddenInGame(true);
 			SetPlayerInput(false);
-
-			if (bIsPlayerControlled == false)
-			{
-				ATPSAIController* AIController = Cast<ATPSAIController>(GetController());
-				if (AIController != nullptr)
-				{
-					AIController->StopAI();
-				}
-			}
 			break;
 		}
 		default:
