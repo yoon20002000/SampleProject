@@ -127,6 +127,11 @@ void ATPSCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+bool ATPSCharacter::IsAlive() const
+{
+	return HealthComp->IsAlive();
+}
+
 float ATPSCharacter::GetHealth() const
 {
 	return HealthComp->GetHealth();

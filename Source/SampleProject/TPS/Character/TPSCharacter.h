@@ -35,7 +35,7 @@ public:
 	void OnDeathStart(AActor* OwningActor);
 	virtual void PostInitializeComponents() override;
 	virtual void Tick(float DeltaTime) override;
-	
+	bool IsAlive() const;
 	float GetHealth()const;
 	float GetMaxHealth()const;
 	

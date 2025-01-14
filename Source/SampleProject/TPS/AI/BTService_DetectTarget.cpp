@@ -52,13 +52,21 @@ void UBTService_DetectTarget::TickNode(UBehaviorTreeComponent& OwnerComp, uint8*
 		for (FOverlapResult Hit : OverlapResults)
 		{
 			ATPSPlayer* TargetPlayer = Cast<ATPSPlayer>(Hit.GetActor());
-			if (TargetPlayer != nullptr && TargetPlayer->GetController()->IsPlayerController() == true)
+			if (TargetPlayer != nullptr && TargetPlayer->GetController() != nullptr)
 			{
-				BBC->SetValueAsObject(ATPSAIController::TargetActorKey, TargetPlayer);
-				DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Red, false, .2f);
-				DrawDebugPoint(World, TargetPlayer->GetActorLocation(), 10.0f, FColor::Blue, false, .2f);
-				DrawDebugLine(World, ControllingPawn->GetActorLocation(), TargetPlayer->GetActorLocation(), FColor::Blue, false, .2f);
-				return;
+				if (TargetPlayer->GetController()->IsPlayerController() == true && TargetPlayer->IsAlive() == true)
+				{
+					BBC->SetValueAsObject(ATPSAIController::TargetActorKey, TargetPlayer);
+					DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Red, false, .2f);
+					DrawDebugPoint(World, TargetPlayer->GetActorLocation(), 10.0f, FColor::Blue, false, .2f);
+					DrawDebugLine(World, ControllingPawn->GetActorLocation(), TargetPlayer->GetActorLocation(), FColor::Blue, false, .2f);
+					return;	
+				}
+				else
+				{
+					BBC->SetValueAsObject(ATPSAIController::TargetActorKey, nullptr);
+					break;
+				}
 			}
 		}
 		BBC->SetValueAsObject(ATPSAIController::TargetActorKey, nullptr);

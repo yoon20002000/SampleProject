@@ -54,7 +54,7 @@ void ATPSGameMode::OnActorKilled(AActor* KilledActor, AActor* InstigatorActor)
 		{
 			if (ATPSAIController* AIController = Cast<ATPSAIController>(SpawnedCharacter->GetController()))
 			{
-				AIController->StopAI();
+				//AIController->StopAI();
 			}
 		}
 	}
