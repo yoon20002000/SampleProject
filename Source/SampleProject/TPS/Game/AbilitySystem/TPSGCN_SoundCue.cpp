@@ -19,7 +19,6 @@ FVector UTPSGCN_SoundCue::GetSpawnLocation(const FHitResult& HitResult) const
 
 bool UTPSGCN_SoundCue::OnExecute_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters) const
 {
-	UE_LOG(LogTemp, Log, TEXT("In UTPSGCN_SoundCue::OnExecute_Implementation"));
 	const FHitResult* HitResult = Parameters.EffectContext.GetHitResult();
 
 	if (ATPSCharacter* Character = Cast<ATPSCharacter>(HitResult->GetActor()))

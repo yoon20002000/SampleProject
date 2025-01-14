@@ -60,6 +60,14 @@ void ATPSGameMode::OnActorKilled(AActor* KilledActor, AActor* InstigatorActor)
 	}
 	else
 	{
+		if ( ATPSCharacter* AICharacter = Cast<ATPSCharacter>(KilledActor))
+		{
+			if (ATPSAIController* AIController = Cast<ATPSAIController>(AICharacter->GetController()))
+			{
+				AIController->StopAI();
+			}			
+		}
+		
 		TPSPlayer = Cast<ATPSPlayer>(InstigatorActor);
 		if (TPSPlayer != nullptr)
 		{
