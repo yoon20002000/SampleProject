@@ -88,13 +88,9 @@ void UTPSGA_Attack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 		this, &ThisClass::OnTargetDataReadyCallback);
 
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-
-
-	AActor* OwnerActor = GetAvatarActorFromActorInfo();
-	if (ATPSCharacter* OwnerPawn = Cast<ATPSCharacter>(OwnerActor); PlayMontage != nullptr)
+	
+	if (PlayMontage != nullptr)
 	{
-		UGameplayStatics::SpawnSoundAttached(ShotSoundCue, OwnerPawn->GetMesh(), SocketName);
-
 		UTPSAT_PlayMontageAndWaitForEvent* AT = UTPSAT_PlayMontageAndWaitForEvent::CreatePlayMontageAndWaitForEvent(
 			this, NAME_None, PlayMontage, FGameplayTagContainer());
 
@@ -179,6 +175,12 @@ int32 UTPSGA_Attack::FindFirstPawnHitResult(const TArray<FHitResult>& HitResults
 
 void UTPSGA_Attack::AttackExecute()
 {
+	AActor* OwnerActor = GetAvatarActorFromActorInfo();
+	if (ATPSCharacter* OwnerPawn = Cast<ATPSCharacter>(OwnerActor))
+	{
+		UGameplayStatics::SpawnSoundAttached(ShotSoundCue, OwnerPawn->GetMesh(), SocketName);	
+	}
+	
 	TArray<FHitResult> FoundHits;
 	PerformLocalTargeting(FoundHits);
 
