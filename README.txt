@@ -7,3 +7,11 @@ Code convention
   - 같은 Access 내에서 엔진 Func들의 호출 Flow가 있을 경우 해당 Flow에 맞게 순서를 지킨다.
   - if를 사용 시 무조건 scope를 생성한다.
   - if state 확인 시 true, nullptr 등 상세 히 조건을 적는다.
+
+Player
+- 이동, 점프, 공격, 특수 공격, 상호 작용
+- 특수 공격 사용시 이동 불가 및 Cost로 HP 15 사용
+- 상호 작용을 통해 Field에 배치 된 Interaction Actor와 상호작용
+
+AISpawner
+- AICharacter를 특정 주기에서 Field에 특정 수치만큼 계속 Spawn 하게 함.
