@@ -6,23 +6,25 @@
 #include "TPSIndicatorManagerComponent.generated.h"
 
 
+
+class UTPSIndicatorDescriptor;
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SAMPLEPROJECT_API UTPSIndicatorManagerComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
-	UTPSIndicatorManagerComponent();
+	UTPSIndicatorManagerComponent(const FObjectInitializer& ObjectInitializer);
 
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
+	UFUNCTION(BlueprintCallable, Category="Indicators")
+	void RemoveIndicator(UTPSIndicatorDescriptor* IndicatorDescriptor);
+	
+	DECLARE_EVENT_OneParam(UTPSIndicatorManagerComponent,FIndicatorEvent, UTPSIndicatorDescriptor* IndicatorDescriptor)
+	FIndicatorEvent OnIndicatorAdded;
+	FIndicatorEvent OnIndicatorRemoved;
 
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-		
+private:
+	UPROPERTY()
+	TArray<TObjectPtr<UTPSIndicatorDescriptor>> Indicators;
 	
 };

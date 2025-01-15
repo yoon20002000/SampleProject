@@ -3,11 +3,17 @@
 #pragma once
 
 #include "TPSIndicatorDescriptor.generated.h"
+class UTPSIndicatorDescriptor;
 class UTPSIndicatorManagerComponent;
 class STPSActorCanvas;
 
+struct FIndicatorProjection
+{
+	bool Project(const UTPSIndicatorDescriptor& IndicatorDescriptor, const FSceneViewProjectionData& InProjectionData, const FVector2f& ScreenSize, FVector& OutScreenPositionWithDepth);
+};
+
 UENUM(BlueprintType)
-enum EActorCanvasProjectionMode : uint8
+enum class EActorCanvasProjectionMode : uint8
 {
 	ComponentPoint,
 	ComponentBoundingBox,
@@ -52,12 +58,14 @@ public:
 	void UnregisterIndicator();
 	
 	// Layout
-	
 	UFUNCTION(BlueprintCallable)
 	bool GetAutoRemoveWhenIndicatorComponentIsNull() const;
 	UFUNCTION(BlueprintCallable)
 	void SetAutoRemoveWhenIndicatorComponentIsNull(bool CanAutomaticallyRemove);
+	UFUNCTION(BlueprintCallable)
+	bool CanAutomaticallyRemove() const;
 
+	
 	UFUNCTION(BlueprintCallable)
 	bool GetIsVisible()const ;
 	UFUNCTION(BlueprintCallable)
@@ -96,12 +104,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FVector2D GetScreenSpaceOffset() const;
 	UFUNCTION(BlueprintCallable)
-	void SetScreenSpaceOffset(FVector2D ScreenSpaceOffset);
+	void SetScreenSpaceOffset(FVector2D InScreenSpaceOffset);
 
 	UFUNCTION(BlueprintCallable)
 	FVector GetBoundingBoxAnchor() const;
 	UFUNCTION(BlueprintCallable)
-	void SetBoudingBoxAnchor(FVector InBoundingBoxAnchor);
+	void SetBoundingBoxAnchor(FVector InBoundingBoxAnchor);
 
 	// Sorting
 	UFUNCTION(BlueprintCallable)
@@ -129,6 +137,12 @@ private:
 
 
 	UPROPERTY()
+	bool bVisible = true;
+	UPROPERTY()
+	bool bClampToScreen = false;
+	UPROPERTY()
+	bool bShowClampToScreenArrow = false;
+	UPROPERTY()
 	bool bAutoRemoveWhenIndicatorComponentIsNull;
 
 	
@@ -138,4 +152,14 @@ private:
 	TEnumAsByte<EHorizontalAlignment> HAlignment = HAlign_Center;
 	UPROPERTY()
 	TEnumAsByte<EVerticalAlignment> VAlignment = VAlign_Center;
+
+	UPROPERTY()
+	int32 Priority;
+	
+	UPROPERTY()
+	FVector BoundingBoxAnchor = FVector::ZeroVector;
+	UPROPERTY()
+	FVector2D ScreenSpaceOffset = FVector2D::ZeroVector;
+	UPROPERTY()
+	FVector WorldPositionOffset = FVector(0,0,0);
 };
