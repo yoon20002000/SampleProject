@@ -1,8 +1,6 @@
 ﻿#include "TPSPlayer.h"
 
-#include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "TPSHelper.h"
 #include "Components/TPSCameraComponent.h"
 #include "Components/TPSSpringArmComponent.h"
 #include "Game/TPSGameplayTags.h"
@@ -130,22 +128,6 @@ void ATPSPlayer::Look(const FInputActionValue& InputActionValue)
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
 }
-
-void ATPSPlayer::JumpAbilities()
-{
-	FGameplayTagContainer JumpTags;
-	JumpTags.AddTag(TPSGameplayTags::Action_Jump);
-
-	AbilitySystemComp->TryActivateAbilitiesByTag(JumpTags);
-}
-
-void ATPSPlayer::StopJumpAbilities()
-{
-	FGameplayTagContainer JumpTags;
-	JumpTags.AddTag(TPSGameplayTags::Action_Jump);
-	AbilitySystemComp->CancelAbilities();
-}
-
 void ATPSPlayer::InitHUD()
 {
 	FString LayerTagName = UCommonUIExtensions::GetTPSUIManager()->GetLayerNameByLayerType(EUILayerType::GameLayer);

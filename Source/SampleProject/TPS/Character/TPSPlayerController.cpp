@@ -7,10 +7,16 @@
 #include "TPSPlayer.h"
 #include "TPSPlayerState.h"
 #include "TPSSystemManager.h"
+#include "Components/TPSIndicatorManagerComponent.h"
 #include "Game/TPSCommonLocalPlayer.h"
 #include "Game/TPSGameStateManager.h"
 #include "Game/AbilitySystem/TPSAbilitySystemComponent.h"
 
+
+ATPSPlayerController::ATPSPlayerController()
+{
+	IndicatorManagerComp = CreateDefaultSubobject<UTPSIndicatorManagerComponent>(TEXT("Indicator Manager Comp"));
+}
 
 void ATPSPlayerController::ReceivedPlayer()
 {

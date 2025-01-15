@@ -40,8 +40,6 @@ protected:
 private:
 	void Move(const FInputActionValue& InputActionValue);
 	void Look(const FInputActionValue& InputActionValue);
-	void JumpAbilities();
-	void StopJumpAbilities();
 	void InitHUD();
 	void UninitHUD();
 	void PrintTags();

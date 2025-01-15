@@ -9,7 +9,6 @@
 #include "CommonTextBlock.h"
 #include "TPSSystemManager.h"
 #include "Game/TPSGameStateManager.h"
-#include "Kismet/GameplayStatics.h"
 
 bool UTPSGameResultWidget::Initialize()
 {

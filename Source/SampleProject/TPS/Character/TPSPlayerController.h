@@ -8,6 +8,7 @@
 #include "GameFramework/PlayerController.h"
 #include "TPSPlayerController.generated.h"
 
+class UTPSIndicatorManagerComponent;
 /**
  * 
  */
@@ -17,6 +18,7 @@ class SAMPLEPROJECT_API ATPSPlayerController : public APlayerController
 	GENERATED_BODY()
 
 public:
+	ATPSPlayerController();
 	virtual void ReceivedPlayer() override;	
 	virtual void SetPawn(APawn* InPawn) override;
 	virtual void OnPossess(class APawn* APawn) override;
@@ -35,4 +37,5 @@ protected:
 private:
 	FInputModeGameOnly InputGameOnly;
 	FInputModeUIOnly InputUIOnly;
+	TObjectPtr<UTPSIndicatorManagerComponent> IndicatorManagerComp; 
 };
