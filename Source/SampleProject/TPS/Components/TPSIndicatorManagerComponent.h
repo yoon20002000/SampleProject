@@ -16,13 +16,20 @@ class SAMPLEPROJECT_API UTPSIndicatorManagerComponent : public UActorComponent
 public:	
 	UTPSIndicatorManagerComponent(const FObjectInitializer& ObjectInitializer);
 
+	static UTPSIndicatorManagerComponent* GetComponent(AController* Controller);
+
+	UFUNCTION(BlueprintCallable, Category="Indicators")
+	void AddIndicator(UTPSIndicatorDescriptor* IndicatorDescriptor);
 	UFUNCTION(BlueprintCallable, Category="Indicators")
 	void RemoveIndicator(UTPSIndicatorDescriptor* IndicatorDescriptor);
+
+	const TArray<UTPSIndicatorDescriptor*>& GetIndicators() const;
 	
+public:
 	DECLARE_EVENT_OneParam(UTPSIndicatorManagerComponent,FIndicatorEvent, UTPSIndicatorDescriptor* IndicatorDescriptor)
 	FIndicatorEvent OnIndicatorAdded;
 	FIndicatorEvent OnIndicatorRemoved;
-
+	
 private:
 	UPROPERTY()
 	TArray<TObjectPtr<UTPSIndicatorDescriptor>> Indicators;

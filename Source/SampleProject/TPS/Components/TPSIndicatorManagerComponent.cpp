@@ -14,6 +14,28 @@ UTPSIndicatorManagerComponent::UTPSIndicatorManagerComponent(const FObjectInitia
 	bAutoActivate = true;
 }
 
+UTPSIndicatorManagerComponent* UTPSIndicatorManagerComponent::GetComponent(AController* Controller)
+{
+	if (Controller == nullptr)
+	{
+		return nullptr;
+	}
+
+	return Controller ->FindComponentByClass<UTPSIndicatorManagerComponent>();
+}
+
+void UTPSIndicatorManagerComponent::AddIndicator(UTPSIndicatorDescriptor* IndicatorDescriptor)
+{
+	if (IndicatorDescriptor == nullptr)
+	{
+		return ;
+	}
+
+	IndicatorDescriptor->SetIndicatorManagerComponent(this);
+	OnIndicatorAdded.Broadcast(IndicatorDescriptor);
+	Indicators.Add(IndicatorDescriptor);
+}
+
 void UTPSIndicatorManagerComponent::RemoveIndicator(UTPSIndicatorDescriptor* IndicatorDescriptor)
 {
 	if (IndicatorDescriptor == nullptr)
@@ -26,5 +48,9 @@ void UTPSIndicatorManagerComponent::RemoveIndicator(UTPSIndicatorDescriptor* Ind
 		OnIndicatorRemoved.Broadcast(IndicatorDescriptor);
 		Indicators.Remove(IndicatorDescriptor);
 	}
+}
+const TArray<UTPSIndicatorDescriptor*>& UTPSIndicatorManagerComponent::GetIndicators() const
+{
+	return Indicators;
 }
 
