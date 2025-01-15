@@ -15,58 +15,55 @@ void UTPSGA_Interaction::ActivateAbility(const FGameplayAbilitySpecHandle Handle
                                          const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-		
-	FCollisionObjectQueryParams ObjectQueryParams;
-	for (auto CollisionChannel : CollisionChannels)
-	{
-		ObjectQueryParams.AddObjectTypesToQuery(CollisionChannel);
-	}
-
-	FVector EyeLocation;
-	ATPSPlayer* TPSPlayer =  Cast<ATPSPlayer>(ActorInfo->AvatarActor);
-	if (TPSPlayer == nullptr)
-	{
-		EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
-	}
-	
-	FRotator EyeRotation;
-	TPSPlayer->GetActorEyesViewPoint(EyeLocation, EyeRotation);
-
-	FVector End = EyeLocation + (EyeRotation.Vector() * TraceDistance);
-
-	TArray<FHitResult> Hits;
-
-	FCollisionShape Shape;
-	Shape.SetSphere(TraceRadius);
-
-	bool bBlockingHit = TPSHelper::GetWorld()->SweepMultiByObjectType(Hits, EyeLocation, End, FQuat::Identity,
-																	  ObjectQueryParams,
-																	  Shape);
-	FColor LineColor = (bBlockingHit == true ? FColor::Green : FColor::Red);
-
-	FocusedActor = nullptr;
-
-	for (FHitResult Hit : Hits)
-	{
-		DrawDebugSphere(GetWorld(), Hit.ImpactPoint, TraceRadius, 32, LineColor, false, 0.f);
-
-		ATPSInteractionActor* HitInteractionActor = Cast<ATPSInteractionActor>(Hit.GetActor());
-		UTPSAbilitySystemComponent* ASC = TPSPlayer->GetTPSAbilitySystemComponent();
-		if (HitInteractionActor != nullptr && ASC != nullptr)
-		{
-			HitInteractionActor->ApplyGE(ASC);
-		}
-	}
-
-	// To do : UI 추가
-	if (FocusedActor != nullptr)
-	{
-	}
-	
-	// 추후 interaction 하는데 필요한 cost 가 있는 ge를 가지고 있는 field object일 경우 체크 필요
 	if (CommitAbility(Handle, ActorInfo, ActivationInfo) == true)
 	{
-		EndAbility(Handle,ActorInfo,ActivationInfo,true,false);	
+		FCollisionObjectQueryParams ObjectQueryParams;
+		for (auto CollisionChannel : CollisionChannels)
+		{
+			ObjectQueryParams.AddObjectTypesToQuery(CollisionChannel);
+		}
+
+		FVector EyeLocation;
+		ATPSPlayer* TPSPlayer = Cast<ATPSPlayer>(ActorInfo->AvatarActor);
+		if (TPSPlayer == nullptr)
+		{
+			EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
+		}
+
+		FRotator EyeRotation;
+		TPSPlayer->GetActorEyesViewPoint(EyeLocation, EyeRotation);
+
+		FVector End = EyeLocation + (EyeRotation.Vector() * TraceDistance);
+
+		TArray<FHitResult> Hits;
+
+		FCollisionShape Shape;
+		Shape.SetSphere(TraceRadius);
+
+		bool bBlockingHit = TPSHelper::GetWorld()->SweepMultiByObjectType(Hits, EyeLocation, End, FQuat::Identity,
+		                                                                  ObjectQueryParams,
+		                                                                  Shape);
+		FColor LineColor = (bBlockingHit == true ? FColor::Green : FColor::Red);
+
+		FocusedActor = nullptr;
+
+		for (FHitResult Hit : Hits)
+		{
+			DrawDebugSphere(GetWorld(), Hit.ImpactPoint, TraceRadius, 32, LineColor, false, 0.f);
+
+			ATPSInteractionActor* HitInteractionActor = Cast<ATPSInteractionActor>(Hit.GetActor());
+			UTPSAbilitySystemComponent* ASC = TPSPlayer->GetTPSAbilitySystemComponent();
+			if (HitInteractionActor != nullptr && ASC != nullptr)
+			{
+				HitInteractionActor->ApplyGE(ASC);
+			}
+		}
+
+		// To do : UI 추가
+		if (FocusedActor != nullptr)
+		{
+		}
+		EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
 	}
 	else
 	{
@@ -75,7 +72,8 @@ void UTPSGA_Interaction::ActivateAbility(const FGameplayAbilitySpecHandle Handle
 }
 
 void UTPSGA_Interaction::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
-	const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
+                                    const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility,
+                                    bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
