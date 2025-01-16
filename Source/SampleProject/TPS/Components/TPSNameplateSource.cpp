@@ -4,10 +4,9 @@
 #include "Components/TPSNameplateSource.h"
 
 #include "TPSHelper.h"
+#include "TPSNameplateManager.h"
 #include "Character/TPSAIController.h"
-#include "Character/TPSCharacter.h"
 #include "Character/TPSPlayerController.h"
-#include "Components/TPSIndicatorManagerComponent.h"
 
 
 UTPSNameplateSource::UTPSNameplateSource()
@@ -21,18 +20,12 @@ UTPSNameplateSource::UTPSNameplateSource()
 void UTPSNameplateSource::BeginPlay()
 {
 	Super::BeginPlay();
-
-	if (ATPSCharacter* OwnerActor = Cast<ATPSCharacter>(GetOwner()))
+	
+	if (ATPSPlayerController* PC = Cast<ATPSPlayerController>(TPSHelper::GetPlayerController()))
 	{
-		if (ATPSAIController* AIController = Cast<ATPSAIController>(GetOwner()))
+		if (UTPSNameplateManager* NG = PC->GetComponentByClass<UTPSNameplateManager>())
 		{
-			if (ATPSPlayerController* PlayerCharacter = Cast<ATPSPlayerController>(TPSHelper::GetPlayerController()))
-			{
-				if (UTPSIndicatorManagerComponent* IndicatorMG = PlayerCharacter->GetComponentByClass<UTPSIndicatorManagerComponent>())
-				{
-					//IndicatorMG->AddIndicator();
-				}
-			}
+			NG->RegistNameplate(Cast<APawn>(GetOwner()), NameplateWidgetClass);
 		}
 	}
 }
@@ -40,17 +33,12 @@ void UTPSNameplateSource::BeginPlay()
 void UTPSNameplateSource::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
-	if (ATPSCharacter* OwnerActor = Cast<ATPSCharacter>(GetOwner()))
+
+	if (ATPSPlayerController* PC = Cast<ATPSPlayerController>(TPSHelper::GetPlayerController()))
 	{
-		if (ATPSAIController* AIController = Cast<ATPSAIController>(GetOwner()))
+		if (UTPSNameplateManager* NG = PC->GetComponentByClass<UTPSNameplateManager>())
 		{
-			if (ATPSPlayerController* PlayerCharacter = Cast<ATPSPlayerController>(TPSHelper::GetPlayerController()))
-			{
-				if (UTPSIndicatorManagerComponent* IndicatorMG = PlayerCharacter->GetComponentByClass<UTPSIndicatorManagerComponent>())
-				{
-					//IndicatorMG->UnregistIndicator(OwnerActor);
-				}
-			}
+			NG->UnregistNameplate(Cast<APawn>(GetOwner()));
 		}
 	}
 }

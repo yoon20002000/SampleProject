@@ -16,7 +16,7 @@ class SAMPLEPROJECT_API UTPSNameplateManager : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	UTPSNameplateManager();
+	UTPSNameplateManager(const FObjectInitializer& ObjectInitializer);
 
 	void RegistNameplate(APawn* IndicatedPawn,
 							TSoftClassPtr<UUserWidget> InIndicatorClass,

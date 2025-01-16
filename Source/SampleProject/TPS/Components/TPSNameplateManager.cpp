@@ -8,7 +8,7 @@
 #include "UI/TPSIndicatorDescriptor.h"
 
 
-UTPSNameplateManager::UTPSNameplateManager()
+UTPSNameplateManager::UTPSNameplateManager(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
 	PrimaryComponentTick.bCanEverTick = false;
 
