@@ -82,15 +82,14 @@ void UTPSNameplateManager::BeginPlay()
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Owner is nullptr!! Auto Destroy Comp!"));
 		}
-		DestroyComponent(this);
+		DestroyComponent();
 	}
-	
 }
 
 void UTPSNameplateManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
-	for (TTuple IndicatorDescriptor : IndicatorMap )
+	for (TTuple<TWeakObjectPtr<APawn>, TObjectPtr<UTPSIndicatorDescriptor>> IndicatorDescriptor : IndicatorMap )
 	{
 		IndicatorDescriptor.Value->UnregisterIndicator();
 	}
