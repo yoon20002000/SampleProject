@@ -6,6 +6,7 @@
 #include "BrainComponent.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Components/TPSNameplateSource.h"
 
 const FName ATPSAIController::StartLocationKey(TEXT("StartLocation"));
 const FName ATPSAIController::PatrolLocationKey(TEXT("PatrolLocation"));
@@ -13,6 +14,17 @@ const FName ATPSAIController::TargetActorKey(TEXT("TargetActor"));
 
 ATPSAIController::ATPSAIController()
 {
+	NameplateSource = CreateDefaultSubobject<UTPSNameplateSource>(TEXT("Nameplate Source Data"));
+}
+
+void ATPSAIController::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
+void ATPSAIController::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
 }
 
 void ATPSAIController::OnPossess(APawn* InPawn)
