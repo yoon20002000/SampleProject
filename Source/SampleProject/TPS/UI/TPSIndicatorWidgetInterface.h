@@ -23,6 +23,6 @@ class SAMPLEPROJECT_API ITPSIndicatorWidgetInterface
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	void BindIndicator(UTPSIndicatorDescriptor* IndicatorDescriptor);
-	void UnbindIndicator(UTPSIndicatorDescriptor* IndicatorDescriptor);
+	virtual void BindIndicator(UTPSIndicatorDescriptor* IndicatorDescriptor) = 0;
+	virtual void UnbindIndicator(UTPSIndicatorDescriptor* IndicatorDescriptor) = 0;
 };

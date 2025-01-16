@@ -7,6 +7,7 @@
 #include "UI/TPSCommonUserWidget.h"
 #include "TPSNameplate.generated.h"
 
+class UTPSHealthComponent;
 class UCommonTextBlock;
 class UProgressBar;
 /**
@@ -19,11 +20,27 @@ class SAMPLEPROJECT_API UTPSNameplate : public UTPSCommonUserWidget, public ITPS
 public:
 	UTPSNameplate();
 
-	void BindIndicator(UTPSIndicatorDescriptor* IndicatorDescriptor);
-	void UnbindIndicator(UTPSIndicatorDescriptor* IndicatorDescriptor);
+	// ITPSIndicatorWidgetInterface
+	virtual void BindIndicator(UTPSIndicatorDescriptor* IndicatorDescriptor) override;
+	virtual void UnbindIndicator(UTPSIndicatorDescriptor* IndicatorDescriptor) override;
+
+	// UI
+	void InitNameplate(UTPSIndicatorDescriptor* IndicatorActor);
+	void UninitNameplate( );
+	void SetNameText(const FString& InNameText);
+	
+	void SetHealthBarPercent();
+
+	// Bind On Changed
+	void OnHealthChanged(const FOnAttributeChangeData& Data);
+	void OnMaxHealthChanged(const FOnAttributeChangeData& Data);
 private:
 	UPROPERTY(meta=(AllowPrivateAccess=true, BindWidget))
 	TObjectPtr<UProgressBar> HPBar;
 	UPROPERTY(meta=(AllowPrivateAccess=true, BindWidget))
 	TObjectPtr<UCommonTextBlock> CharacterNameText;
+
+	TWeakObjectPtr<UTPSIndicatorDescriptor> TargetIndicator;
+	float CurrentHealth;
+	float CurrentMaxHealth;
 };
