@@ -53,4 +53,3 @@ const TArray<UTPSIndicatorDescriptor*>& UTPSIndicatorManagerComponent::GetIndica
 {
 	return Indicators;
 }
-

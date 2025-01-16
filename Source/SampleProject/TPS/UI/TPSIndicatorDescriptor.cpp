@@ -151,7 +151,7 @@ USceneComponent* UTPSIndicatorDescriptor::GetTargetSceneComponent() const
 	return TargetSceneComponent;
 }
 
-void UTPSIndicatorDescriptor::SetSceneComponent(USceneComponent* InSceneComponent)
+void UTPSIndicatorDescriptor::SetTargetSceneComponent(USceneComponent* InSceneComponent)
 {
 	TargetSceneComponent = InSceneComponent;
 }

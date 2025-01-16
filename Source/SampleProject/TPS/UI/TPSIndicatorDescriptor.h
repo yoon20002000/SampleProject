@@ -39,7 +39,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	USceneComponent* GetTargetSceneComponent()const;
 	UFUNCTION(BlueprintCallable)
-	void SetSceneComponent(USceneComponent* InSceneComponent);
+	void SetTargetSceneComponent(USceneComponent* InSceneComponent);
 
 	UFUNCTION(BlueprintCallable)
 	FName GetComponentSocketName() const;

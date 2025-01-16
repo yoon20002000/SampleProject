@@ -6,6 +6,8 @@
 #include "TPSNameplateSource.generated.h"
 
 
+class UTPSIndicatorDescriptor;
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SAMPLEPROJECT_API UTPSNameplateSource : public UActorComponent
 {
@@ -16,13 +18,10 @@ public:
 	UTPSNameplateSource();
 
 protected:
-	// Called when the game starts
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-		
-	
+private:
+	UPROPERTY(EditDefaultsOnly, Category="Nameplate")
+	TSoftClassPtr<UUserWidget> NameplateWidgetClass;
 };

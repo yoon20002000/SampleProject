@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "Character/TPSCharacter.h"
 #include "Components/ActorComponent.h"
 #include "TPSIndicatorManagerComponent.generated.h"
 
@@ -33,5 +34,4 @@ public:
 private:
 	UPROPERTY()
 	TArray<TObjectPtr<UTPSIndicatorDescriptor>> Indicators;
-	
 };
