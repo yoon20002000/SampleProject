@@ -33,6 +33,4 @@ private:
 	TObjectPtr<UBehaviorTree> BTAsset;
 	UPROPERTY(EditDefaultsOnly, meta=(AllowPrivateAccess=true))
 	TObjectPtr<UBlackboardData> BBAsset;
-	UPROPERTY(EditDefaultsOnly, meta=(AllowPrivateAccess=true))
-	TObjectPtr<UTPSNameplateSource> NameplateSource;
 };

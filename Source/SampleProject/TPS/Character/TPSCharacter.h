@@ -83,6 +83,9 @@ protected:
 	UPROPERTY(Transient, VisibleInstanceOnly, BlueprintReadonly, meta=(AllowPrivateAccess))
 	ECharacterState CurrentState;
 
+	UPROPERTY(EditDefaultsOnly, meta=(AllowPrivateAccess=true))
+	TObjectPtr<UTPSNameplateSource> NameplateSource;
+	
 	bool bIsPlayerControlled;
 	bool bCanBeDamaged;
 private:

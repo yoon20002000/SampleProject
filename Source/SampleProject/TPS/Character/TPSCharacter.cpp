@@ -4,8 +4,10 @@
 #include "TPSCharacter.h"
 
 #include "TPSAIController.h"
+#include "TPSPlayer.h"
 #include "TPSPlayerState.h"
 #include "Components/TPSHealthComponent.h"
+#include "Components/TPSNameplateSource.h"
 #include "Components/WidgetComponent.h"
 #include "Game/AbilitySystem/TPSAbilitySystemComponent.h"
 #include "Game/AbilitySystem/TPSCombatAttributeSet.h"
@@ -36,6 +38,7 @@ ATPSCharacter::ATPSCharacter() : bCanBeDamaged(false)
 	AbilitySystemComp = CreateDefaultSubobject<UTPSAbilitySystemComponent>(TEXT("AbilitySystem Comp"));
 	CombatSet = CreateDefaultSubobject<UTPSCombatAttributeSet>(TEXT("Combat Set"));
 
+	NameplateSource = CreateDefaultSubobject<UTPSNameplateSource>(TEXT("Nameplate Source Data"));
 	ATPSCharacter::InitializeAttributes();
 }
 
@@ -43,6 +46,7 @@ ATPSCharacter::ATPSCharacter() : bCanBeDamaged(false)
 void ATPSCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	UE_LOG(LogTemp, Log,TEXT("character create"));
 	SetCharacterState(ECharacterState::READY);
 }
 

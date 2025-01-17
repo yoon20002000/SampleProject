@@ -4,9 +4,8 @@
 #include "Components/TPSNameplateSource.h"
 
 #include "TPSHelper.h"
-#include "TPSIndicatorManagerComponent.h"
 #include "TPSNameplateManager.h"
-#include "Character/TPSAIController.h"
+#include "Character/TPSCharacter.h"
 #include "Character/TPSPlayerController.h"
 
 
@@ -23,16 +22,16 @@ void UTPSNameplateSource::BeginPlay()
 	
 	if (ATPSPlayerController* PC = Cast<ATPSPlayerController>(TPSHelper::GetPlayerController()))
 	{
-		if (UTPSIndicatorManagerComponent* MG = PC->GetComponentByClass<UTPSIndicatorManagerComponent>())
+		if (ATPSCharacter* TargetCharacter = Cast<ATPSCharacter>(GetOwner()))
 		{
-			UE_LOG(LogTemp, Log, TEXT("MG"));
-		}
-		
-		if (UTPSNameplateManager* NG = PC->GetComponentByClass<UTPSNameplateManager>())
-		{
-			UE_LOG(LogTemp, Log, TEXT("NG"));
-			APawn* IndicatorPawn = Cast<ATPSAIController>(GetOwner())->GetPawn();
-			NG->RegistNameplate(IndicatorPawn, NameplateWidgetClass);
+			UE_LOG(LogTemp, Log,TEXT("네임 플레이트 생성 시도"));
+			{
+				if (UTPSNameplateManager* NG = PC->GetComponentByClass<UTPSNameplateManager>())
+				{
+					UE_LOG(LogTemp, Log, TEXT("NG"));
+					NG->RegistNameplate(TargetCharacter, NameplateWidgetClass);
+				}
+			}
 		}
 	}
 }
