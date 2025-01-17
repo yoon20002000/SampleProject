@@ -4,16 +4,15 @@
 #include "Components/TPSNameplateManager.h"
 
 #include "Character/TPSPlayer.h"
+#include "Character/TPSPlayerController.h"
 #include "Components/CapsuleComponent.h"
 #include "UI/TPSIndicatorDescriptor.h"
 
 
 UTPSNameplateManager::UTPSNameplateManager(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
-	PrimaryComponentTick.bCanEverTick = false;
-
-	// ...
-	IndicatorMap.Reserve(8);
+	bAutoRegister = true;
+	bAutoActivate = true;
 }
 
 void UTPSNameplateManager::RegistNameplate(
@@ -71,8 +70,8 @@ void UTPSNameplateManager::BeginPlay()
 {
 	Super::BeginPlay();
 
-	ATPSPlayer* OwnerActor = Cast<ATPSPlayer>(GetOwner());
-	if (OwnerActor == nullptr)
+	ATPSPlayerController* PC = Cast<ATPSPlayerController>(GetOwner());
+	if (PC == nullptr)
 	{
 		if (AActor* OtherActor = Cast<AActor>(GetOwner()))
 		{

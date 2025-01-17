@@ -17,7 +17,7 @@ class SAMPLEPROJECT_API UTPSNameplateManager : public UActorComponent
 
 public:	
 	UTPSNameplateManager(const FObjectInitializer& ObjectInitializer);
-
+	
 	void RegistNameplate(APawn* IndicatedPawn,
 							TSoftClassPtr<UUserWidget> InIndicatorClass,
 							EActorCanvasProjectionMode InProjectionMode = EActorCanvasProjectionMode::ComponentBoundingBox,

@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include "Character/TPSCharacter.h"
 #include "Components/ActorComponent.h"
 #include "TPSIndicatorManagerComponent.generated.h"
 

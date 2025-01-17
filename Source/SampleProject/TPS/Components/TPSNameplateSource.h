@@ -14,8 +14,7 @@ class SAMPLEPROJECT_API UTPSNameplateSource : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
-	UTPSNameplateSource();
+	UTPSNameplateSource(const FObjectInitializer& ObjectInitializer);
 
 protected:
 	virtual void BeginPlay() override;

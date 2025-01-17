@@ -4,15 +4,15 @@
 #include "Components/TPSNameplateSource.h"
 
 #include "TPSHelper.h"
+#include "TPSIndicatorManagerComponent.h"
 #include "TPSNameplateManager.h"
 #include "Character/TPSAIController.h"
 #include "Character/TPSPlayerController.h"
 
 
-UTPSNameplateSource::UTPSNameplateSource()
+UTPSNameplateSource::UTPSNameplateSource(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
-	PrimaryComponentTick.bCanEverTick = false;
-	// ...
+
 }
 
 
@@ -23,9 +23,16 @@ void UTPSNameplateSource::BeginPlay()
 	
 	if (ATPSPlayerController* PC = Cast<ATPSPlayerController>(TPSHelper::GetPlayerController()))
 	{
+		if (UTPSIndicatorManagerComponent* MG = PC->GetComponentByClass<UTPSIndicatorManagerComponent>())
+		{
+			UE_LOG(LogTemp, Log, TEXT("MG"));
+		}
+		
 		if (UTPSNameplateManager* NG = PC->GetComponentByClass<UTPSNameplateManager>())
 		{
-			NG->RegistNameplate(Cast<APawn>(GetOwner()), NameplateWidgetClass);
+			UE_LOG(LogTemp, Log, TEXT("NG"));
+			APawn* IndicatorPawn = Cast<ATPSAIController>(GetOwner())->GetPawn();
+			NG->RegistNameplate(IndicatorPawn, NameplateWidgetClass);
 		}
 	}
 }
