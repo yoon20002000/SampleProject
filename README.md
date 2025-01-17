@@ -8,6 +8,16 @@ Code convention
   - if를 사용 시 무조건 scope를 생성한다.
   - if state 확인 시 true, nullptr 등 상세 히 조건을 적는다.
 
+Input
+- Data Asset에 Input 및 Tag 정의
+![Example Image](./ReadMeResource/InputConfig.png)
+- Enhanced Input과 GAS Tag를 기준으로 Ability Bind
+![Example Image](./ReadMeResource/Input%20Tag%20Press.png)
+- Native Bind와 Ability Bind로 구분
+![Example Image](./ReadMeResource/Player%20Input%20Bind%20With%20Tag.png)
+- PostProcessInput로 Bind 된 Tag가 있는지 확인 후 처리 진행
+![Example Image](./ReadMeResource/Input%20Process.png)
+
 Player
 - 이동(WASD)
 ![Example Image](./ReadMeResource/WASD.gif)
@@ -27,11 +37,12 @@ Player
 Interaction Actor
 - 상호작용하여 상호작용 대상에게 적용할 GE 들을 보유
 - 정상적으로 상호작용 Activate 성공 시 보유 중인 GE를 이용해 적용
+![Example Image](./ReadMeResource/Heal%20Interaction%20Actor.png)
 ![Example Image](./ReadMeResource/Heal.gif)
 
 AISpawner
 - AICharacter를 특정 주기에서 Field에 특정 수치만큼 계속 Spawn 하게 함.
 ![Example Image](./ReadMeResource/Spawn.gif)
 
-영상 링크 : https://youtu.be/CozS-0GnoGw
+영상
 ![Video](./ReadMeResource/2025-01-17%2011%2002%2056.mp4)
