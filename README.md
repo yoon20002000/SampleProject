@@ -44,6 +44,7 @@ Player
 Interaction Actor
 - 상호작용하여 상호작용 대상에게 적용할 GE 들을 보유
 - 정상적으로 상호작용 Activate 성공 시 보유 중인 GE를 이용해 적용
+- 아래는 상호작용 시 Heal을 해주는 Actor
 ![Example Image](./ReadMeResource/Heal%20Interaction%20Actor.png)
 ![Example Image](./ReadMeResource/Heal.gif)
 
