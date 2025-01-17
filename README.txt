@@ -9,7 +9,10 @@ Code convention
   - if state 확인 시 true, nullptr 등 상세 히 조건을 적는다.
 
 Player
-- 이동(WASD), 점프(Space), 공격(ML), 특수 공격(MR), 상호 작용(F)
+- 이동(WASD)
+![Image](https://github.com/user-attachments/assets/bf64e347-f228-4196-825e-57213a485f6f)
+- 점프(Space), 공격(ML), 특수 공격(MR), 상호 작용(F)
+
 - 특수 공격 사용시 이동 불가 및 Cost로 HP 15 사용
 - 상호 작용을 통해 Field에 배치 된 Interaction Actor와 상호작용
 
