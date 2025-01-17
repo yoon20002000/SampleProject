@@ -43,6 +43,15 @@ void UTPSSystemManager::Initialize()
 void UTPSSystemManager::Deinitialize()
 {
 	DeinitializeUIManager();
+	
+	UIManager->ConditionalBeginDestroy();
+	UIManager = nullptr;
+	GameManager->ConditionalBeginDestroy();
+	GameManager = nullptr;
+	GameStateManager->ConditionalBeginDestroy();
+	GameStateManager = nullptr;
+	NamePlateManager->ConditionalBeginDestroy();
+	NamePlateManager = nullptr;
 }
 
 void UTPSSystemManager::Tick(float DeltaTime)
@@ -66,15 +75,6 @@ void UTPSSystemManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	UIManager->EndPlay(EndPlayReason);
 	GameManager->EndPlay(EndPlayReason);
 	NamePlateManager->EndPlay(EndPlayReason);
-
-	UIManager->ConditionalBeginDestroy();
-	UIManager = nullptr;
-	GameManager->ConditionalBeginDestroy();
-	GameManager = nullptr;
-	GameStateManager->ConditionalBeginDestroy();
-	GameStateManager = nullptr;
-	NamePlateManager->ConditionalBeginDestroy();
-	NamePlateManager = nullptr;
 }
 
 UTPSUIManager* UTPSSystemManager::GetUIManager() const
