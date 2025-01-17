@@ -8,10 +8,11 @@ Code convention
   - if를 사용 시 무조건 scope를 생성한다.
   - if state 확인 시 true, nullptr 등 상세 히 조건을 적는다.
 
-작업 기간 : 24.12 ~
-작업 인원 : 1인
-작업 환경 : UE 5.5, Rider, Git
-사용 플러그인 : GAS
+작업 기간 : 24.12 ~  
+작업 인원 : 1인  
+작업 환경 : UE 5.5, Rider, Git  
+사용 플러그인 : GAS  
+
 
 
 Input
@@ -51,4 +52,4 @@ AISpawner
 ![Example Image](./ReadMeResource/Spawn.gif)
 
 영상
-![Video](./ReadMeResource/2025-01-17%2011%2002%2056.mp4)
+![Video](./ReadMeResource/Total.gif)
