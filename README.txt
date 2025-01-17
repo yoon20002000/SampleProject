@@ -15,3 +15,6 @@ Player
 
 AISpawner
 - AICharacter를 특정 주기에서 Field에 특정 수치만큼 계속 Spawn 하게 함.
+
+
+영상 링크 : https://youtu.be/CozS-0GnoGw
