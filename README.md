@@ -10,7 +10,6 @@ Code convention
 
 Player
 - 이동(WASD)
-<img src="https://github.com/user-attachments/assets/bf64e347-f228-4196-825e-57213a485f6f">
 - 점프(Space), 공격(ML), 특수 공격(MR), 상호 작용(F)
 
 - 특수 공격 사용시 이동 불가 및 Cost로 HP 15 사용
