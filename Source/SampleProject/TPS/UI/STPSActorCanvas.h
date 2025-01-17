@@ -13,11 +13,34 @@ public:
 	class FSlot : public TSlotBase<FSlot>
 	{
 	public:
-		FSlot(UTPSIndicatorDescriptor* InIndicator): TSlotBase<FSlot>(),
-		Indicator(InIndicator)
-		{
-			
-		}
+		FSlot(UTPSIndicatorDescriptor* InIndicator);
+
+		SLATE_SLOT_BEGIN_ARGS(FSlot, TSlotBase<FSlot>)
+		SLATE_SLOT_END_ARGS()
+		using TSlotBase<FSlot>::Construct;
+
+		bool GetIsIndicatorVisible() const;
+		void SetIsIndicatorVisible(bool bVisible);
+
+		FVector2D GetScreenPosition() const;
+		void SetScreenPosition(FVector2D InScreenPosition);
+
+		double GetDepth() const;
+		void SetDepth(double InDepth);
+
+		int32 GetPriority() const;
+		void SetPriority(int32 InPriority);
+
+		bool GetInFrontOfCamera() const;
+		void SetInFrontOfCamera(bool InFrontOfCamera);
+
+		bool HasValidScreenPosition() const;
+		void SetHasValidScreenPosition(bool InHasValidScreenPosition);
+
+		bool GetIsDirty() const;
+		void ClearDirtyFlag();
+	private:
+		void RefreshVisibility() const;
 		
 	private:
 
