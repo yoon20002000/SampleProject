@@ -1,8 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
+#include "Blueprint/UserWidgetPool.h"
 
 
+struct FUserWidgetPool;
 class UTPSIndicatorDescriptor;
 /**
  * 
@@ -37,8 +39,15 @@ public:
 		bool HasValidScreenPosition() const;
 		void SetHasValidScreenPosition(bool InHasValidScreenPosition);
 
-		bool GetIsDirty() const;
+		bool IsDirty() const;
 		void ClearDirtyFlag();
+
+		bool IsIndicatorClamped() const;
+		void SetIndicatorClamped(bool InClamped);
+
+		bool IsIndicatorClampedStatusChanged() const;
+		void ClearIndicatorClampedStatusChanged();
+		
 	private:
 		void RefreshVisibility() const;
 		
@@ -54,9 +63,38 @@ public:
 		uint8 bHasValidScreenPosition :1;
 		uint8 bDirty : 1;
 
-		mutable  uint8 bWasIndicatorClamped :1;
-		mutable  uint8 bWasIndicatorClampedStatusChanged :1;
+		mutable  uint8 bIsIndicatorClamped :1;
+		mutable  uint8 bIsIndicatorClampedStatusChanged :1;
 
-		friend class SActorCanvas;
+		friend class STPSActorCanvas;
 	};
+	class FArrowSlot : public TSlotBase<FArrowSlot>
+	{
+	};
+
+	SLATE_BEGIN_ARGS(STPSActorCanvas)
+	{
+		_Visibility = EVisibility::HitTestInvisible;
+	}
+		SLATE_SLOT_ARGUMENT(STPSActorCanvas::FSlot, Slots)
+	SLATE_END_ARGS()
+
+public:
+	STPSActorCanvas();
+
+	void Construct(const FArguments& InArgs, const FLocalPlayerContext& InLocalPlayerContext, const FSlateBrush* InActorCanvasArrowBrush);
+
+private:
+	void UpdateActiveTimer();
+private:
+
+	FLocalPlayerContext LocalPlayerContext;
+	TPanelChildren<FSlot> CanvasChildren;
+	mutable TPanelChildren<FArrowSlot> ArrowsChildren;
+	FCombinedChildren AllChildren;
+
+	FUserWidgetPool IndicatorPool;
+	
+	const FSlateBrush* ActorCanvasArrowBrush = nullptr;
+
 };
