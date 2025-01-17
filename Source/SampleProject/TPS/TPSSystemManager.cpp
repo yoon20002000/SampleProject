@@ -45,13 +45,9 @@ void UTPSSystemManager::Deinitialize()
 	DeinitializeUIManager();
 	
 	UIManager->ConditionalBeginDestroy();
-	UIManager = nullptr;
 	GameManager->ConditionalBeginDestroy();
-	GameManager = nullptr;
 	GameStateManager->ConditionalBeginDestroy();
-	GameStateManager = nullptr;
 	NamePlateManager->ConditionalBeginDestroy();
-	NamePlateManager = nullptr;
 }
 
 void UTPSSystemManager::Tick(float DeltaTime)
