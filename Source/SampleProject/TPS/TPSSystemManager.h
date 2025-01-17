@@ -2,6 +2,7 @@
 
 #include "TPSSystemManager.generated.h"
 
+class UTPSNameplateManager;
 enum class EGameplayState : uint8;
 class UTPSGameStateManager;
 class UTPSUIManager;
@@ -34,6 +35,7 @@ public:
 
 	UTPSGameManager* GetGameManager() const;
 	UTPSGameStateManager* GetGameStateManager() const;
+	UTPSNameplateManager* GetNameplateManager() const;
 	void SetGameState(const EGameplayState InGameplayState);
 	void QuitGame() const;
 	
@@ -51,6 +53,9 @@ private:
 
 	UPROPERTY(Transient)
 	TObjectPtr<UTPSGameStateManager> GameStateManager;
+	
+	UPROPERTY(Transient)
+	TObjectPtr<UTPSNameplateManager> NamePlateManager;
 	
 	UPROPERTY()
 	TObjectPtr<UWorld> World;

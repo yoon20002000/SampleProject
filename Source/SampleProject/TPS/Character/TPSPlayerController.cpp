@@ -8,7 +8,6 @@
 #include "TPSPlayerState.h"
 #include "TPSSystemManager.h"
 #include "Components/TPSIndicatorManagerComponent.h"
-#include "Components/TPSNameplateManager.h"
 #include "Game/TPSCommonLocalPlayer.h"
 #include "Game/TPSGameStateManager.h"
 #include "Game/AbilitySystem/TPSAbilitySystemComponent.h"
@@ -16,7 +15,6 @@
 
 ATPSPlayerController::ATPSPlayerController()
 {
-	NamePlateManager = CreateDefaultSubobject<UTPSNameplateManager>(TEXT("Nameplate Manager"));
 	IndicatorManagerComp = CreateDefaultSubobject<UTPSIndicatorManagerComponent>(TEXT("Indicator Manager Comp"));
 }
 

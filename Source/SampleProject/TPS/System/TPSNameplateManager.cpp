@@ -1,18 +1,17 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Components/TPSNameplateManager.h"
+#include "TPSNameplateManager.h"
 
-#include "Character/TPSPlayer.h"
+#include "TPSHelper.h"
 #include "Character/TPSPlayerController.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/TPSIndicatorManagerComponent.h"
 #include "UI/TPSIndicatorDescriptor.h"
 
 
 UTPSNameplateManager::UTPSNameplateManager(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
-	bAutoRegister = true;
-	bAutoActivate = true;
 }
 
 void UTPSNameplateManager::RegistNameplate(
@@ -52,6 +51,14 @@ void UTPSNameplateManager::RegistNameplate(
 	NewIndicatorDescriptor->SetClampToScreen(bIsClampToScreen);
 	
 	IndicatorMap.Add(IndicatedPawn, NewIndicatorDescriptor);
+	
+	if (ATPSPlayerController* PC = Cast<ATPSPlayerController>(TPSHelper::GetPlayerController()))
+	{
+		if (UTPSIndicatorManagerComponent* MG = PC->GetComponentByClass<UTPSIndicatorManagerComponent>())
+		{
+			MG->AddIndicator(NewIndicatorDescriptor);
+		}
+	}
 }
 
 void UTPSNameplateManager::UnregistNameplate(APawn* IndicatedPawn)
@@ -65,32 +72,14 @@ void UTPSNameplateManager::UnregistNameplate(APawn* IndicatedPawn)
 	}
 }
 
-
 void UTPSNameplateManager::BeginPlay()
 {
-	Super::BeginPlay();
-
-	ATPSPlayerController* PC = Cast<ATPSPlayerController>(GetOwner());
-	if (PC == nullptr)
-	{
-		if (AActor* OtherActor = Cast<AActor>(GetOwner()))
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Owner is not PlayerActor %s!! Auto Destroy Comp!"), *OtherActor->GetName());
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Owner is nullptr!! Auto Destroy Comp!"));
-		}
-		DestroyComponent();
-	}
 }
 
 void UTPSNameplateManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	Super::EndPlay(EndPlayReason);
 	for (TTuple<TWeakObjectPtr<APawn>, TObjectPtr<UTPSIndicatorDescriptor>> IndicatorDescriptor : IndicatorMap )
 	{
 		IndicatorDescriptor.Value->UnregisterIndicator();
 	}
 }
-

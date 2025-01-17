@@ -4,14 +4,16 @@
 #include "Components/TPSNameplateSource.h"
 
 #include "TPSHelper.h"
-#include "TPSNameplateManager.h"
+#include "TPSSystemManager.h"
 #include "Character/TPSCharacter.h"
 #include "Character/TPSPlayerController.h"
+#include "System/TPSNameplateManager.h"
 
+
+class UTPSNameplateManager;
 
 UTPSNameplateSource::UTPSNameplateSource(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
-
 }
 
 
@@ -19,18 +21,15 @@ UTPSNameplateSource::UTPSNameplateSource(const FObjectInitializer& ObjectInitial
 void UTPSNameplateSource::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	if (ATPSPlayerController* PC = Cast<ATPSPlayerController>(TPSHelper::GetPlayerController()))
+
+	if (ATPSCharacter* TargetCharacter = Cast<ATPSCharacter>(GetOwner()))
 	{
-		if (ATPSCharacter* TargetCharacter = Cast<ATPSCharacter>(GetOwner()))
+		UE_LOG(LogTemp, Log, TEXT("네임 플레이트 생성 시도"));
 		{
-			UE_LOG(LogTemp, Log,TEXT("네임 플레이트 생성 시도"));
+			if (UTPSNameplateManager* NG = UTPSSystemManager::Get()->GetNameplateManager())
 			{
-				if (UTPSNameplateManager* NG = PC->GetComponentByClass<UTPSNameplateManager>())
-				{
-					UE_LOG(LogTemp, Log, TEXT("NG"));
-					NG->RegistNameplate(TargetCharacter, NameplateWidgetClass);
-				}
+				UE_LOG(LogTemp, Log, TEXT("NG"));
+				NG->RegistNameplate(TargetCharacter, NameplateWidgetClass);
 			}
 		}
 	}
@@ -39,12 +38,9 @@ void UTPSNameplateSource::BeginPlay()
 void UTPSNameplateSource::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
-
-	if (ATPSPlayerController* PC = Cast<ATPSPlayerController>(TPSHelper::GetPlayerController()))
+	
+	if (UTPSNameplateManager* NG = UTPSSystemManager::Get()->GetNameplateManager())
 	{
-		if (UTPSNameplateManager* NG = PC->GetComponentByClass<UTPSNameplateManager>())
-		{
-			NG->UnregistNameplate(Cast<APawn>(GetOwner()));
-		}
+		NG->UnregistNameplate(Cast<APawn>(GetOwner()));
 	}
 }

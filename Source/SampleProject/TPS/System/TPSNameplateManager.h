@@ -11,12 +11,15 @@ class ATPSCharacter;
 class UTPSIndicatorDescriptor;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class SAMPLEPROJECT_API UTPSNameplateManager : public UActorComponent
+class SAMPLEPROJECT_API UTPSNameplateManager : public UObject
 {
 	GENERATED_BODY()
 
 public:	
 	UTPSNameplateManager(const FObjectInitializer& ObjectInitializer);
+
+	void BeginPlay();
+	void EndPlay(const EEndPlayReason::Type EndPlayReason);
 	
 	void RegistNameplate(APawn* IndicatedPawn,
 							TSoftClassPtr<UUserWidget> InIndicatorClass,
@@ -28,10 +31,6 @@ public:
 							bool bIsClampToScreen = true);
 	void UnregistNameplate(APawn* IndicatedPawn);
 protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	
 	UPROPERTY()
 	TMap<TWeakObjectPtr<APawn>,TObjectPtr<UTPSIndicatorDescriptor>> IndicatorMap;
 };

@@ -15,7 +15,6 @@ void UTPSGameInstance::Init()
 {
 	Super::Init();
 	FGameplayTagContainer PlatformTraits = ICommonUIModule::GetSettings().GetPlatformTraits();
-
 	
 }
 

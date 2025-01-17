@@ -20,6 +20,7 @@ class UTPSSpringArmComponent;
 class UTPSActionComponent;
 class UTPSAbilitySystemComponent;
 class UTPSAbilitySet;
+class UTPSNameplateSource;
 
 DECLARE_MULTICAST_DELEGATE(FOnAttackEndDelegate)
 

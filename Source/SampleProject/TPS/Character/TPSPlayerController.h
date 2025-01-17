@@ -6,7 +6,6 @@
 #include "TPSPlayerState.h"
 #include "Game/AbilitySystem/TPSAbilitySystemComponent.h"
 #include "GameFramework/PlayerController.h"
-#include "Components/TPSNameplateManager.h"
 #include "TPSPlayerController.generated.h"
 
 class UTPSIndicatorManagerComponent;
@@ -40,6 +39,4 @@ private:
 	FInputModeUIOnly InputUIOnly;
 	UPROPERTY()
 	TObjectPtr<UTPSIndicatorManagerComponent> IndicatorManagerComp;
-	UPROPERTY()
-	TObjectPtr<UTPSNameplateManager> NamePlateManager;
 };

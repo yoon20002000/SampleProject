@@ -3,6 +3,7 @@
 #include "TPSGameManager.h"
 #include "TPSHelper.h"
 #include "Game/TPSGameStateManager.h"
+#include "System/TPSNameplateManager.h"
 #include "UI/TPSUIManager.h"
 UTPSSystemManager* UTPSSystemManager::Instance = nullptr;
 
@@ -36,6 +37,7 @@ void UTPSSystemManager::Initialize()
 	InitializeUIManager();
 	GameManager = NewObject<UTPSGameManager>();
 	GameStateManager = NewObject<UTPSGameStateManager>();
+	NamePlateManager = NewObject<UTPSNameplateManager>();
 }
 
 void UTPSSystemManager::Deinitialize()
@@ -56,12 +58,23 @@ void UTPSSystemManager::BeginPlay()
 	GameManager->BeginPlay();
 	UIManager->BeginPlay();
 	GameStateManager->BeginPlay();
+	NamePlateManager->BeginPlay();
 }
 
 void UTPSSystemManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	UIManager->EndPlay(EndPlayReason);
 	GameManager->EndPlay(EndPlayReason);
+	NamePlateManager->EndPlay(EndPlayReason);
+
+	UIManager->ConditionalBeginDestroy();
+	UIManager = nullptr;
+	GameManager->ConditionalBeginDestroy();
+	GameManager = nullptr;
+	GameStateManager->ConditionalBeginDestroy();
+	GameStateManager = nullptr;
+	NamePlateManager->ConditionalBeginDestroy();
+	NamePlateManager = nullptr;
 }
 
 UTPSUIManager* UTPSSystemManager::GetUIManager() const
@@ -99,6 +112,11 @@ UTPSGameManager* UTPSSystemManager::GetGameManager() const
 UTPSGameStateManager* UTPSSystemManager::GetGameStateManager() const
 {
 	return GameStateManager;
+}
+
+UTPSNameplateManager* UTPSSystemManager::GetNameplateManager() const
+{
+	return NamePlateManager;
 }
 
 void UTPSSystemManager::SetGameState(const EGameplayState InGameplayState)

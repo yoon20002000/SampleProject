@@ -26,5 +26,4 @@ public:
 
 private:
 	TWeakObjectPtr<ULocalPlayer> PrimaryPlayer;
-
 };
