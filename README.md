@@ -10,18 +10,28 @@ Code convention
 
 Player
 - 이동(WASD)
-- 점프(Space), 공격(ML), 특수 공격(MR), 상호 작용(F)
-
+![Example Image](./ReadMeResource/WASD.gif)
+- 점프(Space)
+![Example Image](./ReadMeResource/Jump.gif)
+- 공격(ML)
+![Example Image](./ReadMeResource/Shot.gif)
+- 특수 공격(MR)
 - 특수 공격 사용시 이동 불가 및 Cost로 HP 15 사용
+![Example Image](./ReadMeResource/SPShot.gif)
+
+- 상호 작용(F)
 - 상호 작용을 통해 Field에 배치 된 Interaction Actor와 상호작용
+![Example Image](./ReadMeResource/Heal.gif)
+
 
 Interaction Actor
 - 상호작용하여 상호작용 대상에게 적용할 GE 들을 보유
 - 정상적으로 상호작용 Activate 성공 시 보유 중인 GE를 이용해 적용
-![Image](https://github.com/user-attachments/assets/7418a410-3215-4d7b-b710-8e2eeab54a92)
+![Example Image](./ReadMeResource/Heal.gif)
 
 AISpawner
 - AICharacter를 특정 주기에서 Field에 특정 수치만큼 계속 Spawn 하게 함.
-
+![Example Image](./ReadMeResource/Spawn.gif)
 
 영상 링크 : https://youtu.be/CozS-0GnoGw
+![Video](./ReadMeResource/2025-01-17%2011%2002%2056.mp4)
