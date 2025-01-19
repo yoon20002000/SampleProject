@@ -11,7 +11,7 @@ class UTPSIndicatorDescriptor;
 /**
  * 
  */
-class STPSActorCanvas : public SPanel, public FAsyncMixin
+class STPSActorCanvas : public SPanel, public FAsyncMixin, public FGCObject
 {
 public:
 	class FSlot : public TSlotBase<FSlot>
@@ -91,6 +91,13 @@ public:
 	virtual FVector2D ComputeDesiredSize(float LayoutScaleMultiplier) const override;
 	virtual FChildren* GetChildren() override;
 	virtual int32 OnPaint(const FPaintArgs& Args, const FGeometry& AllottedGeometry, const FSlateRect& MyCullingRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, const FWidgetStyle& InWidgetStyle, bool bParentEnabled) const override;
+	//
+
+	void SetDrawElementsInOrder(bool bInDrawElementsInOrder);
+	
+	// GCObject
+	virtual FString GetReferencerName() const override;
+	virtual void AddReferencedObjects(FReferenceCollector& Collector) override;
 	//
 private:
 	void OnIndicatorAdded(UTPSIndicatorDescriptor* IndicatorDescriptor);
