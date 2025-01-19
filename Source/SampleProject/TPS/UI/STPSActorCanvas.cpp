@@ -109,6 +109,20 @@ private:
 	const FSlateBrush* Arrow;
 };
 
+STPSActorCanvas::FSlot::FSlot(UTPSIndicatorDescriptor* InIndicator) : TSlotBase<STPSActorCanvas::FSlot>(),
+                                                                      Indicator(InIndicator),
+                                                                      ScreenPosition(FVector2D::ZeroVector),
+                                                                      Depth(0),
+                                                                      Priority(0.f),
+                                                                      bIsIndicatorVisible(true),
+                                                                      bInFrontOfCamera((true)),
+                                                                      bHasValidScreenPosition(false),
+                                                                      bDirty(true),
+                                                                      bIsIndicatorClamped(false),
+                                                                      bIsIndicatorClampedStatusChanged(false)
+{
+}
+
 bool STPSActorCanvas::FSlot::GetIsIndicatorVisible() const
 {
 	return bIsIndicatorVisible;
