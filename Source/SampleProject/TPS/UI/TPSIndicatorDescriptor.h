@@ -62,6 +62,7 @@ public:
 	bool GetAutoRemoveWhenIndicatorComponentIsNull() const;
 	UFUNCTION(BlueprintCallable)
 	void SetAutoRemoveWhenIndicatorComponentIsNull(bool CanAutomaticallyRemove);
+	/// Target에 해당하는 Actor의 Component가 valid 하고 자동 초기화 옵션이 켜져있을 경우 return true
 	UFUNCTION(BlueprintCallable)
 	bool CanAutomaticallyRemove() const;
 

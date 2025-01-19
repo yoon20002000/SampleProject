@@ -3,6 +3,7 @@
 
 #include "UI/STPSActorCanvas.h"
 #include "TPSIndicatorDescriptor.h"
+#include "TPSIndicatorWidgetInterface.h"
 #include "Components/TPSIndicatorManagerComponent.h"
 
 // 작업 후 이전 문제없는지 확인 후 이전 할 것
@@ -12,7 +13,6 @@ public:
 	SLATE_BEGIN_ARGS(STPSActorCanvasArrowWidget)
 		{
 		}
-
 	SLATE_END_ARGS()
 
 	STPSActorCanvasArrowWidget(): Rotation(0.0f), Arrow(nullptr)
@@ -261,16 +261,109 @@ void STPSActorCanvas::AddIndicatorForEntry(UTPSIndicatorDescriptor* IndicatorDes
 
 	if (IndicatorWidgetClass.IsNull() == false)
 	{
-		TWeakObjectPtr<UTPSIndicatorDescriptor> Indicator(IndicatorDescriptor);
-		AsyncLoad(IndicatorWidgetClass, [this, Indicator, IndicatorWidgetClass]()
+		TWeakObjectPtr<UTPSIndicatorDescriptor> IndicatorPtr(IndicatorDescriptor);
+		AsyncLoad(IndicatorWidgetClass, [this, IndicatorPtr, IndicatorWidgetClass]()
 		{
-			
+			if (UTPSIndicatorDescriptor* Indicator = IndicatorPtr.Get())
+			{
+				if (AllIndicators.Contains(IndicatorPtr) == false)
+				{
+					return;
+				}
+
+				if (UUserWidget* IndicatorWidget = IndicatorPool.GetOrCreateInstance(
+					TSubclassOf<UUserWidget>(IndicatorWidgetClass.Get())))
+				{
+					if (IndicatorWidget->GetClass()->ImplementsInterface(UTPSIndicatorWidgetInterface::StaticClass()))
+					{
+						ITPSIndicatorWidgetInterface* InterfaceIndicator = Cast<ITPSIndicatorWidgetInterface>(
+							IndicatorWidget);
+						InterfaceIndicator->BindIndicator(Indicator);
+					}
+					Indicator->IndicatorWidget = IndicatorWidget;
+
+					InactiveIndicators.Remove(Indicator);
+
+					AddActorSlot(Indicator)
+					[
+						SAssignNew(Indicator->CanvasHost, SBox)
+						[
+							IndicatorWidget->TakeWidget()
+						]
+					];
+				}
+			}
 		});
+		StartAsyncLoading();
 	}
 }
 
 void STPSActorCanvas::RemoveIndicatorForEntry(UTPSIndicatorDescriptor* IndicatorDescriptor)
 {
+	if (UUserWidget* IndicatorWidget = IndicatorDescriptor->IndicatorWidget.Get())
+	{
+		if (IndicatorWidget->GetClass()->ImplementsInterface(UTPSIndicatorWidgetInterface::StaticClass()))
+		{
+			ITPSIndicatorWidgetInterface* InterfaceIndicator = Cast<ITPSIndicatorWidgetInterface>(
+							IndicatorWidget);
+			InterfaceIndicator->BindIndicator(IndicatorDescriptor);
+		}
+
+		IndicatorDescriptor->IndicatorWidget = nullptr;
+		IndicatorPool.Release(IndicatorWidget);
+	}
+
+	TSharedPtr<SWidget> CanvasHost = IndicatorDescriptor->CanvasHost.Pin();
+	if (CanvasHost.IsValid() == true)
+	{
+		RemoveActorSlot(CanvasHost.ToSharedRef());
+		IndicatorDescriptor->CanvasHost.Reset();
+	}
+}
+
+STPSActorCanvas::FScopedWidgetSlotArguments STPSActorCanvas::AddActorSlot(UTPSIndicatorDescriptor* Indicator)
+{
+	TWeakPtr<STPSActorCanvas> WeakCanvas = SharedThis(this);
+	return FScopedWidgetSlotArguments(MakeUnique<FSlot>(Indicator), this->CanvasChildren, INDEX_NONE,
+	                                  [WeakCanvas](const FSlot*, int32)
+	                                  {
+		                                  if (TSharedPtr<STPSActorCanvas> Canvas = WeakCanvas.Pin())
+		                                  {
+			                                  Canvas->UpdateActiveTimer();
+		                                  }
+	                                  });
+}
+
+int32 STPSActorCanvas::RemoveActorSlot(const TSharedRef<SWidget>& SlotWidget)
+{
+	for (int32 SlotIdx = 0; SlotIdx < AllIndicators.Num(); ++SlotIdx)
+	{
+		if (SlotWidget == CanvasChildren[SlotIdx].GetWidget())
+		{
+			CanvasChildren.Remove(SlotWidget);
+
+			UpdateActiveTimer();
+			return SlotIdx;
+		}
+	}
+	return -1;
+}
+
+
+void STPSActorCanvas::SetShowAnyIndicators(bool ShowAnyIndicators)
+{
+	if (bShowAnyIndicators != ShowAnyIndicators)
+	{
+		bShowAnyIndicators = ShowAnyIndicators;
+
+		if (bShowAnyIndicators == false)
+		{
+			for (int32 ChildIndex = 0; ChildIndex < AllChildren.Num(); ++ChildIndex)
+			{
+				AllChildren.GetChildAt(ChildIndex)->SetVisibility(EVisibility::Collapsed);
+			}
+		}
+	}
 }
 
 EActiveTimerReturnType STPSActorCanvas::UpdateCanvas(double InCurrentTime, float InDeltaTime)
@@ -302,6 +395,85 @@ EActiveTimerReturnType STPSActorCanvas::UpdateCanvas(double InCurrentTime, float
 			return EActiveTimerReturnType::Continue;
 		}
 	}
+
+	if (LocalPlayer != nullptr)
+	{
+		const FGeometry PaintGeometry = OptionalPaintGeometry.GetValue();
+
+		FSceneViewProjectionData ProjectionData;
+
+		if (LocalPlayer->GetProjectionData(LocalPlayer->ViewportClient->Viewport, ProjectionData) == true)
+		{
+			SetShowAnyIndicators(true);
+
+			bool bIndicatorsChanged = false;
+			for (int32 ChildIndex = 0; ChildIndex < CanvasChildren.Num(); ++ChildIndex)
+			{
+				STPSActorCanvas::FSlot& CurChild = CanvasChildren[ChildIndex];
+				UTPSIndicatorDescriptor* Indicator = CurChild.Indicator;
+
+				if (Indicator->CanAutomaticallyRemove())
+				{
+					bIndicatorsChanged = true;
+					RemoveIndicatorForEntry(Indicator);
+					--ChildIndex;
+					continue;
+				}
+
+				CurChild.SetIsIndicatorVisible(Indicator->GetIsVisible());
+
+				if (CurChild.GetIsIndicatorVisible() == false)
+				{
+					bIndicatorsChanged |= CurChild.IsDirty();
+					CurChild.ClearDirtyFlag();
+					continue;
+				}
+
+				if (CurChild.IsIndicatorClampedStatusChanged() == true)
+				{
+					CurChild.ClearIndicatorClampedStatusChanged();
+					bIndicatorsChanged = true;
+				}
+
+				FVector ScreenPositionWithDepth;
+				FIndicatorProjection Projector;
+				const bool bSuccess = Projector.Project(*Indicator, ProjectionData, PaintGeometry.Size, OUT ScreenPositionWithDepth);
+				if (bSuccess == false)
+				{
+					CurChild.SetHasValidScreenPosition(false);
+					CurChild.SetInFrontOfCamera(false);
+
+					bIndicatorsChanged |= CurChild.IsDirty();
+					CurChild.ClearDirtyFlag();
+					continue;
+				}
+
+				CurChild.SetInFrontOfCamera(bSuccess);
+				CurChild.SetHasValidScreenPosition(CurChild.GetInFrontOfCamera() || Indicator->GetClampToScreen());
+
+				if (CurChild.HasValidScreenPosition() == true)
+				{
+					CurChild.SetScreenPosition(FVector2D(ScreenPositionWithDepth.X, ScreenPositionWithDepth.Y));;
+					CurChild.SetDepth(ScreenPositionWithDepth.X);
+				}
+
+				CurChild.SetPriority(Indicator->GetPriority());
+
+				bIndicatorsChanged |= CurChild.IsDirty();
+				CurChild.ClearDirtyFlag();
+			}
+
+			if (bIndicatorsChanged == true)
+			{
+				Invalidate(EInvalidateWidgetReason::Paint);
+			}
+		}
+		else
+		{
+			SetShowAnyIndicators(false);
+		}
+	}
+
 	if (AllIndicators.Num() == 0)
 	{
 		TickHandle.Reset();

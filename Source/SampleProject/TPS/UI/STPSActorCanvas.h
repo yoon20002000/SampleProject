@@ -91,7 +91,13 @@ private:
 
 	void AddIndicatorForEntry(UTPSIndicatorDescriptor* IndicatorDescriptor);
 	void RemoveIndicatorForEntry(UTPSIndicatorDescriptor* IndicatorDescriptor);
-	
+
+	using FScopedWidgetSlotArguments = TPanelChildren<FSlot>::FScopedWidgetSlotArguments;
+	FScopedWidgetSlotArguments AddActorSlot(UTPSIndicatorDescriptor* Indicator);
+	// 제거된 Slot Index Return, sentinel num : -1
+	int32 RemoveActorSlot(const TSharedRef<SWidget>& SlotWidget);
+
+	void SetShowAnyIndicators(bool ShowAnyIndicators);
 	EActiveTimerReturnType UpdateCanvas(double InCurrentTime, float InDeltaTime);
 	void UpdateActiveTimer();
 private:
@@ -102,6 +108,9 @@ private:
 	FLocalPlayerContext LocalPlayerContext;
 	TWeakObjectPtr<UTPSIndicatorManagerComponent> IndicatorComp;
 
+	
+	
+	
 	// 캔버스 내 모든 Slot
 	TPanelChildren<FSlot> CanvasChildren;
 	mutable TPanelChildren<FArrowSlot> ArrowsChildren;
@@ -110,6 +119,8 @@ private:
 	FUserWidgetPool IndicatorPool;
 	
 	const FSlateBrush* ActorCanvasArrowBrush = nullptr;
+
+	bool bShowAnyIndicators = false;
 
 	mutable TOptional<FGeometry> OptionalPaintGeometry;
 

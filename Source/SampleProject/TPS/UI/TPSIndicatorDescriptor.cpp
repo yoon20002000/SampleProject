@@ -24,9 +24,8 @@ bool FIndicatorProjection::Project(const UTPSIndicatorDescriptor& IndicatorDescr
 		}
 
 		const FVector ProjectWorldLocation = WorldLocation.GetValue() + IndicatorDescriptor.GetWorldPositionOffset();
-		const EActorCanvasProjectionMode ProjectionMode = IndicatorDescriptor.GetProjectionMode();
 
-		switch (ProjectionMode)
+		switch (const EActorCanvasProjectionMode ProjectionMode = IndicatorDescriptor.GetProjectionMode())
 		{
 		case EActorCanvasProjectionMode::ComponentPoint:
 			{
