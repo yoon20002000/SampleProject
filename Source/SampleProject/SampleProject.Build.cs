@@ -34,7 +34,8 @@ public class SampleProject : ModuleRules
 		"GameplayAbilities",
 		"GameplayTasks",
 		"NavigationSystem",
-		"AIModule"
+		"AIModule",
+		"AsyncMixin",
 		});
 
 		if (bUseOnlineSubsystemV1)
