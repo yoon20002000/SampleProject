@@ -452,6 +452,21 @@ int32 STPSActorCanvas::OnPaint(const FPaintArgs& Args, const FGeometry& Allotted
 	                       bParentEnabled);
 }
 
+void STPSActorCanvas::SetDrawElementsInOrder(bool bInDrawElementsInOrder)
+{
+	 bDrawElementsInOrder = bInDrawElementsInOrder;
+}
+
+FString STPSActorCanvas::GetReferencerName() const
+{
+	return TEXT("STPSActorCanvas");
+}
+
+void STPSActorCanvas::AddReferencedObjects(FReferenceCollector& Collector)
+{
+	Collector.AddReferencedObjects(AllIndicators);
+}
+
 void STPSActorCanvas::OnIndicatorAdded(UTPSIndicatorDescriptor* IndicatorDescriptor)
 {
 	AllIndicators.Add(IndicatorDescriptor);

@@ -122,9 +122,6 @@ private:
 	
 	FLocalPlayerContext LocalPlayerContext;
 	TWeakObjectPtr<UTPSIndicatorManagerComponent> IndicatorComp;
-
-	
-	
 	
 	// 캔버스 내 모든 Slot
 	TPanelChildren<FSlot> CanvasChildren;
@@ -137,7 +134,8 @@ private:
 
 	mutable int32 NextArrowIndex = 0;
 	mutable int32 ArrowIndexLastUpdate = 0;
-	
+
+	bool bDrawElementsInOrder = false;
 	bool bShowAnyIndicators = false;
 
 	mutable TOptional<FGeometry> OptionalPaintGeometry;
