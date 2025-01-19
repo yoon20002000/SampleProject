@@ -166,7 +166,7 @@ void UTPSIndicatorDescriptor::SetComponentSocketName(FName InSocketName)
 	ComponentSocketName = InSocketName;
 }
 
-TSoftClassPtr<UUserWidget> UTPSIndicatorDescriptor::GetIndicatorClass() const
+TSoftClassPtr<UUserWidget> UTPSIndicatorDescriptor::GetIndicatorWidgetClass() const
 {
 	return IndicatorWidgetClass;
 }

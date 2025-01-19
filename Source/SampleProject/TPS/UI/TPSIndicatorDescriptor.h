@@ -47,7 +47,7 @@ public:
 	void SetComponentSocketName(FName InSocketName);
 
 	UFUNCTION(BlueprintCallable)
-	TSoftClassPtr<UUserWidget> GetIndicatorClass() const;
+	TSoftClassPtr<UUserWidget> GetIndicatorWidgetClass() const;
 	UFUNCTION(BlueprintCallable)
 	void SetIndicatorClass(TSoftClassPtr<UUserWidget> InIndicatorClass);
 

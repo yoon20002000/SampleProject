@@ -2,14 +2,15 @@
 
 #pragma once
 #include "Blueprint/UserWidgetPool.h"
+#include "AsyncMixin.h"
 
-
+class UTPSIndicatorManagerComponent;
 struct FUserWidgetPool;
 class UTPSIndicatorDescriptor;
 /**
  * 
  */
-class STPSActorCanvas : public SPanel
+class STPSActorCanvas : public SPanel, public FAsyncMixin
 {
 public:
 	class FSlot : public TSlotBase<FSlot>
@@ -85,10 +86,23 @@ public:
 	void Construct(const FArguments& InArgs, const FLocalPlayerContext& InLocalPlayerContext, const FSlateBrush* InActorCanvasArrowBrush);
 
 private:
+	void OnIndicatorAdded(UTPSIndicatorDescriptor* IndicatorDescriptor);
+	void OnIndicatorRemoved(UTPSIndicatorDescriptor* IndicatorDescriptor);
+
+	void AddIndicatorForEntry(UTPSIndicatorDescriptor* IndicatorDescriptor);
+	void RemoveIndicatorForEntry(UTPSIndicatorDescriptor* IndicatorDescriptor);
+	
+	EActiveTimerReturnType UpdateCanvas(double InCurrentTime, float InDeltaTime);
 	void UpdateActiveTimer();
 private:
-
+	// 모든 Indicator 정보
+	TArray<TObjectPtr<UTPSIndicatorDescriptor>> AllIndicators;
+	TArray<UTPSIndicatorDescriptor*> InactiveIndicators;
+	
 	FLocalPlayerContext LocalPlayerContext;
+	TWeakObjectPtr<UTPSIndicatorManagerComponent> IndicatorComp;
+
+	// 캔버스 내 모든 Slot
 	TPanelChildren<FSlot> CanvasChildren;
 	mutable TPanelChildren<FArrowSlot> ArrowsChildren;
 	FCombinedChildren AllChildren;
@@ -97,4 +111,7 @@ private:
 	
 	const FSlateBrush* ActorCanvasArrowBrush = nullptr;
 
+	mutable TOptional<FGeometry> OptionalPaintGeometry;
+
+	TSharedPtr<FActiveTimerHandle> TickHandle;
 };
