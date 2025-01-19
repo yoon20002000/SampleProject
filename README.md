@@ -52,5 +52,13 @@ AISpawner
 - AICharacter를 특정 주기에서 Field에 특정 수치만큼 계속 Spawn 하게 함.
 ![Example Image](./ReadMeResource/Spawn.gif)
 
+AI Behavior Tree
+- 범위 내 Player 존재 확인 후. 존재 시 BB에 Setting
+![Example Image](./ReadMeResource/BT1.png)
+- 공격 사정거리 외에도 이동 사정거리 설정 가능하게 제작작
+![Example Image](./ReadMeResource/BT2.png)
+
+
+
 영상
 ![Video](./ReadMeResource/Total.gif)

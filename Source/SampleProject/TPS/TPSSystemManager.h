@@ -19,7 +19,7 @@ public:
 	static UTPSSystemManager* Get();
 
 	void Initialize();
-	void Deinitialize();
+	void Uninitialize();
 	void Tick(float DeltaTime);
 	void PostTick(float DeltaTime);
 

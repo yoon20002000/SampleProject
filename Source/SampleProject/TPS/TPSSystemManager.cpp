@@ -40,14 +40,26 @@ void UTPSSystemManager::Initialize()
 	NamePlateManager = NewObject<UTPSNameplateManager>();
 }
 
-void UTPSSystemManager::Deinitialize()
+void UTPSSystemManager::Uninitialize()
 {
 	DeinitializeUIManager();
 	
-	UIManager->ConditionalBeginDestroy();
-	GameManager->ConditionalBeginDestroy();
-	GameStateManager->ConditionalBeginDestroy();
-	NamePlateManager->ConditionalBeginDestroy();
+	if (UIManager != nullptr)
+	{
+		UIManager->ConditionalBeginDestroy();
+	}
+	if (GameManager != nullptr)
+	{
+		GameManager->ConditionalBeginDestroy();	
+	}
+	if (GameStateManager != nullptr)
+	{
+		GameStateManager->ConditionalBeginDestroy();	
+	}
+	if (NamePlateManager != nullptr)
+	{
+		NamePlateManager->ConditionalBeginDestroy();	
+	}
 }
 
 void UTPSSystemManager::Tick(float DeltaTime)

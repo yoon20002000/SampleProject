@@ -18,30 +18,30 @@ void UBTTask_MoveToDistance::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* 
 	AAIController* AIController = OwnerComp.GetAIOwner();
 	if (AIController == nullptr)
 	{
-		return ;
+		return;
 	}
-
+	
 	APawn* ControlledPawn = AIController->GetPawn();
 	if (ControlledPawn == nullptr)
 	{
-		return ;
+		return;
 	}
-
+	
 	UBlackboardComponent* BBC = OwnerComp.GetBlackboardComponent();
 	if (BBC == nullptr)
 	{
-		return ;
+		return;
 	}
-	APawn* Target = Cast<APawn>(BBC->GetValueAsObject(ATPSAIController::TargetActorKey)) ;
+	
+	APawn* Target = Cast<APawn>(BBC->GetValueAsObject(ATPSAIController::TargetActorKey));
 	if (Target == nullptr)
 	{
-		return ;
+		return;
 	}
-
+	
 	if (Target->GetDistanceTo(ControlledPawn) <= StopDistance)
 	{
 		AIController->StopMovement();
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 	}
 }
-
