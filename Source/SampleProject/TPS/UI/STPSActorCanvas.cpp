@@ -6,6 +6,35 @@
 #include "TPSIndicatorWidgetInterface.h"
 #include "Components/TPSIndicatorManagerComponent.h"
 
+namespace EArrowDirection
+{
+	enum Type
+	{
+		Left,
+		Top,
+		Right,
+		Bottom,
+		Max
+	};
+}
+
+const float ArrowRotations[EArrowDirection::Max] =
+{
+	270.0f,
+	0.0f,
+	90.0f,
+	180.0f
+};
+
+const FVector2D ArrowOffsets[EArrowDirection::Max] =
+{
+	FVector2D(-1.0f, 0.0f),
+	FVector2D(0.0f, -1.0f),
+	FVector2D(1.0f, 0.0f),
+	FVector2D(0.0f, 1.0f),
+};
+
+
 // 작업 후 이전 문제없는지 확인 후 이전 할 것
 class STPSActorCanvasArrowWidget : public SLeafWidget
 {
@@ -13,6 +42,7 @@ public:
 	SLATE_BEGIN_ARGS(STPSActorCanvasArrowWidget)
 		{
 		}
+
 	SLATE_END_ARGS()
 
 	STPSActorCanvasArrowWidget(): Rotation(0.0f), Arrow(nullptr)
@@ -181,7 +211,7 @@ bool STPSActorCanvas::FSlot::IsIndicatorClamped() const
 	return bIsIndicatorVisible;
 }
 
-void STPSActorCanvas::FSlot::SetIndicatorClamped(bool InClamped)
+void STPSActorCanvas::FSlot::SetIndicatorClamped(bool InClamped) const
 {
 	if (bIsIndicatorClamped != InClamped)
 	{
@@ -206,10 +236,10 @@ void STPSActorCanvas::FSlot::RefreshVisibility() const
 	GetWidget()->SetVisibility(bIsVisible == true ? EVisibility::SelfHitTestInvisible : EVisibility::Collapsed);
 }
 
-STPSActorCanvas::STPSActorCanvas() : CanvasChildren(this), ArrowsChildren(this), AllChildren(this)
+STPSActorCanvas::STPSActorCanvas() : CanvasChildren(this), ArrowChildren(this), AllChildren(this)
 {
 	AllChildren.AddChildren(CanvasChildren);
-	AllChildren.AddChildren(ArrowsChildren);
+	AllChildren.AddChildren(ArrowChildren);
 }
 
 void STPSActorCanvas::Construct(const FArguments& InArgs, const FLocalPlayerContext& InLocalPlayerContext,
@@ -228,7 +258,7 @@ void STPSActorCanvas::Construct(const FArguments& InArgs, const FLocalPlayerCont
 		TSharedRef<STPSActorCanvasArrowWidget> ArrowWidget = SNew(STPSActorCanvasArrowWidget, ActorCanvasArrowBrush);
 		ArrowWidget->SetVisibility(EVisibility::Collapsed);
 
-		ArrowsChildren.AddSlot(MoveTemp(
+		ArrowChildren.AddSlot(MoveTemp(
 			FArrowSlot::FSlotArguments(MakeUnique<FArrowSlot>())
 			[
 				ArrowWidget
@@ -237,6 +267,188 @@ void STPSActorCanvas::Construct(const FArguments& InArgs, const FLocalPlayerCont
 	}
 
 	UpdateActiveTimer();
+}
+
+void STPSActorCanvas::OnArrangeChildren(const FGeometry& AllottedGeometry, FArrangedChildren& ArrangedChildren) const
+{
+	NextArrowIndex = 0;
+
+	if (bShowAnyIndicators == true)
+	{
+		const FVector2D ArrowWidgetSize = ActorCanvasArrowBrush->GetImageSize();
+		const FIntPoint FixedPadding = FIntPoint(10.0f, 10.0f) + FIntPoint(ArrowWidgetSize.X, ArrowWidgetSize.Y);
+		const FVector Center = FVector(AllottedGeometry.Size * 0.5f, 0.0f);
+
+		TArray<const STPSActorCanvas::FSlot*> SortedSlots;
+		for (int32 ChildIndex = 0; ChildIndex < CanvasChildren.Num(); ++ChildIndex)
+		{
+			SortedSlots.Add(&CanvasChildren[ChildIndex]);
+		}
+
+		SortedSlots.StableSort([](const STPSActorCanvas::FSlot& X, const STPSActorCanvas::FSlot& Y)
+		{
+			if (X.GetPriority() == Y.GetPriority())
+			{
+				return X.GetDepth() < Y.GetDepth();
+			}
+			else
+			{
+				return X.GetPriority() < Y.GetPriority();
+			}
+		});
+
+		for (int32 ChildIndex = 0; ChildIndex < SortedSlots.Num(); ++ChildIndex)
+		{
+			const FSlot& CurChild = *SortedSlots[ChildIndex];
+			const UTPSIndicatorDescriptor* Indicator = CurChild.Indicator;
+
+			if (ArrangedChildren.Accepts(CurChild.GetWidget()->GetVisibility()) == false)
+			{
+				CurChild.SetIndicatorClamped(false);
+				continue;
+			}
+			FVector2D ScreenPosition = CurChild.GetScreenPosition();
+			const bool bInFrontOfCamera = CurChild.GetInFrontOfCamera();
+
+			const bool bShouldClamp = Indicator->GetClampToScreen();
+
+			FVector2D SlotSize, SlotOffset, SlotPaddingMin, SlotPaddingMax;
+			GetOffsetAndSize(Indicator, OUT SlotSize, OUT SlotOffset, OUT SlotPaddingMin, OUT SlotPaddingMax);
+
+			bool bIsIndicatorClamped = false;
+
+			if (bShouldClamp == true)
+			{
+				EArrowDirection::Type ClampDir = EArrowDirection::Max;
+
+				const FIntPoint RectMin = FIntPoint(SlotPaddingMin.X, SlotPaddingMin.Y) + FixedPadding;
+				const FIntPoint RectMax = FIntPoint(AllottedGeometry.Size.X - SlotPaddingMax.X,
+				                                    AllottedGeometry.Size.Y - SlotPaddingMax.Y) - FixedPadding;
+				const FIntRect ClampRect(RectMin, RectMax);
+
+				if (ClampRect.Contains(FIntPoint(ScreenPosition.X, ScreenPosition.Y)) == false)
+				{
+					const FPlane Planes[] =
+					{
+						FPlane(FVector(1.0f, 0.0f, 0.0f), ClampRect.Min.X), // L
+						FPlane(FVector(0.0f, 1.0f, 0.0f), ClampRect.Min.Y), // T
+						FPlane(FVector(-1.0f, 0.0f, 0.0f), ClampRect.Max.X), // R
+						FPlane(FVector(0.0f, -1.0f, 0.0f), ClampRect.Max.Y) // B
+					};
+
+					for (int32 Index = 0; Index < EArrowDirection::Max; ++Index)
+					{
+						FVector NewPoint;
+						if (FMath::SegmentPlaneIntersection(Center, FVector(ScreenPosition, 0.0f), Planes[Index],
+						                                    NewPoint))
+						{
+							ClampDir = static_cast<EArrowDirection::Type>(Index);
+							ScreenPosition = FVector2D(NewPoint);
+						}
+					}
+				}
+				else if (bInFrontOfCamera == false)
+				{
+					const float ScreenXNorm = ScreenPosition.X / (RectMax.X - RectMin.X);
+					const float ScreenYNorm = ScreenPosition.Y / (RectMax.Y - RectMin.Y);
+
+					if (ScreenXNorm < ScreenYNorm)
+					{
+						if (ScreenXNorm < (-ScreenYNorm + 1.0f))
+						{
+							ClampDir = EArrowDirection::Left;
+							ScreenPosition.X = ClampRect.Min.X;
+						}
+						else
+						{
+							ClampDir = EArrowDirection::Bottom;
+							ScreenPosition.Y = ClampRect.Max.Y;
+						}
+					}
+					else
+					{
+						if (ScreenXNorm < (-ScreenYNorm + 1.0f))
+						{
+							ClampDir = EArrowDirection::Top;
+							ScreenPosition.Y = ClampRect.Min.Y;
+						}
+						else
+						{
+							ClampDir = EArrowDirection::Right;
+							ScreenPosition.X = ClampRect.Max.X;
+						}
+					}
+				}
+
+				bIsIndicatorClamped = ClampDir != EArrowDirection::Max;
+
+				if (Indicator->GetShowClampToScreenArrow() &&
+					bIsIndicatorClamped == true &&
+					ArrowChildren.IsValidIndex(NextArrowIndex) == true)
+				{
+					const FVector2D ArrowOffsetDirection = ArrowOffsets[ClampDir];
+					const float ArrowRotation = ArrowRotations[ClampDir];
+
+					TSharedRef<STPSActorCanvasArrowWidget> ArrowWidgetToUse = StaticCastSharedRef<
+						STPSActorCanvasArrowWidget>(ArrowChildren.GetChildAt(NextArrowIndex));
+					++NextArrowIndex;
+
+					ArrowWidgetToUse->SetRotation(ArrowRotation);
+
+					const FVector2D OffsetMagnitude = (SlotSize + ArrowWidgetSize) * 0.5f;
+
+					const FVector2D ArrowCenteringOffset = -(ArrowWidgetSize * 0.5f);
+
+					FVector2D ArrowAlignmentOffset = FVector2D::ZeroVector;
+					if (Indicator->VAlignment == VAlign_Top)
+					{
+						ArrowAlignmentOffset = SlotSize * FVector2D(0.0f, 0.5f);
+					}
+					else if (Indicator->VAlignment == VAlign_Bottom)
+					{
+						ArrowAlignmentOffset = SlotSize * FVector2D(0.0f, -0.5f);
+					}
+
+					const FVector2D WidgetOffset = (OffsetMagnitude * ArrowOffsetDirection);
+					const FVector2D FinalOffset = (WidgetOffset + ArrowAlignmentOffset + ArrowCenteringOffset);
+					const FVector2D FinalPosition = (ScreenPosition + FinalOffset);
+
+					ArrowWidgetToUse->SetVisibility(EVisibility::HitTestInvisible);
+
+					ArrangedChildren.AddWidget(AllottedGeometry.MakeChild(ArrowWidgetToUse,FinalPosition,ArrowWidgetSize,1.f));
+				}
+			}
+			CurChild.SetIndicatorClamped(bIsIndicatorClamped);
+
+			ArrangedChildren.AddWidget(AllottedGeometry.MakeChild(CurChild.GetWidget(), ScreenPosition + SlotOffset, SlotSize, 1.f));
+		}
+	}
+	if (NextArrowIndex < ArrowIndexLastUpdate)
+	{
+		for (int32 ArrowRemovedIndex = NextArrowIndex; ArrowRemovedIndex < ArrowIndexLastUpdate; ++ArrowRemovedIndex)
+		{
+			ArrowChildren.GetChildAt(ArrowRemovedIndex)->SetVisibility(EVisibility::Visible);->SetVisibility(EVisibility::Collapsed);
+		}
+	}
+	ArrowIndexLastUpdate = NextArrowIndex;
+}
+
+FVector2D STPSActorCanvas::ComputeDesiredSize(float LayoutScaleMultiplier) const
+{
+	return FVector2D::ZeroVector;
+}
+
+FChildren* STPSActorCanvas::GetChildren()
+{
+	return &AllChildren;
+}
+
+int32 STPSActorCanvas::OnPaint(const FPaintArgs& Args, const FGeometry& AllottedGeometry,
+                               const FSlateRect& MyCullingRect, FSlateWindowElementList& OutDrawElements, int32 LayerId,
+                               const FWidgetStyle& InWidgetStyle, bool bParentEnabled) const
+{
+	return SPanel::OnPaint(Args, AllottedGeometry, MyCullingRect, OutDrawElements, LayerId, InWidgetStyle,
+	                       bParentEnabled);
 }
 
 void STPSActorCanvas::OnIndicatorAdded(UTPSIndicatorDescriptor* IndicatorDescriptor)
@@ -305,7 +517,7 @@ void STPSActorCanvas::RemoveIndicatorForEntry(UTPSIndicatorDescriptor* Indicator
 		if (IndicatorWidget->GetClass()->ImplementsInterface(UTPSIndicatorWidgetInterface::StaticClass()))
 		{
 			ITPSIndicatorWidgetInterface* InterfaceIndicator = Cast<ITPSIndicatorWidgetInterface>(
-							IndicatorWidget);
+				IndicatorWidget);
 			InterfaceIndicator->BindIndicator(IndicatorDescriptor);
 		}
 
@@ -437,7 +649,8 @@ EActiveTimerReturnType STPSActorCanvas::UpdateCanvas(double InCurrentTime, float
 
 				FVector ScreenPositionWithDepth;
 				FIndicatorProjection Projector;
-				const bool bSuccess = Projector.Project(*Indicator, ProjectionData, PaintGeometry.Size, OUT ScreenPositionWithDepth);
+				const bool bSuccess = Projector.Project(*Indicator, ProjectionData, PaintGeometry.Size,
+				                                        OUT ScreenPositionWithDepth);
 				if (bSuccess == false)
 				{
 					CurChild.SetHasValidScreenPosition(false);
@@ -473,6 +686,10 @@ EActiveTimerReturnType STPSActorCanvas::UpdateCanvas(double InCurrentTime, float
 			SetShowAnyIndicators(false);
 		}
 	}
+	else
+	{
+		SetShowAnyIndicators(false);
+	}
 
 	if (AllIndicators.Num() == 0)
 	{
@@ -482,6 +699,73 @@ EActiveTimerReturnType STPSActorCanvas::UpdateCanvas(double InCurrentTime, float
 	else
 	{
 		return EActiveTimerReturnType::Continue;
+	}
+}
+
+void STPSActorCanvas::GetOffsetAndSize(const UTPSIndicatorDescriptor* Indicator,
+                                       FVector2D& OutSize,
+                                       FVector2D& OutOffset,
+                                       FVector2D& OutPaddingMin,
+                                       FVector2D& OutPaddingMax) const
+{
+	FVector2D AllottedSize = FVector2D::ZeroVector;
+
+	TSharedPtr<SWidget> CanvasHost = Indicator->CanvasHost.Pin();
+	if (CanvasHost.IsValid() == true)
+	{
+		OutSize = CanvasHost->GetDesiredSize();
+	}
+
+	switch (Indicator->GetHorizontalAlign())
+	{
+	case HAlign_Left:
+		{
+			OutOffset.X = 0.0f;
+			OutPaddingMin.X = OutSize.X;
+			OutPaddingMax.X = 0.0f;
+			break;
+		}
+	default:
+	case HAlign_Center:
+		{
+			OutOffset.X = (AllottedSize.X - OutSize.X) * 0.5f;
+			OutPaddingMin.X = OutSize.X * 0.5f;
+			OutPaddingMax.X = OutPaddingMin.X;
+			break;
+		}
+	case HAlign_Right:
+		{
+			OutOffset.X = AllottedSize.X - OutSize.X;
+			OutPaddingMin.X = OutSize.X;
+			OutPaddingMax.X = 0.0f;
+			break;
+		}
+	}
+
+	switch (Indicator->GetVerticalAlign())
+	{
+	case VAlign_Top:
+		{
+			OutOffset.Y = 0.0f;
+			OutPaddingMin.Y = 0.0f;
+			OutPaddingMax.Y = OutSize.Y;
+			break;
+		}
+	default:
+	case VAlign_Center:
+		{
+			OutOffset.Y = (AllottedSize.Y - OutSize.Y) * 0.5f;
+			OutPaddingMin.Y = OutSize.Y * 0.5f;
+			OutPaddingMax.Y = OutPaddingMin.Y;
+			break;
+		}
+	case VAlign_Bottom:
+		{
+			OutOffset.Y = AllottedSize.Y - OutSize.Y;
+			OutPaddingMin.Y = OutSize.Y;
+			OutPaddingMax.Y = 0.0f;
+			break;
+		}
 	}
 }
 

@@ -3,6 +3,7 @@
 #pragma once
 #include "Blueprint/UserWidgetPool.h"
 #include "AsyncMixin.h"
+#include "TPSIndicatorDescriptor.h"
 
 class UTPSIndicatorManagerComponent;
 struct FUserWidgetPool;
@@ -44,7 +45,7 @@ public:
 		void ClearDirtyFlag();
 
 		bool IsIndicatorClamped() const;
-		void SetIndicatorClamped(bool InClamped);
+		void SetIndicatorClamped(bool InClamped) const;
 
 		bool IsIndicatorClampedStatusChanged() const;
 		void ClearIndicatorClampedStatusChanged();
@@ -85,6 +86,12 @@ public:
 
 	void Construct(const FArguments& InArgs, const FLocalPlayerContext& InLocalPlayerContext, const FSlateBrush* InActorCanvasArrowBrush);
 
+	// SWidget
+	virtual void OnArrangeChildren(const FGeometry& AllottedGeometry, FArrangedChildren& ArrangedChildren) const override;
+	virtual FVector2D ComputeDesiredSize(float LayoutScaleMultiplier) const override;
+	virtual FChildren* GetChildren() override;
+	virtual int32 OnPaint(const FPaintArgs& Args, const FGeometry& AllottedGeometry, const FSlateRect& MyCullingRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, const FWidgetStyle& InWidgetStyle, bool bParentEnabled) const override;
+	//
 private:
 	void OnIndicatorAdded(UTPSIndicatorDescriptor* IndicatorDescriptor);
 	void OnIndicatorRemoved(UTPSIndicatorDescriptor* IndicatorDescriptor);
@@ -99,6 +106,7 @@ private:
 
 	void SetShowAnyIndicators(bool ShowAnyIndicators);
 	EActiveTimerReturnType UpdateCanvas(double InCurrentTime, float InDeltaTime);
+	void GetOffsetAndSize(const UTPSIndicatorDescriptor* Indicator, FVector2D& OutSize, FVector2D& OutOffset, FVector2D& OutPaddingMin, FVector2D& OutPaddingMax) const;
 	void UpdateActiveTimer();
 private:
 	// 모든 Indicator 정보
@@ -113,13 +121,16 @@ private:
 	
 	// 캔버스 내 모든 Slot
 	TPanelChildren<FSlot> CanvasChildren;
-	mutable TPanelChildren<FArrowSlot> ArrowsChildren;
+	mutable TPanelChildren<FArrowSlot> ArrowChildren;
 	FCombinedChildren AllChildren;
 
 	FUserWidgetPool IndicatorPool;
 	
 	const FSlateBrush* ActorCanvasArrowBrush = nullptr;
 
+	mutable int32 NextArrowIndex = 0;
+	mutable int32 ArrowIndexLastUpdate = 0;
+	
 	bool bShowAnyIndicators = false;
 
 	mutable TOptional<FGeometry> OptionalPaintGeometry;
