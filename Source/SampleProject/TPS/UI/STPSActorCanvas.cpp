@@ -317,6 +317,7 @@ void STPSActorCanvas::OnArrangeChildren(const FGeometry& AllottedGeometry, FArra
 
 			bool bIsIndicatorClamped = false;
 
+			// 화면 밖에 있는 UI 들 Clamping 해서 화면에 표시 여부
 			if (bShouldClamp == true)
 			{
 				EArrowDirection::Type ClampDir = EArrowDirection::Max;
@@ -427,7 +428,7 @@ void STPSActorCanvas::OnArrangeChildren(const FGeometry& AllottedGeometry, FArra
 	{
 		for (int32 ArrowRemovedIndex = NextArrowIndex; ArrowRemovedIndex < ArrowIndexLastUpdate; ++ArrowRemovedIndex)
 		{
-			ArrowChildren.GetChildAt(ArrowRemovedIndex)->SetVisibility(EVisibility::Visible);->SetVisibility(EVisibility::Collapsed);
+			ArrowChildren.GetChildAt(ArrowRemovedIndex)->SetVisibility(EVisibility::Collapsed);
 		}
 	}
 	ArrowIndexLastUpdate = NextArrowIndex;
