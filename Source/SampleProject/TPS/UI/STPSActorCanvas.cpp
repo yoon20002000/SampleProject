@@ -462,8 +462,29 @@ int32 STPSActorCanvas::OnPaint(const FPaintArgs& Args, const FGeometry& Allotted
                                const FSlateRect& MyCullingRect, FSlateWindowElementList& OutDrawElements, int32 LayerId,
                                const FWidgetStyle& InWidgetStyle, bool bParentEnabled) const
 {
-	return SPanel::OnPaint(Args, AllottedGeometry, MyCullingRect, OutDrawElements, LayerId, InWidgetStyle,
-	                       bParentEnabled);
+	OptionalPaintGeometry = AllottedGeometry;
+
+	FArrangedChildren ArrangedChildren(EVisibility::Visible);
+	ArrangeChildren(AllottedGeometry, ArrangedChildren);
+
+	int32 MaxLayerId = LayerId;
+
+	const FPaintArgs NewArgs = Args.WithNewParent(this);
+	const bool bShouldBeEnabled = ShouldBeEnabled(bParentEnabled);
+
+	for (const FArrangedWidget& CurWidget : ArrangedChildren.GetInternalArray())
+	{
+		if (IsChildWidgetCulled(MyCullingRect, CurWidget) == false)
+		{
+			const int32 CurWidgetMaxLayerId = CurWidget.Widget->Paint(NewArgs, CurWidget.Geometry, MyCullingRect,
+			                                                          OutDrawElements,
+			                                                          bDrawElementsInOrder == true ? MaxLayerId : LayerId,
+			                                                          InWidgetStyle, bShouldBeEnabled);
+			MaxLayerId = FMath::Max(MaxLayerId, CurWidgetMaxLayerId);
+		}
+	}
+	
+	return MaxLayerId;
 }
 
 void STPSActorCanvas::SetDrawElementsInOrder(bool bInDrawElementsInOrder)
@@ -610,17 +631,17 @@ void STPSActorCanvas::SetShowAnyIndicators(bool ShowAnyIndicators)
 
 EActiveTimerReturnType STPSActorCanvas::UpdateCanvas(double InCurrentTime, float InDeltaTime)
 {
-	if (OptionalPaintGeometry.IsSet() == true)
+	if (OptionalPaintGeometry.IsSet() == false)
 	{
 		return EActiveTimerReturnType::Continue;
 	}
 
 	ULocalPlayer* LocalPlayer = LocalPlayerContext.GetLocalPlayer();
 	UTPSIndicatorManagerComponent* IC = IndicatorComp.Get();
-	if (IndicatorComp == nullptr)
+	if (IC == nullptr)
 	{
-		IndicatorComp = UTPSIndicatorManagerComponent::GetComponent(LocalPlayerContext.GetPlayerController());
-		if (IndicatorComp != nullptr)
+		IC = UTPSIndicatorManagerComponent::GetComponent(LocalPlayerContext.GetPlayerController());
+		if (IC != nullptr)
 		{
 			IndicatorPool.SetWorld(LocalPlayerContext.GetWorld());
 
@@ -802,7 +823,7 @@ void STPSActorCanvas::GetOffsetAndSize(const UTPSIndicatorDescriptor* Indicator,
 void STPSActorCanvas::UpdateActiveTimer()
 {
 	const bool NeedsTicks = AllIndicators.Num() > 0 || IndicatorComp.IsValid() == false;;
-	if (NeedsTicks == true && TickHandle.IsValid() == true)
+	if (NeedsTicks == true && TickHandle.IsValid() == false)
 	{
 		TickHandle = RegisterActiveTimer(0, FWidgetActiveTimerDelegate::CreateSP(this, &STPSActorCanvas::UpdateCanvas));
 	}

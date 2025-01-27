@@ -12,6 +12,8 @@ UCLASS()
 class SAMPLEPROJECT_API UTPSIndicatorLayer : public UWidget
 {
 	GENERATED_BODY()
+public:
+	UTPSIndicatorLayer(const FObjectInitializer& ObjectInitializer);
 protected:
 	virtual void ReleaseSlateResources(bool bReleaseChildren) override;
 	virtual TSharedRef<SWidget> RebuildWidget() override;
