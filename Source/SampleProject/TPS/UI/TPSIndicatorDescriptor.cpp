@@ -208,7 +208,7 @@ void UTPSIndicatorDescriptor::SetAutoRemoveWhenIndicatorComponentIsNull(bool Can
 
 bool UTPSIndicatorDescriptor::CanAutomaticallyRemove() const
 {
-	return IsValid(GetTargetSceneComponent()) == true && bAutoRemoveWhenIndicatorComponentIsNull == true;
+	return IsValid(GetTargetSceneComponent()) == false && bAutoRemoveWhenIndicatorComponentIsNull == true;
 }
 
 bool UTPSIndicatorDescriptor::GetIsVisible() const

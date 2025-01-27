@@ -41,7 +41,7 @@ void UTPSNameplateManager::RegistNameplate(
 		UE_LOG(LogTemp, Warning, TEXT("Nameplate Rule Target has not UCapsuleComponent!! : %s "), *IndicatedPawn->GetName());
 		return;
 	}
-	
+	NewIndicatorDescriptor->SetDataObject(IndicatedPawn);
 	NewIndicatorDescriptor->SetIndicatorClass(InIndicatorClass);
 	NewIndicatorDescriptor->SetProjectionMode(InProjectionMode);
 	NewIndicatorDescriptor->SetBoundingBoxAnchor(InBoundingBoxAnchor);
