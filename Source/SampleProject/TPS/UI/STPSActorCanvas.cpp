@@ -772,8 +772,8 @@ void STPSActorCanvas::GetOffsetAndSize(const UTPSIndicatorDescriptor* Indicator,
 	case HAlign_Left:
 		{
 			OutOffset.X = 0.0f;
-			OutPaddingMin.X = OutSize.X;
-			OutPaddingMax.X = 0.0f;
+			OutPaddingMin.X = 0.0f;
+			OutPaddingMax.X = OutSize.X;
 			break;
 		}
 	default:
