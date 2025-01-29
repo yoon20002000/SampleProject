@@ -12,7 +12,13 @@
 
 class UTPSNameplateManager;
 
-UTPSNameplateSource::UTPSNameplateSource(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
+UTPSNameplateSource::UTPSNameplateSource(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer),
+bUseNameplate(true),
+ProjectionMode(EActorCanvasProjectionMode::ComponentBoundingBox),
+SocketName(NAME_None),
+BoundingBoxAnchor(FVector::UnitZ()),
+HorizontalAlignment(HAlign_Center),
+VerticalAlignment(VAlign_Center)
 {
 }
 
@@ -21,12 +27,13 @@ UTPSNameplateSource::UTPSNameplateSource(const FObjectInitializer& ObjectInitial
 void UTPSNameplateSource::BeginPlay()
 {
 	Super::BeginPlay();
-
-	if (ATPSCharacter* TargetCharacter = Cast<ATPSCharacter>(GetOwner()))
+	
+	if (ATPSCharacter* TargetCharacter = Cast<ATPSCharacter>(GetOwner()); bUseNameplate == true)
 	{
 		if (UTPSNameplateManager* NG = UTPSSystemManager::Get()->GetNameplateManager())
 		{
-			NG->RegistNameplate(TargetCharacter, NameplateWidgetClass);
+			NG->RegistNameplate(TargetCharacter, NameplateWidgetClass, ProjectionMode,
+			                    SocketName, BoundingBoxAnchor, HorizontalAlignment, VerticalAlignment);
 		}
 	}
 }
@@ -35,7 +42,7 @@ void UTPSNameplateSource::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
 	
-	if (UTPSNameplateManager* NG = UTPSSystemManager::Get()->GetNameplateManager())
+	if (UTPSNameplateManager* NG = UTPSSystemManager::Get()->GetNameplateManager(); bUseNameplate == true)
 	{
 		NG->UnregistNameplate(Cast<APawn>(GetOwner()));
 	}

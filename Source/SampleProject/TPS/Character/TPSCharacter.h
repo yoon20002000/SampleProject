@@ -59,19 +59,11 @@ protected:
 	virtual void PossessedBy(AController* NewController) override;
 	void SetPlayerInput(bool SetActive);
 public:
-	UPROPERTY(VisibleAnywhere, Category = UI)
-	TObjectPtr<UWidgetComponent> HPBarWidget;
-	
 	FOnAttackEndDelegate OnEndDelegate;
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UTPSHealthComponent> HealthComp;
 	
-	UPROPERTY(EditDefaultsOnly, Category="UI", meta=(AllowPrivateAccess=true))
-	int HPBarWidgetHeight = 180;
-	UPROPERTY(EditDefaultsOnly, Category="UI", meta=(AllowPrivateAccess=true))
-	FVector2D HPBarWidgetSize = FVector2D(150,50);
-
 	UPROPERTY(EditAnywhere, Category="EI")
 	TArray<TObjectPtr<UTPSAbilitySet>> AbilitySets;
 	

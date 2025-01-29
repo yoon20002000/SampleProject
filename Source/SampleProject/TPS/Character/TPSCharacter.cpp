@@ -21,20 +21,6 @@ ATPSCharacter::ATPSCharacter() : bCanBeDamaged(false)
 	PrimaryActorTick.bCanEverTick = true;
 
 	HealthComp = CreateDefaultSubobject<UTPSHealthComponent>(TEXT("Attribute Component"));
-
-	HPBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HP Bar Widget"));
-	HPBarWidget->SetupAttachment(GetMesh());
-
-	HPBarWidget->SetRelativeLocation(FVector(0, 0, HPBarWidgetHeight));
-	HPBarWidget->SetWidgetSpace(EWidgetSpace::Screen);
-
-	static ConstructorHelpers::FClassFinder<UUserWidget> UI_HPBAR(TEXT("/Game/Blueprints/UI/WBP_HPBar.WBP_HPBar_C"));
-	if (UI_HPBAR.Succeeded())
-	{
-		HPBarWidget->SetWidgetClass(UI_HPBAR.Class);
-		HPBarWidget->SetDrawSize(HPBarWidgetSize);
-	}
-	
 	AbilitySystemComp = CreateDefaultSubobject<UTPSAbilitySystemComponent>(TEXT("AbilitySystem Comp"));
 	CombatSet = CreateDefaultSubobject<UTPSCombatAttributeSet>(TEXT("Combat Set"));
 
@@ -46,7 +32,6 @@ ATPSCharacter::ATPSCharacter() : bCanBeDamaged(false)
 void ATPSCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Log,TEXT("character create"));
 	SetCharacterState(ECharacterState::READY);
 }
 
@@ -115,12 +100,6 @@ void ATPSCharacter::PostInitializeComponents()
 	
 	HealthComp->OnHealthChanged.AddDynamic(this, &ThisClass::OnHealthChanged);
 	HealthComp->OnDeathStart.AddDynamic(this, &ThisClass::OnDeathStart);
-	HPBarWidget->InitWidget();
-	UTPSFloatingHPBar* CharacterWidget = Cast<UTPSFloatingHPBar>(HPBarWidget->GetUserWidgetObject());
-	if (CharacterWidget != nullptr)
-	{
-		CharacterWidget->BindCharacter(this);
-	}
 
 	OnAbilitySystemInitialized();
 }
@@ -216,7 +195,6 @@ void ATPSCharacter::SetCharacterState(ECharacterState CharacterState)
 	case ECharacterState::READY:
 		{
 			bCanBeDamaged=true;
-			HPBarWidget->SetHiddenInGame(false);
 			SetPlayerInput(true);
 			break;
 		}
@@ -224,7 +202,6 @@ void ATPSCharacter::SetCharacterState(ECharacterState CharacterState)
 		{
 			AbilitySystemComp->CancelAbilities();
 			bCanBeDamaged=false;
-			HPBarWidget->SetHiddenInGame(true);
 			SetPlayerInput(false);
 			break;
 		}

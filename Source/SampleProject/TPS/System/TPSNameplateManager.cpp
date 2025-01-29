@@ -18,6 +18,7 @@ void UTPSNameplateManager::RegistNameplate(
 	APawn* IndicatedPawn,
 	TSoftClassPtr<UUserWidget> InIndicatorClass,
 	EActorCanvasProjectionMode InProjectionMode,
+	FName InSocketName,
 	FVector InBoundingBoxAnchor,
 	EHorizontalAlignment InHAlign,
 	EVerticalAlignment InVAlgin,
@@ -32,7 +33,7 @@ void UTPSNameplateManager::RegistNameplate(
 	}
 	
 	UTPSIndicatorDescriptor* NewIndicatorDescriptor = NewObject<UTPSIndicatorDescriptor>();
-	if (USceneComponent* TargetScene = IndicatedPawn->GetComponentByClass<UCapsuleComponent>())
+	if (USceneComponent* TargetScene = IndicatedPawn->GetComponentByClass<UMeshComponent>())
 	{
 		NewIndicatorDescriptor->SetTargetSceneComponent(TargetScene);
 	}
@@ -44,6 +45,7 @@ void UTPSNameplateManager::RegistNameplate(
 	NewIndicatorDescriptor->SetDataObject(IndicatedPawn);
 	NewIndicatorDescriptor->SetIndicatorClass(InIndicatorClass);
 	NewIndicatorDescriptor->SetProjectionMode(InProjectionMode);
+	NewIndicatorDescriptor->SetComponentSocketName(InSocketName);
 	NewIndicatorDescriptor->SetBoundingBoxAnchor(InBoundingBoxAnchor);
 	NewIndicatorDescriptor->SetHorizontalAlign(InHAlign);
 	NewIndicatorDescriptor->SetVerticalAlign(InVAlgin);

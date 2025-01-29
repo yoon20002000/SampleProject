@@ -40,15 +40,17 @@ bool FIndicatorProjection::Project(const UTPSIndicatorDescriptor& IndicatorDescr
 					OutScreenSpacePosition.Y += IndicatorDescriptor.GetScreenSpaceOffset().Y;
 
 					if (bInFrontOfCamera == false && FBox2f(FVector2f::Zero(), ScreenSize).IsInside(
-						static_cast<FVector2f>(OutScreenSpacePosition)) == true)
+						static_cast<FVector2f>(OutScreenSpacePosition)))
 					{
 						const FVector2f CenterToPosition = (FVector2f(OutScreenSpacePosition) - (ScreenSize / 2)).
 							GetSafeNormal();
 						OutScreenSpacePosition = FVector2D((ScreenSize / 2) + CenterToPosition * ScreenSize);
 					}
+
 					OutScreenPositionWithDepth = FVector(OutScreenSpacePosition.X, OutScreenSpacePosition.Y,
 					                                     FVector::Dist(InProjectionData.ViewOrigin,
 					                                                   ProjectWorldLocation));
+
 					return true;
 				}
 				else
@@ -74,7 +76,7 @@ bool FIndicatorProjection::Project(const UTPSIndicatorDescriptor& IndicatorDescr
 					InProjectionData, IndicatorBox, LL, UR, &ScreenSize);
 
 				const FVector& BoundingBoxAnchor = IndicatorDescriptor.GetBoundingBoxAnchor();
-				const FVector2D ScreenSpaceOffset = IndicatorDescriptor.GetScreenSpaceOffset();
+				const FVector2D& ScreenSpaceOffset = IndicatorDescriptor.GetScreenSpaceOffset();
 
 				FVector ScreenPositionWithDepth;
 				ScreenPositionWithDepth.X = FMath::Lerp(LL.X, UR.X, BoundingBoxAnchor.X) + ScreenSpaceOffset.X * (
@@ -83,14 +85,14 @@ bool FIndicatorProjection::Project(const UTPSIndicatorDescriptor& IndicatorDescr
 				ScreenPositionWithDepth.Z = FVector::Dist(InProjectionData.ViewOrigin, ProjectWorldLocation);
 
 				const FVector2f ScreenSpacePosition = FVector2f(FVector2D(ScreenPositionWithDepth));
-				if (bInFrontOfCamera == false && FBox2f(FVector2f::Zero(), ScreenSize).IsInside(ScreenSpacePosition) ==
-					true)
+				if (bInFrontOfCamera == false && FBox2f(FVector2f::Zero(), ScreenSize).IsInside(ScreenSpacePosition))
 				{
 					const FVector2f CenterToPosition = (ScreenSpacePosition - (ScreenSize / 2)).GetSafeNormal();
 					const FVector2f ScreenPositionFromBehind = (ScreenSize / 2) + CenterToPosition * ScreenSize;
 					ScreenPositionWithDepth.X = ScreenPositionFromBehind.X;
 					ScreenPositionWithDepth.Y = ScreenPositionFromBehind.Y;
 				}
+
 				OutScreenPositionWithDepth = ScreenPositionWithDepth;
 				return true;
 			}
@@ -111,19 +113,23 @@ bool FIndicatorProjection::Project(const UTPSIndicatorDescriptor& IndicatorDescr
 					IndicatorDescriptor.GetBoundingBoxAnchor() - FVector(0.5f)));
 
 				FVector2D OutScreenSpacePosition;
-				const bool bInFrontOfCamera = ULocalPlayer::GetPixelPoint(InProjectionData, ProjectBoxPoint, OutScreenSpacePosition, &ScreenSize);
-				OutScreenSpacePosition.X += IndicatorDescriptor.GetScreenSpaceOffset().X * (bInFrontOfCamera == true ? 1 : -1);
+				const bool bInFrontOfCamera = ULocalPlayer::GetPixelPoint(
+					InProjectionData, ProjectBoxPoint, OutScreenSpacePosition, &ScreenSize);
+				OutScreenSpacePosition.X += IndicatorDescriptor.GetScreenSpaceOffset().X * (
+					bInFrontOfCamera == true ? 1 : -1);
 				OutScreenSpacePosition.Y += IndicatorDescriptor.GetScreenSpaceOffset().Y;
 
 				if (bInFrontOfCamera == false && FBox2f(FVector2f::Zero(), ScreenSize).IsInside(
-					static_cast<FVector2f>(OutScreenSpacePosition)) == true)
+					static_cast<FVector2f>(OutScreenSpacePosition)))
 				{
 					const FVector2f CenterToPosition = (FVector2f(OutScreenSpacePosition) - (ScreenSize / 2)).
-					                                   GetSafeNormal().GetSafeNormal();
+						GetSafeNormal();
 					OutScreenSpacePosition = FVector2D((ScreenSize / 2) + CenterToPosition * ScreenSize);
 				}
+
 				OutScreenPositionWithDepth = FVector(OutScreenSpacePosition.X, OutScreenSpacePosition.Y,
 				                                     FVector::Dist(InProjectionData.ViewOrigin, ProjectBoxPoint));
+
 				return true;
 			}
 		}

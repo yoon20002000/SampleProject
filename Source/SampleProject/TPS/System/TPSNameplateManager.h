@@ -24,6 +24,7 @@ public:
 	void RegistNameplate(APawn* IndicatedPawn,
 							TSoftClassPtr<UUserWidget> InIndicatorClass,
 							EActorCanvasProjectionMode InProjectionMode = EActorCanvasProjectionMode::ComponentBoundingBox,
+							FName InSocketName = NAME_None,
 							FVector InBoundingBoxAnchor = FVector::UnitZ(),
 							EHorizontalAlignment InHAlign = HAlign_Center,
 							EVerticalAlignment InVAlgin = VAlign_Center,
