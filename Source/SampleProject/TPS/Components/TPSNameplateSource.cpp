@@ -24,13 +24,9 @@ void UTPSNameplateSource::BeginPlay()
 
 	if (ATPSCharacter* TargetCharacter = Cast<ATPSCharacter>(GetOwner()))
 	{
-		UE_LOG(LogTemp, Log, TEXT("네임 플레이트 생성 시도"));
+		if (UTPSNameplateManager* NG = UTPSSystemManager::Get()->GetNameplateManager())
 		{
-			if (UTPSNameplateManager* NG = UTPSSystemManager::Get()->GetNameplateManager())
-			{
-				UE_LOG(LogTemp, Log, TEXT("NG"));
-				NG->RegistNameplate(TargetCharacter, NameplateWidgetClass);
-			}
+			NG->RegistNameplate(TargetCharacter, NameplateWidgetClass);
 		}
 	}
 }
