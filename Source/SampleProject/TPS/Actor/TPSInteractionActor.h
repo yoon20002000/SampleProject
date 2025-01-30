@@ -16,11 +16,11 @@ class SAMPLEPROJECT_API ATPSInteractionActor : public AActor
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this actor's properties
 	ATPSInteractionActor();
 	FActiveGameplayEffectHandle ApplyGE(UTPSAbilitySystemComponent* AbilitySystemComponent);
+
+	FString GetInteractionDescription() const;
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 protected:
@@ -32,4 +32,6 @@ protected:
 private:
 	UPROPERTY(EditDefaultsOnly, Category="Interaction", meta=(AllowPrivateAccess=true))
 	TSubclassOf<UGameplayEffect> EffectClass;
+	UPROPERTY(EditDefaultsOnly, Category="Interaction", meta=(AllowPrivateAccess=true))
+	FString InteractionDescription;
 };

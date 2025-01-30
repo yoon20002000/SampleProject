@@ -7,6 +7,7 @@
 #include "TPSCharacter.h"
 #include "TPSPlayer.generated.h"
 
+class UTPSInteractionIndicatorComponent;
 class UTPSAbilitySet;
 struct FGameplayTag;
 class UTPSInputConfig;
@@ -63,4 +64,6 @@ private:
 	bool bPrintTag;
 	UPROPERTY(EditDefaultsOnly, Category = "Action")
 	FGameplayTagContainer MoveLimitTagContainer;
+	UPROPERTY(Transient,EditDefaultsOnly)
+	TObjectPtr<UTPSInteractionIndicatorComponent> InteractionIndicatorComp;
 };

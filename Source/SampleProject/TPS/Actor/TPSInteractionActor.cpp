@@ -30,6 +30,11 @@ FActiveGameplayEffectHandle ATPSInteractionActor::ApplyGE(UTPSAbilitySystemCompo
 	return ApplyEffectHandle;
 }
 
+FString ATPSInteractionActor::GetInteractionDescription() const
+{
+	return InteractionDescription;
+}
+
 // Called when the game starts or when spawned
 void ATPSInteractionActor::BeginPlay()
 {

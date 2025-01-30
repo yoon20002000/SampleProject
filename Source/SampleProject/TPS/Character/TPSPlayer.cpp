@@ -1,6 +1,7 @@
 ﻿#include "TPSPlayer.h"
 
 #include "EnhancedInputSubsystems.h"
+#include "Components/InteractionIndicatorComponent.h"
 #include "Components/TPSCameraComponent.h"
 #include "Components/TPSSpringArmComponent.h"
 #include "Game/TPSGameplayTags.h"
@@ -22,6 +23,8 @@ ATPSPlayer::ATPSPlayer() : bPrintTag(false)
 
 	CameraComp = CreateDefaultSubobject<UTPSCameraComponent>(TEXT("CustomCamera"));
 	CameraComp->SetupAttachment(SpringArmComp);
+
+	InteractionIndicatorComp = CreateDefaultSubobject<UTPSInteractionIndicatorComponent>(TEXT("InteractionIndicator"));
 }
 
 // Called when the game starts or when spawned
