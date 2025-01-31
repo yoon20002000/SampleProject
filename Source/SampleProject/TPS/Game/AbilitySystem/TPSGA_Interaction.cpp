@@ -3,6 +3,7 @@
 #include "TPSHelper.h"
 #include "Actor/TPSInteractionActor.h"
 #include "Character/TPSPlayer.h"
+#include "System/TPSCollisionChannels.h"
 
 
 UTPSGA_Interaction::UTPSGA_Interaction(const FObjectInitializer& ObjectInitializer): Super(ObjectInitializer)
@@ -22,47 +23,43 @@ void UTPSGA_Interaction::ActivateAbility(const FGameplayAbilitySpecHandle Handle
 		{
 			ObjectQueryParams.AddObjectTypesToQuery(CollisionChannel);
 		}
-
-		FVector EyeLocation;
+		
 		ATPSPlayer* TPSPlayer = Cast<ATPSPlayer>(ActorInfo->AvatarActor);
 		if (TPSPlayer == nullptr)
 		{
 			EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
 		}
+		
+		FCollisionQueryParams TraceParams(TEXT("Interaction Indicator Actor"), true, TPSPlayer);
 
-		FRotator EyeRotation;
-		TPSPlayer->GetActorEyesViewPoint(EyeLocation, EyeRotation);
+		TArray<AActor*> AttachedActors;
+		TPSPlayer->GetAttachedActors(AttachedActors);
+		TraceParams.AddIgnoredActors(AttachedActors);
+		TraceParams.AddIgnoredActor(TPSPlayer);
+		TraceParams.bDebugQuery = true;
 
-		FVector End = EyeLocation + (EyeRotation.Vector() * TraceDistance);
+		TArray<FHitResult> HitResults;
+		FVector TraceStart;
+		FRotator TempRotator;
+		TPSPlayer->GetActorEyesViewPoint(OUT TraceStart, OUT TempRotator);
+		FVector TraceEnd = TraceStart + TPSPlayer->GetActorForwardVector() * TraceDistance;
 
-		TArray<FHitResult> Hits;
-
-		FCollisionShape Shape;
-		Shape.SetSphere(TraceRadius);
-
-		bool bBlockingHit = TPSHelper::GetWorld()->SweepMultiByObjectType(Hits, EyeLocation, End, FQuat::Identity,
-		                                                                  ObjectQueryParams,
-		                                                                  Shape);
+		bool bBlockingHit = GetWorld()->LineTraceMultiByChannel(OUT HitResults, TraceStart, TraceEnd,TPS_TraceChannel_Weapon, TraceParams);
+		
 		FColor LineColor = (bBlockingHit == true ? FColor::Green : FColor::Red);
-
-		FocusedActor = nullptr;
-
-		for (FHitResult Hit : Hits)
+		
+		for (FHitResult HitResult : HitResults)
 		{
-			DrawDebugSphere(GetWorld(), Hit.ImpactPoint, TraceRadius, 32, LineColor, false, 0.f);
+			DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, TraceRadius, 32, LineColor, false, 0.f);
 
-			ATPSInteractionActor* HitInteractionActor = Cast<ATPSInteractionActor>(Hit.GetActor());
+			ATPSInteractionActor* HitInteractionActor = Cast<ATPSInteractionActor>(HitResult.GetActor());
 			UTPSAbilitySystemComponent* ASC = TPSPlayer->GetTPSAbilitySystemComponent();
 			if (HitInteractionActor != nullptr && ASC != nullptr)
 			{
 				HitInteractionActor->ApplyGE(ASC);
 			}
 		}
-
-		// To do : UI 추가
-		if (FocusedActor != nullptr)
-		{
-		}
+		
 		EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
 	}
 	else
