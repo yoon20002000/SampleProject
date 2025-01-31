@@ -27,7 +27,7 @@ public:
 							FName InSocketName = NAME_None,
 							FVector InBoundingBoxAnchor = FVector::UnitZ(),
 							EHorizontalAlignment InHAlign = HAlign_Center,
-							EVerticalAlignment InVAlgin = VAlign_Center,
+							EVerticalAlignment InVAlign = VAlign_Center,
 							bool bCanAutomaticallyRemove = true,
 							bool bIsClampToScreen = true);
 	void UnregistNameplate(APawn* IndicatedPawn);

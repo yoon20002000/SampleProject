@@ -1,7 +1,7 @@
 ﻿#include "TPSPlayer.h"
 
 #include "EnhancedInputSubsystems.h"
-#include "Components/InteractionIndicatorComponent.h"
+#include "Components/TPSInteractionIndicatorComponent.h"
 #include "Components/TPSCameraComponent.h"
 #include "Components/TPSSpringArmComponent.h"
 #include "Game/TPSGameplayTags.h"

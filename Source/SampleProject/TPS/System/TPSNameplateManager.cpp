@@ -21,7 +21,7 @@ void UTPSNameplateManager::RegistNameplate(
 	FName InSocketName,
 	FVector InBoundingBoxAnchor,
 	EHorizontalAlignment InHAlign,
-	EVerticalAlignment InVAlgin,
+	EVerticalAlignment InVAlign,
 	bool bCanAutomaticallyRemove,
 	bool bIsClampToScreen
 	)
@@ -48,7 +48,7 @@ void UTPSNameplateManager::RegistNameplate(
 	NewIndicatorDescriptor->SetComponentSocketName(InSocketName);
 	NewIndicatorDescriptor->SetBoundingBoxAnchor(InBoundingBoxAnchor);
 	NewIndicatorDescriptor->SetHorizontalAlign(InHAlign);
-	NewIndicatorDescriptor->SetVerticalAlign(InVAlgin);
+	NewIndicatorDescriptor->SetVerticalAlign(InVAlign);
 	NewIndicatorDescriptor->SetAutoRemoveWhenIndicatorComponentIsNull(bCanAutomaticallyRemove);
 	NewIndicatorDescriptor->SetClampToScreen(bIsClampToScreen);
 	
@@ -65,7 +65,6 @@ void UTPSNameplateManager::RegistNameplate(
 
 void UTPSNameplateManager::UnregistNameplate(APawn* IndicatedPawn)
 {
-
 	if (auto RemoveItem = IndicatorMap.Find(IndicatedPawn))
 	{
 		IndicatorMap.Remove(IndicatedPawn);

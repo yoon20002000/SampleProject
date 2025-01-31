@@ -1,9 +1,11 @@
 #pragma once
 
 #include "Components/ActorComponent.h"
-#include "InteractionIndicatorComponent.generated.h"
+#include "TPSInteractionIndicatorComponent.generated.h"
 
 
+class UTPSIndicatorDescriptor;
+enum class EActorCanvasProjectionMode : uint8;
 class UTPSInteractionIndicatorWidget;
 class ATPSInteractionActor;
 
@@ -17,7 +19,9 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 protected:
 	virtual void BeginPlay() override;
-
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	void RegistInteractionIndicator(AActor* InteractionActor, TSoftClassPtr<UUserWidget> InIndicatorClass,EActorCanvasProjectionMode InProjectionMode, FName InSocketName, FVector InBoundingBoxAnchor, EHorizontalAlignment InHAlign, EVerticalAlignment InVAlign, bool bCanAutomaticallyRemove, bool bIsClampToScreen);
+	void UnregistInteractionIndicator();
 private:
 	ATPSInteractionActor* GetInteractionActor() const;
 private:
@@ -26,7 +30,8 @@ private:
 	UPROPERTY(EditAnywhere, meta=(allowPrivateAccess=true), Category="Interaction")
 	float InteractionCheckRange;
 	UPROPERTY(EditAnywhere, meta=(allowPrivateAccess=true), Category="Interaction")
-	TSubclassOf<UUserWidget> InteractionIndicatorClass;
-	UPROPERTY(Transient)
-	TObjectPtr<UTPSInteractionIndicatorWidget> InteractionIndicatorWidget;
+	TSoftClassPtr<UUserWidget> InteractionIndicatorClass;
+
+	UPROPERTY()
+	TWeakObjectPtr<UTPSIndicatorDescriptor> CurIndicator;
 };
