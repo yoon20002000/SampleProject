@@ -5,8 +5,6 @@
 #include "NativeGameplayTags.h"
 #include "TPSAT_PlayMontageAndWaitForEvent.h"
 #include "Character/TPSCharacter.h"
-#include "Character/TPSPlayer.h"
-#include "Components/TPSCameraComponent.h"
 #include "Game/TPSGameplayTags.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
