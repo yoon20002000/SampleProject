@@ -52,37 +52,18 @@ void UTPSInventoryComponent::TraceItem()
 		DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Blue);
 
 		AActor* FirstHitActor = nullptr;
-		if (Hits.Num() > 0)
-		{
-			for (const FHitResult& Hit : Hits)
-			{
-				if (Hit.GetActor()->GetClass()->ImplementsInterface(UTPSInteractionInterface::StaticClass()))
-				{
-					FirstHitActor = Hit.GetActor();
-				}
-			}
-		}
-		else
+		if (FirstHitActor = GetFirstHitItemInteraction(Hits); FirstHitActor == nullptr)
 		{
 			FCollisionShape SphereShape = FCollisionShape::MakeSphere(SweepSphereRadius);
 			FVector AdditionalTraceStart = TraceStart + CameraManager->GetActorForwardVector() * SweepDistance;
 			FVector AdditionalTraceEnd = AdditionalTraceStart;
 			GetWorld()->SweepMultiByChannel(Hits, AdditionalTraceStart, AdditionalTraceEnd, FQuat::Identity,
-			                                TPS_TraceChannel_ItemInteraction,
-			                                SphereShape, CollisionQueryParameters);
+											TPS_TraceChannel_ItemInteraction,
+											SphereShape, CollisionQueryParameters);
 
 			DrawDebugSphere(GetWorld(), AdditionalTraceStart, SweepSphereRadius,12,FColor::Yellow);
 
-			if (Hits.Num() > 0)
-			{
-				for (const FHitResult& Hit : Hits)
-				{
-					if (Hit.GetActor()->GetClass()->ImplementsInterface(UTPSInteractionInterface::StaticClass()))
-					{
-						FirstHitActor = Hit.GetActor();
-					}
-				}
-			}
+			FirstHitActor = GetFirstHitItemInteraction(Hits);
 		}
 		
 		if (FirstHitActor != nullptr)
@@ -92,4 +73,19 @@ void UTPSInventoryComponent::TraceItem()
 			InteractionInterface->Interaction();
 		}
 	}
+}
+
+AActor* UTPSInventoryComponent::GetFirstHitItemInteraction(const TArray<FHitResult>& Hits) const
+{
+	if (Hits.Num() > 0)
+	{
+		for (const FHitResult& Hit : Hits)
+		{
+			if (Hit.GetActor()->GetClass()->ImplementsInterface(UTPSInteractionInterface::StaticClass()))
+			{
+				return Hit.GetActor();
+			}
+		}
+	}
+	return nullptr;
 }

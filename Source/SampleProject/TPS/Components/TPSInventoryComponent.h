@@ -48,6 +48,7 @@ protected:
 	virtual void BeginPlay() override;
 private:
 	void TraceItem();
+	AActor* GetFirstHitItemInteraction(const TArray<FHitResult>& Hits) const;
 	
 
 private:
