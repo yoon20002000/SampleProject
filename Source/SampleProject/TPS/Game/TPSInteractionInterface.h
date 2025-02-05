@@ -20,7 +20,7 @@ class SAMPLEPROJECT_API ITPSInteractionInterface
 {
 	GENERATED_BODY()
 public:
-	virtual FItem GetItemData() = 0;
+	virtual FItem* GetItemData() = 0;
 	virtual void LookAtInteractionActor() = 0;
 	virtual void Interaction() = 0;
 };

@@ -1,6 +1,8 @@
 #include "Components/TPSInventoryComponent.h"
 
 #include "TPSHelper.h"
+#include "TPSItemDataComponent.h"
+#include "Character/TPSPlayer.h"
 #include "Game/TPSInteractionInterface.h"
 #include "System/TPSCollisionChannels.h"
 
@@ -15,7 +17,21 @@ UTPSInventoryComponent::UTPSInventoryComponent()
 }
 
 
-// Called when the game starts
+void UTPSInventoryComponent::Test()
+{
+	if (CurHitActor != nullptr)
+	{
+		if (UTPSItemDataComponent* ItemDataComp = CurHitActor->GetComponentByClass<UTPSItemDataComponent>())
+		{
+			ItemDataComp->Interaction();
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT(" CurHitActor == nullptr"));
+	}
+}
+
 void UTPSInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -36,7 +52,7 @@ void UTPSInventoryComponent::TraceItem()
 		FRotator EyeRotation;
 		OwnerActor->GetActorEyesViewPoint(OUT EyeLocation, OUT EyeRotation);
 		FVector TraceStart = EyeLocation;
-		
+
 		APlayerCameraManager* CameraManager = TPSHelper::GetPlayerCameraManager();
 		FVector CamForwardVector = CameraManager->GetActorForwardVector();
 		FVector TraceEnd = TraceStart + CamForwardVector * SweepDistance;
@@ -51,26 +67,32 @@ void UTPSInventoryComponent::TraceItem()
 
 		DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Blue);
 
-		AActor* FirstHitActor = nullptr;
-		if (FirstHitActor = GetFirstHitItemInteraction(Hits); FirstHitActor == nullptr)
+		AActor* FirstHitActor = GetFirstHitItemInteraction(Hits);
+
+		if (FirstHitActor == nullptr)
 		{
 			FCollisionShape SphereShape = FCollisionShape::MakeSphere(SweepSphereRadius);
 			FVector AdditionalTraceStart = TraceStart + CameraManager->GetActorForwardVector() * SweepDistance;
 			FVector AdditionalTraceEnd = AdditionalTraceStart;
 			GetWorld()->SweepMultiByChannel(Hits, AdditionalTraceStart, AdditionalTraceEnd, FQuat::Identity,
-											TPS_TraceChannel_ItemInteraction,
-											SphereShape, CollisionQueryParameters);
+			                                TPS_TraceChannel_ItemInteraction,
+			                                SphereShape, CollisionQueryParameters);
 
-			DrawDebugSphere(GetWorld(), AdditionalTraceStart, SweepSphereRadius,12,FColor::Yellow);
+			DrawDebugSphere(GetWorld(), AdditionalTraceStart, SweepSphereRadius, 12, FColor::Yellow);
 
 			FirstHitActor = GetFirstHitItemInteraction(Hits);
 		}
-		
-		if (FirstHitActor != nullptr)
+
+
+		if (FirstHitActor == nullptr || FirstHitActor != CurHitActor)
 		{
-			ITPSInteractionInterface* InteractionInterface = Cast<ITPSInteractionInterface>(FirstHitActor);
-			InteractionInterface->LookAtInteractionActor();
-			InteractionInterface->Interaction();
+			CurHitActor = FirstHitActor;
+			if (CurHitActor != nullptr)
+			{
+				// ITPSInteractionInterface* InteractionInterface = Cast<ITPSInteractionInterface>(CurHitActor);
+				// InteractionInterface->LookAtInteractionActor();
+				// InteractionInterface->Interaction();
+			}
 		}
 	}
 }
@@ -81,7 +103,7 @@ AActor* UTPSInventoryComponent::GetFirstHitItemInteraction(const TArray<FHitResu
 	{
 		for (const FHitResult& Hit : Hits)
 		{
-			if (Hit.GetActor()->GetClass()->ImplementsInterface(UTPSInteractionInterface::StaticClass()))
+			if (Hit.GetActor()->GetComponentByClass<UTPSItemDataComponent>() != nullptr)
 			{
 				return Hit.GetActor();
 			}

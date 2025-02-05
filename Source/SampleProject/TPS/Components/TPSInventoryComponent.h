@@ -41,9 +41,9 @@ class SAMPLEPROJECT_API UTPSInventoryComponent : public UActorComponent
 public:	
 	UTPSInventoryComponent();
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	void AddItem(const FInventorySlot& InItem);
+	void AddCurHitItem(const FInventorySlot& InItem);
 	void RemoveItem(const FInventorySlot& InItem);
-	
+	void Test();
 protected:
 	virtual void BeginPlay() override;
 private:
@@ -61,4 +61,7 @@ private:
 	float SweepDistance = 100;
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = true))
 	float SweepSphereRadius = 10;
+
+	UPROPERTY()
+	TWeakObjectPtr<AActor> CurHitActor = nullptr;
 };

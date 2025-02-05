@@ -10,21 +10,6 @@ ATPSItemActor::ATPSItemActor()
 	ItemDataComponent = CreateDefaultSubobject<UTPSItemDataComponent>(TEXT("Item Data Comp"));
 }
 
-FItem ATPSItemActor::GetItemData()
-{
-	return ItemDataComponent->GetItemData();
-}
-
-void ATPSItemActor::LookAtInteractionActor()
-{
-	
-}
-
-void ATPSItemActor::Interaction()
-{
-	UE_LOG(LogTemp, Log, TEXT("Interaction can be able %s"), *GetItemData().Name.ToString());
-}
-
 // Called when the game starts or when spawned
 void ATPSItemActor::BeginPlay()
 {
