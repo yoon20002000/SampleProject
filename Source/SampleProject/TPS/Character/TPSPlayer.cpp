@@ -3,6 +3,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "Components/TPSInteractionIndicatorComponent.h"
 #include "Components/TPSCameraComponent.h"
+#include "Components/TPSInventoryComponent.h"
 #include "Components/TPSSpringArmComponent.h"
 #include "Game/TPSGameplayTags.h"
 #include "Game/AbilitySystem/TPSAbilitySystemComponent.h"
@@ -25,6 +26,7 @@ ATPSPlayer::ATPSPlayer() : bPrintTag(false)
 	CameraComp->SetupAttachment(SpringArmComp);
 
 	InteractionIndicatorComp = CreateDefaultSubobject<UTPSInteractionIndicatorComponent>(TEXT("InteractionIndicator"));
+	InventoryComp = CreateDefaultSubobject<UTPSInventoryComponent>(TEXT("Inventory Comp"));
 }
 
 // Called when the game starts or when spawned
