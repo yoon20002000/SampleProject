@@ -16,7 +16,6 @@ void UTPSItemDataComponent::LookAtInteractionActor()
 
 void UTPSItemDataComponent::Interaction()
 {
-	UE_LOG(LogTemp, Log, TEXT("Interaction can be able %s"), *GetItemData()->Name.ToString());
 	GetOwner()->Destroy(true);
 }
 

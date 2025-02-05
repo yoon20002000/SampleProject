@@ -27,7 +27,6 @@ void UTPSGA_AcquireItem::ActivateAbility(const FGameplayAbilitySpecHandle Handle
 
 	if (Player == nullptr)
 	{
-		UE_LOG(LogTemp, Log, TEXT("Actor is %s"), *CurrentActorInfo->AvatarActor->GetName());
 		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 		return;
 	}
@@ -36,20 +35,17 @@ void UTPSGA_AcquireItem::ActivateAbility(const FGameplayAbilitySpecHandle Handle
 
 	if (InventoryComp == nullptr)
 	{
-		UE_LOG(LogTemp, Log, TEXT("InventoryComp is null"));
 		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 		return;
 	}
 	
 	if (CommitAbility(Handle,ActorInfo, ActivationInfo) == true)
 	{
-		UE_LOG(LogTemp, Log, TEXT("CommitAbility true"));
 		InventoryComp->Test();
 		EndAbility(Handle, ActorInfo, ActivationInfo, true, false);	
 	}
 	else
 	{
-		UE_LOG(LogTemp, Log, TEXT("CommitAbility false"));
 		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 	}
 }

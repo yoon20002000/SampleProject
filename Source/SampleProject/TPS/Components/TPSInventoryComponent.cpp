@@ -26,10 +26,6 @@ void UTPSInventoryComponent::Test()
 			ItemDataComp->Interaction();
 		}
 	}
-	else
-	{
-		UE_LOG(LogTemp, Log, TEXT(" CurHitActor == nullptr"));
-	}
 }
 
 void UTPSInventoryComponent::BeginPlay()
