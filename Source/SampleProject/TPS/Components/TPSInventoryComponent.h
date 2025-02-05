@@ -41,8 +41,8 @@ class SAMPLEPROJECT_API UTPSInventoryComponent : public UActorComponent
 public:	
 	UTPSInventoryComponent();
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	void AddItem(const FInventorySlot InItem);
-	void RemoveItem(const FInventorySlot InItem);
+	void AddItem(const FInventorySlot& InItem);
+	void RemoveItem(const FInventorySlot& InItem);
 	
 protected:
 	virtual void BeginPlay() override;
@@ -51,11 +51,13 @@ private:
 	
 
 private:
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = true))
 	int32 InventoryMaxSize = 5;
 	UPROPERTY()
 	TArray<FInventorySlot> Inventory;
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = true))
+	float SweepDistance = 100;
+	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = true))
 	float SweepSphereRadius = 10;
 };

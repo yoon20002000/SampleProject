@@ -1,5 +1,7 @@
 #include "Components/TPSInventoryComponent.h"
 
+#include "TPSHelper.h"
+#include "Game/TPSInteractionInterface.h"
 #include "System/TPSCollisionChannels.h"
 
 
@@ -17,41 +19,77 @@ UTPSInventoryComponent::UTPSInventoryComponent()
 void UTPSInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
+}
 
-	// ...
-	
+void UTPSInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+                                           FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	TraceItem();
 }
 
 void UTPSInventoryComponent::TraceItem()
 {
 	if (AActor* OwnerActor = GetOwner())
 	{
-		FVector TraceStart = OwnerActor->GetActorLocation();
-		FVector TraceEnd = OwnerActor->GetActorLocation();
+		FVector EyeLocation;
+		FRotator EyeRotation;
+		OwnerActor->GetActorEyesViewPoint(OUT EyeLocation, OUT EyeRotation);
+		FVector TraceStart = EyeLocation;
+		
+		APlayerCameraManager* CameraManager = TPSHelper::GetPlayerCameraManager();
+		FVector CamForwardVector = CameraManager->GetActorForwardVector();
+		FVector TraceEnd = TraceStart + CamForwardVector * SweepDistance;
+
 		TArray<FHitResult> Hits;
-		FCollisionShape SphereShape = FCollisionShape::MakeSphere(SweepSphereRadius);
-		FCollisionQueryParams CollisionQueryParameters(TEXT("Interact Item"),true, OwnerActor);
+		FCollisionQueryParams CollisionQueryParameters(TEXT("Interact Item"), true, OwnerActor);
 		TArray<AActor*> AttachedActors;
 		OwnerActor->GetAttachedActors(OUT AttachedActors);
 		CollisionQueryParameters.AddIgnoredActors(AttachedActors);
+		GetWorld()->LineTraceMultiByChannel(Hits, TraceStart, TraceEnd,TPS_TraceChannel_ItemInteraction,
+		                                    CollisionQueryParameters);
 
-		GetWorld()->SweepMultiByChannel(Hits, TraceStart, TraceEnd, FQuat::Identity, TPS_TraceChannel_ItemInteraction,
-		                                SphereShape, CollisionQueryParameters);
+		DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Blue);
 
+		AActor* FirstHitActor = nullptr;
 		if (Hits.Num() > 0)
 		{
-			// hit actor가 interface를 has 하고 있을경우 처리하도록 하는 것 추가 필요
+			for (const FHitResult& Hit : Hits)
+			{
+				if (Hit.GetActor()->GetClass()->ImplementsInterface(UTPSInteractionInterface::StaticClass()))
+				{
+					FirstHitActor = Hit.GetActor();
+				}
+			}
+		}
+		else
+		{
+			FCollisionShape SphereShape = FCollisionShape::MakeSphere(SweepSphereRadius);
+			FVector AdditionalTraceStart = TraceStart + CameraManager->GetActorForwardVector() * SweepDistance;
+			FVector AdditionalTraceEnd = AdditionalTraceStart;
+			GetWorld()->SweepMultiByChannel(Hits, AdditionalTraceStart, AdditionalTraceEnd, FQuat::Identity,
+			                                TPS_TraceChannel_ItemInteraction,
+			                                SphereShape, CollisionQueryParameters);
+
+			DrawDebugSphere(GetWorld(), AdditionalTraceStart, SweepSphereRadius,12,FColor::Yellow);
+
+			if (Hits.Num() > 0)
+			{
+				for (const FHitResult& Hit : Hits)
+				{
+					if (Hit.GetActor()->GetClass()->ImplementsInterface(UTPSInteractionInterface::StaticClass()))
+					{
+						FirstHitActor = Hit.GetActor();
+					}
+				}
+			}
+		}
+		
+		if (FirstHitActor != nullptr)
+		{
+			ITPSInteractionInterface* InteractionInterface = Cast<ITPSInteractionInterface>(FirstHitActor);
+			InteractionInterface->LookAtInteractionActor();
+			InteractionInterface->Interaction();
 		}
 	}
-	
-	
 }
-
-
-// Called every frame
-void UTPSInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	
-}
-
