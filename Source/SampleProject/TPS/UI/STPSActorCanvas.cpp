@@ -35,7 +35,6 @@ const FVector2D ArrowOffsets[EArrowDirection::Max] =
 };
 
 
-// 작업 후 이전 문제없는지 확인 후 이전 할 것
 class STPSActorCanvasArrowWidget : public SLeafWidget
 {
 public:
