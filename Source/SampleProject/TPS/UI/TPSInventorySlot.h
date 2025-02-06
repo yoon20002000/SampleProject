@@ -19,7 +19,6 @@ class SAMPLEPROJECT_API UTPSInventorySlot : public UTPSCommonUserWidget
 public:
 	void Init(UTPSInventoryComponent* InInventoryComp, const FName& ItemName, const int32 ItemQuantity);
 	void UpdateInventorySlot(const FName& ItemName, const int32 Quantity);
-	virtual void BeginDestroy() override;
 private:
 	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<UBorder> SlotBoarder;

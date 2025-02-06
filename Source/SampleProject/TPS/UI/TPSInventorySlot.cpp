@@ -21,9 +21,3 @@ void UTPSInventorySlot::UpdateInventorySlot(const FName& ItemName, const int32 Q
 	QuantityBox->SetVisibility(Quantity > 0 ? ESlateVisibility::HitTestInvisible : ESlateVisibility::Collapsed);
 	QuantityText->SetCurrentValue(Quantity);
 }
-
-void UTPSInventorySlot::BeginDestroy()
-{
-	UE_LOG(LogTemp, Log, TEXT("Destroy Called !!! Widget Name : %s"), *this->GetName());
-	Super::BeginDestroy();
-}
