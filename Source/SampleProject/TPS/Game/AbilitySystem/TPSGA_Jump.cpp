@@ -3,8 +3,10 @@
 
 #include "Game/AbilitySystem/TPSGA_Jump.h"
 
+#include "TPSSystemManager.h"
 #include "Character/TPSCharacter.h"
 #include "GameFramework/Character.h"
+#include "UI/TPSUIManager.h"
 
 UTPSGA_Jump::UTPSGA_Jump(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
@@ -68,4 +70,6 @@ auto UTPSGA_Jump::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const
 	{
 		Character->Jump();
 	}
+	UTPSSystemManager::Get()->GetUIManager()->LoadUI("PlayerMenu");
+	//UTPSSystemManager::Get()->GetUIManager()->LoadUI("GameResult");
 }

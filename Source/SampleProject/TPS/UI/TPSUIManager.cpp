@@ -77,15 +77,15 @@ void UTPSUIManager::LoadUI(const FString& UIName, EUILayerType LayerType)
 		return;
 	}
 
-	UUserWidget* loadWidget = UIDataAsset->LoadUserWidget(UIName);
+	UUserWidget* LoadWidget = UIDataAsset->LoadUserWidget(UIName);
 
-	if (loadWidget != nullptr)
+	if (LoadWidget != nullptr)
 	{
 		FString LayerName = GetLayerNameByLayerType(LayerType);
 
 		const TObjectPtr<UCommonActivatableWidget> LoadUIPtr = UCommonUIExtensions::PushContentToLayer(
 			UGameplayTagsManager::Get().RequestGameplayTag(*LayerName),
-			CastChecked<UCommonActivatableWidget>(loadWidget)->GetClass());
+			CastChecked<UCommonActivatableWidget>(LoadWidget)->GetClass());
 		LoadedUIs.Add(LoadUIPtr);
 	}
 }

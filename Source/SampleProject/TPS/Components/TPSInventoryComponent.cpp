@@ -71,7 +71,7 @@ void UTPSInventoryComponent::AddItemToInventory(const FName& ItemName, const int
 	
 	int32 MaxStackSize = GetMaxStackSize(ItemName);
 	
-	UE_LOG(LogTemp, Log, TEXT("Item Max Stack Size : %d"), MaxStackSize);
+
 	// 없는 경우 빈 슬롯 찾아서 추가
 	// 있는데 널널 한 경우 그냥 수 추가
 	// 있긴한데 공간 좀 부족 한 경우 하나 맥스 처리 하고 나머지를 빈 슬롯 찾아서 추가

@@ -7,10 +7,6 @@
 #include "Components/SizeBox.h"
 #include "Components/TPSInventoryComponent.h"
 
-UTPSInventorySlot::UTPSInventorySlot()
-{
-}
-
 void UTPSInventorySlot::Init(UTPSInventoryComponent* InInventoryComp, const FName& ItemName, const int32 ItemQuantity)
 {
 	InventoryComp = InInventoryComp;
@@ -24,4 +20,10 @@ void UTPSInventorySlot::UpdateInventorySlot(const FName& ItemName, const int32 Q
 	IconImage->SetBrushFromTexture(Item->Thumbnail.LoadSynchronous());
 	QuantityBox->SetVisibility(Quantity > 0 ? ESlateVisibility::HitTestInvisible : ESlateVisibility::Collapsed);
 	QuantityText->SetCurrentValue(Quantity);
+}
+
+void UTPSInventorySlot::BeginDestroy()
+{
+	UE_LOG(LogTemp, Log, TEXT("Destroy Called !!! Widget Name : %s"), *this->GetName());
+	Super::BeginDestroy();
 }
