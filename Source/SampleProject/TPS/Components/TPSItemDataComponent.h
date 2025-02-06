@@ -16,7 +16,7 @@ public:
 	/// TPSInteractionInterface Start
 	virtual FItem* GetItemData() override;
 	virtual void LookAtInteractionActor() override;
-	virtual void Interaction() override;
+	virtual void Interaction(UTPSInventoryComponent* InventoryComp) override;
 	/// TPSInteractionInterface End
 	/// 
 protected:
@@ -26,6 +26,6 @@ private:
 	UPROPERTY(EditDefaultsOnly, meta=(AllowPrivateAccess=true))
 	FDataTableRowHandle ItemDataHandle;
 	
-	UPROPERTY(EditDefaultsOnly, meta=(AllowPrivateAccess=true))
+	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess=true))
 	int32 Quantity;
 };

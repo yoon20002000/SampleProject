@@ -1,7 +1,9 @@
 #include "Components/TPSInventoryComponent.h"
 
+#include "TPSGameManager.h"
 #include "TPSHelper.h"
 #include "TPSItemDataComponent.h"
+#include "TPSSystemManager.h"
 #include "Character/TPSPlayer.h"
 #include "Game/TPSInteractionInterface.h"
 #include "System/TPSCollisionChannels.h"
@@ -17,13 +19,36 @@ UTPSInventoryComponent::UTPSInventoryComponent()
 }
 
 
-void UTPSInventoryComponent::Test()
+FInventorySlot* UTPSInventoryComponent::FindAddSlot(const FName& ItemName)
+{
+	for (FInventorySlot& Slot: Inventory)
+	{
+		if (Slot.ItemName.IsEqual(ItemName) == true && Slot.ItemQuantity < GetMaxStackSize(ItemName))
+		{
+			return &Slot;
+		}
+	}
+	return nullptr;
+}
+
+void UTPSInventoryComponent::CreateNewSlotAndAddToInventory(const FName& ItemName, const int32 Quantity)
+{
+	FInventorySlot NewSlot(ItemName, Quantity);
+	Inventory.Add(NewSlot);
+}
+
+TArray<FInventorySlot> UTPSInventoryComponent::GetInventorySlots()
+{
+	return Inventory;
+}
+
+void UTPSInventoryComponent::InteractionWithCurHitItem()
 {
 	if (CurHitActor != nullptr)
 	{
 		if (UTPSItemDataComponent* ItemDataComp = CurHitActor->GetComponentByClass<UTPSItemDataComponent>())
 		{
-			ItemDataComp->Interaction();
+			ItemDataComp->Interaction(this);
 		}
 	}
 }
@@ -31,6 +56,7 @@ void UTPSInventoryComponent::Test()
 void UTPSInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	Inventory.Reserve(InventoryMaxSize);
 }
 
 void UTPSInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType,
@@ -38,6 +64,61 @@ void UTPSInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	TraceItem();
+}
+
+void UTPSInventoryComponent::AddItemToInventory(const FName& ItemName, const int32 Quantity)
+{
+	FInventorySlot* Slot = FindAddSlot(ItemName);
+
+	
+	int32 MaxStackSize = GetMaxStackSize(ItemName);
+	
+	UE_LOG(LogTemp, Log, TEXT("Item Max Stack Size : %d"), MaxStackSize);
+	// 없는 경우 빈 슬롯 찾아서 추가
+	// 있는데 널널 한 경우 그냥 수 추가
+	// 있긴한데 공간 좀 부족 한 경우 하나 맥스 처리 하고 나머지를 빈 슬롯 찾아서 추가
+
+	if (Slot != nullptr)
+	{
+		Slot->ItemQuantity += Quantity;
+		// if (Slot->ItemQuantity + Quantity > MaxStackSize)
+		// {
+		// 	int32 LeftSize =  Slot->ItemQuantity + Quantity - MaxStackSize;
+		// 	Slot->ItemQuantity = MaxStackSize;
+		// 	// 빈 슬롯 찾아서 left size 만틈 추가
+		// }
+		// else
+		// {
+		// 	Slot->ItemQuantity += Quantity;
+		// }
+	}
+	else
+	{
+		// quantity가 max 보다 클 경우를 대비 해for문으로 작성 해야 됨.
+		CreateNewSlotAndAddToInventory(ItemName, Quantity);
+		// 빈 슬롯 추가
+	}
+	
+	// if (Slot != nullptr && Slot->ItemQuantity )
+	// {
+	// 	Slot->ItemQuantity += Quantity;
+	// }
+	// else
+	// {
+	// 	
+	// }
+}
+
+int32 UTPSInventoryComponent::GetMaxStackSize(const FName& ItemName) const
+{
+	FItem* ItemData = UTPSSystemManager::Get()->GetGameManager()->GetItem(ItemName);
+	if (ItemData == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Item Data is nullptr!! Check Item Data Table! %s"), *ItemName.ToString());
+		return -1;
+	}
+
+	return ItemData->StackSize;
 }
 
 void UTPSInventoryComponent::TraceItem()

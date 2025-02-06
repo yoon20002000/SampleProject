@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "TPSGameManager.generated.h"
 
+struct FItem;
 class ATPSCharacter;
 class ATPSPlayer;
 class UGameDataAsset;
@@ -22,12 +23,15 @@ public:
 	void AddSpawnedCharacter(ATPSCharacter* InSpawnCharacter);
 	UGameDataAsset* GetDataAsset();
 	
+	FItem* GetItem(const FName& ItemName);
+	
 	TArray<TObjectPtr<ATPSCharacter>>& GetAllCharacters();
 	ATPSPlayer* GetPlayer();
 private:
 	void GetSpawnPoint(FVector& OutPosition, FRotator& OutRotator, int InIndex = -1);
 
 private:
+	const FString ItemDataTableName = TEXT("ItemData");
 	UPROPERTY(Transient)
 	TObjectPtr<UGameDataAsset> GameDataAsset;
 

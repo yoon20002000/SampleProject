@@ -14,8 +14,10 @@ void UTPSItemDataComponent::LookAtInteractionActor()
 	
 }
 
-void UTPSItemDataComponent::Interaction()
+void UTPSItemDataComponent::Interaction(UTPSInventoryComponent* InventoryComp)
 {
+	FItem* CurItem = GetItemData();
+	InventoryComp->AddItemToInventory(CurItem->Name, Quantity);
 	GetOwner()->Destroy(true);
 }
 

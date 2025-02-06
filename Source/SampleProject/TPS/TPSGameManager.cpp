@@ -6,6 +6,7 @@
 #include "Data/GameDataAsset.h"
 #include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/TPSInventoryComponent.h"
 
 UTPSGameManager::UTPSGameManager(const FObjectInitializer& objectInitializer)
 	: Super(objectInitializer)
@@ -94,6 +95,18 @@ void UTPSGameManager::AddSpawnedCharacter(ATPSCharacter* InSpawnCharacter)
 UGameDataAsset* UTPSGameManager::GetDataAsset()
 {
 	return GameDataAsset;
+}
+
+FItem* UTPSGameManager::GetItem(const FName& ItemName)
+{
+	const FGameTableInfo& ItemTableInfo = GameDataAsset->GetGameTableData(ItemDataTableName);
+
+	if (UDataTable* DataTable = ItemTableInfo.DataTable.LoadSynchronous())
+	{
+		FItem* Item = DataTable->FindRow<FItem>(ItemName,TEXT("Find Item Data"));
+		return Item;
+	}
+	return nullptr;
 }
 
 TArray<TObjectPtr<ATPSCharacter>>& UTPSGameManager::GetAllCharacters()

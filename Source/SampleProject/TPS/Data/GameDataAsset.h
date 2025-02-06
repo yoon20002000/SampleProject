@@ -23,6 +23,19 @@ struct FCharacterAssetInfo
 
 	static FCharacterAssetInfo Invalid;
 };
+
+USTRUCT()
+struct FGameTableInfo
+{
+	GENERATED_BODY()
+	UPROPERTY(EditAnywhere)
+	FString TableName;
+
+	UPROPERTY(EditAnywhere)
+	TSoftObjectPtr<UDataTable> DataTable;
+
+	static FGameTableInfo Invalid;
+};
 /**
  * 
  */
@@ -32,8 +45,10 @@ class UGameDataAsset : public UDataAsset
 	GENERATED_BODY()
 public:
 	const FCharacterAssetInfo& GetCharacterData(const FString& InName) const;
-	
+	const FGameTableInfo& GetGameTableData(const FString& InName) const;
 private:	
 	UPROPERTY(EditAnywhere)
 	TArray<FCharacterAssetInfo> CharacterAssets;
+	UPROPERTY(EditAnywhere)
+	TArray<FGameTableInfo> DataTables;
 };

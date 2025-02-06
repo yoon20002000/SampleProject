@@ -41,9 +41,13 @@ class SAMPLEPROJECT_API UTPSInventoryComponent : public UActorComponent
 public:	
 	UTPSInventoryComponent();
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	void AddCurHitItem(const FInventorySlot& InItem);
-	void RemoveItem(const FInventorySlot& InItem);
-	void Test();
+	void AddItemToInventory(const FName& ItemName,const int32 Quantity);
+	int32 GetMaxStackSize(const FName& ItemName) const;
+	void RemoveItem();
+	FInventorySlot* FindAddSlot(const FName& ItemName);
+	void CreateNewSlotAndAddToInventory(const FName& ItemName,const int32 Quantity);
+	TArray<FInventorySlot> GetInventorySlots();
+	void InteractionWithCurHitItem();
 protected:
 	virtual void BeginPlay() override;
 private:

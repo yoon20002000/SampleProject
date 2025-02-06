@@ -5,6 +5,7 @@
 
 #include "Character/TPSPlayer.h"
 #include "Components/TPSInventoryComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 UTPSGA_AcquireItem::UTPSGA_AcquireItem(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
@@ -38,10 +39,24 @@ void UTPSGA_AcquireItem::ActivateAbility(const FGameplayAbilitySpecHandle Handle
 		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 		return;
 	}
+
+	int32 SlotCount = 1;
+	for (auto InventorySlot : InventoryComp->GetInventorySlots() )
+	{
+		UKismetSystemLibrary::PrintString(GetWorld(),FString::Format(TEXT("Inven Slot {0} : Item Name {1}, Quantity{2}"),
+		                                                             {
+			                                                             FStringFormatArg(SlotCount),
+			                                                             FStringFormatArg(
+				                                                             InventorySlot.ItemName.ToString()),
+			                                                             FStringFormatArg(InventorySlot.ItemQuantity)
+		                                                             }));
+		++SlotCount;
+	}
+	
 	
 	if (CommitAbility(Handle,ActorInfo, ActivationInfo) == true)
 	{
-		InventoryComp->Test();
+		InventoryComp->InteractionWithCurHitItem();
 		EndAbility(Handle, ActorInfo, ActivationInfo, true, false);	
 	}
 	else

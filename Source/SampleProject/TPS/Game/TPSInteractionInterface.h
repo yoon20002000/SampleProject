@@ -5,6 +5,7 @@
 #include "UObject/Interface.h"
 #include "TPSInteractionInterface.generated.h"
 
+class UTPSInventoryComponent;
 struct FItem;
 
 UINTERFACE(MinimalAPI)
@@ -22,5 +23,5 @@ class SAMPLEPROJECT_API ITPSInteractionInterface
 public:
 	virtual FItem* GetItemData() = 0;
 	virtual void LookAtInteractionActor() = 0;
-	virtual void Interaction() = 0;
+	virtual void Interaction(UTPSInventoryComponent* InventoryComp) = 0;
 };
