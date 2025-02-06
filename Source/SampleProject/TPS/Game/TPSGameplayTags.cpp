@@ -7,8 +7,10 @@ namespace TPSGameplayTags
 	/// Ability
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Type_Action_WeaponFire, "Ability.Type.Action.WeaponFire", "Ability Weapon fire");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Type_Action_WeaponSPFire, "Ability.Type.Action.WeaponSPFire", "Ability Weapon SP fire");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Type_Action_Item_Acquire, "Ability.Type.Action.Item.Acquire", "Ability Type Action Item Acquire");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_ActivateFail_Cooldown, "Ability.ActivateFail.Cooldown", "Ability fail cooldown");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_ActivateFail_Cost, "Ability.ActivateFail.Cost", "Ability fail cost");
+	
 	
 	/// Action Tags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Action_Attack,"Action.Attack", "Character Attack Action");
@@ -26,6 +28,8 @@ namespace TPSGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Weapon_Fire, "InputTag.Weapon.Fire", "Input Weapon Fire");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Interaction, "InputTag.Interaction", "Input Interaction");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Weapon_SPFire, "InputTag.Weapon.SPFire", "Input Weapon SPFire");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Item_Acquire, "InputTag.Item.Acquire", "Input Item Acquire");
+	
 
 	/// InitState
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InitState_Spawned, "InitState.Spawned", "Init Spawn");
@@ -39,6 +43,7 @@ namespace TPSGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Status_Death_Dying, "Status.Death.Dying", "Target is Dying");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Status_Death_Death, "Status.Death.Death", "Target is Death");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Status_Healing, "Status.Healing", "Target is Healing");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Status_Item_Targeting, "Status.Item.Targeting", "Status Item Targeting");
 
 	/// Movement
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Walking, "Movement.Mode.Walking",
@@ -62,6 +67,8 @@ namespace TPSGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Gameplay_Damage_Message, "Gameplay.Damage.Message", "Gameplay Damage Message");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Gameplay_Interaction, "Gameplay.Interaction", "Gameplay Interaction");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Gameplay_Heal, "Gameplay.Heal", "Gameplay Heal");
+	
+	
 
 	/// Event
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Event_Movement_WeaponFire, "Event.Movement.WeaponFire", "Event Weapon fire");
