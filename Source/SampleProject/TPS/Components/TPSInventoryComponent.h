@@ -46,7 +46,7 @@ public:
 	void RemoveItem();
 	FInventorySlot* FindAddSlot(const FName& ItemName);
 	void CreateNewSlotAndAddToInventory(const FName& ItemName,const int32 Quantity);
-	TArray<FInventorySlot> GetInventorySlots();
+	const TArray<FInventorySlot>& GetInventorySlots();
 	void InteractionWithCurHitItem();
 protected:
 	virtual void BeginPlay() override;

@@ -4,8 +4,6 @@
 #include "TPSHelper.h"
 #include "TPSItemDataComponent.h"
 #include "TPSSystemManager.h"
-#include "Character/TPSPlayer.h"
-#include "Game/TPSInteractionInterface.h"
 #include "System/TPSCollisionChannels.h"
 
 
@@ -37,7 +35,7 @@ void UTPSInventoryComponent::CreateNewSlotAndAddToInventory(const FName& ItemNam
 	Inventory.Add(NewSlot);
 }
 
-TArray<FInventorySlot> UTPSInventoryComponent::GetInventorySlots()
+const TArray<FInventorySlot>& UTPSInventoryComponent::GetInventorySlots()
 {
 	return Inventory;
 }

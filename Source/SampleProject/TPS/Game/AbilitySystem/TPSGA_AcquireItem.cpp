@@ -22,42 +22,48 @@ void UTPSGA_AcquireItem::ActivateAbility(const FGameplayAbilitySpecHandle Handle
 	// 획득 애니메이션 넣을 만한 것 있으면 넣어 줄 것
 	// 파라미터에 있는 데이터에서 fitem 뽑아와서 적용 시킬 수 있어야 됨.
 
-	UE_LOG(LogTemp, Log, TEXT("Acquire Item!!!"));
+	if (CanActivateAbility(Handle, ActorInfo))
+	{
+		UE_LOG(LogTemp, Log, TEXT("Acquire Item!!!"));
 	
-	ATPSPlayer* Player = Cast<ATPSPlayer>(CurrentActorInfo->AvatarActor.Get());
+		ATPSPlayer* Player = Cast<ATPSPlayer>(CurrentActorInfo->AvatarActor.Get());
 
-	if (Player == nullptr)
-	{
-		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
-		return;
-	}
+		if (Player == nullptr)
+		{
+			EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
+			return;
+		}
 
-	UTPSInventoryComponent* InventoryComp = Player->GetComponentByClass<UTPSInventoryComponent>();
+		UTPSInventoryComponent* InventoryComp = Player->GetComponentByClass<UTPSInventoryComponent>();
 
-	if (InventoryComp == nullptr)
-	{
-		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
-		return;
-	}
+		if (InventoryComp == nullptr)
+		{
+			EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
+			return;
+		}
 
-	int32 SlotCount = 1;
-	for (auto InventorySlot : InventoryComp->GetInventorySlots() )
-	{
-		UKismetSystemLibrary::PrintString(GetWorld(),FString::Format(TEXT("Inven Slot {0} : Item Name {1}, Quantity{2}"),
-		                                                             {
-			                                                             FStringFormatArg(SlotCount),
-			                                                             FStringFormatArg(
-				                                                             InventorySlot.ItemName.ToString()),
-			                                                             FStringFormatArg(InventorySlot.ItemQuantity)
-		                                                             }));
-		++SlotCount;
-	}
+		int32 SlotCount = 1;
+		for (auto InventorySlot : InventoryComp->GetInventorySlots() )
+		{
+			UKismetSystemLibrary::PrintString(GetWorld(),FString::Format(TEXT("Inven Slot {0} : Item Name {1}, Quantity{2}"),
+																		 {
+																			 FStringFormatArg(SlotCount),
+																			 FStringFormatArg(
+																				 InventorySlot.ItemName.ToString()),
+																			 FStringFormatArg(InventorySlot.ItemQuantity)
+																		 }));
+			++SlotCount;
+		}
 	
-	
-	if (CommitAbility(Handle,ActorInfo, ActivationInfo) == true)
-	{
-		InventoryComp->InteractionWithCurHitItem();
-		EndAbility(Handle, ActorInfo, ActivationInfo, true, false);	
+		if (CommitAbility(Handle,ActorInfo, ActivationInfo) == true)
+		{
+			InventoryComp->InteractionWithCurHitItem();
+			EndAbility(Handle, ActorInfo, ActivationInfo, true, false);	
+		}
+		else
+		{
+			EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
+		}
 	}
 	else
 	{
@@ -65,8 +71,15 @@ void UTPSGA_AcquireItem::ActivateAbility(const FGameplayAbilitySpecHandle Handle
 	}
 }
 
+bool UTPSGA_AcquireItem::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
+	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags,
+	const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const
+{
+	return Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags);
+}
+
 void UTPSGA_AcquireItem::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
-	const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
+                                    const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }

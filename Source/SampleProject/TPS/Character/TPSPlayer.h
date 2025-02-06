@@ -32,6 +32,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void PostInitializeComponents() override;
 	virtual void UninitAndDestroy() override;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

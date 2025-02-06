@@ -1,0 +1,23 @@
+#include "UI/Inventory/TPSInventoryGridWidget.h"
+
+#include "Components/TPSInventoryComponent.h"
+#include "Components/WrapBox.h"
+#include "UI/TPSInventorySlot.h"
+
+void UTPSInventoryGridWidget::Init(UTPSInventoryComponent* InInventoryComp)
+{
+	InventoryComp = InInventoryComp;
+	GridWrapBox->ClearChildren();
+	CreateInventorySlots();
+}
+
+void UTPSInventoryGridWidget::CreateInventorySlots()
+{
+	for (const FInventorySlot& InventorySlot : InventoryComp->GetInventorySlots())
+	{
+		UTPSInventorySlot* NewInventorySlotWidget = CreateWidget<UTPSInventorySlot>(this, InventorySlotWidget.LoadSynchronous(),TEXT("Inventory Slot Widget"));
+		NewInventorySlotWidget->Init(InventoryComp.Get(), InventorySlot.ItemName, InventorySlot.ItemQuantity);
+
+		GridWrapBox->AddChildToWrapBox(NewInventorySlotWidget);	
+	}
+}
