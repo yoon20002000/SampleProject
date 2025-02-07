@@ -25,11 +25,14 @@ void UTPSInventoryGridWidget::BeginDestroy()
 
 void UTPSInventoryGridWidget::CreateInventorySlots()
 {
+	int SlotIndex = 0;
 	for (const FInventorySlot& InventorySlot : InventoryComp->GetInventorySlots())
 	{
 		UTPSInventorySlot* NewInventorySlotWidget = CreateWidget<UTPSInventorySlot>(
-			this, InventorySlotWidget.LoadSynchronous());	
-		NewInventorySlotWidget->Init(InventoryComp.Get(), InventorySlot.ItemName, InventorySlot.ItemQuantity);
+			this, InventorySlotWidget.LoadSynchronous());
+		NewInventorySlotWidget->Init(InventoryComp.Get(), SlotIndex, InventorySlot.ItemName,
+		                             InventorySlot.ItemQuantity);
 		GridWrapBox->AddChildToWrapBox(NewInventorySlotWidget);
+		++SlotIndex;
 	}
 }

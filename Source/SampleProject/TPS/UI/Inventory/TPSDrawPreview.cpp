@@ -5,7 +5,7 @@
 #include "Components/Image.h"
 #include "Components/TPSInventoryComponent.h"
 
-void UTPSDrawPreview::SetPreview(const FString& InItemName)
+void UTPSDrawPreview::SetPreview(const FName& InItemName)
 {
 	if (FItem* Item = UTPSSystemManager::Get()->GetGameManager()->GetItem(FName(InItemName)))
 	{

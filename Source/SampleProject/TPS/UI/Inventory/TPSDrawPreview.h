@@ -12,11 +12,11 @@ class SAMPLEPROJECT_API UTPSDrawPreview : public UUserWidget
 {
 	GENERATED_BODY()
 public:
-	void SetPreview(const FString& InItemName);
+	void SetPreview(const FName& InItemName);
 	
 private:
 	UPROPERTY(meta=(BindWidget, AllowPrivateAccess))
 	TObjectPtr<UImage> PreviewItemIconImage;
 
-	FString ItemName;
+	FName ItemName;
 };
