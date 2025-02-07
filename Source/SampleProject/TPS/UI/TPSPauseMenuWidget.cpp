@@ -9,17 +9,37 @@
 #include "Character/TPSPlayerController.h"
 #include "Components/Button.h"
 
+void UTPSPauseMenuWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+	
+	if (APlayerController* PC = TPSHelper::GetPlayerController(GetWorld()))
+	{
+		FInputModeUIOnly InputMode;
+		InputMode.SetWidgetToFocus(TakeWidget());
+		PC->SetInputMode(InputMode);
+		PC->SetShowMouseCursor(true);	
+	}
+}
+
+void UTPSPauseMenuWidget::NativeDestruct()
+{
+	Super::NativeDestruct();
+
+	if (APlayerController* PC = TPSHelper::GetPlayerController(GetWorld()))
+	{
+		PC->SetInputMode(FInputModeGameOnly());
+		PC->SetShowMouseCursor(false);
+	}
+}
+
 bool UTPSPauseMenuWidget::Initialize()
 {
 	bool bResult = Super::Initialize();
 
 	SetGamePause(true);
 
-	APlayerController* PC = TPSHelper::GetPlayerController(GetWorld());
-	FInputModeUIOnly InputMode;
-	InputMode.SetWidgetToFocus(TakeWidget());
-	PC->SetInputMode(InputMode);
-	PC->SetShowMouseCursor(true);
+	
 	
 	if (OptionButton != nullptr)
 	{
@@ -42,9 +62,6 @@ bool UTPSPauseMenuWidget::Initialize()
 void UTPSPauseMenuWidget::BeginDestroy()
 {
 	Super::BeginDestroy();
-	APlayerController* PC = TPSHelper::GetPlayerController(GetWorld());
-	PC->SetInputMode(FInputModeGameOnly());
-	PC->SetShowMouseCursor(false);
 }
 
 void UTPSPauseMenuWidget::OnClickedOption()

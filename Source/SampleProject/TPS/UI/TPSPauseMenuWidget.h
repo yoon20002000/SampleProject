@@ -15,8 +15,11 @@ class SAMPLEPROJECT_API UTPSPauseMenuWidget : public UTPSCommonActivatableWidget
 {
 	GENERATED_BODY()
 protected:
+	virtual void NativeConstruct() override;
+	virtual void NativeDestruct() override;
 	virtual bool Initialize() override;
 	virtual void BeginDestroy() override;
+	
 	UFUNCTION()
 	void OnClickedOption();
 	UFUNCTION()

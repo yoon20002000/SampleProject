@@ -5,6 +5,28 @@
 #include "Character/TPSPlayer.h"
 #include "Components/TPSInventoryComponent.h"
 
+void UTPSPlayerMenuWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+	if (APlayerController* PC = TPSHelper::GetPlayerController(GetWorld()))
+	{
+		FInputModeUIOnly InputMode;
+		InputMode.SetWidgetToFocus(TakeWidget());
+		PC->SetInputMode(InputMode);
+		PC->SetShowMouseCursor(true);	
+	}
+}
+
+void UTPSPlayerMenuWidget::NativeDestruct()
+{
+	Super::NativeDestruct();
+	if (APlayerController* PC = TPSHelper::GetPlayerController(GetWorld()))
+	{
+		PC->SetInputMode(FInputModeGameOnly());
+		PC->SetShowMouseCursor(false);
+	}
+}
+
 void UTPSPlayerMenuWidget::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();

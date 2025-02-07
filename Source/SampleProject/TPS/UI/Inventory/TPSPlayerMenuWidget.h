@@ -13,6 +13,8 @@ class SAMPLEPROJECT_API UTPSPlayerMenuWidget : public UTPSCommonActivatableWidge
 {
 	GENERATED_BODY()
 protected:
+	virtual void NativeConstruct() override;
+	virtual void NativeDestruct() override;
 	virtual void NativeOnInitialized() override;
 private:
 	TWeakObjectPtr<UTPSInventoryComponent> InventoryComp;
