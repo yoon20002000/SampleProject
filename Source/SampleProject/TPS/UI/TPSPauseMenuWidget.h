@@ -16,6 +16,7 @@ class SAMPLEPROJECT_API UTPSPauseMenuWidget : public UTPSCommonActivatableWidget
 	GENERATED_BODY()
 protected:
 	virtual bool Initialize() override;
+	virtual void BeginDestroy() override;
 	UFUNCTION()
 	void OnClickedOption();
 	UFUNCTION()
@@ -24,11 +25,11 @@ protected:
 	void OnClickedContinue();
 	void SetGamePause(const bool bPauseGame);
 private:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(BindWidget, AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<UButton> OptionButton;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(BindWidget, AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<UButton> QuitButton;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(BindWidget, AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<UButton> ContinueButton;
 	
 };

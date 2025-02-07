@@ -29,7 +29,5 @@ void UTPSHUDLayout::HandleEscapeAction() const
 	if (ensure(EscapeMenuClass.IsNull() == false))
 	{
 		UCommonUIExtensions::PushContentToLayer(TPSUILayerTags::TAG_UI_LAYER_Menu, EscapeMenuClass.LoadSynchronous());
-		APlayerController* PC = TPSHelper::GetPlayerController(GetWorld());
-		PC->SetInputMode(FInputModeUIOnly());
 	}
 }

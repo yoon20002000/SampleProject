@@ -5,10 +5,9 @@
 #include "Character/TPSPlayer.h"
 #include "Components/TPSInventoryComponent.h"
 
-void UTPSPlayerMenuWidget::NativePreConstruct()
+void UTPSPlayerMenuWidget::NativeOnInitialized()
 {
-	Super::NativePreConstruct();
-
+	Super::NativeOnInitialized();
 	APlayerController* PC = TPSHelper::GetPlayerController();
 	if (ATPSPlayer* Player = Cast<ATPSPlayer>(PC->GetPawn()))
 	{

@@ -14,6 +14,12 @@ bool UTPSPauseMenuWidget::Initialize()
 	bool bResult = Super::Initialize();
 
 	SetGamePause(true);
+
+	APlayerController* PC = TPSHelper::GetPlayerController(GetWorld());
+	FInputModeUIOnly InputMode;
+	InputMode.SetWidgetToFocus(TakeWidget());
+	PC->SetInputMode(InputMode);
+	PC->SetShowMouseCursor(true);
 	
 	if (OptionButton != nullptr)
 	{
@@ -31,6 +37,14 @@ bool UTPSPauseMenuWidget::Initialize()
 	}
 	
 	return bResult;
+}
+
+void UTPSPauseMenuWidget::BeginDestroy()
+{
+	Super::BeginDestroy();
+	APlayerController* PC = TPSHelper::GetPlayerController(GetWorld());
+	PC->SetInputMode(FInputModeGameOnly());
+	PC->SetShowMouseCursor(false);
 }
 
 void UTPSPauseMenuWidget::OnClickedOption()

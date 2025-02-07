@@ -29,6 +29,7 @@ namespace TPSGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Interaction, "InputTag.Interaction", "Input Interaction");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Weapon_SPFire, "InputTag.Weapon.SPFire", "Input Weapon SPFire");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Item_Acquire, "InputTag.Item.Acquire", "Input Item Acquire");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Inventory, "InputTag.Inventory", "Input Inventory Open");
 	
 
 	/// InitState
