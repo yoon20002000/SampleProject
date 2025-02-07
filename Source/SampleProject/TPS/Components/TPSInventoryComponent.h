@@ -17,7 +17,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FText Description;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSoftObjectPtr<UTexture2D> Thumbnail;
+	TObjectPtr<UTexture2D> Thumbnail;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSoftClassPtr<AActor> ItemClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -45,7 +45,7 @@ public:
 	int32 GetMaxStackSize(const FName& ItemName) const;
 	void RemoveItem();
 	FInventorySlot* FindAddSlot(const FName& ItemName);
-	void CreateNewSlotAndAddToInventory(const FName& ItemName,const int32 Quantity);
+	void AddToInventory(const FName& ItemName,const int32 Quantity);
 	const TArray<FInventorySlot>& GetInventorySlots();
 	void InteractionWithCurHitItem();
 protected:

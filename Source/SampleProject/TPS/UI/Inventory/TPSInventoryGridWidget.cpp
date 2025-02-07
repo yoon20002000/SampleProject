@@ -12,11 +12,21 @@ void UTPSInventoryGridWidget::Init(UTPSInventoryComponent* InInventoryComp)
 	CreateInventorySlots();
 }
 
+void UTPSInventoryGridWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+}
+
+void UTPSInventoryGridWidget::BeginDestroy()
+{
+	Super::BeginDestroy();
+	UE_LOG(LogTemp, Log, TEXT("BeginDestroy"));
+}
+
 void UTPSInventoryGridWidget::CreateInventorySlots()
 {
 	for (const FInventorySlot& InventorySlot : InventoryComp->GetInventorySlots())
 	{
-		
 		UTPSInventorySlot* NewInventorySlotWidget = CreateWidget<UTPSInventorySlot>(
 			this, InventorySlotWidget.LoadSynchronous());	
 		NewInventorySlotWidget->Init(InventoryComp.Get(), InventorySlot.ItemName, InventorySlot.ItemQuantity);

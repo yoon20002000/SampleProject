@@ -15,7 +15,6 @@ class SAMPLEPROJECT_API UTPSPlayerMenuWidget : public UTPSCommonActivatableWidge
 protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
-	virtual void NativeOnInitialized() override;
 private:
 	TWeakObjectPtr<UTPSInventoryComponent> InventoryComp;
 	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))

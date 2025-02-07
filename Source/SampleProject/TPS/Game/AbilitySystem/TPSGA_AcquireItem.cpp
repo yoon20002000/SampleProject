@@ -24,8 +24,6 @@ void UTPSGA_AcquireItem::ActivateAbility(const FGameplayAbilitySpecHandle Handle
 
 	if (CanActivateAbility(Handle, ActorInfo))
 	{
-		UE_LOG(LogTemp, Log, TEXT("Acquire Item!!!"));
-	
 		ATPSPlayer* Player = Cast<ATPSPlayer>(CurrentActorInfo->AvatarActor.Get());
 
 		if (Player == nullptr)
@@ -45,13 +43,13 @@ void UTPSGA_AcquireItem::ActivateAbility(const FGameplayAbilitySpecHandle Handle
 		int32 SlotCount = 1;
 		for (auto InventorySlot : InventoryComp->GetInventorySlots() )
 		{
-			UKismetSystemLibrary::PrintString(GetWorld(),FString::Format(TEXT("Inven Slot {0} : Item Name {1}, Quantity{2}"),
-																		 {
-																			 FStringFormatArg(SlotCount),
-																			 FStringFormatArg(
-																				 InventorySlot.ItemName.ToString()),
-																			 FStringFormatArg(InventorySlot.ItemQuantity)
-																		 }));
+			// UKismetSystemLibrary::PrintString(GetWorld(),FString::Format(TEXT("Inven Slot {0} : Item Name {1}, Quantity{2}"),
+			// 															 {
+			// 																 FStringFormatArg(SlotCount),
+			// 																 FStringFormatArg(
+			// 																	 InventorySlot.ItemName.ToString()),
+			// 																 FStringFormatArg(InventorySlot.ItemQuantity)
+			// 															 }));
 			++SlotCount;
 		}
 	

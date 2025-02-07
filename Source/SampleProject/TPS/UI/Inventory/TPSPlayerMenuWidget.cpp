@@ -13,7 +13,20 @@ void UTPSPlayerMenuWidget::NativeConstruct()
 		FInputModeUIOnly InputMode;
 		InputMode.SetWidgetToFocus(TakeWidget());
 		PC->SetInputMode(InputMode);
-		PC->SetShowMouseCursor(true);	
+		PC->SetShowMouseCursor(true);
+
+		if (ATPSPlayer* Player = Cast<ATPSPlayer>(PC->GetPawn()))
+		{
+			InventoryComp = Player->GetComponentByClass<UTPSInventoryComponent>();
+			if (InventoryComp != nullptr)
+			{
+				InventoryGrid->Init(InventoryComp.Get());
+			}
+			else
+			{
+				UE_LOG(LogTemp, Error, TEXT("In InventoryComp is nullptr!!"));
+			}
+		}
 	}
 }
 
@@ -24,24 +37,5 @@ void UTPSPlayerMenuWidget::NativeDestruct()
 	{
 		PC->SetInputMode(FInputModeGameOnly());
 		PC->SetShowMouseCursor(false);
-	}
-}
-
-void UTPSPlayerMenuWidget::NativeOnInitialized()
-{
-	Super::NativeOnInitialized();
-	APlayerController* PC = TPSHelper::GetPlayerController();
-	if (ATPSPlayer* Player = Cast<ATPSPlayer>(PC->GetPawn()))
-	{
-		InventoryComp = Player->GetComponentByClass<UTPSInventoryComponent>();
-	}
-
-	if (InventoryComp != nullptr)
-	{
-		InventoryGrid->Init(InventoryComp.Get());
-	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("In InventoryComp is nullptr!!"));
 	}
 }

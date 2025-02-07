@@ -15,6 +15,8 @@ class SAMPLEPROJECT_API UTPSInventoryGridWidget : public UTPSCommonUserWidget
 	GENERATED_BODY()
 public:
 	void Init(UTPSInventoryComponent* InInventoryComp);
+	virtual void NativeConstruct() override;
+	virtual void BeginDestroy() override;
 private:
 	void CreateInventorySlots();
 private:

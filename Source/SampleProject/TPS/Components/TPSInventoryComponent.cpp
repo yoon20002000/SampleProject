@@ -29,10 +29,17 @@ FInventorySlot* UTPSInventoryComponent::FindAddSlot(const FName& ItemName)
 	return nullptr;
 }
 
-void UTPSInventoryComponent::CreateNewSlotAndAddToInventory(const FName& ItemName, const int32 Quantity)
+void UTPSInventoryComponent::AddToInventory(const FName& ItemName, const int32 Quantity)
 {
-	FInventorySlot NewSlot(ItemName, Quantity);
-	Inventory.Add(NewSlot);
+	for (FInventorySlot& Slot: Inventory)
+	{
+		if (Slot.ItemQuantity <= 0)
+		{
+			Slot.ItemName = ItemName;
+			Slot.ItemQuantity = Quantity;
+			break;
+		}
+	}
 }
 
 const TArray<FInventorySlot>& UTPSInventoryComponent::GetInventorySlots()
@@ -54,7 +61,12 @@ void UTPSInventoryComponent::InteractionWithCurHitItem()
 void UTPSInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	// 이후 Save, Load 추가 시 기능 추가 필요
 	Inventory.Reserve(InventoryMaxSize);
+	for (int i =  0; i < InventoryMaxSize; ++i)
+	{
+		Inventory.Add(FInventorySlot());
+	}
 }
 
 void UTPSInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType,
@@ -93,7 +105,7 @@ void UTPSInventoryComponent::AddItemToInventory(const FName& ItemName, const int
 	else
 	{
 		// quantity가 max 보다 클 경우를 대비 해for문으로 작성 해야 됨.
-		CreateNewSlotAndAddToInventory(ItemName, Quantity);
+		AddToInventory(ItemName, Quantity);
 		// 빈 슬롯 추가
 	}
 	
