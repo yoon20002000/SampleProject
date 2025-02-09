@@ -64,6 +64,20 @@ Indicator UI
 - Interaction Actor의 설명을 표시하기 위한 Indicator
 ![Example Image](./ReadMeResource/Interaction%20Indicator.gif)
 
+- 필요한 Indicator가 있을 경우 확장 가능하도록 설계 및 구현
+
+UTPSIndicatorDescriptor : Indicator 처리 데이터 Class
+UTPSIndicatorManagerComponent : UTPSIndicatorDescriptor 기반 Indicator 등록 및 해제 관리
+
+UTPSNameplate : Nameplate Widget Class
+UTPSNameplateSource : Nameplate 표현을 위한 추가 데이터 및 Nameplate관리 Manager를 통해 Indicator 등록 및 해제
+UTPSNameplateManager : NameplateSource를 기반으로 UTPSIndicatorDescriptor를 생성하여 UTPSIndicatorManagerComponent에 등록 및 해제 관리
+
+UTPSInteractionIndicatorWidget : Interaction Widget Class
+UTPSInteractionIndicatorComponent : 플레이어와 상호작용 가능한 Interaction Actor를 확인하여 해당 Actor에 저장된 Description을 기반으로 UTPSIndicatorDescriptor 생성, UTPSIndicatorManagerComponent에 등록 및 해제 관리
+
+STPSActorCanvas : Slate를 이용해 Indicator UI 처리
+UTPSIndicatorLayer : STPSActorCanvas를 이용해 Indicator UI를 표시할 Widget
 
 영상
 ![Video](./ReadMeResource/Total.gif)
