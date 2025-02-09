@@ -58,6 +58,11 @@ AI Behavior Tree
 - 공격 사정거리 외에도 이동 사정거리 설정 가능하게 제작작
 ![Example Image](./ReadMeResource/BT2.png)
 
+Indicator UI
+- 적 HP와 Name 표시를 위한 Indicator
+![Example Image](./ReadMeResource/Indicator.gif)
+- Interaction Actor의 설명을 표시하기 위한 Indicator
+![Example Image](./ReadMeResource/Interaction%20Indicator.gif)
 
 
 영상
