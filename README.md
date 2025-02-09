@@ -76,7 +76,7 @@ UTPSNameplateManager : NameplateSource를 기반으로 UTPSIndicatorDescriptor�
 UTPSInteractionIndicatorWidget : Interaction Widget Class
 UTPSInteractionIndicatorComponent : 플레이어와 상호작용 가능한 Interaction Actor를 확인하여 해당 Actor에 저장된 Description을 기반으로 UTPSIndicatorDescriptor 생성, UTPSIndicatorManagerComponent에 등록 및 해제 관리
 
-STPSActorCanvas : Slate를 이용해 Indicator UI 처리
+STPSActorCanvas : Slate를 이용해 Indicator UI 처리  
 UTPSIndicatorLayer : STPSActorCanvas를 이용해 Indicator UI를 표시할 Widget
 
 영상
