@@ -8,6 +8,7 @@
 void UTPSInventoryGridWidget::Init(UTPSInventoryComponent* InInventoryComp)
 {
 	InventoryComp = InInventoryComp;
+	InventoryComp->OnInventoryUpdatedDelegate.AddUObject(this, &ThisClass::OnUpdateInventorySlot);
 	GridWrapBox->ClearChildren();
 	CreateInventorySlots();
 }
@@ -19,8 +20,11 @@ void UTPSInventoryGridWidget::NativeConstruct()
 
 void UTPSInventoryGridWidget::BeginDestroy()
 {
+	if (InventoryComp != nullptr)
+	{
+		InventoryComp->OnInventoryUpdatedDelegate.RemoveAll(this);
+	}
 	Super::BeginDestroy();
-	UE_LOG(LogTemp, Log, TEXT("BeginDestroy"));
 }
 
 void UTPSInventoryGridWidget::CreateInventorySlots()
@@ -35,4 +39,10 @@ void UTPSInventoryGridWidget::CreateInventorySlots()
 		GridWrapBox->AddChildToWrapBox(NewInventorySlotWidget);
 		++SlotIndex;
 	}
+}
+
+void UTPSInventoryGridWidget::OnUpdateInventorySlot()
+{
+	GridWrapBox->ClearChildren();
+	CreateInventorySlots();
 }

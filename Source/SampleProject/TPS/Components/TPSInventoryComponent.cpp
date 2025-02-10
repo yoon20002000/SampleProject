@@ -29,19 +29,6 @@ FInventorySlot* UTPSInventoryComponent::FindAddSlot(const FName& ItemName)
 	return nullptr;
 }
 
-void UTPSInventoryComponent::AddToInventory(const FName& ItemName, const int32 Quantity)
-{
-	for (FInventorySlot& Slot: Inventory)
-	{
-		if (Slot.ItemQuantity <= 0)
-		{
-			Slot.ItemName = ItemName;
-			Slot.ItemQuantity = Quantity;
-			break;
-		}
-	}
-}
-
 const TArray<FInventorySlot>& UTPSInventoryComponent::GetInventorySlots()
 {
 	return Inventory;
@@ -58,14 +45,62 @@ void UTPSInventoryComponent::InteractionWithCurHitItem()
 	}
 }
 
+void UTPSInventoryComponent::TransferSlots(const int32 SourceIndex, UTPSInventoryComponent* SourceInventoryComp,
+	const int32 DestinationIndex)
+{
+
+	if (SourceIndex < 0 || SourceIndex >= SourceInventoryComp->GetInventorySlotSize() ||
+		DestinationIndex < 0 || DestinationIndex >= GetInventorySlotSize())
+	{
+		UE_LOG(LogTemp, Error, TEXT("Index Range Error!! SourceIndex : %d, DestinationIndex : %d"), SourceIndex,
+		       DestinationIndex);
+		return;
+	}
+
+	
+	TArray<FInventorySlot>& SourceInventory = SourceInventoryComp->Inventory;
+
+	FInventorySlot TempSource = SourceInventory[SourceIndex] ;
+	if (TempSource.ItemName == Inventory[DestinationIndex].ItemName)
+	{
+		// To do 스택 추가 가능 여부 확인 
+	}
+	else
+	{
+		SourceInventory[SourceIndex] = Inventory[DestinationIndex];
+		Inventory[DestinationIndex] = TempSource;	
+	}
+	
+	OnInventoryUpdatedDelegate.Broadcast();
+	SourceInventoryComp->OnInventoryUpdatedDelegate.Broadcast();
+}
+
+int32 UTPSInventoryComponent::GetInventorySlotSize() const
+{
+	return InventorySlotMaxSize;
+}
+
 void UTPSInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	// 이후 Save, Load 추가 시 기능 추가 필요
-	Inventory.Reserve(InventoryMaxSize);
-	for (int i =  0; i < InventoryMaxSize; ++i)
+	Inventory.Reserve(InventorySlotMaxSize);
+	for (int i =  0; i < InventorySlotMaxSize; ++i)
 	{
 		Inventory.Add(FInventorySlot());
+	}
+}
+
+void UTPSInventoryComponent::AddNewItemToInventory(const FName& ItemName, const int32 Quantity)
+{
+	for (FInventorySlot& Slot: Inventory)
+	{
+		if (Slot.ItemQuantity <= 0)
+		{
+			Slot.ItemName = ItemName;
+			Slot.ItemQuantity = Quantity;
+			break;
+		}
 	}
 }
 
@@ -105,7 +140,7 @@ void UTPSInventoryComponent::AddItemToInventory(const FName& ItemName, const int
 	else
 	{
 		// quantity가 max 보다 클 경우를 대비 해for문으로 작성 해야 됨.
-		AddToInventory(ItemName, Quantity);
+		AddNewItemToInventory(ItemName, Quantity);
 		// 빈 슬롯 추가
 	}
 	

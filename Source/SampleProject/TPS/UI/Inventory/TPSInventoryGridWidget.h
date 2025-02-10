@@ -19,6 +19,7 @@ public:
 	virtual void BeginDestroy() override;
 private:
 	void CreateInventorySlots();
+	void OnUpdateInventorySlot();
 private:
 	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<UWrapBox> GridWrapBox;

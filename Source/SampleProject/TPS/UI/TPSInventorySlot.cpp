@@ -50,7 +50,7 @@ void UTPSInventorySlot::UpdateInventorySlot(const FName& InItemName, const int32
 
 FReply UTPSInventorySlot::NativeOnPreviewMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-	// Super::NativeOnPreviewMouseButtonDown(InGeometry, InMouseEvent);
+	Super::NativeOnPreviewMouseButtonDown(InGeometry, InMouseEvent);
 	
 	if (InventoryComp == nullptr || ItemName == NAME_None)
 	{
@@ -83,4 +83,25 @@ void UTPSInventorySlot::NativeOnDragDetected(const FGeometry& InGeometry, const 
 			OutOperation = DD_InventorySlot;
 		}
 	}
+}
+
+bool UTPSInventorySlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent,
+	UDragDropOperation* InOperation)
+{
+	if (UTPSDD_InventorySlot* DD_InventorySlot = Cast<UTPSDD_InventorySlot>(InOperation))
+	{
+		if (InventoryComp == nullptr || DD_InventorySlot->GetInventoryComponent() == nullptr)
+		{
+			return false;
+		}
+		const int32& StartSlotIndex = DD_InventorySlot->GetContentIndex();
+		if (InventorySlotIndex != StartSlotIndex ||
+		InventoryComp != DD_InventorySlot->GetInventoryComponent())
+		{
+			InventoryComp->TransferSlots(StartSlotIndex, DD_InventorySlot->GetInventoryComponent(), InventorySlotIndex);
+			return true;
+		}
+	}
+		
+	return Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
 }

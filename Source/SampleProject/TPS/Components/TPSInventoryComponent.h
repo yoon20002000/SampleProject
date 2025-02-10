@@ -33,6 +33,8 @@ struct FInventorySlot
 	int32 ItemQuantity;
 };
 
+DECLARE_MULTICAST_DELEGATE(OnInventoryUpdated);
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SAMPLEPROJECT_API UTPSInventoryComponent : public UActorComponent
 {
@@ -45,19 +47,25 @@ public:
 	int32 GetMaxStackSize(const FName& ItemName) const;
 	void RemoveItem();
 	FInventorySlot* FindAddSlot(const FName& ItemName);
-	void AddToInventory(const FName& ItemName,const int32 Quantity);
+	
 	const TArray<FInventorySlot>& GetInventorySlots();
 	void InteractionWithCurHitItem();
+	void TransferSlots(const int32 SourceIndex, UTPSInventoryComponent* SourceInventoryComp, const int32 DestinationIndex);
+
+	int32 GetInventorySlotSize() const;
 protected:
 	virtual void BeginPlay() override;
+	void AddNewItemToInventory(const FName& ItemName,const int32 Quantity);
 private:
 	void TraceItem();
 	AActor* GetFirstHitItemInteraction(const TArray<FHitResult>& Hits) const;
-	
+
+public:
+	OnInventoryUpdated OnInventoryUpdatedDelegate;
 
 private:
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = true))
-	int32 InventoryMaxSize = 5;
+	int32 InventorySlotMaxSize = 5;
 	UPROPERTY()
 	TArray<FInventorySlot> Inventory;
 

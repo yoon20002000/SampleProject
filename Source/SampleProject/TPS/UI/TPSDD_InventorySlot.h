@@ -13,7 +13,9 @@ class SAMPLEPROJECT_API UTPSDD_InventorySlot : public UTPSDragDropOperation
 	GENERATED_BODY()
 public:
 	void Init(UTPSInventoryComponent* InInventoryComponent, const int32 InContentIndex);
+	int32 GetContentIndex() const;
+	UTPSInventoryComponent* GetInventoryComponent() const;
 private:
-	TWeakObjectPtr<UTPSInventoryComponent> InventoryComponent;
+	TWeakObjectPtr<UTPSInventoryComponent> InventoryComp;
 	int32 ContentIndex;
 };
