@@ -2,7 +2,7 @@
 
 #include "TPSHelper.h"
 #include "TPSIndicatorManagerComponent.h"
-#include "Actor/TPSInteractionActor.h"
+#include "Actor/TPSApplyGEActor.h"
 #include "Blueprint/UserWidget.h"
 #include "Character/TPSPlayerController.h"
 #include "System/TPSCollisionChannels.h"
@@ -19,7 +19,7 @@ void UTPSInteractionIndicatorComponent::TickComponent(float DeltaTime, ELevelTic
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if (ATPSInteractionActor* InteractionActor = GetInteractionActor())
+	if (ATPSApplyGEActor* InteractionActor = GetInteractionActor())
 	{
 		RegistInteractionIndicator(InteractionActor, InteractionIndicatorClass,
 		                           EActorCanvasProjectionMode::ComponentPoint, NAME_None, FVector::UnitZ(),
@@ -111,7 +111,7 @@ void UTPSInteractionIndicatorComponent::EndPlay(const EEndPlayReason::Type EndPl
 	UnregistInteractionIndicator();
 }
 
-ATPSInteractionActor* UTPSInteractionIndicatorComponent::GetInteractionActor() const
+ATPSApplyGEActor* UTPSInteractionIndicatorComponent::GetInteractionActor() const
 {
 	AActor* OwnerActor = GetOwner();
 	FCollisionQueryParams TraceParams(TEXT("Interaction Indicator Actor"), true, OwnerActor);
@@ -133,10 +133,10 @@ ATPSInteractionActor* UTPSInteractionIndicatorComponent::GetInteractionActor() c
 	for (const FHitResult& HitResult : HitResults)
 	{
 		AActor* HitActor = HitResult.GetActor();
-		if (HitActor != nullptr && HitActor->IsA(ATPSInteractionActor::StaticClass()) == true)
+		if (HitActor != nullptr && HitActor->IsA(ATPSApplyGEActor::StaticClass()) == true)
 		{
 			DrawDebugLine(GetWorld(), TraceStart, HitResult.Location, FColor::Green);
-			return Cast<ATPSInteractionActor>(HitActor);
+			return Cast<ATPSApplyGEActor>(HitActor);
 		}
 	}
 

@@ -2,7 +2,7 @@
 
 #include "CommonTextBlock.h"
 #include "TPSIndicatorDescriptor.h"
-#include "Actor/TPSInteractionActor.h"
+#include "Actor/TPSApplyGEActor.h"
 
 void UTPSInteractionIndicatorWidget::SetInteractionText(const FText& InteractionText)
 {
@@ -17,7 +17,7 @@ void UTPSInteractionIndicatorWidget::BindIndicator(UTPSIndicatorDescriptor* Indi
 		return;
 	}
 	
-	ATPSInteractionActor* InteractionActor = Cast<ATPSInteractionActor>(IndicatorDescriptor->GetDataObject());
+	ATPSApplyGEActor* InteractionActor = Cast<ATPSApplyGEActor>(IndicatorDescriptor->GetDataObject());
 	if (InteractionActor == nullptr)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Indicator Descriptor Data is nullptr!!"));

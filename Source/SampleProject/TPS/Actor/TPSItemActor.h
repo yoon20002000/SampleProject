@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Game/TPSInteractionInterface.h"
+#include "TPSInteractionActorBase.h"
 #include "GameFramework/Actor.h"
 #include "TPSItemActor.generated.h"
 
 class UTPSItemDataComponent;
 
 UCLASS()
-class SAMPLEPROJECT_API ATPSItemActor : public AActor, public ITPSInteractionInterface
+class SAMPLEPROJECT_API ATPSItemActor : public ATPSInteractionActorBase
 {
 	GENERATED_BODY()
 	

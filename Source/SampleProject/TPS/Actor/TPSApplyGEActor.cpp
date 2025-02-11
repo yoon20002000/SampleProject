@@ -1,10 +1,10 @@
-#include "Actor/TPSInteractionActor.h"
+#include "Actor/TPSApplyGEActor.h"
 
 #include "Components/SphereComponent.h"
 #include "Game/AbilitySystem/TPSAbilitySystemComponent.h"
 
 // Sets default values
-ATPSInteractionActor::ATPSInteractionActor()
+ATPSApplyGEActor::ATPSApplyGEActor()
 {
 	SphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Comp"));
 	SphereComp->SetCollisionProfileName("InteractionObject");
@@ -17,7 +17,7 @@ ATPSInteractionActor::ATPSInteractionActor()
 	
 }
 
-FActiveGameplayEffectHandle ATPSInteractionActor::ApplyGE(UTPSAbilitySystemComponent* AbilitySystemComponent)
+FActiveGameplayEffectHandle ATPSApplyGEActor::ApplyGE(UTPSAbilitySystemComponent* AbilitySystemComponent)
 {
 	check(AbilitySystemComponent);
 
@@ -30,12 +30,12 @@ FActiveGameplayEffectHandle ATPSInteractionActor::ApplyGE(UTPSAbilitySystemCompo
 	return ApplyEffectHandle;
 }
 
-FString ATPSInteractionActor::GetInteractionDescription() const
+FString ATPSApplyGEActor::GetInteractionDescription() const
 {
 	return InteractionDescription;
 }
 
-void ATPSInteractionActor::Interaction(AActor* InteractionInstigatorActor)
+void ATPSApplyGEActor::Interaction(AActor* InteractionInstigatorActor)
 {
 	if (UTPSAbilitySystemComponent* ASC = InteractionInstigatorActor->GetComponentByClass<UTPSAbilitySystemComponent>())
 	{

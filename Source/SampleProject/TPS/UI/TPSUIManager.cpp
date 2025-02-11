@@ -70,26 +70,6 @@ void UTPSUIManager::NotifyPlayerDestroyed(UTPSCommonLocalPlayer* LocalPlayer)
 	}
 }
 
-void UTPSUIManager::LoadUI(const FString& UIName, EUILayerType LayerType)
-{
-	if (UIDataAsset == nullptr)
-	{
-		return;
-	}
-
-	UUserWidget* LoadWidget = UIDataAsset->LoadUserWidget(UIName);
-
-	if (LoadWidget != nullptr)
-	{
-		FString LayerName = GetLayerNameByLayerType(LayerType);
-
-		const TObjectPtr<UCommonActivatableWidget> LoadUIPtr = UCommonUIExtensions::PushContentToLayer(
-			UGameplayTagsManager::Get().RequestGameplayTag(*LayerName),
-			CastChecked<UCommonActivatableWidget>(LoadWidget)->GetClass());
-		LoadedUIs.Add(LoadUIPtr);
-	}
-}
-
 void UTPSUIManager::RemoveUI(UCommonActivatableWidget* InRemoveWidget)
 {
 	UCommonUIExtensions::PopContentFromLayer(InRemoveWidget);

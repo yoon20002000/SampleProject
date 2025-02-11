@@ -7,7 +7,7 @@
 class UTPSIndicatorDescriptor;
 enum class EActorCanvasProjectionMode : uint8;
 class UTPSInteractionIndicatorWidget;
-class ATPSInteractionActor;
+class ATPSApplyGEActor;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SAMPLEPROJECT_API UTPSInteractionIndicatorComponent : public UActorComponent
@@ -23,7 +23,7 @@ protected:
 	void RegistInteractionIndicator(AActor* InteractionActor, TSoftClassPtr<UUserWidget> InIndicatorClass,EActorCanvasProjectionMode InProjectionMode, FName InSocketName, FVector InBoundingBoxAnchor, EHorizontalAlignment InHAlign, EVerticalAlignment InVAlign, bool bCanAutomaticallyRemove, bool bIsClampToScreen);
 	void UnregistInteractionIndicator();
 private:
-	ATPSInteractionActor* GetInteractionActor() const;
+	ATPSApplyGEActor* GetInteractionActor() const;
 private:
 	UPROPERTY(EditAnywhere, meta=(allowPrivateAccess=true), Category="Interaction")
 	float InteractionCheckRadius;

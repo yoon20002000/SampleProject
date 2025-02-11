@@ -1,7 +1,7 @@
 #include "Game/AbilitySystem/TPSGA_Interaction.h"
 
 #include "TPSHelper.h"
-#include "Actor/TPSInteractionActor.h"
+#include "Actor/TPSApplyGEActor.h"
 #include "Character/TPSPlayer.h"
 #include "System/TPSCollisionChannels.h"
 

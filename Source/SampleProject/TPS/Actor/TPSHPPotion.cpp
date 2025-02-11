@@ -3,8 +3,6 @@
 
 #include "Actor/TPSHPPotion.h"
 
-#include "Character/TPSPlayer.h"
-
 ATPSHPPotion::ATPSHPPotion()
 {
 }

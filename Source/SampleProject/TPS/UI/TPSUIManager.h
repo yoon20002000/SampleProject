@@ -1,6 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
+#include "CommonUIExtensions.h"
+#include "GameplayTagsManager.h"
+#include "Data/UIDataAsset.h"
 
 #include "TPSUIManager.generated.h"
 
@@ -40,7 +43,28 @@ public:
 	virtual void NotifyPlayerRemoved(UTPSCommonLocalPlayer* LocalPlayer);
 	virtual void NotifyPlayerDestroyed(UTPSCommonLocalPlayer* LocalPlayer);
 
-	void LoadUI(const FString& UIName, EUILayerType LayerType = EUILayerType::GameLayer);
+	template<typename T = UCommonActivatableWidget>
+	T* LoadUI(const FString& UIName, EUILayerType LayerType = EUILayerType::GameLayer)
+	{
+		if (UIDataAsset == nullptr)
+		{
+			return nullptr;
+		}
+
+		UUserWidget* LoadWidget = UIDataAsset->LoadUserWidget(UIName);
+
+		if (LoadWidget != nullptr)
+		{
+			FString LayerName = GetLayerNameByLayerType(LayerType);
+
+			const TObjectPtr<UCommonActivatableWidget> LoadUIPtr = UCommonUIExtensions::PushContentToLayer(
+				UGameplayTagsManager::Get().RequestGameplayTag(*LayerName),
+				CastChecked<T>(LoadWidget)->GetClass());
+			LoadedUIs.Add(LoadUIPtr);
+			return Cast<T>(LoadUIPtr);
+		}
+		return nullptr;
+	}
 	void RemoveUI(UCommonActivatableWidget* InRemoveWidget);
 	void RemoveAllUIs();
 	FString GetLayerNameByLayerType(const EUILayerType InLayerType);

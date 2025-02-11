@@ -1,16 +1,13 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
-#include "CoreMinimal.h"
-#include "Actor/TPSInteractionActor.h"
+#include "Actor/TPSApplyGEActor.h"
 #include "TPSHPPotion.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SAMPLEPROJECT_API ATPSHPPotion : public ATPSInteractionActor
+class SAMPLEPROJECT_API ATPSHPPotion : public ATPSApplyGEActor
 {
 	GENERATED_BODY()
 

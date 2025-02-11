@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "Game/TPSInteractionInterface.h"
+#include "TPSInteractionActorBase.h"
 #include "GameFramework/Actor.h"
-#include "TPSInteractionActor.generated.h"
+#include "TPSApplyGEActor.generated.h"
 
 struct FActiveGameplayEffectHandle;
 class UGameplayEffect;
@@ -12,12 +12,12 @@ class UTPSAbilitySystemComponent;
 class USphereComponent;
 
 UCLASS()
-class SAMPLEPROJECT_API ATPSInteractionActor : public AActor, public ITPSInteractionInterface
+class SAMPLEPROJECT_API ATPSApplyGEActor : public ATPSInteractionActorBase
 {
 	GENERATED_BODY()
 
 public:
-	ATPSInteractionActor();
+	ATPSApplyGEActor();
 	
 	FString GetInteractionDescription() const;
 	// ITPSInteractionWithActorInterface Start
