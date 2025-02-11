@@ -17,10 +17,9 @@ void UTPSPlayerMenuWidget::NativeConstruct()
 
 		if (ATPSPlayer* Player = Cast<ATPSPlayer>(PC->GetPawn()))
 		{
-			InventoryComp = Player->GetComponentByClass<UTPSInventoryComponent>();
-			if (InventoryComp != nullptr)
+			if (UTPSInventoryComponent* InventoryComp = Player->GetInventoryComponent())
 			{
-				InventoryGrid->Init(InventoryComp.Get());
+				InventoryGrid->Init(InventoryComp);
 			}
 			else
 			{

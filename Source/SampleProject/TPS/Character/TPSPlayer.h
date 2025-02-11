@@ -33,6 +33,7 @@ public:
 	virtual void PostInitializeComponents() override;
 	virtual void UninitAndDestroy() override;
 
+	UTPSInventoryComponent* GetInventoryComponent() const;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

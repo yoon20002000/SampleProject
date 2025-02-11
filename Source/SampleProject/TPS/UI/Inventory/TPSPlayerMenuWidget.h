@@ -16,7 +16,6 @@ protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
 private:
-	TWeakObjectPtr<UTPSInventoryComponent> InventoryComp;
 	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<UTPSInventoryGridWidget> InventoryGrid;
 };

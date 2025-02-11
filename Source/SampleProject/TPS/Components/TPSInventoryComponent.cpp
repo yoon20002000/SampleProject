@@ -184,7 +184,7 @@ void UTPSInventoryComponent::TraceItem()
 		TArray<AActor*> AttachedActors;
 		OwnerActor->GetAttachedActors(OUT AttachedActors);
 		CollisionQueryParameters.AddIgnoredActors(AttachedActors);
-		GetWorld()->LineTraceMultiByChannel(Hits, TraceStart, TraceEnd,TPS_TraceChannel_ItemInteraction,
+		GetWorld()->LineTraceMultiByChannel(Hits, TraceStart, TraceEnd,TPS_TraceChannel_Interaction,
 		                                    CollisionQueryParameters);
 
 		DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Blue);
@@ -197,7 +197,7 @@ void UTPSInventoryComponent::TraceItem()
 			FVector AdditionalTraceStart = TraceStart + CameraManager->GetActorForwardVector() * SweepDistance;
 			FVector AdditionalTraceEnd = AdditionalTraceStart;
 			GetWorld()->SweepMultiByChannel(Hits, AdditionalTraceStart, AdditionalTraceEnd, FQuat::Identity,
-			                                TPS_TraceChannel_ItemInteraction,
+			                                TPS_TraceChannel_Interaction,
 			                                SphereShape, CollisionQueryParameters);
 
 			DrawDebugSphere(GetWorld(), AdditionalTraceStart, SweepSphereRadius, 12, FColor::Yellow);

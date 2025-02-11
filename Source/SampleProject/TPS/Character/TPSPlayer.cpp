@@ -106,6 +106,11 @@ void ATPSPlayer::UninitAndDestroy()
 	Super::UninitAndDestroy();
 }
 
+UTPSInventoryComponent* ATPSPlayer::GetInventoryComponent() const
+{
+	return InventoryComp;
+}
+
 void ATPSPlayer::Move(const FInputActionValue& InputActionValue)
 {
 	const FVector2D MovementVector = InputActionValue.Get<FVector2D>();
