@@ -56,7 +56,6 @@ void UTPSInventoryComponent::TransferSlots(const int32 SourceIndex, UTPSInventor
 		       DestinationIndex);
 		return;
 	}
-
 	
 	TArray<FInventorySlot>& SourceInventory = SourceInventoryComp->Inventory;
 	if (SourceInventory[SourceIndex].ItemName == Inventory[DestinationIndex].ItemName)
@@ -64,16 +63,21 @@ void UTPSInventoryComponent::TransferSlots(const int32 SourceIndex, UTPSInventor
 		if (FItem* ItemData= UTPSSystemManager::Get()->GetGameManager()->GetItem(SourceInventory[SourceIndex].ItemName))
 		{
 			int32 MaxStack = ItemData->StackSize;
-			int32 TotalQuantity = SourceInventory[SourceIndex].ItemQuantity + Inventory[DestinationIndex].ItemQuantity;
-			Inventory[DestinationIndex].ItemQuantity = FMath::Clamp(TotalQuantity, 0, MaxStack);
-			SourceInventory[SourceIndex].ItemQuantity = TotalQuantity - MaxStack;
+			if (Inventory[DestinationIndex].ItemQuantity == MaxStack)
+			{
+				SwapInventorySlots(SourceInventory[SourceIndex], Inventory[DestinationIndex]);
+			}
+			else
+			{
+				const int32 TotalQuantity = SourceInventory[SourceIndex].ItemQuantity + Inventory[DestinationIndex].ItemQuantity;
+				Inventory[DestinationIndex].ItemQuantity = FMath::Clamp(TotalQuantity, 0, MaxStack);
+				SourceInventory[SourceIndex].ItemQuantity = TotalQuantity - MaxStack;	
+			}
 		}
 	}
 	else
 	{
-		FInventorySlot TempSource = SourceInventory[SourceIndex] ;
-		SourceInventory[SourceIndex] = Inventory[DestinationIndex];
-		Inventory[DestinationIndex] = TempSource;	
+		SwapInventorySlots(SourceInventory[SourceIndex], Inventory[DestinationIndex]);
 	}
 	
 	OnInventoryUpdatedDelegate.Broadcast();
@@ -122,7 +126,11 @@ void UTPSInventoryComponent::AddItemToInventory(const FName& ItemName, const int
 
 	
 	int32 MaxStackSize = GetMaxStackSize(ItemName);
-	
+	if (MaxStackSize < Quantity)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Item Actor Quantity is error!!! Name : %s, Quantity : %d"), *ItemName.ToString(),
+		       Quantity);
+	}
 
 	// 없는 경우 빈 슬롯 찾아서 추가
 	// 있는데 널널 한 경우 그냥 수 추가
@@ -130,33 +138,20 @@ void UTPSInventoryComponent::AddItemToInventory(const FName& ItemName, const int
 
 	if (Slot != nullptr)
 	{
-		Slot->ItemQuantity += Quantity;
-		// if (Slot->ItemQuantity + Quantity > MaxStackSize)
-		// {
-		// 	int32 LeftSize =  Slot->ItemQuantity + Quantity - MaxStackSize;
-		// 	Slot->ItemQuantity = MaxStackSize;
-		// 	// 빈 슬롯 찾아서 left size 만틈 추가
-		// }
-		// else
-		// {
-		// 	Slot->ItemQuantity += Quantity;
-		// }
+		const int32 TotalQuantity = Quantity + Slot->ItemQuantity;
+		if (TotalQuantity > MaxStackSize)
+		{
+			AddNewItemToInventory(ItemName, Quantity);
+		}
+		else
+		{
+			Slot->ItemQuantity += Quantity;	
+		}
 	}
 	else
 	{
-		// quantity가 max 보다 클 경우를 대비 해for문으로 작성 해야 됨.
 		AddNewItemToInventory(ItemName, Quantity);
-		// 빈 슬롯 추가
 	}
-	
-	// if (Slot != nullptr && Slot->ItemQuantity )
-	// {
-	// 	Slot->ItemQuantity += Quantity;
-	// }
-	// else
-	// {
-	// 	
-	// }
 }
 
 int32 UTPSInventoryComponent::GetMaxStackSize(const FName& ItemName) const
@@ -237,4 +232,10 @@ AActor* UTPSInventoryComponent::GetFirstHitItemInteraction(const TArray<FHitResu
 		}
 	}
 	return nullptr;
+}
+void UTPSInventoryComponent::SwapInventorySlots(FInventorySlot& A, FInventorySlot& B)
+{
+	FInventorySlot Temp = A;
+	A = B;
+	B = Temp;
 }

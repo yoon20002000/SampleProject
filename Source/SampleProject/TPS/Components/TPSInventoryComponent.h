@@ -59,6 +59,7 @@ protected:
 private:
 	void TraceItem();
 	AActor* GetFirstHitItemInteraction(const TArray<FHitResult>& Hits) const;
+	void SwapInventorySlots(FInventorySlot& A, FInventorySlot& B);
 
 public:
 	OnInventoryUpdated OnInventoryUpdatedDelegate;
