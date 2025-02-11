@@ -8,5 +8,6 @@ ATPSInteractionActorBase::ATPSInteractionActorBase()
 
 void ATPSInteractionActorBase::Interaction(AActor* InteractionActor)
 {
+	UE_LOG(LogTemp, Log, TEXT("Interaction Actor : %s"), *InteractionActor->GetName());
 }
 

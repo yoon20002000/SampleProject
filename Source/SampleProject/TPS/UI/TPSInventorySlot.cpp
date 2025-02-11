@@ -34,10 +34,14 @@ void UTPSInventorySlot::UpdateInventorySlot(const FName& InItemName, const int32
 
 	if (const FItem* Item = UTPSSystemManager::Get()->GetGameManager()->GetItem(InItemName))
 	{
-		if (Item->Thumbnail != nullptr)
+		if (Item->Thumbnail != nullptr && Quantity > 0)
 		{
 			IconImage->SetBrushFromTexture(Item->Thumbnail);
 			IconImage->SetVisibility(ESlateVisibility::Visible);
+		}
+		else
+		{
+			IconImage->SetVisibility(ESlateVisibility::Collapsed);
 		}
 	}
 	else

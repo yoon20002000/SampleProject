@@ -59,14 +59,19 @@ void UTPSInventoryComponent::TransferSlots(const int32 SourceIndex, UTPSInventor
 
 	
 	TArray<FInventorySlot>& SourceInventory = SourceInventoryComp->Inventory;
-
-	FInventorySlot TempSource = SourceInventory[SourceIndex] ;
-	if (TempSource.ItemName == Inventory[DestinationIndex].ItemName)
+	if (SourceInventory[SourceIndex].ItemName == Inventory[DestinationIndex].ItemName)
 	{
-		// To do 스택 추가 가능 여부 확인 
+		if (FItem* ItemData= UTPSSystemManager::Get()->GetGameManager()->GetItem(SourceInventory[SourceIndex].ItemName))
+		{
+			int32 MaxStack = ItemData->StackSize;
+			int32 TotalQuantity = SourceInventory[SourceIndex].ItemQuantity + Inventory[DestinationIndex].ItemQuantity;
+			Inventory[DestinationIndex].ItemQuantity = FMath::Clamp(TotalQuantity, 0, MaxStack);
+			SourceInventory[SourceIndex].ItemQuantity = TotalQuantity - MaxStack;
+		}
 	}
 	else
 	{
+		FInventorySlot TempSource = SourceInventory[SourceIndex] ;
 		SourceInventory[SourceIndex] = Inventory[DestinationIndex];
 		Inventory[DestinationIndex] = TempSource;	
 	}

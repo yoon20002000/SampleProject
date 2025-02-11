@@ -19,7 +19,6 @@ void ATPSContainer::Interaction(AActor* InteractionActor)
 		if (UTPSContainerInventoryWidget* InstanceWidget =
 			UTPSSystemManager::Get()->GetUIManager()->LoadUI<UTPSContainerInventoryWidget>(UIWidgetName.ToString()))
 		{
-			// InstanceWidget->init 혹은 set container를 해줘야 됨.
 			InstanceWidget->Init(InventoryComp);
 		}
 	}
