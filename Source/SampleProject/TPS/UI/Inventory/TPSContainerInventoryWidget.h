@@ -16,7 +16,8 @@ class SAMPLEPROJECT_API UTPSContainerInventoryWidget : public UTPSCommonActivata
 {
 	GENERATED_BODY()
 public:
-	virtual void NativePreConstruct() override;
+	virtual void NativeConstruct() override;
+	virtual  void NativeDestruct() override;
 	void Init(UTPSInventoryComponent* InventoryComp);
 private:
 	UPROPERTY(meta=(AllowPrivateAccess=true, BindWidget))

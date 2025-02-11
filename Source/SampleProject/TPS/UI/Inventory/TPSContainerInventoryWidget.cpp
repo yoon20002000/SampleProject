@@ -5,10 +5,11 @@
 #include "UI/Inventory/TPSInventoryGridWidget.h"
 #include "Components/TPSInventoryComponent.h"
 
-void UTPSContainerInventoryWidget::NativePreConstruct()
+void UTPSContainerInventoryWidget::NativeConstruct()
 {
-	Super::NativePreConstruct();
-
+	Super::NativeConstruct();
+	SetInputUIMode(true);
+	
 	if (ATPSPlayer* Player = Cast<ATPSPlayer>(TPSHelper::GetPlayerController()->GetPawn()))
 	{
 		PlayerInventoryComp = Player->GetInventoryComponent();
@@ -17,7 +18,13 @@ void UTPSContainerInventoryWidget::NativePreConstruct()
 	}
 }
 
+void UTPSContainerInventoryWidget::NativeDestruct()
+{
+	SetInputGameMode();
+}
+
 void UTPSContainerInventoryWidget::Init(UTPSInventoryComponent* InventoryComp)
 {
 	ContainerInventoryComp = InventoryComp;
+	ContainerInventoryGrid->Init(ContainerInventoryComp.Get());
 }

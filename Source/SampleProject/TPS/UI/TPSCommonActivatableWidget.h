@@ -13,5 +13,10 @@ UCLASS()
 class SAMPLEPROJECT_API UTPSCommonActivatableWidget : public UCommonActivatableWidget
 {
 	GENERATED_BODY()
-	
+protected:
+	virtual void NativeConstruct() override;
+	virtual void NativeDestruct() override;
+protected:
+	void SetInputUIMode(bool bShowCursor = false);
+	void SetInputGameMode(bool bShowCursor = false);
 };

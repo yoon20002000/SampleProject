@@ -2,7 +2,6 @@
 
 #include "TPSSystemManager.h"
 #include "Components/TPSInventoryComponent.h"
-#include "UI/TPSCommonActivatableWidget.h"
 #include "UI/TPSUIManager.h"
 #include "UI/Inventory/TPSContainerInventoryWidget.h"
 

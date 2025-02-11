@@ -8,13 +8,9 @@
 void UTPSPlayerMenuWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
+	SetInputUIMode(true);
 	if (APlayerController* PC = TPSHelper::GetPlayerController(GetWorld()))
 	{
-		FInputModeUIOnly InputMode;
-		InputMode.SetWidgetToFocus(TakeWidget());
-		PC->SetInputMode(InputMode);
-		PC->SetShowMouseCursor(true);
-
 		if (ATPSPlayer* Player = Cast<ATPSPlayer>(PC->GetPawn()))
 		{
 			if (UTPSInventoryComponent* InventoryComp = Player->GetInventoryComponent())
@@ -32,9 +28,5 @@ void UTPSPlayerMenuWidget::NativeConstruct()
 void UTPSPlayerMenuWidget::NativeDestruct()
 {
 	Super::NativeDestruct();
-	if (APlayerController* PC = TPSHelper::GetPlayerController(GetWorld()))
-	{
-		PC->SetInputMode(FInputModeGameOnly());
-		PC->SetShowMouseCursor(false);
-	}
+	SetInputGameMode();
 }
