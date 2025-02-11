@@ -3,4 +3,4 @@
 
 #include "Game/TPSInteractionInterface.h"
 
-// Add default functionality here for any IInteraction functions that are not pure virtual.
+// Add default functionality here for any ITPSInteractionWithActorInterface functions that are not pure virtual.

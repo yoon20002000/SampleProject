@@ -1,13 +1,9 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "UObject/Interface.h"
 #include "TPSInteractionInterface.generated.h"
 
-class UTPSInventoryComponent;
-struct FItem;
-
+// This class does not need to be modified.
 UINTERFACE(MinimalAPI)
 class UTPSInteractionInterface : public UInterface
 {
@@ -21,7 +17,5 @@ class SAMPLEPROJECT_API ITPSInteractionInterface
 {
 	GENERATED_BODY()
 public:
-	virtual FItem* GetItemData() = 0;
-	virtual void LookAtInteractionActor() = 0;
-	virtual void Interaction(UTPSInventoryComponent* InventoryComp) = 0;
+	virtual void Interaction(AActor* InteractionActor) = 0;
 };
