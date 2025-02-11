@@ -35,8 +35,10 @@ FString ATPSInteractionActor::GetInteractionDescription() const
 	return InteractionDescription;
 }
 
-// Called when the game starts or when spawned
-void ATPSInteractionActor::BeginPlay()
+void ATPSInteractionActor::Interaction(AActor* InteractionInstigatorActor)
 {
-	Super::BeginPlay();
+	if (UTPSAbilitySystemComponent* ASC = InteractionInstigatorActor->GetComponentByClass<UTPSAbilitySystemComponent>())
+	{
+		ApplyGE(ASC);	
+	}
 }

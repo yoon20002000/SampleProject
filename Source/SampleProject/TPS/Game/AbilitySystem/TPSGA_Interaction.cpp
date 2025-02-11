@@ -23,13 +23,13 @@ void UTPSGA_Interaction::ActivateAbility(const FGameplayAbilitySpecHandle Handle
 		{
 			ObjectQueryParams.AddObjectTypesToQuery(CollisionChannel);
 		}
-		
+
 		ATPSPlayer* TPSPlayer = Cast<ATPSPlayer>(ActorInfo->AvatarActor);
 		if (TPSPlayer == nullptr)
 		{
 			EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
 		}
-		
+
 		FCollisionQueryParams TraceParams(TEXT("Interaction Indicator Actor"), true, TPSPlayer);
 
 		TArray<AActor*> AttachedActors;
@@ -42,24 +42,30 @@ void UTPSGA_Interaction::ActivateAbility(const FGameplayAbilitySpecHandle Handle
 		FVector TraceStart;
 		FRotator TempRotator;
 		TPSPlayer->GetActorEyesViewPoint(OUT TraceStart, OUT TempRotator);
-		FVector TraceEnd = TraceStart + TPSPlayer->GetActorForwardVector() * TraceDistance;
 
-		bool bBlockingHit = GetWorld()->LineTraceMultiByChannel(OUT HitResults, TraceStart, TraceEnd,TPS_TraceChannel_Weapon, TraceParams);
-		
-		FColor LineColor = (bBlockingHit == true ? FColor::Green : FColor::Red);
-		
+		APlayerCameraManager* CameraManager = TPSHelper::GetPlayerCameraManager();
+		FVector CamForwardVector = CameraManager->GetActorForwardVector();
+		FVector TraceEnd = TraceStart + CamForwardVector * TraceDistance;
+
+		bool bBlockingHit = GetWorld()->LineTraceMultiByChannel(OUT HitResults, TraceStart, TraceEnd,
+		                                                        TPS_TraceChannel_Interaction, TraceParams);
+
+		DrawDebugLine(GetWorld(),TraceStart,TraceEnd,FColor::Blue,false, 2.f);
+
 		for (FHitResult HitResult : HitResults)
 		{
-			DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, TraceRadius, 32, LineColor, false, 0.f);
-
-			ATPSInteractionActor* HitInteractionActor = Cast<ATPSInteractionActor>(HitResult.GetActor());
-			UTPSAbilitySystemComponent* ASC = TPSPlayer->GetTPSAbilitySystemComponent();
-			if (HitInteractionActor != nullptr && ASC != nullptr)
+			AActor* HitInteractionActor = HitResult.GetActor();
+			
+			if (HitInteractionActor->Implements<UTPSInteractionInterface>() == true)
 			{
-				HitInteractionActor->ApplyGE(ASC);
+				if (ITPSInteractionInterface* InteractionInterface = Cast<ITPSInteractionInterface>(
+					HitInteractionActor))
+				{
+					InteractionInterface->Interaction(TPSPlayer);
+				}
 			}
 		}
-		
+
 		EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
 	}
 	else

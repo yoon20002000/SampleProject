@@ -40,7 +40,7 @@ void UTPSInventoryComponent::InteractionWithCurHitItem()
 	{
 		if (UTPSItemDataComponent* ItemDataComp = CurHitActor->GetComponentByClass<UTPSItemDataComponent>())
 		{
-			ItemDataComp->Interaction(this);
+			// ItemDataComp->Interaction(CurHitActor.Get());
 		}
 	}
 }

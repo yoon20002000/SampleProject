@@ -2,26 +2,18 @@
 
 #include "TPSInventoryComponent.h"
 #include "Components/ActorComponent.h"
-#include "Game/TPSInteractionInterface.h"
 #include "TPSItemDataComponent.generated.h"
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class SAMPLEPROJECT_API UTPSItemDataComponent : public UActorComponent,  public ITPSInteractionInterface
+class SAMPLEPROJECT_API UTPSItemDataComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
 	UTPSItemDataComponent();
+	FItem* GetItemData();
+	void InteractionItem(UTPSInventoryComponent* InventoryComponent);
 	
-	/// TPSInteractionInterface Start
-	virtual FItem* GetItemData() override;
-	virtual void LookAtInteractionActor() override;
-	virtual void Interaction(UTPSInventoryComponent* InventoryComp) override;
-	/// TPSInteractionInterface End
-	/// 
-protected:
-	virtual void BeginPlay() override;
-
 private:
 	UPROPERTY(EditDefaultsOnly, meta=(AllowPrivateAccess=true))
 	FDataTableRowHandle ItemDataHandle;
