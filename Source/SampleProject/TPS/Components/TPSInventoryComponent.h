@@ -27,10 +27,16 @@ USTRUCT(BlueprintType)
 struct FInventorySlot
 {
 	GENERATED_BODY()
+private:
+	void SetEmpty();
+	
+public:
 	UPROPERTY()
 	FName ItemName;
 	UPROPERTY()
 	int32 ItemQuantity;
+	
+	friend class UTPSInventoryComponent;
 };
 
 DECLARE_MULTICAST_DELEGATE(OnInventoryUpdated);
@@ -43,13 +49,15 @@ class SAMPLEPROJECT_API UTPSInventoryComponent : public UActorComponent
 public:	
 	UTPSInventoryComponent();
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	// ItemName : Item Unique ID, Quantity : Must below Max Stack Size
 	void AddItemToInventory(const FName& ItemName,const int32 Quantity);
+	// Get Max Stack Size from Item Data Table
 	int32 GetMaxStackSize(const FName& ItemName) const;
 	void RemoveItem();
+	// Find Same Item & below Max Stack Size 
 	FInventorySlot* FindSameItemAddableSlot(const FName& ItemName);
 	
 	const TArray<FInventorySlot>& GetInventorySlots();
-	void InteractionWithCurHitItem();
 	void TransferSlots(const int32 SourceIndex, UTPSInventoryComponent* SourceInventoryComp, const int32 DestinationIndex);
 
 	int32 GetInventorySlotSize() const;

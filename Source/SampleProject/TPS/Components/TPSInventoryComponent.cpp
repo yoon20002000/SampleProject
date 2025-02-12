@@ -11,6 +11,12 @@ FItem::FItem() : Name(NAME_None), Description(FText::GetEmpty()), Thumbnail(null
 {
 }
 
+void FInventorySlot::SetEmpty()
+{
+	ItemName = NAME_None;
+	ItemQuantity = 0;
+}
+
 UTPSInventoryComponent::UTPSInventoryComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
@@ -34,17 +40,6 @@ const TArray<FInventorySlot>& UTPSInventoryComponent::GetInventorySlots()
 	return Inventory;
 }
 
-void UTPSInventoryComponent::InteractionWithCurHitItem()
-{
-	if (CurHitActor != nullptr)
-	{
-		if (UTPSItemDataComponent* ItemDataComp = CurHitActor->GetComponentByClass<UTPSItemDataComponent>())
-		{
-			// ItemDataComp->Interaction(CurHitActor.Get());
-		}
-	}
-}
-
 void UTPSInventoryComponent::TransferSlots(const int32 SourceIndex, UTPSInventoryComponent* SourceInventoryComp,
 	const int32 DestinationIndex)
 {
@@ -57,27 +52,32 @@ void UTPSInventoryComponent::TransferSlots(const int32 SourceIndex, UTPSInventor
 		return;
 	}
 	
-	TArray<FInventorySlot>& SourceInventory = SourceInventoryComp->Inventory;
-	if (SourceInventory[SourceIndex].ItemName == Inventory[DestinationIndex].ItemName)
+	FInventorySlot& SourceInventorySlot = SourceInventoryComp->Inventory[SourceIndex];
+	FInventorySlot& DestinationInventorySlot = Inventory[DestinationIndex];
+	if (SourceInventorySlot.ItemName == DestinationInventorySlot.ItemName)
 	{
-		if (FItem* ItemData= UTPSSystemManager::Get()->GetGameManager()->GetItem(SourceInventory[SourceIndex].ItemName))
+		if (FItem* ItemData= UTPSSystemManager::Get()->GetGameManager()->GetItem(SourceInventorySlot.ItemName))
 		{
-			int32 MaxStack = ItemData->StackSize;
-			if (Inventory[DestinationIndex].ItemQuantity == MaxStack)
+			const int32 MaxStack = ItemData->StackSize;
+			if (DestinationInventorySlot.ItemQuantity == MaxStack)
 			{
-				SwapInventorySlots(SourceInventory[SourceIndex], Inventory[DestinationIndex]);
+				SwapInventorySlots(SourceInventorySlot ,DestinationInventorySlot);
 			}
 			else
 			{
-				const int32 TotalQuantity = SourceInventory[SourceIndex].ItemQuantity + Inventory[DestinationIndex].ItemQuantity;
-				Inventory[DestinationIndex].ItemQuantity = FMath::Clamp(TotalQuantity, 0, MaxStack);
-				SourceInventory[SourceIndex].ItemQuantity = TotalQuantity - MaxStack;	
+				const int32 TotalQuantity = SourceInventorySlot.ItemQuantity + DestinationInventorySlot.ItemQuantity;
+				DestinationInventorySlot.ItemQuantity = FMath::Clamp(TotalQuantity, 0, MaxStack);
+				SourceInventorySlot.ItemQuantity = TotalQuantity - MaxStack;
+				if (SourceInventorySlot.ItemQuantity <= 0)
+				{
+					SourceInventorySlot.SetEmpty();
+				}
 			}
 		}
 	}
 	else
 	{
-		SwapInventorySlots(SourceInventory[SourceIndex], Inventory[DestinationIndex]);
+		SwapInventorySlots(SourceInventorySlot, DestinationInventorySlot);
 	}
 	
 	OnInventoryUpdatedDelegate.Broadcast();
