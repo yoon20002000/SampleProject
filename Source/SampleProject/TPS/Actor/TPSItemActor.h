@@ -22,5 +22,5 @@ public:
 	void SetItemData(const FName& ItemName, const int32 Quantity);
 private:
 	UPROPERTY(EditDefaultsOnly, meta=(allowPrivateAccess=true))
-	TObjectPtr<UTPSItemDataComponent> ItemDataComponent;
+	TObjectPtr<UTPSItemDataComponent> ItemDataComp;
 };

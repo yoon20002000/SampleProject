@@ -5,23 +5,26 @@
 ATPSItemActor::ATPSItemActor()
 {
 	PrimaryActorTick.bCanEverTick = false;
-	ItemDataComponent = CreateDefaultSubobject<UTPSItemDataComponent>(TEXT("Item Data Comp"));
+	ItemDataComp = CreateDefaultSubobject<UTPSItemDataComponent>(TEXT("Item Data Comp"));
 }
 
 void ATPSItemActor::Interaction(AActor* InteractionActor)
 {
 	if (UTPSInventoryComponent* InventoryComponent = InteractionActor->GetComponentByClass<UTPSInventoryComponent>())
 	{
-		ItemDataComponent->InteractionItem(InventoryComponent);
+		ItemDataComp->InteractionItem(InventoryComponent);
 	}
 }
 
 UTPSItemDataComponent* ATPSItemActor::GetItemDataComponent()
 {
-	return ItemDataComponent;
+	return ItemDataComp;
 }
 
 void ATPSItemActor::SetItemData(const FName& ItemName, const int32 Quantity)
 {
-	ItemDataComponent->SetItemData(ItemName, Quantity);
+	if (ItemDataComp != nullptr)
+	{
+		ItemDataComp->SetItemData(ItemName, Quantity);	
+	}
 }

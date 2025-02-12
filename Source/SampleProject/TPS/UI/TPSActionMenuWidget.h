@@ -27,6 +27,8 @@ protected:
 	void OnClickedDrop1();
 	UFUNCTION()
 	void OnClickedDropAll();
+
+	void CheckLeaveWidget();
 private:
 	UPROPERTY(EditDefaultsOnly, meta=(BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<UVerticalBox> ButtonsScrollBox;

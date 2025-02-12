@@ -34,14 +34,26 @@ void UTPSActionMenuWidget::NativeOnMouseLeave(const FPointerEvent& InMouseEvent)
 void UTPSActionMenuWidget::OnClickedUse()
 {
 	UE_LOG(LogTemp, Log, TEXT("Use Item : %s"), *InventoryComp->GetInventorySlotOrNullptr(InteractionTargetIndex)->ItemName.ToString());
+	InventoryComp->RemoveItem(InteractionTargetIndex, false, true);
+	CheckLeaveWidget();
 }
 
 void UTPSActionMenuWidget::OnClickedDrop1()
 {
 	InventoryComp->RemoveItem(InteractionTargetIndex, false, false);
+	CheckLeaveWidget();
 }
 
 void UTPSActionMenuWidget::OnClickedDropAll()
 {
 	InventoryComp->RemoveItem(InteractionTargetIndex, true, false);
+	CheckLeaveWidget();
+}
+
+void UTPSActionMenuWidget::CheckLeaveWidget()
+{
+	if (InventoryComp->GetInventorySlotOrNullptr(InteractionTargetIndex)->ItemQuantity <= 0)
+	{
+		RemoveFromParent();
+	}
 }
