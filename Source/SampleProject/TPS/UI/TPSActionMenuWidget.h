@@ -17,9 +17,16 @@ public:
 	void Init(UTPSInventoryComponent* InInventoryComp, const int32 InTargetIndex);
 	
 protected:
+	
 	virtual void NativeConstruct() override;
 	virtual void NativeOnMouseLeave(const FPointerEvent& InMouseEvent) override;
-	
+
+	UFUNCTION()
+	void OnClickedUse();
+	UFUNCTION()
+	void OnClickedDrop1();
+	UFUNCTION()
+	void OnClickedDropAll();
 private:
 	UPROPERTY(EditDefaultsOnly, meta=(BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<UVerticalBox> ButtonsScrollBox;

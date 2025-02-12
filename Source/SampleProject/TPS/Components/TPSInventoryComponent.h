@@ -63,7 +63,7 @@ public:
 	void TransferSlots(const int32 SourceIndex, UTPSInventoryComponent* SourceInventoryComp, const int32 DestinationIndex);
 
 	int32 GetInventorySlotSize() const;
-
+	const FInventorySlot* GetInventorySlotOrNullptr(const int32 SlotIndex) const;
 	FItem* GetItemDataOrNullptr(const FName& ItemName) const;
 protected:
 	virtual void BeginPlay() override;

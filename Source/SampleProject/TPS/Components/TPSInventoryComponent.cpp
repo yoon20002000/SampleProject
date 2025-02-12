@@ -91,6 +91,11 @@ int32 UTPSInventoryComponent::GetInventorySlotSize() const
 	return InventorySlotMaxSize;
 }
 
+const FInventorySlot* UTPSInventoryComponent::GetInventorySlotOrNullptr(const int32 SlotIndex) const
+{
+	return &Inventory[SlotIndex];
+}
+
 FItem* UTPSInventoryComponent::GetItemDataOrNullptr(const FName& ItemName) const
 {
 
