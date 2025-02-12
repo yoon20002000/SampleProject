@@ -13,7 +13,7 @@ Code convention
 작업 환경 : UE 5.5, Rider, Git  
 사용 플러그인 : GAS  
 
-
+개발 정리 블로그 : https://blog.naver.com/yoon20002000/223755810465
 
 Input
 - Data Asset에 Input 및 Tag 정의
