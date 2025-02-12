@@ -80,7 +80,7 @@ FReply UTPSInventorySlotWidget::NativeOnPreviewMouseButtonDown(const FGeometry& 
 
 		if (ActionMenuWidget != nullptr)
 		{
-			// 위치 설정 해줘야 됨.
+			ActionMenuWidget->Init(InventoryComp.Get(), InventorySlotIndex);
 			ActionMenuWidget->AddToViewport();	
 		}		
 	}

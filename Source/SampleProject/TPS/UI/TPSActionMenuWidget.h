@@ -3,6 +3,7 @@
 #include "UI/TPSCommonUserWidget.h"
 #include "TPSActionMenuWidget.generated.h"
 
+class UVerticalBox;
 class UTPSInventoryComponent;
 class UButton;
 /**
@@ -14,7 +15,14 @@ class SAMPLEPROJECT_API UTPSActionMenuWidget : public UTPSCommonUserWidget
 	GENERATED_BODY()
 public:
 	void Init(UTPSInventoryComponent* InInventoryComp, const int32 InTargetIndex);
+	
+protected:
+	virtual void NativeConstruct() override;
+	virtual void NativeOnMouseLeave(const FPointerEvent& InMouseEvent) override;
+	
 private:
+	UPROPERTY(EditDefaultsOnly, meta=(BindWidget, AllowPrivateAccess = true))
+	TObjectPtr<UVerticalBox> ButtonsScrollBox;
 	UPROPERTY(EditDefaultsOnly, meta=(BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<UButton> UseButton;
 	UPROPERTY(EditDefaultsOnly, meta=(BindWidget, AllowPrivateAccess = true))
