@@ -3,7 +3,7 @@
 #include "Components/TPSInventoryComponent.h"
 #include "Components/WrapBox.h"
 #include "Components/WrapBoxSlot.h"
-#include "UI/TPSInventorySlot.h"
+#include "UI/Inventory/TPSInventorySlotWidget.h"
 
 void UTPSInventoryGridWidget::Init(UTPSInventoryComponent* InInventoryComp)
 {
@@ -32,7 +32,7 @@ void UTPSInventoryGridWidget::CreateInventorySlots()
 	int SlotIndex = 0;
 	for (const FInventorySlot& InventorySlot : InventoryComp->GetInventorySlots())
 	{
-		UTPSInventorySlot* NewInventorySlotWidget = CreateWidget<UTPSInventorySlot>(
+		UTPSInventorySlotWidget* NewInventorySlotWidget = CreateWidget<UTPSInventorySlotWidget>(
 			this, InventorySlotWidget.LoadSynchronous());
 		NewInventorySlotWidget->Init(InventoryComp.Get(), SlotIndex, InventorySlot.ItemName,
 		                             InventorySlot.ItemQuantity);

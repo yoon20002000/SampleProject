@@ -4,7 +4,7 @@
 #include "TPSInventoryGridWidget.generated.h"
 
 class UWrapBox;
-class UTPSInventorySlot;
+class UTPSInventorySlotWidget;
 class UTPSInventoryComponent;
 /**
  * 
@@ -24,6 +24,6 @@ private:
 	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<UWrapBox> GridWrapBox;
 	UPROPERTY(EditDefaultsOnly, meta=(AllowPrivateAccess = true))
-	TSoftClassPtr<UTPSInventorySlot> InventorySlotWidget;
+	TSoftClassPtr<UTPSInventorySlotWidget> InventorySlotWidget;
 	TWeakObjectPtr<UTPSInventoryComponent> InventoryComp;
 };

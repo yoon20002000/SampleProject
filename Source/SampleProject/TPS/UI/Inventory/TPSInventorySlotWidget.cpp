@@ -1,21 +1,21 @@
-#include "UI/TPSInventorySlot.h"
+#include "UI/Inventory/TPSInventorySlotWidget.h"
 
 #include "CommonNumericTextBlock.h"
-#include "TPSDD_InventorySlot.h"
+#include "TPSDrawPreview.h"
 #include "TPSGameManager.h"
 #include "TPSSystemManager.h"
 #include "Components/Image.h"
 #include "Components/SizeBox.h"
 #include "Components/TPSInventoryComponent.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
-#include "Inventory/TPSDrawPreview.h"
+#include "UI/TPSDD_InventorySlot.h"
 
-bool UTPSInventorySlot::Initialize()
+bool UTPSInventorySlotWidget::Initialize()
 {
 	return Super::Initialize();
 }
 
-void UTPSInventorySlot::Init(UTPSInventoryComponent* InInventoryComp, const int32 InSlotIndex, const FName& InItemName, const int32 ItemQuantity)
+void UTPSInventorySlotWidget::Init(UTPSInventoryComponent* InInventoryComp, const int32 InSlotIndex, const FName& InItemName, const int32 ItemQuantity)
 {
 	InventoryComp = InInventoryComp;
 	InventorySlotIndex = InSlotIndex;
@@ -23,7 +23,7 @@ void UTPSInventorySlot::Init(UTPSInventoryComponent* InInventoryComp, const int3
 	UpdateInventorySlot(InItemName, ItemQuantity);
 }
 
-void UTPSInventorySlot::UpdateInventorySlot(const FName& InItemName, const int32 Quantity)
+void UTPSInventorySlotWidget::UpdateInventorySlot(const FName& InItemName, const int32 Quantity)
 {
 	if (InItemName == NAME_None)
 	{
@@ -52,7 +52,7 @@ void UTPSInventorySlot::UpdateInventorySlot(const FName& InItemName, const int32
 	QuantityText->SetCurrentValue(Quantity);
 }
 
-FReply UTPSInventorySlot::NativeOnPreviewMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+FReply UTPSInventorySlotWidget::NativeOnPreviewMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	Super::NativeOnPreviewMouseButtonDown(InGeometry, InMouseEvent);
 	
@@ -71,7 +71,7 @@ FReply UTPSInventorySlot::NativeOnPreviewMouseButtonDown(const FGeometry& InGeom
 	return FReply::Unhandled();
 }
 
-void UTPSInventorySlot::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent,
+void UTPSInventorySlotWidget::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent,
 	UDragDropOperation*& OutOperation)
 {
 	Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
@@ -89,7 +89,7 @@ void UTPSInventorySlot::NativeOnDragDetected(const FGeometry& InGeometry, const 
 	}
 }
 
-bool UTPSInventorySlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent,
+bool UTPSInventorySlotWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent,
 	UDragDropOperation* InOperation)
 {
 	if (UTPSDD_InventorySlot* DD_InventorySlot = Cast<UTPSDD_InventorySlot>(InOperation))

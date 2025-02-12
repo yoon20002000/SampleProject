@@ -1,7 +1,7 @@
 #pragma once
 
 #include "UI/TPSCommonUserWidget.h"
-#include "TPSInventorySlot.generated.h"
+#include "TPSInventorySlotWidget.generated.h"
 
 class UTPSDragDropOperation;
 class UButton;
@@ -15,7 +15,7 @@ class UBorder;
  * 
  */
 UCLASS()
-class SAMPLEPROJECT_API UTPSInventorySlot : public UTPSCommonUserWidget
+class SAMPLEPROJECT_API UTPSInventorySlotWidget : public UTPSCommonUserWidget
 {
 	GENERATED_BODY()
 public:
