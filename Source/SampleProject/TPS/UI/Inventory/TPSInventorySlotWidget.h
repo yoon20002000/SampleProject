@@ -3,6 +3,7 @@
 #include "UI/TPSCommonUserWidget.h"
 #include "TPSInventorySlotWidget.generated.h"
 
+class UTPSActionMenuWidget;
 class UTPSDragDropOperation;
 class UButton;
 struct FItem;
@@ -43,6 +44,12 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, meta=(AllowPrivateAccess = true))
 	TSoftClassPtr<UTPSDragDropOperation> DragDropOperationClass;
+
+	UPROPERTY(EditDefaultsOnly, meta=(AllowPrivateAccess = true))
+	TSoftClassPtr<UTPSActionMenuWidget> ActionMenuWidgetClass;
+
+	UPROPERTY()
+	TObjectPtr<UTPSActionMenuWidget> ActionMenuWidget;
 	
 	int32 InventorySlotIndex;
 	FName ItemName;

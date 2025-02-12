@@ -8,7 +8,9 @@
 #include "Components/SizeBox.h"
 #include "Components/TPSInventoryComponent.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "UI/TPSActionMenuWidget.h"
 #include "UI/TPSDD_InventorySlot.h"
+#include "UI/TPSUIManager.h"
 
 bool UTPSInventorySlotWidget::Initialize()
 {
@@ -66,6 +68,21 @@ FReply UTPSInventorySlotWidget::NativeOnPreviewMouseButtonDown(const FGeometry& 
 	{
 		FEventReply EventReply = UWidgetBlueprintLibrary::DetectDragIfPressed(InMouseEvent, this, EKeys::LeftMouseButton);
 		return EventReply.NativeReply;
+	}
+	else if (InMouseEvent.IsMouseButtonDown(EKeys::RightMouseButton))
+	{
+		if (ActionMenuWidget != nullptr)
+		{
+			ActionMenuWidget->RemoveFromParent();
+		}
+		
+		ActionMenuWidget = CreateWidget<UTPSActionMenuWidget>(this,ActionMenuWidgetClass.LoadSynchronous());
+
+		if (ActionMenuWidget != nullptr)
+		{
+			// 위치 설정 해줘야 됨.
+			ActionMenuWidget->AddToViewport();	
+		}		
 	}
 
 	return FReply::Unhandled();
