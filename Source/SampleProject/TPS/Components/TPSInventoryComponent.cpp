@@ -4,6 +4,8 @@
 #include "TPSHelper.h"
 #include "TPSItemDataComponent.h"
 #include "TPSSystemManager.h"
+#include "Actor/TPSInteractionActorBase.h"
+#include "Actor/TPSItemActor.h"
 #include "System/TPSCollisionChannels.h"
 
 
@@ -56,7 +58,7 @@ void UTPSInventoryComponent::TransferSlots(const int32 SourceIndex, UTPSInventor
 	FInventorySlot& DestinationInventorySlot = Inventory[DestinationIndex];
 	if (SourceInventorySlot.ItemName == DestinationInventorySlot.ItemName)
 	{
-		if (FItem* ItemData= UTPSSystemManager::Get()->GetGameManager()->GetItem(SourceInventorySlot.ItemName))
+		if (FItem* ItemData= GetItemDataOrNullptr(SourceInventorySlot.ItemName))
 		{
 			const int32 MaxStack = ItemData->StackSize;
 			if (DestinationInventorySlot.ItemQuantity == MaxStack)
@@ -87,6 +89,19 @@ void UTPSInventoryComponent::TransferSlots(const int32 SourceIndex, UTPSInventor
 int32 UTPSInventoryComponent::GetInventorySlotSize() const
 {
 	return InventorySlotMaxSize;
+}
+
+FItem* UTPSInventoryComponent::GetItemDataOrNullptr(const FName& ItemName) const
+{
+
+	FItem* ItemData = UTPSSystemManager::Get()->GetGameManager()->GetItemDataOrNullptr(ItemName);
+	if (ItemData == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("ItemData is null Item Name is %s"), *ItemName.ToString());
+		return nullptr;
+	}
+	
+	return ItemData;
 }
 
 void UTPSInventoryComponent::BeginPlay()
@@ -151,7 +166,7 @@ void UTPSInventoryComponent::AddItemToInventory(const FName& ItemName, const int
 
 int32 UTPSInventoryComponent::GetMaxStackSize(const FName& ItemName) const
 {
-	FItem* ItemData = UTPSSystemManager::Get()->GetGameManager()->GetItem(ItemName);
+	FItem* ItemData = GetItemDataOrNullptr(ItemName);
 	if (ItemData == nullptr)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Item Data is nullptr!! Check Item Data Table! %s"), *ItemName.ToString());
@@ -159,6 +174,47 @@ int32 UTPSInventoryComponent::GetMaxStackSize(const FName& ItemName) const
 	}
 
 	return ItemData->StackSize;
+}
+
+void UTPSInventoryComponent::RemoveItem(const int32 Index, const bool bRemoveAll, const bool bIsConsumed)
+{
+	if (Index < 0 || Index >= Inventory.Num())
+	{
+		UE_LOG(LogTemp, Log, TEXT("Index i not in range off array!!"));
+		return;
+	}
+	
+	FInventorySlot& TargetSlot = Inventory[Index];
+
+	if (TargetSlot.ItemQuantity == 1 || bRemoveAll == true)
+	{
+		if (bIsConsumed == false)
+		{
+			DropItem(TargetSlot.ItemName,TargetSlot.ItemQuantity);
+		}
+		TargetSlot.SetEmpty();
+	}
+	else
+	{
+		if (bIsConsumed == false)
+		{
+			DropItem(TargetSlot.ItemName, 1);
+		}
+		TargetSlot.ItemQuantity -= 1;
+	}
+
+	OnInventoryUpdatedDelegate.Broadcast();
+}
+
+void UTPSInventoryComponent::DropItem(const FName& ItemName, const int32 Quantity)
+{
+	AActor* OwnerActor = GetOwner();
+	FVector SpawnLocation = OwnerActor->GetActorLocation() + OwnerActor->GetActorForwardVector() * 30;
+	FRotator SpawnRotation = FRotator::ZeroRotator;
+	
+	ATPSItemActor* DropItemActor = UTPSSystemManager::Get()->GetGameManager()->SpawnItemActor<ATPSItemActor>(ItemName, SpawnLocation, SpawnRotation);
+
+	DropItemActor->SetItemData(ItemName, Quantity);
 }
 
 void UTPSInventoryComponent::TraceItem()

@@ -7,7 +7,7 @@
 
 void UTPSDrawPreview::SetPreview(const FName& InItemName)
 {
-	if (FItem* Item = UTPSSystemManager::Get()->GetGameManager()->GetItem(FName(InItemName)))
+	if (FItem* Item = UTPSSystemManager::Get()->GetGameManager()->GetItemDataOrNullptr(FName(InItemName)))
 	{
 		PreviewItemIconImage->SetBrushFromTexture(Item->Thumbnail);	
 	}

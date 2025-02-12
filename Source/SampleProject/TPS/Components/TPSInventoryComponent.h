@@ -53,7 +53,9 @@ public:
 	void AddItemToInventory(const FName& ItemName,const int32 Quantity);
 	// Get Max Stack Size from Item Data Table
 	int32 GetMaxStackSize(const FName& ItemName) const;
-	void RemoveItem();
+	// Index : Remove Item Slot Index, bRemoveAll : Remove All Items, bIsConsumed : Is Used true
+	void RemoveItem(const int32 Index, const bool bRemoveAll = false, const bool bIsConsumed = false);
+	void DropItem(const FName& ItemName, const int32 Quantity);
 	// Find Same Item & below Max Stack Size 
 	FInventorySlot* FindSameItemAddableSlot(const FName& ItemName);
 	
@@ -61,6 +63,8 @@ public:
 	void TransferSlots(const int32 SourceIndex, UTPSInventoryComponent* SourceInventoryComp, const int32 DestinationIndex);
 
 	int32 GetInventorySlotSize() const;
+
+	FItem* GetItemDataOrNullptr(const FName& ItemName) const;
 protected:
 	virtual void BeginPlay() override;
 	void AddNewItemToInventory(const FName& ItemName,const int32 Quantity);

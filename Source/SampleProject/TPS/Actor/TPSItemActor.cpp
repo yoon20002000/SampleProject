@@ -15,3 +15,13 @@ void ATPSItemActor::Interaction(AActor* InteractionActor)
 		ItemDataComponent->InteractionItem(InventoryComponent);
 	}
 }
+
+UTPSItemDataComponent* ATPSItemActor::GetItemDataComponent()
+{
+	return ItemDataComponent;
+}
+
+void ATPSItemActor::SetItemData(const FName& ItemName, const int32 Quantity)
+{
+	ItemDataComponent->SetItemData(ItemName, Quantity);
+}

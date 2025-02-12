@@ -16,6 +16,10 @@ public:
 	/// TPSInteractionInterface Start
 	virtual void Interaction(AActor* InteractionActor) override;
 	/// TPSInteractionInterface End
+
+	UTPSItemDataComponent* GetItemDataComponent();
+	// Runtime ItemComponent Data Setting용
+	void SetItemData(const FName& ItemName, const int32 Quantity);
 private:
 	UPROPERTY(EditDefaultsOnly, meta=(allowPrivateAccess=true))
 	TObjectPtr<UTPSItemDataComponent> ItemDataComponent;

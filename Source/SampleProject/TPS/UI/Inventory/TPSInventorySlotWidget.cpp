@@ -34,7 +34,7 @@ void UTPSInventorySlotWidget::UpdateInventorySlot(const FName& InItemName, const
 		return;
 	}
 
-	if (const FItem* Item = UTPSSystemManager::Get()->GetGameManager()->GetItem(InItemName))
+	if (const FItem* Item = UTPSSystemManager::Get()->GetGameManager()->GetItemDataOrNullptr(InItemName))
 	{
 		if (Item->Thumbnail != nullptr && Quantity > 0)
 		{

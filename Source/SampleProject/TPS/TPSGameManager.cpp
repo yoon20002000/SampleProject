@@ -1,5 +1,6 @@
 ﻿#include "TPSGameManager.h"
 
+#include "IDetailTreeNode.h"
 #include "TPSHelper.h"
 #include "Game/TPSGameMode.h"
 #include "Character/TPSPlayer.h"
@@ -97,11 +98,16 @@ UGameDataAsset* UTPSGameManager::GetDataAsset()
 	return GameDataAsset;
 }
 
-FItem* UTPSGameManager::GetItem(const FName& ItemName)
+const FGameTableInfo* UTPSGameManager::GetItemTable() const
 {
-	const FGameTableInfo& ItemTableInfo = GameDataAsset->GetGameTableData(ItemDataTableName);
+	return &GameDataAsset->GetGameTableData(ItemDataTableName);
+}
 
-	if (UDataTable* DataTable = ItemTableInfo.DataTable.LoadSynchronous())
+FItem* UTPSGameManager::GetItemDataOrNullptr(const FName& ItemName)
+{
+	const FGameTableInfo* ItemTableInfo = GetItemTable();
+
+	if (UDataTable* DataTable = ItemTableInfo->DataTable.LoadSynchronous())
 	{
 		FItem* Item = DataTable->FindRow<FItem>(ItemName,TEXT("Find Item Data"));
 		return Item;

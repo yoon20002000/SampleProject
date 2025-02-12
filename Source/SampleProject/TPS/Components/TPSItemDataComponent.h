@@ -13,7 +13,8 @@ public:
 	UTPSItemDataComponent();
 	FItem* GetItemData();
 	void InteractionItem(UTPSInventoryComponent* InventoryComponent);
-	
+	// 런타임 Item Actor 생성 시 데이터 세팅용
+	void SetItemData(const FName& ItemName, const int32 InQuantity);
 private:
 	UPROPERTY(EditDefaultsOnly, meta=(AllowPrivateAccess=true))
 	FDataTableRowHandle ItemDataHandle;
