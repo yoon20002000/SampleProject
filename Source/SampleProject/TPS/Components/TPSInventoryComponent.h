@@ -46,7 +46,7 @@ public:
 	void AddItemToInventory(const FName& ItemName,const int32 Quantity);
 	int32 GetMaxStackSize(const FName& ItemName) const;
 	void RemoveItem();
-	FInventorySlot* FindAddSlot(const FName& ItemName);
+	FInventorySlot* FindSameItemAddableSlot(const FName& ItemName);
 	
 	const TArray<FInventorySlot>& GetInventorySlots();
 	void InteractionWithCurHitItem();

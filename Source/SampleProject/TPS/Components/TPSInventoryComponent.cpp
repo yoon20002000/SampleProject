@@ -17,7 +17,7 @@ UTPSInventoryComponent::UTPSInventoryComponent()
 }
 
 
-FInventorySlot* UTPSInventoryComponent::FindAddSlot(const FName& ItemName)
+FInventorySlot* UTPSInventoryComponent::FindSameItemAddableSlot(const FName& ItemName)
 {
 	for (FInventorySlot& Slot: Inventory)
 	{
@@ -122,8 +122,7 @@ void UTPSInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 
 void UTPSInventoryComponent::AddItemToInventory(const FName& ItemName, const int32 Quantity)
 {
-	FInventorySlot* Slot = FindAddSlot(ItemName);
-
+	FInventorySlot* Slot = FindSameItemAddableSlot(ItemName);
 	
 	int32 MaxStackSize = GetMaxStackSize(ItemName);
 	if (MaxStackSize < Quantity)
@@ -131,11 +130,7 @@ void UTPSInventoryComponent::AddItemToInventory(const FName& ItemName, const int
 		UE_LOG(LogTemp, Error, TEXT("Item Actor Quantity is error!!! Name : %s, Quantity : %d"), *ItemName.ToString(),
 		       Quantity);
 	}
-
-	// 없는 경우 빈 슬롯 찾아서 추가
-	// 있는데 널널 한 경우 그냥 수 추가
-	// 있긴한데 공간 좀 부족 한 경우 하나 맥스 처리 하고 나머지를 빈 슬롯 찾아서 추가
-
+	
 	if (Slot != nullptr)
 	{
 		const int32 TotalQuantity = Quantity + Slot->ItemQuantity;
