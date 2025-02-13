@@ -5,6 +5,9 @@
 #include "Components/ActorComponent.h"
 #include "TPSInventoryComponent.generated.h"
 
+class UGameplayEffect;
+class UTPSAbilitySystemComponent;
+
 USTRUCT(BlueprintType)
 struct FItem : public FTableRowBase
 {
@@ -22,6 +25,8 @@ public:
 	TSoftClassPtr<AActor> ItemClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 StackSize;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSoftClassPtr<UGameplayEffect> ApplyEffectClass;
 };
 USTRUCT(BlueprintType)
 struct FInventorySlot
@@ -55,9 +60,13 @@ public:
 	int32 GetMaxStackSize(const FName& ItemName) const;
 	// Index : Remove Item Slot Index, bRemoveAll : Remove All Items, bIsConsumed : Is Used true
 	void RemoveItem(const int32 Index, const bool bRemoveAll = false, const bool bIsConsumed = false);
+	// Spawn Drop Item
+	// ItemName : Drop Item Unique Name, Quantity : Drop Quantity
 	void DropItem(const FName& ItemName, const int32 Quantity);
 	// Find Same Item & below Max Stack Size 
 	FInventorySlot* FindSameItemAddableSlot(const FName& ItemName);
+	// Consume Item
+	void ConsumeItem(UTPSAbilitySystemComponent* InstigatorASC, const int32 InventorySlotIndex);
 	
 	const TArray<FInventorySlot>& GetInventorySlots();
 	void TransferSlots(const int32 SourceIndex, UTPSInventoryComponent* SourceInventoryComp, const int32 DestinationIndex);

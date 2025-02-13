@@ -19,11 +19,12 @@ FVector UTPSGCN_SoundCue::GetSpawnLocation(const FHitResult& HitResult) const
 
 bool UTPSGCN_SoundCue::OnExecute_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters) const
 {
-	const FHitResult* HitResult = Parameters.EffectContext.GetHitResult();
-
-	if (ATPSCharacter* Character = Cast<ATPSCharacter>(HitResult->GetActor()))
+	if (const FHitResult* HitResult = Parameters.EffectContext.GetHitResult())
 	{
-		UGameplayStatics::SpawnSoundAttached(SoundCue,Character->GetMesh(),TEXT("Light03"));	
+		if (ATPSCharacter* Character = Cast<ATPSCharacter>(HitResult->GetActor()))
+		{
+			UGameplayStatics::SpawnSoundAttached(SoundCue,Character->GetMesh(),TEXT("Light03"));	
+		}	
 	}
 	
 	return Super::OnExecute_Implementation(MyTarget, Parameters);

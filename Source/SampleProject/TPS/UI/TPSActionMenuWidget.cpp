@@ -1,6 +1,8 @@
 #include "UI/TPSActionMenuWidget.h"
 
+#include "TPSHelper.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
+#include "Character/TPSPlayer.h"
 #include "Components/Button.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/TPSInventoryComponent.h"
@@ -34,7 +36,9 @@ void UTPSActionMenuWidget::NativeOnMouseLeave(const FPointerEvent& InMouseEvent)
 void UTPSActionMenuWidget::OnClickedUse()
 {
 	UE_LOG(LogTemp, Log, TEXT("Use Item : %s"), *InventoryComp->GetInventorySlotOrNullptr(InteractionTargetIndex)->ItemName.ToString());
-	InventoryComp->RemoveItem(InteractionTargetIndex, false, true);
+	// 현재는 UI를 열 수 있는게 Player어 만 있기 때문에 Player로 상정
+	ATPSPlayer* Player = TPSHelper::GetPlayerOrNullptr();
+	InventoryComp->ConsumeItem(Player->GetTPSAbilitySystemComponent(), InteractionTargetIndex);
 	CheckLeaveWidget();
 }
 

@@ -1,6 +1,8 @@
 ﻿#include "TPSHelper.h"
 
 #include "TPSSystemManager.h"
+#include "Character/TPSPlayer.h"
+#include "Character/TPSPlayerController.h"
 #include "Components/TPSHealthComponent.h"
 #include "Game/TPSGameInstance.h"
 #include "Game/TPSGameMode.h"
@@ -36,6 +38,15 @@ APlayerController* TPSHelper::GetPlayerController(UWorld* InWorld)
 		return UGameplayStatics::GetPlayerController(InWorld, 0);
 	}
 	return UGameplayStatics::GetPlayerController(GetWorld(), 0);
+}
+
+ATPSPlayer* TPSHelper::GetPlayerOrNullptr()
+{
+	if (APlayerController* PC = GetPlayerController())
+	{
+		return Cast<ATPSPlayer>(PC->GetPawn());	
+	}
+	 return nullptr;
 }
 
 ULocalPlayer* TPSHelper::GetLocalPlayer(UWorld* InWorld)

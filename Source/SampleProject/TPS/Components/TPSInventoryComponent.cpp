@@ -37,6 +37,30 @@ FInventorySlot* UTPSInventoryComponent::FindSameItemAddableSlot(const FName& Ite
 	return nullptr;
 }
 
+void UTPSInventoryComponent::ConsumeItem(UTPSAbilitySystemComponent* InstigatorASC, const int32 InventorySlotIndex)
+{
+	if (InventorySlotIndex < 0 || InventorySlotIndex >= Inventory.Num())
+	{
+		UE_LOG(LogTemp, Log, TEXT("Slot Index is out of range! %d"), InventorySlotIndex);
+		return;
+	}
+
+	FInventorySlot& TargetItem = Inventory[InventorySlotIndex];
+	
+	if (FItem* ItemData = GetItemDataOrNullptr(TargetItem.ItemName))
+	{
+		FGameplayEffectContextHandle EffectContext = InstigatorASC->MakeEffectContext();
+
+		UClass* GE = ItemData->ApplyEffectClass.LoadSynchronous();
+		
+		const UGameplayEffect* Effect = GE->GetDefaultObject<UGameplayEffect>();
+	
+		InstigatorASC->ApplyGameplayEffectToSelf(Effect,1,EffectContext);
+		
+		RemoveItem(InventorySlotIndex, false, true);
+	}
+}
+
 const TArray<FInventorySlot>& UTPSInventoryComponent::GetInventorySlots()
 {
 	return Inventory;
