@@ -37,9 +37,11 @@ void UTPSActionMenuWidget::OnClickedUse()
 {
 	UE_LOG(LogTemp, Log, TEXT("Use Item : %s"), *InventoryComp->GetInventorySlotOrNullptr(InteractionTargetIndex)->ItemName.ToString());
 	// 현재는 UI를 열 수 있는게 Player어 만 있기 때문에 Player로 상정
-	ATPSPlayer* Player = TPSHelper::GetPlayerOrNullptr();
-	InventoryComp->ConsumeItem(Player->GetTPSAbilitySystemComponent(), InteractionTargetIndex);
-	CheckLeaveWidget();
+	if (ATPSPlayer* Player = TPSHelper::GetPlayerOrNullptr())
+	{
+		InventoryComp->ConsumeItem(Player->GetTPSAbilitySystemComponent(), InteractionTargetIndex);
+		CheckLeaveWidget();	
+	}
 }
 
 void UTPSActionMenuWidget::OnClickedDrop1()
