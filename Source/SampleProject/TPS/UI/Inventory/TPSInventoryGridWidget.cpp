@@ -3,6 +3,7 @@
 #include "Components/TPSInventoryComponent.h"
 #include "Components/WrapBox.h"
 #include "Components/WrapBoxSlot.h"
+#include "UI/TPSDD_InventorySlot.h"
 #include "UI/Inventory/TPSInventorySlotWidget.h"
 
 void UTPSInventoryGridWidget::Init(UTPSInventoryComponent* InInventoryComp)
@@ -25,6 +26,19 @@ void UTPSInventoryGridWidget::BeginDestroy()
 		InventoryComp->OnInventoryUpdatedDelegate.RemoveAll(this);
 	}
 	Super::BeginDestroy();
+}
+
+bool UTPSInventoryGridWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent,
+	UDragDropOperation* InOperation)
+{
+	if (Cast<UTPSDD_InventorySlot>(InOperation) != nullptr)
+	{
+		return true;
+	}
+	else
+	{
+		return Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
+	}
 }
 
 void UTPSInventoryGridWidget::CreateInventorySlots()

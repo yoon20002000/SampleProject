@@ -17,6 +17,7 @@ public:
 	void Init(UTPSInventoryComponent* InInventoryComp);
 	virtual void NativeConstruct() override;
 	virtual void BeginDestroy() override;
+	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 private:
 	void CreateInventorySlots();
 	void OnUpdateInventorySlot();

@@ -101,6 +101,11 @@ void UTPSInventorySlotWidget::NativeOnDragDetected(const FGeometry& InGeometry, 
 		{
 			DD_InventorySlot->DefaultDragVisual = NewDragPreviewWidget;
 			DD_InventorySlot->Init(InventoryComp.Get(),InventorySlotIndex);
+			DD_InventorySlot->AddOnCancelledCallback(
+			[this] ()
+			{
+				InventoryComp->RemoveItem(InventorySlotIndex,true,false);
+			});
 			OutOperation = DD_InventorySlot;
 		}
 	}
@@ -113,8 +118,9 @@ bool UTPSInventorySlotWidget::NativeOnDrop(const FGeometry& InGeometry, const FD
 	{
 		if (InventoryComp == nullptr || DD_InventorySlot->GetInventoryComponent() == nullptr)
 		{
-			return false;
+			return Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
 		}
+		
 		const int32& StartSlotIndex = DD_InventorySlot->GetContentIndex();
 		if (InventorySlotIndex != StartSlotIndex ||
 		InventoryComp != DD_InventorySlot->GetInventoryComponent())
