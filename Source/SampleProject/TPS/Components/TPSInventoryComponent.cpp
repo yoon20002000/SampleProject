@@ -133,6 +133,18 @@ FItem* UTPSInventoryComponent::GetItemDataOrNullptr(const FName& ItemName) const
 	return ItemData;
 }
 
+bool UTPSInventoryComponent::HaveEnoughItems(const FName& ItemName, const int32 Quantity) const
+{
+	for (int Index = 0; Index < InventorySlotMaxSize; ++Index)
+	{
+		if (Inventory[Index].ItemName.IsEqual(ItemName) &&  Inventory[Index].ItemQuantity> Quantity)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 void UTPSInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();

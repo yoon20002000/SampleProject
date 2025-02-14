@@ -74,6 +74,8 @@ public:
 	int32 GetInventorySlotSize() const;
 	const FInventorySlot* GetInventorySlotOrNullptr(const int32 SlotIndex) const;
 	FItem* GetItemDataOrNullptr(const FName& ItemName) const;
+
+	bool HaveEnoughItems(const FName& ItemName, const int32 Quantity) const;
 protected:
 	virtual void BeginPlay() override;
 	void AddNewItemToInventory(const FName& ItemName,const int32 Quantity);
