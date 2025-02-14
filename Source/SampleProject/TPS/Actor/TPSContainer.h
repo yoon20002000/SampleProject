@@ -19,6 +19,7 @@ public:
 	/// ITPSInteractionInterface End
 	
 private:
+	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess=true))
 	TObjectPtr<UTPSInventoryComponent> InventoryComp;
 
 	UPROPERTY(EditDefaultsOnly, meta=(AllowPrivateAccess=true))

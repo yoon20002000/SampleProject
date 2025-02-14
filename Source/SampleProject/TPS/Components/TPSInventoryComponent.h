@@ -36,9 +36,9 @@ private:
 	void SetEmpty();
 	
 public:
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName ItemName;
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 ItemQuantity;
 	
 	friend class UTPSInventoryComponent;
@@ -90,7 +90,7 @@ public:
 private:
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = true))
 	int32 InventorySlotMaxSize = 5;
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = true))
 	TArray<FInventorySlot> Inventory;
 
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = true))
