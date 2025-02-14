@@ -1,7 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "TPSGameInstance.h"
+﻿#include "TPSGameInstance.h"
 
 #include "CommonUISettings.h"
 #include "GameplayTagContainer.h"
@@ -9,13 +6,26 @@
 #include "LogTPSGame.h"
 #include "TPSCommonLocalPlayer.h"
 #include "TPSSystemManager.h"
+#include "Kismet/GameplayStatics.h"
+#include "System/SaveLoad/TPSSaveGame.h"
 #include "UI/TPSUIManager.h"
 
 void UTPSGameInstance::Init()
 {
 	Super::Init();
 	FGameplayTagContainer PlatformTraits = ICommonUIModule::GetSettings().GetPlatformTraits();
-	
+
+	const int32 UserIndex = 0;
+	if (UGameplayStatics::DoesSaveGameExist(SaveData_Name, UserIndex))
+	{
+		PlayerSaveData = Cast<UTPSSaveGame>(UGameplayStatics::LoadGameFromSlot(SaveData_Name, UserIndex));
+	}
+	else
+	{
+		PlayerSaveData = Cast<UTPSSaveGame>(UGameplayStatics::CreateSaveGameObject(UTPSSaveGame::StaticClass()));
+			//NewObject<UTPSSaveGame>();
+	}
+	SaveGameToSlot(PlayerSaveData);
 }
 
 int32 UTPSGameInstance::AddLocalPlayer(ULocalPlayer* NewPlayer, FPlatformUserId UserId)
@@ -69,4 +79,26 @@ void UTPSGameInstance::Shutdown()
 {
 	UTPSSystemManager::Get()->SetWorld(nullptr);
 	Super::Shutdown();
+}
+
+void UTPSGameInstance::SaveGameToSlot(UTPSSaveGame* SaveGameData)
+{
+	const int32 UserIndex = 0;
+	UGameplayStatics::SaveGameToSlot(SaveGameData, SaveData_Name, UserIndex);
+}
+
+void UTPSGameInstance::SaveInventoryData(const TArray<FInventorySlot>& InventorySlots)
+{
+	GetSaveGameData()->SetInventoryData(InventorySlots);
+	SaveGameToSlot(PlayerSaveData);
+}
+
+const TArray<FInventorySlot>& UTPSGameInstance::GetInventoryData()
+{
+	return PlayerSaveData->GetInventoryData();
+}
+
+UTPSSaveGame* UTPSGameInstance::GetSaveGameData() const
+{
+	return PlayerSaveData;
 }

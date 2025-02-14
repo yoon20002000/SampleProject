@@ -6,6 +6,7 @@
 #include "TPSSystemManager.h"
 #include "Actor/TPSInteractionActorBase.h"
 #include "Actor/TPSItemActor.h"
+#include "Game/TPSGameInstance.h"
 #include "System/TPSCollisionChannels.h"
 
 
@@ -67,7 +68,7 @@ const TArray<FInventorySlot>& UTPSInventoryComponent::GetInventorySlots()
 }
 
 void UTPSInventoryComponent::TransferSlots(const int32 SourceIndex, UTPSInventoryComponent* SourceInventoryComp,
-	const int32 DestinationIndex)
+                                           const int32 DestinationIndex)
 {
 
 	if (SourceIndex < 0 || SourceIndex >= SourceInventoryComp->GetInventorySlotSize() ||
@@ -91,13 +92,7 @@ void UTPSInventoryComponent::TransferSlots(const int32 SourceIndex, UTPSInventor
 			}
 			else
 			{
-				const int32 TotalQuantity = SourceInventorySlot.ItemQuantity + DestinationInventorySlot.ItemQuantity;
-				DestinationInventorySlot.ItemQuantity = FMath::Clamp(TotalQuantity, 0, MaxStack);
-				SourceInventorySlot.ItemQuantity = TotalQuantity - MaxStack;
-				if (SourceInventorySlot.ItemQuantity <= 0)
-				{
-					SourceInventorySlot.SetEmpty();
-				}
+				AddQuantityClampMaxStack(SourceInventorySlot, DestinationInventorySlot, MaxStack);
 			}
 		}
 	}
@@ -145,15 +140,39 @@ bool UTPSInventoryComponent::HaveEnoughItems(const FName& ItemName, const int32 
 	return false;
 }
 
+void UTPSInventoryComponent::SaveInventory()
+{
+	// To do 임시 코드 해결 방안 필요
+	if (GetOwner()->IsA(ATPSPlayer::StaticClass()) == false)
+	{
+		return;
+	}
+	if (UTPSGameInstance* GI = Cast<UTPSGameInstance>(GetWorld()->GetGameInstance()))
+	{
+		UE_LOG(LogTemp, Log, TEXT("Saved"));
+		GI->SaveInventoryData(Inventory);
+	}
+}
+
+void UTPSInventoryComponent::LoadInventory()
+{
+	if (UTPSGameInstance* GI = Cast<UTPSGameInstance>(GetWorld()->GetGameInstance()))
+	{
+		Inventory = GI->GetInventoryData();
+	}
+}
+
 void UTPSInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	// 이후 Save, Load 추가 시 기능 추가 필요
+	
 	Inventory.Reserve(InventorySlotMaxSize);
-	for (int i =  0; i < InventorySlotMaxSize; ++i)
+	for (int i =  Inventory.Num(); i < InventorySlotMaxSize; ++i)
 	{
 		Inventory.Add(FInventorySlot());
 	}
+	
+	OnInventoryUpdatedDelegate.AddUObject(this, &ThisClass::SaveInventory);
 }
 
 void UTPSInventoryComponent::AddNewItemToInventory(const FName& ItemName, const int32 Quantity)
@@ -167,6 +186,7 @@ void UTPSInventoryComponent::AddNewItemToInventory(const FName& ItemName, const 
 			break;
 		}
 	}
+	OnInventoryUpdatedDelegate.Broadcast();
 }
 
 void UTPSInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType,
@@ -174,6 +194,23 @@ void UTPSInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	TraceItem();
+}
+
+void UTPSInventoryComponent::AddItemQuantity(const int32 Quantity, FInventorySlot* Slot)
+{
+	Slot->ItemQuantity += Quantity;
+	OnInventoryUpdatedDelegate.Broadcast();
+}
+
+void UTPSInventoryComponent::AddQuantityClampMaxStack(FInventorySlot& SourceInventorySlot, FInventorySlot& DestinationInventorySlot, const int32 MaxStack)
+{
+	const int32 TotalQuantity = SourceInventorySlot.ItemQuantity + DestinationInventorySlot.ItemQuantity;
+	DestinationInventorySlot.ItemQuantity = FMath::Clamp(TotalQuantity, 0, MaxStack);
+	SourceInventorySlot.ItemQuantity = TotalQuantity - MaxStack;
+	if (SourceInventorySlot.ItemQuantity <= 0)
+	{
+		SourceInventorySlot.SetEmpty();
+	}
 }
 
 void UTPSInventoryComponent::AddItemToInventory(const FName& ItemName, const int32 Quantity)
@@ -196,7 +233,7 @@ void UTPSInventoryComponent::AddItemToInventory(const FName& ItemName, const int
 		}
 		else
 		{
-			Slot->ItemQuantity += Quantity;	
+			AddItemQuantity(Quantity, Slot);	
 		}
 	}
 	else

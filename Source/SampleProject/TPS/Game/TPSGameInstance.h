@@ -1,11 +1,10 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
-#include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
 #include "TPSGameInstance.generated.h"
 
+struct FInventorySlot;
+class UTPSSaveGame;
 class UGameDataAsset;
 class UTPSUIManager;
 class ATPSGameMode;
@@ -23,7 +22,15 @@ public:
 	virtual bool RemoveLocalPlayer(ULocalPlayer* ExistingPlayer) override;
 	virtual void ReturnToMainMenu() override;
 	virtual void Shutdown() override;
+	virtual void SaveGameToSlot(UTPSSaveGame* SaveGameData);
 
+	void SaveInventoryData(const TArray<FInventorySlot>& InventorySlots);
+	const TArray<FInventorySlot>& GetInventoryData();
+	UTPSSaveGame* GetSaveGameData() const;
+public:
+	const FString SaveData_Name = TEXT("TPSSaveData");
 private:
 	TWeakObjectPtr<ULocalPlayer> PrimaryPlayer;
+	UPROPERTY()
+	TObjectPtr<UTPSSaveGame> PlayerSaveData;
 };

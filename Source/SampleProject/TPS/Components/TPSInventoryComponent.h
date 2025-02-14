@@ -56,6 +56,11 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	// ItemName : Item Unique ID, Quantity : Must below Max Stack Size
 	void AddItemToInventory(const FName& ItemName,const int32 Quantity);
+	// Add Quantity & Broadcast Update
+	void AddItemQuantity(int32 Quantity, FInventorySlot* Slot);
+	// Add Quantity At Destination Slot and Start Slot, Broadcast Update 
+	void AddQuantityClampMaxStack(FInventorySlot& SourceInventorySlot, FInventorySlot& DestinationInventorySlot,
+								  int32 MaxStack);
 	// Get Max Stack Size from Item Data Table
 	int32 GetMaxStackSize(const FName& ItemName) const;
 	// Index : Remove Item Slot Index, bRemoveAll : Remove All Items, bIsConsumed : Is Used true
@@ -76,8 +81,13 @@ public:
 	FItem* GetItemDataOrNullptr(const FName& ItemName) const;
 
 	bool HaveEnoughItems(const FName& ItemName, const int32 Quantity) const;
+
+	/// GameData
+	void SaveInventory();
+	void LoadInventory();
 protected:
 	virtual void BeginPlay() override;
+	// AddNewSlot at Item & Broadcast Update
 	void AddNewItemToInventory(const FName& ItemName,const int32 Quantity);
 private:
 	void TraceItem();

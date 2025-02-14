@@ -37,6 +37,8 @@ void ATPSPlayer::BeginPlay()
 	SpringArmComp = FindComponentByClass<UTPSSpringArmComponent>();
 	CameraComp = FindComponentByClass<UTPSCameraComponent>();
 	InitHUD();
+	// To do 위치 변경 될 수 있음 Inventory comp begin에서 load 할 대상 입력받아서 처리하도록
+	InventoryComp->LoadInventory();
 }
 
 void ATPSPlayer::BeginDestroy()
