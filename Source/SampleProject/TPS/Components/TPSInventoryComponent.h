@@ -97,7 +97,9 @@ private:
 	float SweepDistance = 100;
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = true))
 	float SweepSphereRadius = 10;
-
+	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = true))
+	float DropForwardDistance= 100;
+	
 	UPROPERTY()
 	TWeakObjectPtr<AActor> CurHitActor = nullptr;
 };

@@ -250,12 +250,14 @@ void UTPSInventoryComponent::RemoveItem(const int32 Index, const bool bRemoveAll
 void UTPSInventoryComponent::DropItem(const FName& ItemName, const int32 Quantity)
 {
 	AActor* OwnerActor = GetOwner();
-	FVector SpawnLocation = OwnerActor->GetActorLocation() + OwnerActor->GetActorForwardVector() * 30;
+	
+	FVector SpawnLocation = OwnerActor->GetActorLocation() + OwnerActor->GetActorForwardVector() * DropForwardDistance;
 	FRotator SpawnRotation = FRotator::ZeroRotator;
 	
-	ATPSItemActor* DropItemActor = UTPSSystemManager::Get()->GetGameManager()->SpawnItemActor<ATPSItemActor>(ItemName, SpawnLocation, SpawnRotation);
-
-	DropItemActor->SetItemData(ItemName, Quantity);
+	if (ATPSItemActor* DropItemActor = UTPSSystemManager::Get()->GetGameManager()->SpawnItemActor<ATPSItemActor>(ItemName, SpawnLocation, SpawnRotation))
+	{
+		DropItemActor->SetItemData(ItemName, Quantity);
+	}
 }
 
 void UTPSInventoryComponent::TraceItem()
