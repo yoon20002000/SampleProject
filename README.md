@@ -80,4 +80,25 @@ UTPSInteractionIndicatorComponent : 플레이어와 상호작용 가능한 Inter
 STPSActorCanvas : Slate를 이용해 Indicator UI 처리  
 UTPSIndicatorLayer : STPSActorCanvas를 이용해 Indicator UI를 표시할 Widget
 
-
+Inventory System
+- IA_Inventory를 이용해 GA_Inventory를 Active 하여 Inventory Open
+- 획득, 사용, 제거, 교체 기능 보유
+- 획득은 기존 IA_Interaction을 통해 진행
+- 사용은 Use를 이용해 사용
+- ex) 포션을 사용 해 체력 회복
+- Drop1 시 한 개 씩, Drop All 시 전체를 한 패키지로 제거
+- 가방을 보유 중인 Container Actor에 Item 이동 가능
+- Drag Drop을 이용해 교체, Stack 병합, 제거 지원
+- 아이템 획득
+![Example Image](./ReadMeResource/아이템%20획득%20및%20병합.gif)
+- 아이템 사용 : 체력 회복 포션
+![Example Image](./ReadMeResource/아이템%20사용.gif)
+- 아이템 제거 
+![Example Image](./ReadMeResource/아이템%20제거.gif)
+![Example Image](./ReadMeResource/DragDrop.gif)
+- 아이템 이동
+![Example Image](./ReadMeResource/이동.gif)
+- 아이템 교체
+![Example Image](./ReadMeResource/교체.gif)
+- 아이템 병합 및 교체체
+![Example Image](./ReadMeResource/스택%20합병.gif)
