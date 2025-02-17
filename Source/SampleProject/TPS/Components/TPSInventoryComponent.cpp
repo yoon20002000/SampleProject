@@ -207,16 +207,25 @@ void UTPSInventoryComponent::BeginPlay()
 
 void UTPSInventoryComponent::AddNewItemToInventory(const FName& ItemName, const int32 Quantity)
 {
-	for (FInventorySlot& Slot: Inventory)
+	bool bIsDirty = false;
+	for (int32 Index = 0; Index < InventorySlotMaxSize; ++Index)
 	{
-		if (Slot.ItemQuantity <= 0)
+		if (Inventory[Index].ItemQuantity <= 0)
 		{
-			Slot.ItemName = ItemName;
-			Slot.ItemQuantity = Quantity;
+			Inventory[Index].ItemName = ItemName;
+			Inventory[Index].ItemQuantity = Quantity;
+			bIsDirty = true;
 			break;
 		}
 	}
-	OnInventoryUpdatedDelegate.Broadcast();
+	if (bIsDirty == true)
+	{
+		OnInventoryUpdatedDelegate.Broadcast();	
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Add Error! Not Enough Slot!!"));	
+	}
 }
 
 void UTPSInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType,
