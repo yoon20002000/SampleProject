@@ -30,9 +30,7 @@ Input
 
 Player
 - 이동(WASD)
-![Example Image](./ReadMeResource/WASD.gif)
 - 점프(Space)
-![Example Image](./ReadMeResource/Jump.gif)
 - 공격(ML)
 ![Example Image](./ReadMeResource/Shot.gif)
 - 특수 공격(MR)
