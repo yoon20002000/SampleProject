@@ -3,12 +3,9 @@
 
 #include "TPSUIManager.h"
 
-#include "CommonActivatableWidget.h"
 #include "CommonUIExtensions.h"
-#include "GameplayTagsManager.h"
 #include "TPSGameUIPolicy.h"
 
-#include "Blueprint/UserWidget.h"
 #include "Data/UIDataAsset.h"
 
 

@@ -1,6 +1,5 @@
 ﻿#include "TPSGameManager.h"
 
-#include "IDetailTreeNode.h"
 #include "TPSHelper.h"
 #include "Game/TPSGameMode.h"
 #include "Character/TPSPlayer.h"
@@ -8,10 +7,16 @@
 #include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/TPSInventoryComponent.h"
+#include "Game/TPSWorldData.h"
 
 UTPSGameManager::UTPSGameManager(const FObjectInitializer& objectInitializer)
 	: Super(objectInitializer)
 {
+	static ConstructorHelpers::FObjectFinder<UDataTable> DT_WordActorData(TEXT("/Game/Data/DT_WorldActors.DT_WorldActors"));
+	if (DT_WordActorData.Succeeded() == true)
+	{
+		WorldSpawnActorData = DT_WordActorData.Object;
+	}
 }
 
 
@@ -80,6 +85,20 @@ void UTPSGameManager::SpawnPlayer(const FString& CharacterDataName, const int Sp
 	{
 		TPSHelper::GetPlayerController()->SetPawn(Player);
 		TPSHelper::GetPlayerController()->Possess(Player);
+	}
+}
+
+void UTPSGameManager::SpawnWorldActors()
+{
+	TArray<FWorldActorData*> WorldActors;
+
+	WorldSpawnActorData->GetAllRows<FWorldActorData>(TEXT("Get World Actor"), OUT WorldActors);
+
+	for (int Index = 0; Index < WorldActors.Num(); ++Index)
+	{
+		SpawnActor<AActor>(WorldActors[Index]->Actor.LoadSynchronous(),
+		                   WorldActors[Index]->ActorTransform.GetLocation(),
+		                   WorldActors[Index]->ActorTransform.Rotator());		
 	}
 }
 

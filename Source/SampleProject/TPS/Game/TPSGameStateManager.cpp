@@ -25,7 +25,7 @@ void UTPSGameStateManager::SetGameplayState(EGameplayState InGameState)
 			}
 		case EGameplayState::Title:
 			{
-				UTPSSystemManager::Get()->GetUIManager()->LoadUI("Title");
+				UTPSSystemManager::Get()->GetUIManager()->LoadUI(TitleUIName, EUILayerType::Menu);
 
 				APlayerController* PC = UGameplayStatics::GetPlayerController(TPSHelper::GetWorld(), 0);
 				PC->SetInputMode(InputUIOnly);
@@ -34,8 +34,9 @@ void UTPSGameStateManager::SetGameplayState(EGameplayState InGameState)
 			}
 		case EGameplayState::MainGame:
 			{
-				UTPSSystemManager::Get()->GetUIManager()->LoadUI("BattleHUD");
-				UTPSSystemManager::Get()->GetGameManager()->SpawnPlayer("Player", 0);
+				UTPSSystemManager::Get()->GetUIManager()->LoadUI(MainGameUIName, EUILayerType::GameLayer);
+				UTPSSystemManager::Get()->GetGameManager()->SpawnWorldActors();
+				UTPSSystemManager::Get()->GetGameManager()->SpawnPlayer(PlayerResourceName, 0);
 
 				APlayerController* PC = UGameplayStatics::GetPlayerController(TPSHelper::GetWorld(), 0);
 				PC->SetInputMode(InputGameOnly);
@@ -75,12 +76,12 @@ void UTPSGameStateManager::OpenLevel(const EGameplayState InGameState)
 		}
 	case EGameplayState::Title:
 		{
-			LevelName = TEXT("Title");
+			LevelName = TitleLevelName;
 			break;
 		}
 	case EGameplayState::MainGame:
 		{
-			LevelName = TEXT("MainGame");
+			LevelName = MainGameLevelName;
 			break;
 		}
 	case EGameplayState::GameResult:

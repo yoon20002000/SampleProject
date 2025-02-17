@@ -23,7 +23,6 @@ void UTPSGameInstance::Init()
 	else
 	{
 		PlayerSaveData = Cast<UTPSSaveGame>(UGameplayStatics::CreateSaveGameObject(UTPSSaveGame::StaticClass()));
-			//NewObject<UTPSSaveGame>();
 	}
 	SaveGameToSlot(PlayerSaveData);
 }

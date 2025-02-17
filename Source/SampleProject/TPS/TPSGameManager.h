@@ -1,11 +1,11 @@
 ﻿#pragma once
 
-#include "CoreMinimal.h"
 #include "TPSHelper.h"
 #include "Character/TPSPlayer.h"
 #include "Components/TPSInventoryComponent.h"
 #include "TPSGameManager.generated.h"
 
+struct FWorldActorData;
 struct FItem;
 struct FGameTableInfo;
 class ATPSCharacter;
@@ -23,6 +23,7 @@ public:
 	void BeginPlay();
 	void EndPlay(const EEndPlayReason::Type EndPlayReason);
 	void SpawnPlayer(const FString& CharacterDataName = TEXT("Player"), const int SpawnPointIndex = -1);
+	void SpawnWorldActors();
 	template<typename T>
 	T* SpawnActor(UClass* SpawnClass, const FVector& SpawnLocation = FVector::ZeroVector, const FRotator& SpawnRotation = FRotator::ZeroRotator)
 	{
@@ -58,8 +59,12 @@ private:
 
 private:
 	const FString ItemDataTableName = TEXT("ItemData");
+
 	UPROPERTY(Transient)
 	TObjectPtr<UGameDataAsset> GameDataAsset;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UDataTable> WorldSpawnActorData;
 
 	UPROPERTY(Transient)
 	TObjectPtr<ATPSPlayer> Player;
