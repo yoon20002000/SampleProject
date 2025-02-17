@@ -140,7 +140,7 @@ void UTPSGameManager::SpawnContainerActors()
 			InventoryComp->SetMaxSlotSize(ContainerActorData->InventoryMaxStackSize);
 			for (int32 ItemIndex = 0; ItemIndex < ContainerActorData->ContainedItems.Num(); ++ItemIndex)
 			{
-				if (FItem* ItemData = GetItemDataOrNullptr(ContainerActorData->ContainedItems[ItemIndex].ItemName))
+				if (FItem* ItemData = ContainerActorData->ContainedItems[ItemIndex].Item.GetRow<FItem>(TEXT("Load Data")))
 				{
 					InventoryComp->AddItemToInventory(ItemData->Name,
 					                                  ContainerActorData->ContainedItems[ItemIndex].Quantity);	

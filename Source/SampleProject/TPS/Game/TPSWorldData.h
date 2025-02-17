@@ -23,7 +23,7 @@ USTRUCT(BlueprintType)
 struct FItemComponentData
 {
 	GENERATED_BODY()
-	FItemComponentData() : InventorySlotIndex(-1), ItemName(NAME_None), Quantity(-1)
+	FItemComponentData() : InventorySlotIndex(-1), Item(), Quantity(-1)
 	{
 		
 	}
@@ -31,7 +31,7 @@ struct FItemComponentData
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 InventorySlotIndex;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FName ItemName; // row handler?
+	FDataTableRowHandle Item;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 Quantity;
 };
