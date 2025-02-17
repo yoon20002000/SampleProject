@@ -24,6 +24,8 @@ public:
 	void EndPlay(const EEndPlayReason::Type EndPlayReason);
 	void SpawnPlayer(const FString& CharacterDataName = TEXT("Player"), const int SpawnPointIndex = -1);
 	void SpawnWorldActors();
+	void SpawnNormalActors();
+	void SpawnContainerActors();
 	template<typename T>
 	T* SpawnActor(UClass* SpawnClass, const FVector& SpawnLocation = FVector::ZeroVector, const FRotator& SpawnRotation = FRotator::ZeroRotator)
 	{
@@ -64,8 +66,11 @@ private:
 	TObjectPtr<UGameDataAsset> GameDataAsset;
 
 	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UDataTable> WorldSpawnActorData;
+	TObjectPtr<UDataTable> NormalSpawnActorData;
 
+	UPROPERTY(EditDefaultsOnly)
+    TObjectPtr<UDataTable> ContainerSpawnActorData;
+	
 	UPROPERTY(Transient)
 	TObjectPtr<ATPSPlayer> Player;
 

@@ -31,7 +31,7 @@ struct FItemComponentData
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 InventorySlotIndex;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FName ItemName;
+	FName ItemName; // row handler?
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 Quantity;
 };
@@ -40,13 +40,17 @@ USTRUCT(BlueprintType)
 struct FContainerActorData : public FTableRowBase
 {
 	GENERATED_BODY()
-	FContainerActorData() : ContainerActor(nullptr), ContainedItems()
+	FContainerActorData() : ContainerActor(nullptr), ActorTransform(FTransform::Identity), InventoryMaxStackSize(1),
+	                        ContainedItems()
 	{
-		
 	}
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSoftClassPtr<ATPSContainer> ContainerActor;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FTransform ActorTransform;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 InventoryMaxStackSize;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FItemComponentData> ContainedItems;
 };

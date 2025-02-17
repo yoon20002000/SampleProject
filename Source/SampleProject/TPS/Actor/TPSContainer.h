@@ -17,7 +17,7 @@ public:
 	/// ITPSInteractionInterface Start
 	virtual void Interaction(AActor* InteractionActor) override;
 	/// ITPSInteractionInterface End
-	
+	UTPSInventoryComponent* GetInventoryComponent() const;
 private:
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess=true))
 	TObjectPtr<UTPSInventoryComponent> InventoryComp;

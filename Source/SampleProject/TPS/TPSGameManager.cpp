@@ -1,6 +1,7 @@
 ﻿#include "TPSGameManager.h"
 
 #include "TPSHelper.h"
+#include "Actor/TPSContainer.h"
 #include "Game/TPSGameMode.h"
 #include "Character/TPSPlayer.h"
 #include "Data/GameDataAsset.h"
@@ -12,10 +13,18 @@
 UTPSGameManager::UTPSGameManager(const FObjectInitializer& objectInitializer)
 	: Super(objectInitializer)
 {
-	static ConstructorHelpers::FObjectFinder<UDataTable> DT_WordActorData(TEXT("/Game/Data/DT_WorldActors.DT_WorldActors"));
-	if (DT_WordActorData.Succeeded() == true)
+	static ConstructorHelpers::FObjectFinder<UDataTable> DT_NormalActorData(
+		TEXT("/Game/Data/DT_WorldActors.DT_WorldActors"));
+	if (DT_NormalActorData.Succeeded() == true)
 	{
-		WorldSpawnActorData = DT_WordActorData.Object;
+		NormalSpawnActorData = DT_NormalActorData.Object;
+	}
+	
+	static ConstructorHelpers::FObjectFinder<UDataTable> DT_ContainerActorData(
+		TEXT("/Game/Data/DT_ContainerActorData.DT_ContainerActorData"));
+	if (DT_ContainerActorData.Succeeded() == true)
+	{
+		ContainerSpawnActorData = DT_ContainerActorData.Object;
 	}
 }
 
@@ -35,7 +44,6 @@ void UTPSGameManager::InitData(const ATPSGameMode* InGameMode)
 
 void UTPSGameManager::BeginPlay()
 {
-	
 }
 
 void UTPSGameManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -44,7 +52,7 @@ void UTPSGameManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	{
 		for (ATPSCharacter* Character : SpawnedCharacters)
 		{
-			if (Character!=nullptr)
+			if (Character != nullptr)
 			{
 				Character->UninitAndDestroy();
 			}
@@ -52,11 +60,11 @@ void UTPSGameManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	}
 	SpawnedCharacters.Empty();
 
-	if (Player!=nullptr)
+	if (Player != nullptr)
 	{
 		Player->UninitAndDestroy();
 	}
-	Player= nullptr;
+	Player = nullptr;
 }
 
 void UTPSGameManager::SpawnPlayer(const FString& CharacterDataName, const int SpawnPointIndex)
@@ -90,15 +98,55 @@ void UTPSGameManager::SpawnPlayer(const FString& CharacterDataName, const int Sp
 
 void UTPSGameManager::SpawnWorldActors()
 {
+	SpawnNormalActors();
+	SpawnContainerActors();
+}
+
+void UTPSGameManager::SpawnNormalActors()
+{
 	TArray<FWorldActorData*> WorldActors;
 
-	WorldSpawnActorData->GetAllRows<FWorldActorData>(TEXT("Get World Actor"), OUT WorldActors);
+	NormalSpawnActorData->GetAllRows<FWorldActorData>(TEXT("Get World Actor"), OUT WorldActors);
 
 	for (int Index = 0; Index < WorldActors.Num(); ++Index)
 	{
-		SpawnActor<AActor>(WorldActors[Index]->Actor.LoadSynchronous(),
-		                   WorldActors[Index]->ActorTransform.GetLocation(),
-		                   WorldActors[Index]->ActorTransform.Rotator());		
+		FWorldActorData* ActorData = WorldActors[Index];
+		SpawnActor<AActor>(ActorData->Actor.LoadSynchronous(),
+		                   ActorData->ActorTransform.GetLocation(),
+		                   ActorData->ActorTransform.Rotator());
+	}
+}
+
+void UTPSGameManager::SpawnContainerActors()
+{
+	TArray<FContainerActorData*> ContainerActorDatas;
+
+	ContainerSpawnActorData->GetAllRows<FContainerActorData>(TEXT("Get World Actor"), OUT ContainerActorDatas);
+
+	if (ContainerSpawnActorData == nullptr)
+	{
+		return;
+	}
+	
+	for (int32 Index = 0; Index < ContainerActorDatas.Num(); ++Index)
+	{
+		FContainerActorData* ContainerActorData = ContainerActorDatas[Index];
+		ATPSContainer* SpawnedActor = SpawnActor<ATPSContainer>(ContainerActorData->ContainerActor.LoadSynchronous(),
+		                                                        ContainerActorData->ActorTransform.GetLocation(),
+		                                                        ContainerActorData->ActorTransform.Rotator());
+		
+		if (UTPSInventoryComponent* InventoryComp = SpawnedActor->GetInventoryComponent())
+		{
+			InventoryComp->SetMaxSlotSize(ContainerActorData->InventoryMaxStackSize);
+			for (int32 ItemIndex = 0; ItemIndex < ContainerActorData->ContainedItems.Num(); ++ItemIndex)
+			{
+				if (FItem* ItemData = GetItemDataOrNullptr(ContainerActorData->ContainedItems[ItemIndex].ItemName))
+				{
+					InventoryComp->AddItemToInventory(ItemData->Name,
+					                                  ContainerActorData->ContainedItems[ItemIndex].Quantity);	
+				}
+			}
+		}
 	}
 }
 

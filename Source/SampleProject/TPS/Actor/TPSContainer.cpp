@@ -23,3 +23,8 @@ void ATPSContainer::Interaction(AActor* InteractionActor)
 		}
 	}
 }
+
+UTPSInventoryComponent* ATPSContainer::GetInventoryComponent() const
+{
+	return InventoryComp;
+}

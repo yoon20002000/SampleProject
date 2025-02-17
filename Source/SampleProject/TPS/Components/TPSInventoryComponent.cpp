@@ -140,6 +140,25 @@ bool UTPSInventoryComponent::HaveEnoughItems(const FName& ItemName, const int32 
 	return false;
 }
 
+void UTPSInventoryComponent::SetMaxSlotSize(int32 MaxStackSize)
+{
+	InventorySlotMaxSize = MaxStackSize;
+	if (Inventory.Num() < InventorySlotMaxSize)
+	{
+		int32 CurSize = Inventory.Num();
+		Inventory.Reserve(InventorySlotMaxSize);
+		for (int32 AddCount = 0; AddCount < MaxStackSize - CurSize; ++AddCount)
+		{
+			Inventory.Add(FInventorySlot());
+		}
+	}
+}
+
+int32 UTPSInventoryComponent::GetMaxStackSize() const
+{
+	return InventorySlotMaxSize;
+}
+
 void UTPSInventoryComponent::SaveInventory()
 {
 	// To do 임시 코드 해결 방안 필요

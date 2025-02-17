@@ -82,6 +82,8 @@ public:
 
 	bool HaveEnoughItems(const FName& ItemName, const int32 Quantity) const;
 
+	void SetMaxSlotSize(int32 MaxStackSize);
+	int32 GetMaxStackSize() const;
 	/// GameData
 	void SaveInventory();
 	void LoadInventory();
