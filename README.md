@@ -15,6 +15,9 @@ Code convention
 
 개발 정리 블로그 : https://blog.naver.com/yoon20002000/223755810465
 
+영상
+![Video](./ReadMeResource/Total.gif)
+
 Input
 - Data Asset에 Input 및 Tag 정의
 ![Example Image](./ReadMeResource/InputConfig.png)
@@ -79,5 +82,4 @@ UTPSInteractionIndicatorComponent : 플레이어와 상호작용 가능한 Inter
 STPSActorCanvas : Slate를 이용해 Indicator UI 처리  
 UTPSIndicatorLayer : STPSActorCanvas를 이용해 Indicator UI를 표시할 Widget
 
-영상
-![Video](./ReadMeResource/Total.gif)
+
