@@ -142,8 +142,9 @@ void UTPSGameManager::SpawnContainerActors()
 			{
 				if (FItem* ItemData = ContainerActorData->ContainedItems[ItemIndex].Item.GetRow<FItem>(TEXT("Load Data")))
 				{
-					InventoryComp->AddItemToInventory(ItemData->Name,
-					                                  ContainerActorData->ContainedItems[ItemIndex].Quantity);	
+					int32 SlotIndex = ContainerActorData->ContainedItems[ItemIndex].InventorySlotIndex;
+					int32 Quantity = ContainerActorData->ContainedItems[ItemIndex].Quantity;
+					InventoryComp->AddItemToSlot(SlotIndex, ItemData->Name,Quantity);
 				}
 			}
 		}

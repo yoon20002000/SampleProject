@@ -14,10 +14,21 @@ FItem::FItem() : Name(NAME_None), Description(FText::GetEmpty()), Thumbnail(null
 {
 }
 
+bool FInventorySlot::IsEmpty() const
+{
+	return ItemName == NAME_None;
+}
+
 void FInventorySlot::SetEmpty()
 {
 	ItemName = NAME_None;
 	ItemQuantity = 0;
+}
+
+void FInventorySlot::SetSlot(const FName& InItemName, const int32 Quantity)
+{
+	ItemName = InItemName;
+	ItemQuantity = Quantity;
 }
 
 UTPSInventoryComponent::UTPSInventoryComponent()
@@ -229,6 +240,35 @@ void UTPSInventoryComponent::AddQuantityClampMaxStack(FInventorySlot& SourceInve
 	if (SourceInventorySlot.ItemQuantity <= 0)
 	{
 		SourceInventorySlot.SetEmpty();
+	}
+}
+
+void UTPSInventoryComponent::AddItemToSlot(const int32 SlotIndex, const FName& ItemName, const int32 Quantity)
+{
+	FInventorySlot& TargetSlot = Inventory[SlotIndex];
+	
+	if (TargetSlot.ItemName == ItemName)
+	{
+		if ( GetMaxStackSize(ItemName) < TargetSlot.ItemQuantity + Quantity)
+		{
+			AddItemQuantity(Quantity, &TargetSlot);
+		}
+		else
+		{
+			// already full stack
+			UE_LOG(LogTemp, Warning, TEXT("Already full stack. Actor Name : %s, Slot Number : %d"),*GetOwner()->GetName(), SlotIndex);
+			AddNewItemToInventory(ItemName,Quantity);
+		}
+	}
+	else if (TargetSlot.IsEmpty() == true)
+	{
+		TargetSlot.SetSlot(ItemName, Quantity);
+	}
+	else
+	{
+		// other item is already exist
+		UE_LOG(LogTemp, Warning, TEXT("Other item is already exist. Actor Name : %s, Slot Number : %d"),*GetOwner()->GetName(), SlotIndex);
+		AddNewItemToInventory(ItemName,Quantity);
 	}
 }
 

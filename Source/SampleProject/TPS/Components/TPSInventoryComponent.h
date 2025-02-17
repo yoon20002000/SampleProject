@@ -32,9 +32,11 @@ USTRUCT(BlueprintType)
 struct FInventorySlot
 {
 	GENERATED_BODY()
+public:
+	bool IsEmpty() const;
 private:
 	void SetEmpty();
-	
+	void SetSlot(const FName& InItemName, const int32 Quantity);
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName ItemName;
@@ -61,6 +63,7 @@ public:
 	// Add Quantity At Destination Slot and Start Slot, Broadcast Update 
 	void AddQuantityClampMaxStack(FInventorySlot& SourceInventorySlot, FInventorySlot& DestinationInventorySlot,
 								  int32 MaxStack);
+	void AddItemToSlot(const int32 SlotIndex, const FName& ItemName,const int32 Quantity);
 	// Get Max Stack Size from Item Data Table
 	int32 GetMaxStackSize(const FName& ItemName) const;
 	// Index : Remove Item Slot Index, bRemoveAll : Remove All Items, bIsConsumed : Is Used true
