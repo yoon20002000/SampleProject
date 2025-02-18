@@ -49,6 +49,7 @@ public:
 	void SetCharacterState(ECharacterState CharacterState);
 	ECharacterState GetCharacterState()const;
 
+	UTPSHealthComponent* GetHealthComponentOrNullptr() const;
 	virtual void UninitAndDestroy();
 protected:
 	void OnAbilitySystemInitialized();

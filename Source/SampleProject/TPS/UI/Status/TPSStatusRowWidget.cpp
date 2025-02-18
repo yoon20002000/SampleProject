@@ -15,11 +15,7 @@ void UTPSStatusRowWidget::SetStatusName(const FString& StatusName)
 	StatusText->SetText(FText::FromString(StatusName));
 }
 
-void UTPSStatusRowWidget::SetStatusValue(const float StatusValue)
+void UTPSStatusRowWidget::SetStatusValue(const FString& FormatString)
 {
-	FNumberFormattingOptions FormattingOptions;
-	FormattingOptions.SetMinimumFractionalDigits(2);
-	FormattingOptions.SetMaximumFractionalDigits(2);
-
-	StatusValueText->SetText(FText::AsNumber(StatusValue, &FormattingOptions));
+	StatusValueText->SetText(FText::FromString(FormatString));
 }

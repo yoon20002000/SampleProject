@@ -217,6 +217,11 @@ ECharacterState ATPSCharacter::GetCharacterState() const
 	return CurrentState;
 }
 
+UTPSHealthComponent* ATPSCharacter::GetHealthComponentOrNullptr() const
+{
+	return HealthComp;
+}
+
 void ATPSCharacter::UninitAndDestroy()
 {
 	HealthComp->Uninitialize();

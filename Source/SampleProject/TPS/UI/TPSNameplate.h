@@ -1,12 +1,10 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
-#include "CoreMinimal.h"
 #include "TPSIndicatorWidgetInterface.h"
 #include "UI/TPSCommonUserWidget.h"
 #include "TPSNameplate.generated.h"
 
+struct FOnAttributeChangeData;
 class UTPSHealthComponent;
 class UCommonTextBlock;
 class UProgressBar;
@@ -26,7 +24,7 @@ public:
 
 	// UI
 	void InitNameplate(UTPSIndicatorDescriptor* IndicatorActor);
-	void UninitNameplate( );
+	void UninitNameplate();
 	void SetNameText(const FString& InNameText);
 	
 	void SetHealthBarPercent();

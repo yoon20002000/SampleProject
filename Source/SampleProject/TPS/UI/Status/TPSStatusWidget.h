@@ -3,6 +3,8 @@
 #include "UI/TPSCommonUserWidget.h"
 #include "TPSStatusWidget.generated.h"
 
+class UTPSInventoryComponent;
+class UTPSHealthComponent;
 class UScrollBox;
 class UImage;
 class UCommonTextBlock;
@@ -17,9 +19,13 @@ public:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
 
-	void Init(const AActor& PlayerActor);
+	void Init(const ATPSPlayer& PlayerActor);
 private:
 	void SetPlayerName(const FString& PlayerName);
+	void SetStatus(const ATPSPlayer& Player);
+
+	void SetHPStatus(const UTPSHealthComponent* HealthComp);
+	void SetInventoryStatus(const UTPSInventoryComponent* InventoryComp);
 private:
 	UPROPERTY(EditAnywhere,meta=(BindWidget, AllowPrivateAccess))
 	TObjectPtr<UCommonTextBlock> PlayerNameText;

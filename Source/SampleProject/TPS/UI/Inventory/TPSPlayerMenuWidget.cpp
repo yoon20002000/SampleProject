@@ -4,6 +4,7 @@
 #include "TPSInventoryGridWidget.h"
 #include "Character/TPSPlayer.h"
 #include "Components/TPSInventoryComponent.h"
+#include "UI/Status/TPSStatusWidget.h"
 
 void UTPSPlayerMenuWidget::NativeConstruct()
 {
@@ -21,6 +22,8 @@ void UTPSPlayerMenuWidget::NativeConstruct()
 			{
 				UE_LOG(LogTemp, Error, TEXT("In InventoryComp is nullptr!!"));
 			}
+
+			StatusWidget->Init(*Player);
 		}
 	}
 }

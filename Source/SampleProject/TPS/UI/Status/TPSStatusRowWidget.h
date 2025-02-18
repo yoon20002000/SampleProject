@@ -17,7 +17,7 @@ public:
 	virtual void NativeDestruct() override;
 
 	void SetStatusName(const FString& StatusName);
-	void SetStatusValue(const float StatusValue);
+	void SetStatusValue(const FString& FormatString);
 private:
 	UPROPERTY(meta=(BindWidget, AllowPrivateAccess))
 	TObjectPtr<UCommonTextBlock> StatusText;

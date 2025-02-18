@@ -3,6 +3,7 @@
 #include "UI/TPSCommonActivatableWidget.h"
 #include "TPSPlayerMenuWidget.generated.h"
 
+class UTPSStatusWidget;
 class UTPSInventoryGridWidget;
 class UTPSInventoryComponent;
 /**
@@ -18,4 +19,6 @@ protected:
 private:
 	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<UTPSInventoryGridWidget> InventoryGrid;
+	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
+	TObjectPtr<UTPSStatusWidget> StatusWidget;
 };
