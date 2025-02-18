@@ -34,6 +34,9 @@ public:
 	virtual void UninitAndDestroy() override;
 
 	UTPSInventoryComponent* GetInventoryComponent() const;
+
+	UFUNCTION(BlueprintCallable)
+	void SetActiveSceneCaptureComp(bool bActive);
 protected:
 	virtual void BeginPlay() override;
 	virtual void BeginDestroy() override;
@@ -71,4 +74,7 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UTPSInventoryComponent> InventoryComp;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<USceneCaptureComponent2D> SceneCaptureComp;
 };

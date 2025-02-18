@@ -1,6 +1,7 @@
 ﻿#include "TPSPlayer.h"
 
 #include "EnhancedInputSubsystems.h"
+#include "Components/SceneCaptureComponent2D.h"
 #include "Components/TPSInteractionIndicatorComponent.h"
 #include "Components/TPSCameraComponent.h"
 #include "Components/TPSInventoryComponent.h"
@@ -12,11 +13,10 @@
 #include "UI/TPSPrimaryGameLayout.h"
 #include "UI/TPSUIManager.h"
 
-// Sets default values
 ATPSPlayer::ATPSPlayer() : bPrintTag(false)
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
 	SpringArmComp = CreateDefaultSubobject<UTPSSpringArmComponent>(TEXT("CustomSpringArm"));
 	SpringArmComp->bUsePawnControlRotation = true;
 	SpringArmComp->SetupAttachment(RootComponent);
@@ -26,7 +26,13 @@ ATPSPlayer::ATPSPlayer() : bPrintTag(false)
 	CameraComp->SetupAttachment(SpringArmComp);
 
 	InteractionIndicatorComp = CreateDefaultSubobject<UTPSInteractionIndicatorComponent>(TEXT("InteractionIndicator"));
+
 	InventoryComp = CreateDefaultSubobject<UTPSInventoryComponent>(TEXT("Inventory Comp"));
+
+	SceneCaptureComp = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("Scene Capture Comp"));
+	SceneCaptureComp->SetupAttachment(RootComponent);
+	SceneCaptureComp->ShowOnlyComponent(GetMesh());
+	SceneCaptureComp->SetActive(false);
 }
 
 // Called when the game starts or when spawned
@@ -111,6 +117,11 @@ void ATPSPlayer::UninitAndDestroy()
 UTPSInventoryComponent* ATPSPlayer::GetInventoryComponent() const
 {
 	return InventoryComp;
+}
+
+void ATPSPlayer::SetActiveSceneCaptureComp(bool bActive)
+{
+	SceneCaptureComp->SetActive(bActive);
 }
 
 void ATPSPlayer::Move(const FInputActionValue& InputActionValue)
