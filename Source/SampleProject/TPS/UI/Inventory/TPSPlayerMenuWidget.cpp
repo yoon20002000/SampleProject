@@ -10,26 +10,30 @@ void UTPSPlayerMenuWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 	SetInputUIMode(true);
-	if (APlayerController* PC = TPSHelper::GetPlayerController(GetWorld()))
+	
+	if (ATPSPlayer* Player = TPSHelper::GetPlayerOrNullptr())
 	{
-		if (ATPSPlayer* Player = Cast<ATPSPlayer>(PC->GetPawn()))
+		if (UTPSInventoryComponent* InventoryComp = Player->GetInventoryComponent())
 		{
-			if (UTPSInventoryComponent* InventoryComp = Player->GetInventoryComponent())
-			{
-				InventoryGrid->Init(InventoryComp);
-			}
-			else
-			{
-				UE_LOG(LogTemp, Error, TEXT("In InventoryComp is nullptr!!"));
-			}
-
-			StatusWidget->Init(*Player);
+			InventoryGrid->Init(InventoryComp);
 		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("In InventoryComp is nullptr!!"));
+		}
+
+		StatusWidget->Init(*Player);
 	}
 }
 
 void UTPSPlayerMenuWidget::NativeDestruct()
 {
 	Super::NativeDestruct();
+	
+	if (ATPSPlayer* Player = TPSHelper::GetPlayerOrNullptr())
+	{
+		Player->SetActiveSceneCaptureComp(false);
+	}
+	
 	SetInputGameMode();
 }
