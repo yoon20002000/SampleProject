@@ -31,6 +31,7 @@ void UTPSStatusWidget::SetPlayerName(const FString& PlayerName)
 
 void UTPSStatusWidget::SetStatus(const ATPSPlayer& Player)
 {
+	StatusScrollBox->ClearChildren();
 	SetHPStatus(Player.GetHealthComponentOrNullptr());
 	SetInventoryStatus(Player.GetInventoryComponent());
 }
