@@ -35,6 +35,14 @@ void UTPSStatusWidget::SetStatus(const ATPSPlayer& Player)
 	SetInventoryStatus(Player.GetInventoryComponent());
 }
 
+void UTPSStatusWidget::AddChild(const FString& StatusName, const FString& StatusValue)
+{
+	UTPSStatusRowWidget* Row = CreateWidget<UTPSStatusRowWidget>(StatusScrollBox,StatusRowClass.LoadSynchronous());
+	Row->SetStatusName(StatusName);
+	Row->SetStatusValue(StatusValue);
+	StatusScrollBox->AddChild(Row);
+}
+
 void UTPSStatusWidget::SetHPStatus(const UTPSHealthComponent* HealthComp)
 {
 	if (HealthComp == nullptr)
@@ -42,18 +50,8 @@ void UTPSStatusWidget::SetHPStatus(const UTPSHealthComponent* HealthComp)
 		return;
 	}
 	
-	float HP = HealthComp->GetHealth();
-	float MaxHP = HealthComp->GetMaxHealth();
-
-	UTPSStatusRowWidget* HealthRow = CreateWidget<UTPSStatusRowWidget>(StatusScrollBox,StatusRowClass.LoadSynchronous());
-	HealthRow->SetStatusName(TEXT("Health : "));
-	HealthRow->SetStatusValue(FString::SanitizeFloat(HP));
-	StatusScrollBox->AddChild(HealthRow);
-	
-	UTPSStatusRowWidget* MaxHealthRow = CreateWidget<UTPSStatusRowWidget>(StatusScrollBox,StatusRowClass.LoadSynchronous());
-	MaxHealthRow->SetStatusName(TEXT("Max Health: "));
-	MaxHealthRow->SetStatusValue(FString::SanitizeFloat(MaxHP));
-	StatusScrollBox->AddChild(MaxHealthRow);
+	AddChild(TEXT("Health : "), FString::SanitizeFloat(HealthComp->GetHealth()));
+	AddChild(TEXT("Max Health : "), FString::SanitizeFloat(HealthComp->GetMaxHealth()));
 }
 
 void UTPSStatusWidget::SetInventoryStatus(const UTPSInventoryComponent* InventoryComp)
@@ -63,11 +61,6 @@ void UTPSStatusWidget::SetInventoryStatus(const UTPSInventoryComponent* Inventor
 		return;
 	}
 
-	UTPSStatusRowWidget* InventorySizeRow = CreateWidget<UTPSStatusRowWidget>(StatusScrollBox,StatusRowClass.LoadSynchronous());
-
 	int32 SlotSize = InventoryComp->GetInventorySlotSize();
-	InventorySizeRow->SetStatusName(TEXT("Inventory Size: "));
-	InventorySizeRow->SetStatusValue(FString::FromInt(SlotSize));
-
-	StatusScrollBox->AddChild(InventorySizeRow);
+	AddChild(TEXT("Inventory Size : "), FString::FromInt(SlotSize));
 }

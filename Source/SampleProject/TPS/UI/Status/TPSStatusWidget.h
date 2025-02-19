@@ -23,8 +23,11 @@ public:
 private:
 	void SetPlayerName(const FString& PlayerName);
 	void SetStatus(const ATPSPlayer& Player);
-
+	// ScrollBox에 추가 될 Row 추가용
+	void AddChild(const FString& StatusName, const FString& StatusValue);
+	// HP 관련 Status
 	void SetHPStatus(const UTPSHealthComponent* HealthComp);
+	// Inventory 관련 Status
 	void SetInventoryStatus(const UTPSInventoryComponent* InventoryComp);
 private:
 	UPROPERTY(EditAnywhere,meta=(BindWidget, AllowPrivateAccess))
@@ -34,6 +37,7 @@ private:
 	UPROPERTY(EditAnywhere,meta=(BindWidget, AllowPrivateAccess))
 	TObjectPtr<UScrollBox> StatusScrollBox;
 
+	// Status에 추가 될 때 사용 할 Row WidgetClass
 	UPROPERTY(EditAnywhere,meta=(AllowPrivateAccess))
 	TSoftClassPtr<UTPSCommonUserWidget> StatusRowClass;
 };
