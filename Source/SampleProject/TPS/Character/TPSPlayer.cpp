@@ -114,7 +114,7 @@ void ATPSPlayer::UninitAndDestroy()
 	Super::UninitAndDestroy();
 }
 
-UTPSInventoryComponent* ATPSPlayer::GetInventoryComponent() const
+UTPSInventoryComponent* ATPSPlayer::GetInventoryComp() const
 {
 	return InventoryComp;
 }

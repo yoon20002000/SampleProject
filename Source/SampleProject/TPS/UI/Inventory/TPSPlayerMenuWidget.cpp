@@ -13,7 +13,7 @@ void UTPSPlayerMenuWidget::NativeConstruct()
 	
 	if (ATPSPlayer* Player = TPSHelper::GetPlayerOrNullptr())
 	{
-		if (UTPSInventoryComponent* InventoryComp = Player->GetInventoryComponent())
+		if (UTPSInventoryComponent* InventoryComp = Player->GetInventoryComp())
 		{
 			InventoryGrid->Init(InventoryComp);
 		}
@@ -22,7 +22,7 @@ void UTPSPlayerMenuWidget::NativeConstruct()
 			UE_LOG(LogTemp, Error, TEXT("In InventoryComp is nullptr!!"));
 		}
 
-		StatusWidget->Init(*Player);
+		StatusWidget->Init(Player);
 	}
 }
 

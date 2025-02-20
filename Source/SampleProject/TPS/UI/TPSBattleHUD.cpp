@@ -42,7 +42,7 @@ void UTPSBattleHUD::UninitHealthBar(ATPSPlayer* Player)
 	{
 		return;
 	}
-	WBP_HealthBar->UninitHealthBar(Player);
+	WBP_HealthBar->UnInitHealthBar(Player);
 }
 
 void UTPSBattleHUD::InitKillCounter(ATPSPlayer* Player)

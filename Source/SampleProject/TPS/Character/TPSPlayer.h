@@ -33,7 +33,7 @@ public:
 	virtual void PostInitializeComponents() override;
 	virtual void UninitAndDestroy() override;
 
-	UTPSInventoryComponent* GetInventoryComponent() const;
+	UTPSInventoryComponent* GetInventoryComp() const;
 
 	UFUNCTION(BlueprintCallable)
 	void SetActiveSceneCaptureComp(bool bActive);

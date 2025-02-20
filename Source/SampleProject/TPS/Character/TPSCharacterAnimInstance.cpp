@@ -16,9 +16,12 @@ void UTPSCharacterAnimInstance::NativeBeginPlay()
 	
 	if (ATPSCharacter* Player = Cast<ATPSCharacter>(GetOwningActor()))
 	{
-		AttributeComp = Player->GetHealthAttributeComp();
+		AttributeComp = Player->GetHealthComponentOrNullptr();
 
-		UpdateIsAlive(AttributeComp);
+		if (AttributeComp != nullptr)
+		{
+			UpdateIsAlive(AttributeComp);	
+		}
 	}
 }
 

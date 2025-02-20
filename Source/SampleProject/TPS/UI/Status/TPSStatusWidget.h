@@ -3,6 +3,7 @@
 #include "UI/TPSCommonUserWidget.h"
 #include "TPSStatusWidget.generated.h"
 
+class UTPSStatusRowWidget;
 class UTPSInventoryComponent;
 class UTPSHealthComponent;
 class UScrollBox;
@@ -19,16 +20,21 @@ public:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
 
-	void Init(const ATPSPlayer& PlayerActor);
+	void Init(ATPSPlayer* PlayerActor);
 private:
 	void SetPlayerName(const FString& PlayerName);
-	void SetStatus(const ATPSPlayer& Player);
 	// ScrollBox에 추가 될 Row 추가용
 	void AddChild(const FString& StatusName, const FString& StatusValue);
+	void RemoveChild(const int32 RowIndex);
+	UFUNCTION()
+	void UpdateHealthUI(UTPSHealthComponent* HealthComponent, float OldValue, float NewValue, AActor* Instigator);
 	// HP 관련 Status
-	void SetHPStatus(const UTPSHealthComponent* HealthComp);
+	void InitHPStatus(UTPSHealthComponent* HealthComp);
+	void UnInitHPStatus(UTPSHealthComponent* HealthComp);
 	// Inventory 관련 Status
-	void SetInventoryStatus(const UTPSInventoryComponent* InventoryComp);
+	void InitInventoryStatus(const UTPSInventoryComponent* InventoryComp);
+	void UnInitInventoryStatus(const UTPSInventoryComponent* InventoryComp);
+	void UpdateUI();
 private:
 	UPROPERTY(EditAnywhere,meta=(BindWidget, AllowPrivateAccess))
 	TObjectPtr<UCommonTextBlock> PlayerNameText;
@@ -39,6 +45,11 @@ private:
 
 	// Status에 추가 될 때 사용 할 Row WidgetClass
 	UPROPERTY(EditAnywhere,meta=(AllowPrivateAccess))
-	TSoftClassPtr<UTPSCommonUserWidget> StatusRowClass;
+	TSoftClassPtr<UTPSStatusRowWidget> StatusRowClass;
+
+	UPROPERTY()
+	TArray<TObjectPtr<UTPSStatusRowWidget>> StatusRows;
+	
+	TWeakObjectPtr<ATPSPlayer> TargetPlayer;
 };
 	

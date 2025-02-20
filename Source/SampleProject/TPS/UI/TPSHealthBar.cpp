@@ -22,11 +22,11 @@ void UTPSHealthBar::InitHealthBar(const ATPSPlayer* TPSPlayer)
 	if (UTPSAbilitySystemComponent* ASC = TPSPlayer->GetTPSAbilitySystemComponent())
 	{
 		ASC->GetGameplayAttributeValueChangeDelegate(UTPSHealthSet::GetHealthAttribute()).AddUObject(this, &ThisClass::OnHealthChanged);
-		ASC->GetGameplayAttributeValueChangeDelegate(UTPSHealthSet::GetMaxHealthAttribute()).AddUObject(this, &ThisClass::OnHealthChanged);
+		ASC->GetGameplayAttributeValueChangeDelegate(UTPSHealthSet::GetMaxHealthAttribute()).AddUObject(this, &ThisClass::OnMaxHealthChanged);
 	}
 }
 
-void UTPSHealthBar::UninitHealthBar(const ATPSPlayer* TPSPlayer)
+void UTPSHealthBar::UnInitHealthBar(const ATPSPlayer* TPSPlayer)
 {
 	if (TPSPlayer == nullptr)
 	{
@@ -58,7 +58,7 @@ void UTPSHealthBar::BeginDestroy()
 
 	if (ATPSPlayer* TPSPlayer = GetTPSPlayer())
 	{
-		UninitHealthBar(TPSPlayer);
+		UnInitHealthBar(TPSPlayer);
 	}
 }
 

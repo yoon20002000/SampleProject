@@ -12,7 +12,7 @@ void UTPSContainerInventoryWidget::NativeConstruct()
 	
 	if (ATPSPlayer* Player = Cast<ATPSPlayer>(TPSHelper::GetPlayerController()->GetPawn()))
 	{
-		PlayerInventoryComp = Player->GetInventoryComponent();
+		PlayerInventoryComp = Player->GetInventoryComp();
 
 		PlayerInventoryGrid->Init(PlayerInventoryComp.Get());
 	}

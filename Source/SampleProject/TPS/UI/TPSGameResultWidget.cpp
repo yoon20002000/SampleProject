@@ -32,7 +32,7 @@ void UTPSGameResultWidget::NativeConstruct()
 	bool bIsClear = false;
 	if (ATPSPlayer* Player = Cast<ATPSPlayer>(PlayerPawn))
 	{
-		if (UTPSHealthComponent* AC = Player->GetHealthAttributeComp())
+		if (UTPSHealthComponent* AC = Player->GetHealthComponentOrNullptr())
 		{
 			bIsClear = AC->IsAlive();	
 		}
