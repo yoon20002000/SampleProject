@@ -24,8 +24,8 @@ private:
 	void OnClickedQuitButton();
 
 private:
-	UPROPERTY(meta=(AllowPrivateAccess = true, BindWidget))
+	UPROPERTY(meta=(AllowPrivateAccess = true, BindWidget), BlueprintReadOnly)
 	TObjectPtr<UButton> PlayButton;
-	UPROPERTY(meta=(AllowPrivateAccess = true, BindWidget))
+	UPROPERTY(meta=(AllowPrivateAccess = true, BindWidget), BlueprintReadOnly)
 	TObjectPtr<UButton> QuitButton;
 };

@@ -6,9 +6,8 @@
 #include "CommonUIExtensions.h"
 #include "TPSCommonActivatableWidget.h"
 #include "NativeGameplayTags.h"
-#include "TPSHelper.h"
 #include "UITag.h"
-#include"CommonUI/Public/Input/CommonUIInputTypes.h"
+#include "CommonUI/Public/Input/CommonUIInputTypes.h"
 #include "Game/TPSGameplayTags.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(TPSHUDLayout)

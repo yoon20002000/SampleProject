@@ -1,9 +1,7 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "UI/TPSPauseMenuWidget.h"
 
 #include "CommonUIExtensions.h"
+#include "TPSCommonButtonBase.h"
 #include "TPSHelper.h"
 #include "TPSSystemManager.h"
 #include "Character/TPSPlayerController.h"
@@ -38,22 +36,23 @@ bool UTPSPauseMenuWidget::Initialize()
 	bool bResult = Super::Initialize();
 
 	SetGamePause(true);
-
-	
 	
 	if (OptionButton != nullptr)
 	{
-		OptionButton->OnClicked.AddDynamic(this, &UTPSPauseMenuWidget::OnClickedOption);
+		OptionButton->SetButtonText(FText::FromString(TEXT("Option")));
+		OptionButton->OnClicked().AddUObject(this, &UTPSPauseMenuWidget::OnClickedOption);
 	}
 
 	if (QuitButton != nullptr)
 	{
-		QuitButton->OnClicked.AddDynamic(this, &UTPSPauseMenuWidget::OnClickedQuit);
+		QuitButton->SetButtonText(FText::FromString(TEXT("Quit")));
+		QuitButton->OnClicked().AddUObject(this, &UTPSPauseMenuWidget::OnClickedQuit);
 	}
 
 	if (ContinueButton != nullptr)
 	{
-		ContinueButton->OnClicked.AddDynamic(this, &UTPSPauseMenuWidget::OnClickedContinue);
+		ContinueButton->SetButtonText(FText::FromString(TEXT("Continue")));
+		ContinueButton->OnClicked().AddUObject(this, &UTPSPauseMenuWidget::OnClickedContinue);
 	}
 	
 	return bResult;

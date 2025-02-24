@@ -1,11 +1,10 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
-#include "CoreMinimal.h"
 #include "UI/TPSCommonActivatableWidget.h"
 #include "TPSPauseMenuWidget.generated.h"
 
+class UTPSCommonButtonBase;
+class UCommonButtonBase;
 class UButton;
 /**
  * 
@@ -29,10 +28,10 @@ protected:
 	void SetGamePause(const bool bPauseGame);
 private:
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidget, AllowPrivateAccess = true))
-	TObjectPtr<UButton> OptionButton;
+	TObjectPtr<UTPSCommonButtonBase> OptionButton;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidget, AllowPrivateAccess = true))
-	TObjectPtr<UButton> QuitButton;
+	TObjectPtr<UTPSCommonButtonBase> QuitButton;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidget, AllowPrivateAccess = true))
-	TObjectPtr<UButton> ContinueButton;
+	TObjectPtr<UTPSCommonButtonBase> ContinueButton;
 	
 };
