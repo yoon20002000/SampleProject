@@ -18,6 +18,8 @@ public:
 	virtual void OnWorldBeginPlay(UWorld& InWorld) override;
 	virtual void Deinitialize() override;
 
+public:
+	static const FString MainGameTitleText;
 private:
 	ATPSCharacter* SpawnAICharacter(const TSubclassOf<ATPSCharacter>& InSpawnCharacterClass,
 	                                const FVector& InSpawnLocation,

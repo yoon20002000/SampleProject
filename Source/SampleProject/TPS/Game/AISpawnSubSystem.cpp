@@ -2,9 +2,11 @@
 
 #include "Character/TPSCharacter.h"
 
+const FString UAISpawnSubSystem::MainGameTitleText = FString(TEXT("MainGame"));
+
 bool UAISpawnSubSystem::ShouldCreateSubsystem(UObject* Outer) const
 {
-	bool IsMainGameLevel = Outer->GetName().Equals(TEXT("MainGame"));
+	bool IsMainGameLevel = Outer->GetName().Equals(MainGameTitleText);
 	
 	return Super::ShouldCreateSubsystem(Outer) && IsMainGameLevel == true;
 }
