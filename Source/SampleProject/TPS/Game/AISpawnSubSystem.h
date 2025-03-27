@@ -3,7 +3,10 @@
 #include "Subsystems/WorldSubsystem.h"
 #include "AISpawnSubSystem.generated.h"
 
+class ATPSAIStart;
+class ATargetSpawnPoint;
 class ATPSCharacter;
+struct FCharacterAssetInfo;
 /**
  * 
  */
@@ -20,8 +23,20 @@ public:
 
 public:
 	static const FString MainGameTitleText;
+	
+	// Spawn AI Section
 private:
+	void SpawnAIProgress(const FCharacterAssetInfo& CharacterAssetInfo);
 	ATPSCharacter* SpawnAICharacter(const TSubclassOf<ATPSCharacter>& InSpawnCharacterClass,
-	                                const FVector& InSpawnLocation,
-	                                const FRotator& InSpawnRotator, const FActorSpawnParameters& InActorSpawnParameter);
+									const FVector& InSpawnLocation,
+									const FRotator& InSpawnRotator, const FActorSpawnParameters& InActorSpawnParameter);
+
+	void LoadAIStartPoint();
+	void GetAISpawnPoint(OUT FVector& OutPosition, OUT FRotator& OutRotator, int InIndex = -1);
+
+private:
+	UPROPERTY()
+	TArray<TObjectPtr<ATPSCharacter>> SpawnedCharacters;
+	UPROPERTY(Transient)
+	TArray<AActor*> SpawnPoints;
 };
