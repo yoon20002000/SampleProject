@@ -16,6 +16,7 @@ class SAMPLEPROJECT_API UAISpawnSubSystem : public UWorldSubsystem
 	GENERATED_BODY()
 
 public:
+	UAISpawnSubSystem();
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void OnWorldBeginPlay(UWorld& InWorld) override;
@@ -25,6 +26,12 @@ public:
 	static const FString MainGameTitleText;
 	
 	// Spawn AI Section
+public:
+	UFUNCTION(BlueprintCallable)
+	void StartSpawnAI();
+	UFUNCTION(BlueprintCallable)
+	void StopSpawnAI();
+	void DespawnCharacter(ATPSCharacter* InDespawnCharacter);
 private:
 	void SpawnAIProgress(const FCharacterAssetInfo& CharacterAssetInfo);
 	ATPSCharacter* SpawnAICharacter(const TSubclassOf<ATPSCharacter>& InSpawnCharacterClass,
@@ -33,8 +40,12 @@ private:
 
 	void LoadAIStartPoint();
 	void GetAISpawnPoint(OUT FVector& OutPosition, OUT FRotator& OutRotator, int InIndex = -1);
-
+	
 private:
+
+	int32 SimulateCreationLimit;
+	float CreatePeriod;
+	FTimerHandle SpawnTimerHandle;
 	UPROPERTY()
 	TArray<TObjectPtr<ATPSCharacter>> SpawnedCharacters;
 	UPROPERTY(Transient)

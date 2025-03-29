@@ -1,6 +1,6 @@
 #include "GameDataAsset.h"
 
-FCharacterAssetInfo FCharacterAssetInfo::Invalid;
+FCharacterAssetInfo FCharacterAssetInfo::Invalid = FCharacterAssetInfo{TEXT("Invalid"), nullptr, nullptr};
 
 const FCharacterAssetInfo& UGameDataAsset::GetCharacterData(const FString& InName) const
 {

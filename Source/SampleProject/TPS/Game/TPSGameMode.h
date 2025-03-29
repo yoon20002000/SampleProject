@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "TPSGameMode.generated.h"
 
+class UAISpawnSubSystem;
 class ATPSCharacter;
 class ATPSPlayer;
 enum class EGameplayState : uint8;
@@ -39,4 +40,6 @@ private:
 	TSubclassOf<ATPSPlayer> PlayerClass;
 	UPROPERTY(EditAnywhere, Category=TPS, meta=(AllowPrivateAccess = true))
 	TSubclassOf<ACharacter> AICharacterClass;
+
+	TWeakObjectPtr<UAISpawnSubSystem> AISpawnSubSystem;
 };

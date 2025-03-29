@@ -1,13 +1,12 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+﻿#include "TPSGameMode.h"
 
-
-#include "TPSGameMode.h"
-
+#include "AISpawnSubSystem.h"
 #include "TPSGameManager.h"
 #include "TPSSystemManager.h"
 #include "Character/TPSAIController.h"
 #include "Character/TPSPlayer.h"
 #include "Character/TPSPlayerState.h"
+#include "Game/AISpawnSubSystem.h"
 
 ATPSGameMode::ATPSGameMode()
 {
@@ -29,12 +28,18 @@ void ATPSGameMode::StartPlay()
 void ATPSGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	AISpawnSubSystem = GetWorld()->GetSubsystem<UAISpawnSubSystem>();
+	if (AISpawnSubSystem != nullptr)
+	{
+		AISpawnSubSystem->StartSpawnAI();
+	}
 }
 
 void ATPSGameMode::BeginDestroy()
 {	
 	Super::BeginDestroy();
-	
+	UE_LOG(LogTemp, Log, TEXT("Begin Destroy GameMode!!"));
 }
 
 void ATPSGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -106,6 +111,7 @@ void ATPSGameMode::OnActorKilled(AActor* KilledActor, AActor* InstigatorActor)
 			}
 			else
 			{
+				AISpawnSubSystem->DespawnCharacter(DieCharacter);
 				GameManager->DespawnCharacter(DieCharacter);
 				DieCharacter->UninitAndDestroy();
 			}
