@@ -2,7 +2,7 @@
 
 FCharacterAssetInfo FCharacterAssetInfo::Invalid = FCharacterAssetInfo{TEXT("Invalid"), nullptr, nullptr};
 
-const FCharacterAssetInfo& UGameDataAsset::GetCharacterData(const FString& InName) const
+const FCharacterAssetInfo& UGameDataAsset::GetCharacterData(const FName& InName) const
 {
 	for (int32 i = 0; i < CharacterAssets.Num(); i++)
 	{
@@ -17,11 +17,11 @@ const FCharacterAssetInfo& UGameDataAsset::GetCharacterData(const FString& InNam
 
 FGameTableInfo FGameTableInfo::Invalid;
 
-const FGameTableInfo& UGameDataAsset::GetGameTableData(const FString& InName) const
+const FGameTableInfo& UGameDataAsset::GetGameTableData(const FName& InName) const
 {
 	for (const FGameTableInfo& TableInfo : DataTables)
 	{
-		if (TableInfo.TableName.Equals(InName) == true)
+		if (TableInfo.TableName == InName)
 		{
 			return TableInfo;
 		}

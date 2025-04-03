@@ -44,8 +44,8 @@ void UAISpawnSubSystem::Deinitialize()
 void UAISpawnSubSystem::StartSpawnAI()
 {
 	FTimerDelegate TimerDelegate;
-	FCharacterAssetInfo AICharacterAssetInfo = UTPSSystemManager::Get()->GetGameManager()->GetDataAsset()->
-	                                                                     GetCharacterData(TEXT("AICharacter"));
+	
+	const FCharacterAssetInfo& AICharacterAssetInfo = UTPSSystemManager::Get()->GetGameManager()->GetCharacterGameData(ECharacterDataTableType::AICharacterData);
 	TimerDelegate.BindLambda(
 		[this,AICharacterAssetInfo]()
 		{

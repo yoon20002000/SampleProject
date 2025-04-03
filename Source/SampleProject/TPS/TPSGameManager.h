@@ -5,6 +5,7 @@
 #include "Components/TPSInventoryComponent.h"
 #include "TPSGameManager.generated.h"
 
+struct FCharacterAssetInfo;
 struct FWorldActorData;
 struct FItem;
 struct FGameTableInfo;
@@ -12,6 +13,21 @@ class ATPSCharacter;
 class ATPSPlayer;
 class UGameDataAsset;
 class ATPSGameMode;
+
+UENUM(BlueprintType)
+enum ECharacterDataTableType
+{
+	PlayerCharacterData		UMETA(DisplayName = "Player Character Data"),
+	AICharacterData			UMETA(DisplayName = "AI Character Data"),
+};
+
+UENUM(BlueprintType)
+enum class EDataTableType : uint8
+{
+	ItemData		UMETA(DisplayName = "Item Data"),
+	PlayerLevelData UMETA(DisplayName = "Player Level Data"),
+	BalanceData		UMETA(DisplayName = "Balance Data"),
+};
 
 UCLASS()
 class UTPSGameManager : public UObject
@@ -22,7 +38,7 @@ public:
 	void InitData(const ATPSGameMode* InGameMode);
 	void BeginPlay();
 	void EndPlay(const EEndPlayReason::Type EndPlayReason);
-	void SpawnPlayer(const FString& CharacterDataName = TEXT("Player"), const int SpawnPointIndex = -1);
+	void SpawnPlayer(const FName& CharacterDataName = TEXT("Player"), const int SpawnPointIndex = -1);
 	void SpawnWorldActors();
 	void SpawnNormalActors();
 	void SpawnContainerActors();
@@ -50,18 +66,21 @@ public:
 	void DespawnCharacter(ATPSCharacter* DespawnCharacter);
 	void AddSpawnedCharacter(ATPSCharacter* InSpawnCharacter);
 	UGameDataAsset* GetDataAsset();
-
-	const FGameTableInfo* GetItemTable() const;
+	
 	FItem* GetItemDataOrNullptr(const FName& ItemName);
 	
 	TArray<TObjectPtr<ATPSCharacter>>& GetAllCharacters();
 	ATPSPlayer* GetPlayer();
+	const UDataTable* GetGameData(const EDataTableType& InDataType);
+	const FGameTableInfo& GetGameTableInfo(const EDataTableType& InDataType) const;
+	const FCharacterAssetInfo& GetCharacterGameData(const ECharacterDataTableType& InCharacterDataTableTypes);
+	
 private:
 	void GetSpawnPoint(FVector& OutPosition, FRotator& OutRotator, int InIndex = -1);
-
-private:
-	const FString ItemDataTableName = TEXT("ItemData");
-
+	FName GetDataTableName(const EDataTableType& InTableType) const;
+	FName GetCharacterDataTableName(const ECharacterDataTableType& InCharacterDataTableType) const;
+	
+private:	
 	UPROPERTY(Transient)
 	TObjectPtr<UGameDataAsset> GameDataAsset;
 

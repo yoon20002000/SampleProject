@@ -19,7 +19,7 @@ UTPSGameManager::UTPSGameManager(const FObjectInitializer& objectInitializer)
 	{
 		NormalSpawnActorData = DT_NormalActorData.Object;
 	}
-	
+
 	static ConstructorHelpers::FObjectFinder<UDataTable> DT_ContainerActorData(
 		TEXT("/Game/Data/DT_ContainerActorData.DT_ContainerActorData"));
 	if (DT_ContainerActorData.Succeeded() == true)
@@ -67,7 +67,7 @@ void UTPSGameManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	Player = nullptr;
 }
 
-void UTPSGameManager::SpawnPlayer(const FString& CharacterDataName, const int SpawnPointIndex)
+void UTPSGameManager::SpawnPlayer(const FName& CharacterDataName, const int SpawnPointIndex)
 {
 	if (GameDataAsset == nullptr)
 	{
@@ -127,24 +127,25 @@ void UTPSGameManager::SpawnContainerActors()
 	{
 		return;
 	}
-	
+
 	for (int32 Index = 0; Index < ContainerActorDatas.Num(); ++Index)
 	{
 		FContainerActorData* ContainerActorData = ContainerActorDatas[Index];
 		ATPSContainer* SpawnedActor = SpawnActor<ATPSContainer>(ContainerActorData->ContainerActor.LoadSynchronous(),
 		                                                        ContainerActorData->ActorTransform.GetLocation(),
 		                                                        ContainerActorData->ActorTransform.Rotator());
-		
+
 		if (UTPSInventoryComponent* InventoryComp = SpawnedActor->GetInventoryComponent())
 		{
 			InventoryComp->SetMaxSlotSize(ContainerActorData->InventoryMaxStackSize);
 			for (int32 ItemIndex = 0; ItemIndex < ContainerActorData->ContainedItems.Num(); ++ItemIndex)
 			{
-				if (FItem* ItemData = ContainerActorData->ContainedItems[ItemIndex].Item.GetRow<FItem>(TEXT("Load Data")))
+				if (FItem* ItemData = ContainerActorData->ContainedItems[ItemIndex].Item.GetRow<FItem>(
+					TEXT("Load Data")))
 				{
 					int32 SlotIndex = ContainerActorData->ContainedItems[ItemIndex].InventorySlotIndex;
 					int32 Quantity = ContainerActorData->ContainedItems[ItemIndex].Quantity;
-					InventoryComp->AddItemToSlot(SlotIndex, ItemData->Name,Quantity);
+					InventoryComp->AddItemToSlot(SlotIndex, ItemData->Name, Quantity);
 				}
 			}
 		}
@@ -166,16 +167,11 @@ UGameDataAsset* UTPSGameManager::GetDataAsset()
 	return GameDataAsset;
 }
 
-const FGameTableInfo* UTPSGameManager::GetItemTable() const
-{
-	return &GameDataAsset->GetGameTableData(ItemDataTableName);
-}
-
 FItem* UTPSGameManager::GetItemDataOrNullptr(const FName& ItemName)
 {
-	const FGameTableInfo* ItemTableInfo = GetItemTable();
+	const FGameTableInfo& ItemTableInfo = GetGameTableInfo(EDataTableType::ItemData);
 
-	if (UDataTable* DataTable = ItemTableInfo->DataTable.LoadSynchronous())
+	if (UDataTable* DataTable = ItemTableInfo.DataTable.LoadSynchronous())
 	{
 		FItem* Item = DataTable->FindRow<FItem>(ItemName,TEXT("Find Item Data"));
 		return Item;
@@ -191,6 +187,48 @@ TArray<TObjectPtr<ATPSCharacter>>& UTPSGameManager::GetAllCharacters()
 ATPSPlayer* UTPSGameManager::GetPlayer()
 {
 	return Player;
+}
+
+const UDataTable* UTPSGameManager::GetGameData(const EDataTableType& InDataType)
+{
+	if (GameDataAsset == nullptr)
+	{
+		return nullptr;
+	}
+	const FName& DataTableName = GetDataTableName(InDataType);
+	if (DataTableName == NAME_None)
+	{
+		return nullptr;
+	}
+
+	const FGameTableInfo& GameTableInfo = GameDataAsset->GetGameTableData(DataTableName);
+	return GameTableInfo.DataTable.LoadSynchronous();
+}
+
+const FGameTableInfo& UTPSGameManager::GetGameTableInfo(const EDataTableType& InDataType) const
+{
+	if (GameDataAsset == nullptr)
+	{
+		return FGameTableInfo::Invalid;
+	}
+	const FName& DataTableName = GetDataTableName(InDataType);
+
+	return GameDataAsset->GetGameTableData(DataTableName);
+}
+
+const FCharacterAssetInfo& UTPSGameManager::GetCharacterGameData(const ECharacterDataTableType& InCharacterDataTableTypes)
+{
+	if (GameDataAsset == nullptr)
+	{
+		return FCharacterAssetInfo::Invalid;
+	}
+
+	const FName& CharacterDataTableName = GetCharacterDataTableName(InCharacterDataTableTypes);
+	if (CharacterDataTableName == NAME_None)
+	{
+		return FCharacterAssetInfo::Invalid;
+	}
+	return GameDataAsset->GetCharacterData(CharacterDataTableName);
 }
 
 void UTPSGameManager::GetSpawnPoint(FVector& OutPosition, FRotator& OutRotator, int InIndex)
@@ -209,5 +247,52 @@ void UTPSGameManager::GetSpawnPoint(FVector& OutPosition, FRotator& OutRotator, 
 
 		OutPosition = PlayerStarts[InIndex]->GetActorLocation();
 		OutRotator = PlayerStarts[InIndex]->GetActorRotation();
+	}
+}
+
+FName UTPSGameManager::GetDataTableName(const EDataTableType& InTableType) const
+{
+	switch (InTableType)
+	{
+	case EDataTableType::ItemData:
+		{
+			const static FName ItemGameDataTableName(TEXT("ItemData"));
+			return ItemGameDataTableName;
+		}
+	case EDataTableType::BalanceData:
+		{
+			const static FName BalanceGameDataTableName(TEXT("BalanceData"));
+			return BalanceGameDataTableName;
+		}
+	case EDataTableType::PlayerLevelData:
+		{
+			const static FName PlayerLevelGameDataTableName(TEXT("PlayerLevelData"));
+			return PlayerLevelGameDataTableName;
+		}
+	default:
+		{
+			return NAME_None;
+		}
+	}
+}
+
+FName UTPSGameManager::GetCharacterDataTableName(const ECharacterDataTableType& InCharacterDataTableType) const
+{
+	switch (InCharacterDataTableType)
+	{
+	case ECharacterDataTableType::PlayerCharacterData:
+		{
+			const static FName CharacterDataTableName(TEXT("Player"));
+			return CharacterDataTableName;
+		}
+	case ECharacterDataTableType::AICharacterData:
+		{
+			const static FName CharacterDataTableName(TEXT("AICharacter"));
+			return CharacterDataTableName;
+		}
+	default:
+		{
+			return NAME_None;
+		}
 	}
 }

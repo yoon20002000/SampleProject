@@ -17,7 +17,7 @@ void ATPSContainer::Interaction(AActor* InteractionActor)
 	if (UIWidgetName != NAME_None)
 	{
 		if (UTPSContainerInventoryWidget* InstanceWidget =
-			UTPSSystemManager::Get()->GetUIManager()->LoadUI<UTPSContainerInventoryWidget>(UIWidgetName.ToString()))
+			UTPSSystemManager::Get()->GetUIManager()->LoadUI<UTPSContainerInventoryWidget>(UIWidgetName))
 		{
 			InstanceWidget->Init(InventoryComp);
 		}

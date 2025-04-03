@@ -6,7 +6,7 @@
 #include "TPSHelper.h"
 #include "Blueprint/UserWidget.h"
 
-UUserWidget* UUIDataAsset::LoadUserWidget(const FString& UIName) const
+UUserWidget* UUIDataAsset::LoadUserWidget(const FName& UIName) const
 {
 	auto UIDataAssetInfo = DataAssets.FindByPredicate([&UIName](const FUIDataAssetInfo& InUIDataAssetInfo)
 	{

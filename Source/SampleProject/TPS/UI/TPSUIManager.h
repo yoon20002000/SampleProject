@@ -42,7 +42,7 @@ public:
 	virtual void NotifyPlayerDestroyed(UTPSCommonLocalPlayer* LocalPlayer);
 
 	template<typename T = UCommonActivatableWidget>
-	T* LoadUI(const FString& UIName, EUILayerType LayerType = EUILayerType::GameLayer)
+	T* LoadUI(const FName& UIName, EUILayerType LayerType = EUILayerType::GameLayer)
 	{
 		if (UIDataAsset == nullptr)
 		{

@@ -29,7 +29,7 @@ struct FGameTableInfo
 {
 	GENERATED_BODY()
 	UPROPERTY(EditAnywhere)
-	FString TableName;
+	FName TableName;
 
 	UPROPERTY(EditAnywhere)
 	TSoftObjectPtr<UDataTable> DataTable;
@@ -44,8 +44,8 @@ class UGameDataAsset : public UDataAsset
 {
 	GENERATED_BODY()
 public:
-	const FCharacterAssetInfo& GetCharacterData(const FString& InName) const;
-	const FGameTableInfo& GetGameTableData(const FString& InName) const;
+	const FCharacterAssetInfo& GetCharacterData(const FName& InName) const;
+	const FGameTableInfo& GetGameTableData(const FName& InName) const;
 private:	
 	UPROPERTY(EditAnywhere)
 	TArray<FCharacterAssetInfo> CharacterAssets;

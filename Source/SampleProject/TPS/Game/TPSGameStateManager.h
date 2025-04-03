@@ -29,11 +29,11 @@ public:
 	void OpenLevel(const EGameplayState InGameState);
 	
 private:
-	const FName TitleLevelName = FName("Title");
-	const FString TitleUIName = TEXT("Title");
-	const FName MainGameLevelName = FName("MainGame");
-	const FString MainGameUIName = TEXT("BattleHUD");
-	const FString PlayerResourceName = TEXT("Player"); 
+	const FName TitleLevelName = TEXT("Title");
+	const FName TitleUIName = TEXT("Title");
+	const FName MainGameLevelName = TEXT("MainGame");
+	const FName MainGameUIName = TEXT("BattleHUD");
+	const FName PlayerResourceName = TEXT("Player"); 
 	EGameplayState GameState;
 	
 	FInputModeGameOnly InputGameOnly;

@@ -19,5 +19,5 @@ protected:
 	                        bool bWasCancelled) override;
 private:
 	UPROPERTY(EditDefaultsOnly, meta=(allowPrivateAccess=true))
-	FString OpenWidgetName;
+	FName OpenWidgetName;
 };

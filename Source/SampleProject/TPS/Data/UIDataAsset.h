@@ -11,7 +11,7 @@ struct FUIDataAssetInfo
 {
 	GENERATED_BODY()
 	UPROPERTY(EditAnywhere)
-	FString AssetName;
+	FName AssetName;
 	UPROPERTY(EditAnywhere)
 	TSoftClassPtr<UUserWidget> UserWidgetClass;
 };
@@ -23,7 +23,7 @@ class SAMPLEPROJECT_API UUIDataAsset : public UDataAsset
 {
 	GENERATED_BODY()
 public:
-	UUserWidget* LoadUserWidget(const FString& UIName) const;
+	UUserWidget* LoadUserWidget(const FName& UIName) const;
 private:
 	UPROPERTY(EditAnywhere)
 	TArray<FUIDataAssetInfo> DataAssets;

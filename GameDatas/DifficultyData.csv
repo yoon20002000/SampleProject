@@ -1,0 +1,4 @@
+Name,Level,SpawnAICount,SpawnPeriod
+Easy,1,5,5
+Normal,2,7,4
+Hell,3,10,3
