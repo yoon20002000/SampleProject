@@ -120,7 +120,10 @@ ATPSApplyGEActor* UTPSInteractionIndicatorComponent::GetInteractionActor() const
 	OwnerActor->GetAttachedActors(AttachedActors);
 	TraceParams.AddIgnoredActors(AttachedActors);
 	TraceParams.AddIgnoredActor(OwnerActor);
+#if UE_BUILD_DEBUG || UE_BUILD_DEVELOPMENT
 	TraceParams.bDebugQuery = true;
+#endif
+	
 
 	TArray<FHitResult> HitResults;
 	FVector TraceStart;

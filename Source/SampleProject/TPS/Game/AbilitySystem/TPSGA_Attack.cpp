@@ -216,8 +216,11 @@ FHitResult UTPSGA_Attack::WeaponTrace(const FVector& TraceStart, const FVector& 
 	FCollisionQueryParams TraceParams(SCENE_QUERY_STAT(WeaponTrace), true, GetAvatarActorFromActorInfo());
 	TraceParams.bReturnPhysicalMaterial = true;
 	AddAdditionalTraceIgnoreActors(TraceParams);
+	
+#if UE_BUILD_DEBUG || UE_BUILD_DEVELOPMENT
 	TraceParams.bDebugQuery = true;
-
+#endif
+	
 	const ECollisionChannel TraceChannel = DetermineTraceChannel(TraceParams, bIsSimulated);
 
 	if (SweepRadius > 0.0f)

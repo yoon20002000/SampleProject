@@ -36,8 +36,9 @@ void UTPSGA_Interaction::ActivateAbility(const FGameplayAbilitySpecHandle Handle
 		TPSPlayer->GetAttachedActors(AttachedActors);
 		TraceParams.AddIgnoredActors(AttachedActors);
 		TraceParams.AddIgnoredActor(TPSPlayer);
+#if UE_BUILD_DEBUG || UE_BUILD_DEVELOPMENT
 		TraceParams.bDebugQuery = true;
-
+#endif
 		TArray<FHitResult> HitResults;
 		FVector TraceStart;
 		FRotator TempRotator;

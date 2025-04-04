@@ -13,6 +13,8 @@ enum class ETPSAbilityTargetingSource : uint8
 	WeaponTowardsFocus,
 	Custom
 };
+
+class USoundCue;
 /**
  * 
  */
