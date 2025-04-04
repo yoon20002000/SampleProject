@@ -33,6 +33,8 @@ struct FInventorySlot
 {
 	GENERATED_BODY()
 public:
+	FInventorySlot();
+	FInventorySlot(const FName& InItemName, const int32 InItemQuantity);
 	bool IsEmpty() const;
 private:
 	void SetEmpty();

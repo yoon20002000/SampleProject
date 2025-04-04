@@ -14,6 +14,14 @@ FItem::FItem() : Name(NAME_None), Description(FText::GetEmpty()), Thumbnail(null
 {
 }
 
+FInventorySlot::FInventorySlot() : ItemName(NAME_None), ItemQuantity(1)
+{
+}
+
+FInventorySlot::FInventorySlot(const FName& InItemName, const int32 InItemQuantity) : ItemName(InItemName), ItemQuantity(InItemQuantity)
+{
+}
+
 bool FInventorySlot::IsEmpty() const
 {
 	return ItemName == NAME_None;
