@@ -34,6 +34,8 @@ void ATPSGameMode::BeginPlay()
 	{
 		AISpawnSubSystem->StartSpawnAI();
 	}
+
+	OnDifficultyUpdate.AddUObject(AISpawnSubSystem.Get(), &UAISpawnSubSystem::OnDifficultyChanged);
 }
 
 void ATPSGameMode::BeginDestroy()

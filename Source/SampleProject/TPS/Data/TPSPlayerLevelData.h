@@ -9,10 +9,11 @@ USTRUCT(BlueprintType)
 struct FTPSPlayerLevelData : public FTableRowBase
 {
 	GENERATED_BODY()
-	FTPSPlayerLevelData() : KillCount(0), BalanceType(ETPSBalanceStatus::Easy)
+	FTPSPlayerLevelData() : Level(0), KillCount(0), BalanceType(ETPSBalanceStatus::Easy)
 	{
 	}
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 Level;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 KillCount;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

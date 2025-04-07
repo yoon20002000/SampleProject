@@ -27,4 +27,28 @@ public:
 	int32 SpawnAICount;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float SpawnPeriod;
+
+	const static FName& GetBalanceStatusName(ETPSBalanceStatus status)
+	{
+		const static FName EasyName = "Easy";
+		const static FName NormalName = "Normal";
+		const static FName HellName = "Hell";
+
+		switch (status)
+		{
+		case ETPSBalanceStatus::Easy:
+		default:
+			{
+				return EasyName;
+			}
+		case ETPSBalanceStatus::Normal:
+			{
+				return NormalName;
+			}
+		case ETPSBalanceStatus::Hell:
+			{
+				return HellName;
+			}
+		}
+	}
 };

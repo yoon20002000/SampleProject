@@ -40,5 +40,6 @@ public:
 public:
 	FOnKillCountChanged OnKillCountChanged;
 protected:
-	uint32 KillCount;
+	int32 KillCount;
+	int32 MaxLevel;
 };

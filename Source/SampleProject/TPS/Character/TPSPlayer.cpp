@@ -93,13 +93,10 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	UTPSEnhancedInputComponent* TPSEIComp = Cast<UTPSEnhancedInputComponent>(PlayerInputComponent);
 	if (TPSEIComp != nullptr)
 	{
-		TPSEIComp->BindNativeAction(InputConfig, TPSGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this,
-		                            &ATPSPlayer::Move);
-		TPSEIComp->BindNativeAction(InputConfig, TPSGameplayTags::InputTag_Look_Mouse, ETriggerEvent::Triggered, this,
-		                            &ATPSPlayer::Look);
+		TPSEIComp->BindNativeAction(InputConfig, TPSGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ATPSPlayer::Move);
+		TPSEIComp->BindNativeAction(InputConfig, TPSGameplayTags::InputTag_Look_Mouse, ETriggerEvent::Triggered, this, &ATPSPlayer::Look);
 		TArray<uint32> BindHandles;
-		TPSEIComp->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed,
-		                              &ThisClass::AbilityInputTagReleased, BindHandles);
+		TPSEIComp->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, BindHandles);
 	}
 }
 

@@ -1,6 +1,7 @@
 #include "Game/AISpawnSubSystem.h"
 
 #include "TPSGameManager.h"
+#include "TPSGameMode.h"
 #include "TPSSystemManager.h"
 #include "Actor/TPSAIStart.h"
 #include "Character/TPSCharacter.h"
@@ -128,4 +129,24 @@ void UAISpawnSubSystem::GetAISpawnPoint(FVector& OutPosition, FRotator& OutRotat
 		OutPosition = SpawnPoints[InIndex]->GetActorLocation();
 		OutRotator = SpawnPoints[InIndex]->GetActorRotation();
 	}
+}
+
+void UAISpawnSubSystem::OnDifficultyChanged(ETPSBalanceStatus InBalanceStatus)
+{
+	UE_LOG(LogTemp, Log, TEXT("Balance Changed : %s"), *FTPSBalanceData::GetBalanceStatusName(InBalanceStatus).ToString());
+	StopSpawnAI();
+	
+	const FGameTableInfo& TableInfo = UTPSSystemManager::Get()->GetGameManager()->GetGameTableInfo(EDataTableType::BalanceData);
+	UDataTable* BalanceDataTable = TableInfo.DataTable.LoadSynchronous();
+	if (BalanceDataTable != nullptr)
+	{
+		const FTPSBalanceData* BalanceData = BalanceDataTable->FindRow<FTPSBalanceData>(FTPSBalanceData::GetBalanceStatusName(InBalanceStatus) , TEXT("FInd Balance Data"));
+		if (BalanceData != nullptr)
+		{
+			CreatePeriod = BalanceData->SpawnPeriod;
+			SimulateCreationLimit = BalanceData->SpawnAICount;
+		}
+	}
+	
+	StartSpawnAI();
 }

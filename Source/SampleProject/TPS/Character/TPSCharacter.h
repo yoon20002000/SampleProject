@@ -6,8 +6,10 @@
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
 #include "TPSPlayerState.h"
+#include "Components/TPSCharacterStatus.h"
 #include "TPSCharacter.generated.h"
 
+class UTPSCharacterStatus;
 class UTPSCombatAttributeSet;
 class UTPSGameplayAbility;
 class UTPSHealthComponent;
@@ -50,6 +52,20 @@ public:
 
 	UTPSHealthComponent* GetHealthComponentOrNullptr() const;
 	virtual void UninitAndDestroy();
+	
+// StatusSection
+	FORCEINLINE UTPSCharacterStatus* GetCharacterStatus() const
+	{
+		return CharacterStatus;
+	}
+	FORCEINLINE int32 GetCharacterLevel() const
+	{
+		return GetCharacterStatus()->GetLevel();
+	}
+	FORCEINLINE void SetCharacterLevel(int32 InLevel)
+	{
+		CharacterStatus->SetLevel(InLevel);
+	}
 protected:
 	void OnAbilitySystemInitialized();
 	UFUNCTION()
@@ -81,6 +97,10 @@ protected:
 	
 	bool bIsPlayerControlled;
 	bool bCanBeDamaged;
+// Status Section
+public:
+	UPROPERTY(EditAnywhere, Category="Character Status")
+	TObjectPtr<UTPSCharacterStatus> CharacterStatus;
 private:
 	UPROPERTY()
 	TObjectPtr<UTPSCombatAttributeSet> CombatSet;

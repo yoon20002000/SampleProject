@@ -59,8 +59,7 @@ void UTPSGA_Interaction::ActivateAbility(const FGameplayAbilitySpecHandle Handle
 			
 			if (HitInteractionActor->Implements<UTPSInteractionInterface>() == true)
 			{
-				if (ITPSInteractionInterface* InteractionInterface = Cast<ITPSInteractionInterface>(
-					HitInteractionActor))
+				if (ITPSInteractionInterface* InteractionInterface = Cast<ITPSInteractionInterface>(HitInteractionActor))
 				{
 					InteractionInterface->Interaction(TPSPlayer);
 				}

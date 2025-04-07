@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Data/TPSBalanceData.h"
 #include "Subsystems/WorldSubsystem.h"
 #include "AISpawnSubSystem.generated.h"
 
@@ -18,6 +19,7 @@ class SAMPLEPROJECT_API UAISpawnSubSystem : public UWorldSubsystem
 public:
 	UAISpawnSubSystem();
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
+	
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void OnWorldBeginPlay(UWorld& InWorld) override;
 	virtual void Deinitialize() override;
@@ -32,6 +34,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void StopSpawnAI();
 	void DespawnCharacter(ATPSCharacter* InDespawnCharacter);
+
+// DifficultySection
+	void OnDifficultyChanged(ETPSBalanceStatus InBalanceStatus);
 private:
 	void SpawnAIProgress(const FCharacterAssetInfo& CharacterAssetInfo);
 	ATPSCharacter* SpawnAICharacter(const TSubclassOf<ATPSCharacter>& InSpawnCharacterClass,
@@ -40,7 +45,7 @@ private:
 
 	void LoadAIStartPoint();
 	void GetAISpawnPoint(OUT FVector& OutPosition, OUT FRotator& OutRotator, int InIndex = -1);
-	
+
 private:
 
 	int32 SimulateCreationLimit;

@@ -3,17 +3,14 @@
 
 #include "TPSCharacter.h"
 
-#include "TPSAIController.h"
-#include "TPSPlayer.h"
 #include "TPSPlayerState.h"
+#include "Components/TPSCharacterStatus.h"
 #include "Components/TPSHealthComponent.h"
 #include "Components/TPSNameplateSource.h"
-#include "Components/WidgetComponent.h"
 #include "Game/AbilitySystem/TPSAbilitySystemComponent.h"
 #include "Game/AbilitySystem/TPSCombatAttributeSet.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "System/TPSAbilitySet.h"
-#include "UI/TPSFloatingHPBar.h"
 
 ATPSCharacter::ATPSCharacter() : bCanBeDamaged(false)
 {
@@ -26,6 +23,8 @@ ATPSCharacter::ATPSCharacter() : bCanBeDamaged(false)
 
 	NameplateSource = CreateDefaultSubobject<UTPSNameplateSource>(TEXT("Nameplate Source Data"));
 	ATPSCharacter::InitializeAttributes();
+
+	CharacterStatus = CreateDefaultSubobject<UTPSCharacterStatus>(TEXT("Character Status"));
 }
 
 // Called when the game starts or when spawned
