@@ -3,6 +3,7 @@
 #include "TPSHelper.h"
 #include "Character/TPSPlayer.h"
 #include "Components/TPSInventoryComponent.h"
+#include "Data/GameDataAsset.h"
 #include "TPSGameManager.generated.h"
 
 struct FCharacterAssetInfo;
@@ -74,7 +75,7 @@ public:
 	const UDataTable* GetGameData(const EDataTableType& InDataType);
 	const FGameTableInfo& GetGameTableInfo(const EDataTableType& InDataType) const;
 	const FCharacterAssetInfo& GetCharacterGameData(const ECharacterDataTableType& InCharacterDataTableTypes);
-	
+
 private:
 	void GetSpawnPoint(FVector& OutPosition, FRotator& OutRotator, int InIndex = -1);
 	FName GetDataTableName(const EDataTableType& InTableType) const;
