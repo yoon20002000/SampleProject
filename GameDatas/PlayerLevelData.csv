@@ -1,4 +1,4 @@
-Name,KillCount,BalanceType 
-Level1,0,0
-Level2,5,1
-Level3,10,2
+Name,Level,KillCount,BalanceType
+Level1,1,0,Easy
+Level2,2,5,Normal
+Level3,3,10,Hell
