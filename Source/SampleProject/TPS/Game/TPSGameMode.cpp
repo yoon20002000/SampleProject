@@ -1,12 +1,12 @@
 ﻿#include "TPSGameMode.h"
 
-#include "AISpawnSubSystem.h"
+#include "TPSAISpawnSubSystem.h"
 #include "TPSGameManager.h"
 #include "TPSSystemManager.h"
 #include "Character/TPSAIController.h"
 #include "Character/TPSPlayer.h"
 #include "Character/TPSPlayerState.h"
-#include "Game/AISpawnSubSystem.h"
+#include "Game/TPSAISpawnSubSystem.h"
 
 ATPSGameMode::ATPSGameMode()
 {
@@ -29,13 +29,13 @@ void ATPSGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	AISpawnSubSystem = GetWorld()->GetSubsystem<UAISpawnSubSystem>();
+	AISpawnSubSystem = GetWorld()->GetSubsystem<UTPSAISpawnSubSystem>();
 	if (AISpawnSubSystem != nullptr)
 	{
 		AISpawnSubSystem->StartSpawnAI();
 	}
 
-	OnDifficultyUpdate.AddUObject(AISpawnSubSystem.Get(), &UAISpawnSubSystem::OnDifficultyChanged);
+	OnDifficultyUpdate.AddUObject(AISpawnSubSystem.Get(), &UTPSAISpawnSubSystem::OnDifficultyChanged);
 }
 
 void ATPSGameMode::BeginDestroy()

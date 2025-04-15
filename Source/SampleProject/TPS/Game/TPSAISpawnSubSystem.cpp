@@ -1,4 +1,4 @@
-#include "Game/AISpawnSubSystem.h"
+#include "Game/TPSAISpawnSubSystem.h"
 
 #include "TPSGameManager.h"
 #include "TPSGameMode.h"
@@ -9,40 +9,40 @@
 #include "Kismet/GameplayStatics.h"
 
 struct FCharacterAssetInfo;
-const FString UAISpawnSubSystem::MainGameTitleText = FString(TEXT("MainGame"));
+const FString UTPSAISpawnSubSystem::MainGameTitleText = FString(TEXT("MainGame"));
 
-UAISpawnSubSystem::UAISpawnSubSystem()
+UTPSAISpawnSubSystem::UTPSAISpawnSubSystem()
 {
 	SimulateCreationLimit = 5;
 	CreatePeriod = 3;
 }
 
-bool UAISpawnSubSystem::ShouldCreateSubsystem(UObject* Outer) const
+bool UTPSAISpawnSubSystem::ShouldCreateSubsystem(UObject* Outer) const
 {
 	bool IsMainGameLevel = Outer->GetName().Equals(MainGameTitleText);
 
 	return Super::ShouldCreateSubsystem(Outer) && IsMainGameLevel == true;
 }
 
-void UAISpawnSubSystem::Initialize(FSubsystemCollectionBase& Collection)
+void UTPSAISpawnSubSystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 }
 
-void UAISpawnSubSystem::OnWorldBeginPlay(UWorld& InWorld)
+void UTPSAISpawnSubSystem::OnWorldBeginPlay(UWorld& InWorld)
 {
 	Super::OnWorldBeginPlay(InWorld);
 
 	LoadAIStartPoint();
 }
 
-void UAISpawnSubSystem::Deinitialize()
+void UTPSAISpawnSubSystem::Deinitialize()
 {
 	Super::Deinitialize();
 	StopSpawnAI();
 }
 
-void UAISpawnSubSystem::StartSpawnAI()
+void UTPSAISpawnSubSystem::StartSpawnAI()
 {
 	FTimerDelegate TimerDelegate;
 	
@@ -59,17 +59,17 @@ void UAISpawnSubSystem::StartSpawnAI()
 	GetWorld()->GetTimerManager().SetTimer(SpawnTimerHandle, TimerDelegate, CreatePeriod, true);
 }
 
-void UAISpawnSubSystem::StopSpawnAI()
+void UTPSAISpawnSubSystem::StopSpawnAI()
 {
 	GetWorld()->GetTimerManager().ClearTimer(SpawnTimerHandle);
 }
 
-void UAISpawnSubSystem::DespawnCharacter(ATPSCharacter* InDespawnCharacter)
+void UTPSAISpawnSubSystem::DespawnCharacter(ATPSCharacter* InDespawnCharacter)
 {
 	SpawnedCharacters.Remove(InDespawnCharacter);
 }
 
-void UAISpawnSubSystem::SpawnAIProgress(const FCharacterAssetInfo& CharacterAssetInfo)
+void UTPSAISpawnSubSystem::SpawnAIProgress(const FCharacterAssetInfo& CharacterAssetInfo)
 {
 	if (CharacterAssetInfo.AssetName.IsEmpty() == true || CharacterAssetInfo.AssetName.Equals(
 		FCharacterAssetInfo::Invalid.AssetName))
@@ -93,7 +93,7 @@ void UAISpawnSubSystem::SpawnAIProgress(const FCharacterAssetInfo& CharacterAsse
 	}
 }
 
-ATPSCharacter* UAISpawnSubSystem::SpawnAICharacter(const TSubclassOf<ATPSCharacter>& InSpawnCharacterClass,
+ATPSCharacter* UTPSAISpawnSubSystem::SpawnAICharacter(const TSubclassOf<ATPSCharacter>& InSpawnCharacterClass,
                                                    const FVector& InSpawnLocation,
                                                    const FRotator& InSpawnRotator,
                                                    const FActorSpawnParameters& InActorSpawnParameter)
@@ -104,7 +104,7 @@ ATPSCharacter* UAISpawnSubSystem::SpawnAICharacter(const TSubclassOf<ATPSCharact
 	return SpawnCharacter;
 }
 
-void UAISpawnSubSystem::LoadAIStartPoint()
+void UTPSAISpawnSubSystem::LoadAIStartPoint()
 {
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATPSAIStart::StaticClass(), SpawnPoints);
 
@@ -114,7 +114,7 @@ void UAISpawnSubSystem::LoadAIStartPoint()
 	}
 }
 
-void UAISpawnSubSystem::GetAISpawnPoint(FVector& OutPosition, FRotator& OutRotator, int InIndex)
+void UTPSAISpawnSubSystem::GetAISpawnPoint(FVector& OutPosition, FRotator& OutRotator, int InIndex)
 {
 	OutPosition = FVector::Zero();
 	OutRotator = FRotator::ZeroRotator;
@@ -131,7 +131,7 @@ void UAISpawnSubSystem::GetAISpawnPoint(FVector& OutPosition, FRotator& OutRotat
 	}
 }
 
-void UAISpawnSubSystem::OnDifficultyChanged(ETPSBalanceStatus InBalanceStatus)
+void UTPSAISpawnSubSystem::OnDifficultyChanged(ETPSBalanceStatus InBalanceStatus)
 {
 	UE_LOG(LogTemp, Log, TEXT("Balance Changed : %s"), *FTPSBalanceData::GetBalanceStatusName(InBalanceStatus).ToString());
 	StopSpawnAI();

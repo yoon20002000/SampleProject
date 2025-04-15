@@ -2,7 +2,7 @@
 
 #include "Data/TPSBalanceData.h"
 #include "Subsystems/WorldSubsystem.h"
-#include "AISpawnSubSystem.generated.h"
+#include "TPSAISpawnSubSystem.generated.h"
 
 class ATPSAIStart;
 class ATargetSpawnPoint;
@@ -12,12 +12,12 @@ struct FCharacterAssetInfo;
  * 
  */
 UCLASS()
-class SAMPLEPROJECT_API UAISpawnSubSystem : public UWorldSubsystem
+class SAMPLEPROJECT_API UTPSAISpawnSubSystem : public UWorldSubsystem
 {
 	GENERATED_BODY()
 
 public:
-	UAISpawnSubSystem();
+	UTPSAISpawnSubSystem();
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
