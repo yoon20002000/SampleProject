@@ -1,3 +1,5 @@
+정리 Slide : https://docs.google.com/presentation/d/1OZ-jnF9TqLvEYXjug0RYpU7S4z75fitwBm7maFgsNM0/edit?usp=drive_link
+
 Code convention
 - Base : https://dev.epicgames.com/documentation/en-us/unreal-engine/epic-cplusplus-coding-standard-for-unreal-engine
 - 개인 규칙
