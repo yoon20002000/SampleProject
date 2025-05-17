@@ -203,6 +203,7 @@ void UTPSInventoryComponent::LoadInventory()
 void UTPSInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	LoadInventory();
 	
 	Inventory.Reserve(InventorySlotMaxSize);
 	for (int i =  Inventory.Num(); i < InventorySlotMaxSize; ++i)
