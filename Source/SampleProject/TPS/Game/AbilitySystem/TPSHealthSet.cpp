@@ -114,12 +114,12 @@ void UTPSHealthSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackDa
 	
 	if (GetHealth() != HealthBeforeAttributeChange)
 	{
-		OnHealthChanged.Broadcast(Instigator, Causer, &Data.EffectSpec, GetHealth(), HealthBeforeAttributeChange, GetMaxHealth());
+		OnHealthChanged.Broadcast(Instigator, Causer, &Data.EffectSpec, Data.EvaluatedData.Magnitude, HealthBeforeAttributeChange, GetHealth());
 	}
 
 	if (GetHealth() <= 0 && bOutOfHealth == false)
 	{
-		OnOutOfHealth.Broadcast(Instigator, Causer, &Data.EffectSpec, Data.EvaluatedData.Magnitude, MaxHealthBeforeAttributeChange, GetMaxHealth());
+		OnOutOfHealth.Broadcast(Instigator, Causer, &Data.EffectSpec, Data.EvaluatedData.Magnitude, HealthBeforeAttributeChange, GetHealth());
 	}
 
 	bOutOfHealth = GetHealth() <= 0.0f;
