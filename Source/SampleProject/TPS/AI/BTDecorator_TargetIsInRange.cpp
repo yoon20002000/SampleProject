@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "AI/BTDecorator_TargetIsInRange.h"
 
 #include "AIController.h"
@@ -29,6 +26,6 @@ bool UBTDecorator_TargetIsInRange::CalculateRawConditionValue(UBehaviorTreeCompo
 		return false;
 	}
 	float AttackRange = OwnerComp.GetBlackboardComponent()->GetValueAsFloat(ATPSAIController::AIAttackRange);
-	UE_LOG(LogTemp, Log, TEXT("%f %f"),Target->GetDistanceTo(ControllingPawn),AttackRange);
+	
 	return Target->GetDistanceTo(ControllingPawn) <= AttackRange; 
 }
