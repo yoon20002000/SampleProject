@@ -12,6 +12,8 @@ const FName ATPSAIController::StartLocationKey(TEXT("StartLocation"));
 const FName ATPSAIController::PatrolLocationKey(TEXT("PatrolLocation"));
 const FName ATPSAIController::TargetActorKey(TEXT("TargetActor"));
 const FName ATPSAIController::AIAttackRange(TEXT("AttackRange"));
+const FName ATPSAIController::IsInCombat(TEXT("IsInCombat"));
+const FName ATPSAIController::ThreatLevel(TEXT("ThreatLevel"));
 
 ATPSAIController::ATPSAIController()
 {

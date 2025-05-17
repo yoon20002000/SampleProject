@@ -28,7 +28,8 @@ public:
 	static const FName PatrolLocationKey;
 	static const FName TargetActorKey;
 	static const FName AIAttackRange;
-
+	static const FName IsInCombat;
+	static const FName ThreatLevel;
 private:
 	UPROPERTY(EditDefaultsOnly, meta=(AllowPrivateAccess=true))
 	TObjectPtr<UBehaviorTree> BTAsset;

@@ -80,7 +80,6 @@ void UTPSGA_Attack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 	UAbilitySystemComponent* AC = CurrentActorInfo->AbilitySystemComponent.Get();
 	check(AC);
 
-
 	OnTargetDataReadyCallbackDelegateHandle = AC->AbilityTargetDataSetDelegate(
 		CurrentSpecHandle, CurrentActivationInfo.GetActivationPredictionKey()).AddUObject(
 		this, &ThisClass::OnTargetDataReadyCallback);
