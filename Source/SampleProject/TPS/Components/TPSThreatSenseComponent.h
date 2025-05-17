@@ -4,6 +4,7 @@
 #include "Components/ActorComponent.h"
 #include "TPSThreatSenseComponent.generated.h"
 
+class ATPSPlayer;
 class ATPSCharacter;
 
 UENUM(BlueprintType)

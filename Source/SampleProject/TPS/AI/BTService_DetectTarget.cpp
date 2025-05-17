@@ -41,55 +41,50 @@ void UBTService_DetectTarget::TickNode(UBehaviorTreeComponent& OwnerComp, uint8*
 	{
 		return;
 	}
+	AActor* TargetPlayer = FindTarget(AINPC, World, Center);
+	BBC->SetValueAsObject(ATPSAIController::TargetActorKey, TargetPlayer);
 	
-	if (ATPSPlayer* TargetPlayer = Cast<ATPSPlayer>(AINPC->GetHighestTarget()))
+	if (TargetPlayer != nullptr)
 	{
-		BBC->SetValueAsObject(ATPSAIController::TargetActorKey, TargetPlayer);
-		DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Red, false, .2f);
-		DrawDebugPoint(World, TargetPlayer->GetActorLocation(), 10.0f, FColor::Blue, false, .2f);
 		DrawDebugLine(World, AINPC->GetActorLocation(), TargetPlayer->GetActorLocation(), FColor::Blue, false, .2f);
+		DrawDebugPoint(World, TargetPlayer->GetActorLocation(), 10.0f, FColor::Blue, false, .2f);
+	}
+	DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Red, false, .2f);
+}
+
+AActor* UBTService_DetectTarget::FindTarget(ATPSNonPlayer* InAINPC, UWorld* InWorld, const FVector& InCenter) const
+{
+	if (ATPSPlayer* ThreatTarget = Cast<ATPSPlayer>(InAINPC->GetHighestTarget()))
+	{
+		return ThreatTarget;
+	}
+
+	TArray<FOverlapResult> OverlapResults;
+	FCollisionQueryParams CollisionQueryParam(NAME_None, false, InAINPC);
+	bool bResult = InWorld->OverlapMultiByChannel(OverlapResults,
+												InCenter,
+												FQuat::Identity,
+												ECC_EngineTraceChannel2,
+												FCollisionShape::MakeSphere(DetectRadius),
+												CollisionQueryParam);
+		
+	if (bResult == true )
+	{
+		for (FOverlapResult Hit : OverlapResults)
+		{
+			if (ATPSPlayer* ThreatTarget = Cast<ATPSPlayer>(Hit.GetActor()))
+			{
+				if (ThreatTarget->IsAlive() && ThreatTarget->GetController() && ThreatTarget->GetController()->IsPlayerController())
+				{
+					return ThreatTarget;
+				}
+			}
+		}
+		return nullptr;
 	}
 	else
 	{
-		TArray<FOverlapResult> OverlapResults;
-		FCollisionQueryParams CollisionQueryParam(NAME_None, false, AINPC);
-		bool bResult = World->OverlapMultiByChannel(OverlapResults,
-													Center,
-													FQuat::Identity,
-													ECC_EngineTraceChannel2,
-													FCollisionShape::MakeSphere(DetectRadius),
-													CollisionQueryParam);
-		
-		if (bResult == true )
-		{
-			for (FOverlapResult Hit : OverlapResults)
-			{
-				TargetPlayer = Cast<ATPSPlayer>(Hit.GetActor());
-				if (TargetPlayer != nullptr && TargetPlayer->GetController() != nullptr)
-				{
-					if (TargetPlayer->GetController()->IsPlayerController() == true && TargetPlayer->IsAlive() == true)
-					{
-						BBC->SetValueAsObject(ATPSAIController::TargetActorKey, TargetPlayer);
-						DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Red, false, .2f);
-						DrawDebugPoint(World, TargetPlayer->GetActorLocation(), 10.0f, FColor::Blue, false, .2f);
-						DrawDebugLine(World, AINPC->GetActorLocation(), TargetPlayer->GetActorLocation(), FColor::Blue, false, .2f);
-						return;	
-					}
-					else
-					{
-						BBC->SetValueAsObject(ATPSAIController::TargetActorKey, nullptr);
-						break;
-					}
-				}
-			}
-			BBC->SetValueAsObject(ATPSAIController::TargetActorKey, nullptr);
-			DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Yellow, false, .2f);
-		}
-		else
-		{
-			BBC->SetValueAsObject(ATPSAIController::TargetActorKey, nullptr);
-			DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Yellow, false, .2f);
-		}
-		DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Red, false, .2f);
+		return nullptr;
 	}
+		
 }
