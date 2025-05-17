@@ -27,6 +27,7 @@ public:
 	static const FName StartLocationKey;
 	static const FName PatrolLocationKey;
 	static const FName TargetActorKey;
+	static const FName AIAttackRange;
 
 private:
 	UPROPERTY(EditDefaultsOnly, meta=(AllowPrivateAccess=true))

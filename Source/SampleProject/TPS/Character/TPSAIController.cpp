@@ -4,12 +4,14 @@
 #include "TPSAIController.h"
 
 #include "BrainComponent.h"
+#include "TPSNonPlayer.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 const FName ATPSAIController::StartLocationKey(TEXT("StartLocation"));
 const FName ATPSAIController::PatrolLocationKey(TEXT("PatrolLocation"));
 const FName ATPSAIController::TargetActorKey(TEXT("TargetActor"));
+const FName ATPSAIController::AIAttackRange(TEXT("AttackRange"));
 
 ATPSAIController::ATPSAIController()
 {
@@ -38,14 +40,18 @@ void ATPSAIController::OnPossess(APawn* InPawn)
 
 void ATPSAIController::RunAI(const AActor* ThisActor)
 {
-	UBlackboardComponent* BBC = Blackboard;
-	if (UseBlackboard(BBAsset, BBC))
+	if (const ATPSNonPlayer* NPC = CastChecked<ATPSNonPlayer>(ThisActor))
 	{
-		BBC->SetValueAsVector(StartLocationKey, ThisActor->GetActorLocation());
-		if (RunBehaviorTree(BTAsset) == false)
+		UBlackboardComponent* BBC = Blackboard;
+		if (UseBlackboard(BBAsset, BBC))
 		{
-			UE_LOG(LogTemp, Log, TEXT("AIController not run"));
-		}
+			BBC->SetValueAsVector(StartLocationKey, ThisActor->GetActorLocation());
+			BBC->SetValueAsFloat(AIAttackRange, NPC->GetAttackRange());
+			if (RunBehaviorTree(BTAsset) == false)
+			{
+				UE_LOG(LogTemp, Log, TEXT("AIController not run"));
+			}
+		}	
 	}
 }
 

@@ -9,7 +9,7 @@
 #include "Character/TPSCharacter.h"
 
 
-UBTDecorator_TargetIsInRange::UBTDecorator_TargetIsInRange() : Range(0)
+UBTDecorator_TargetIsInRange::UBTDecorator_TargetIsInRange()
 {
 	NodeName = TEXT("Is In Range");
 }
@@ -28,6 +28,7 @@ bool UBTDecorator_TargetIsInRange::CalculateRawConditionValue(UBehaviorTreeCompo
 	{
 		return false;
 	}
-		
-	return Target->GetDistanceTo(ControllingPawn) <= Range; 
+	float AttackRange = OwnerComp.GetBlackboardComponent()->GetValueAsFloat(ATPSAIController::AIAttackRange);
+	UE_LOG(LogTemp, Log, TEXT("%f %f"),Target->GetDistanceTo(ControllingPawn),AttackRange);
+	return Target->GetDistanceTo(ControllingPawn) <= AttackRange; 
 }
