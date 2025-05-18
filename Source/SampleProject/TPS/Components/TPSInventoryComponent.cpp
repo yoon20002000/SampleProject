@@ -41,7 +41,7 @@ void FInventorySlot::SetSlot(const FName& InItemName, const int32 Quantity)
 
 UTPSInventoryComponent::UTPSInventoryComponent()
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
 
@@ -237,13 +237,6 @@ void UTPSInventoryComponent::AddNewItemToInventory(const FName& ItemName, const 
 	}
 }
 
-void UTPSInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType,
-                                           FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	TraceItem();
-}
-
 void UTPSInventoryComponent::AddItemQuantity(const int32 Quantity, FInventorySlot* Slot)
 {
 	Slot->ItemQuantity += Quantity;
@@ -374,73 +367,6 @@ void UTPSInventoryComponent::DropItem(const FName& ItemName, const int32 Quantit
 	}
 }
 
-void UTPSInventoryComponent::TraceItem()
-{
-	if (AActor* OwnerActor = GetOwner())
-	{
-		FVector EyeLocation;
-		FRotator EyeRotation;
-		OwnerActor->GetActorEyesViewPoint(OUT EyeLocation, OUT EyeRotation);
-		FVector TraceStart = EyeLocation;
-
-		APlayerCameraManager* CameraManager = TPSHelper::GetPlayerCameraManager();
-		FVector CamForwardVector = CameraManager->GetActorForwardVector();
-		FVector TraceEnd = TraceStart + CamForwardVector * SweepDistance;
-
-		TArray<FHitResult> Hits;
-		FCollisionQueryParams CollisionQueryParameters(TEXT("Interact Item"), true, OwnerActor);
-		TArray<AActor*> AttachedActors;
-		OwnerActor->GetAttachedActors(OUT AttachedActors);
-		CollisionQueryParameters.AddIgnoredActors(AttachedActors);
-		GetWorld()->LineTraceMultiByChannel(Hits, TraceStart, TraceEnd,TPS_TraceChannel_Interaction,
-		                                    CollisionQueryParameters);
-
-		DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Blue);
-
-		AActor* FirstHitActor = GetFirstHitItemInteraction(Hits);
-
-		if (FirstHitActor == nullptr)
-		{
-			FCollisionShape SphereShape = FCollisionShape::MakeSphere(SweepSphereRadius);
-			FVector AdditionalTraceStart = TraceStart + CameraManager->GetActorForwardVector() * SweepDistance;
-			FVector AdditionalTraceEnd = AdditionalTraceStart;
-			GetWorld()->SweepMultiByChannel(Hits, AdditionalTraceStart, AdditionalTraceEnd, FQuat::Identity,
-			                                TPS_TraceChannel_Interaction,
-			                                SphereShape, CollisionQueryParameters);
-
-			DrawDebugSphere(GetWorld(), AdditionalTraceStart, SweepSphereRadius, 12, FColor::Yellow);
-
-			FirstHitActor = GetFirstHitItemInteraction(Hits);
-		}
-
-
-		if (FirstHitActor == nullptr || FirstHitActor != CurHitActor)
-		{
-			CurHitActor = FirstHitActor;
-			if (CurHitActor != nullptr)
-			{
-				// ITPSInteractionInterface* InteractionInterface = Cast<ITPSInteractionInterface>(CurHitActor);
-				// InteractionInterface->LookAtInteractionActor();
-				// InteractionInterface->Interaction();
-			}
-		}
-	}
-}
-
-AActor* UTPSInventoryComponent::GetFirstHitItemInteraction(const TArray<FHitResult>& Hits) const
-{
-	if (Hits.Num() > 0)
-	{
-		for (const FHitResult& Hit : Hits)
-		{
-			if (Hit.GetActor()->GetComponentByClass<UTPSItemDataComponent>() != nullptr)
-			{
-				return Hit.GetActor();
-			}
-		}
-	}
-	return nullptr;
-}
 void UTPSInventoryComponent::SwapInventorySlots(FInventorySlot& A, FInventorySlot& B)
 {
 	FInventorySlot Temp = A;

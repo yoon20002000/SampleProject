@@ -57,7 +57,6 @@ class SAMPLEPROJECT_API UTPSInventoryComponent : public UActorComponent
 
 public:	
 	UTPSInventoryComponent();
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	// ItemName : Item Unique ID, Quantity : Must below Max Stack Size
 	void AddItemToInventory(const FName& ItemName,const int32 Quantity);
 	// Add Quantity & Broadcast Update
@@ -97,8 +96,7 @@ protected:
 	// AddNewSlot at Item & Broadcast Update
 	void AddNewItemToInventory(const FName& ItemName,const int32 Quantity);
 private:
-	void TraceItem();
-	AActor* GetFirstHitItemInteraction(const TArray<FHitResult>& Hits) const;
+	
 	void SwapInventorySlots(FInventorySlot& A, FInventorySlot& B);
 
 public:
@@ -106,17 +104,10 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = true))
+	float DropForwardDistance= 100;
+	
+	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = true))
 	int32 InventorySlotMaxSize = 5;
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = true))
 	TArray<FInventorySlot> Inventory;
-
-	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = true))
-	float SweepDistance = 100;
-	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = true))
-	float SweepSphereRadius = 10;
-	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = true))
-	float DropForwardDistance= 100;
-	
-	UPROPERTY()
-	TWeakObjectPtr<AActor> CurHitActor = nullptr;
 };
