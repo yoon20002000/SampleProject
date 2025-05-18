@@ -62,16 +62,14 @@ void UTPSGA_Interaction::ActivateAbility(const FGameplayAbilitySpecHandle Handle
 				if (ITPSInteractionInterface* InteractionInterface = Cast<ITPSInteractionInterface>(HitInteractionActor))
 				{
 					InteractionInterface->Interaction(TPSPlayer);
+					EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
+					return;
 				}
 			}
 		}
-
-		EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
 	}
-	else
-	{
-		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
-	}
+	
+	EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 }
 
 void UTPSGA_Interaction::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
